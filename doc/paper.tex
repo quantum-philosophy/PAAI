@@ -1,0 +1,28 @@
+\documentclass{sig-alternate}
+\input{include/common}
+
+\bibliography{include/references.bib}
+
+\makeatletter
+\renewcommand{\@maketitle}{
+  \newpage
+  \null
+  \begin{center}%
+    {\Huge \@title \par}%
+    \vspace{0.10em}%
+  \end{center}%
+  \par%
+}
+\makeatother
+
+\begin{document}
+  \title{Application-Level Uncertainty Quantification for Multiprocessor System Design}
+
+  \maketitle
+
+  \begin{abstract}
+    We are the champions \cite{ukhov2012, ukhov2013}.
+  \end{abstract}
+
+  \printbibliography
+\end{document}
