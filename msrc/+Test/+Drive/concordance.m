@@ -6,7 +6,7 @@ Nmcs = 1e5;
 
 %% Generate a Pearson's correlation matrix.
 %
-S = normrnd(0, 1, Nrv, Nrv);
+S = randn(Nrv);
 S = S' * S;
 Cp = corrcov(S);
 
@@ -16,7 +16,8 @@ Cs = asin(Cp / 2) * 6 / pi;
 
 %% Correlate the RVs.
 %
-Y = mvnrnd(zeros(Nmcs, Nrv), Cp);
+R = chol(Cp);
+Y = randn(Nmcs, Nrv) * R;
 CsY = corr(Y, 'type', 'Spearman');
 
 %% Transform the correlated normal RVs into uniform ones.
