@@ -9,6 +9,7 @@
 % Text
 \newcommand{\rv}{RV}
 \newcommand{\rvs}{RVs}
+\newcommand{\step}[1]{\textbf{#1}\hspace{0.2em}}
 
 % References
 \newcommand{\eref}[1]{Eq.~(\ref{equ:#1})}
@@ -21,6 +22,68 @@
 \newcommand{\tlabel}[1]{\label{tab:#1}}
 \newcommand{\flabel}[1]{\label{fig:#1}}
 
-% Linear algebra
-\newcommand{\m}[1]{\mathbf{\MakeUppercase{#1}}}
+% Multiprocessor system
+% ----- Platform
+\newcommand{\platform}{\Pi}
+\newcommand{\specification}{\mathcal{S}}
+\newcommand{\processor}{\pi}
+
+% ----- Application
+\newcommand{\application}{\mathcal{A}}
+\newcommand{\tasks}{\mathcal{T}}
+\newcommand{\dependencies}{\mathcal{E}}
+\newcommand{\task}{\tau}
+
+\newcommand{\D}{D}
+\newcommand{\vD}{\v{D}}
+
+\newcommand{\mapping}{\m{M}}
+
+% Mathematics
+\newcommand{\real}{\mathbb{R}}
+
+% ----- Linear algebra
+\newcommand{\m}[1]{\mathbf{#1}}
 \renewcommand{\v}[1]{\mathbf{#1}}
+
+% ----- Probability theory
+\renewcommand{\O}{\Omega}
+\renewcommand{\o}{\omega}
+
+\newcommand{\F}{\mathcal{F}}
+\renewcommand{\P}{\mathcal{P}}
+
+\newcommand{\CDF}{F}
+
+\newcommand{\mCorr}{\m{\Sigma}}
+\newcommand{\mLCorr}{\m{\Sigma}^{(l)}}
+\newcommand{\mNCorr}{\m{\Sigma}^{(n)}}
+
+\makeatletter
+\def\oT{\@ifnextchar\bgroup{\oTComplex}{\oTSimple}}
+\def\oTComplex#1{T\left[ #1 \right]}
+\def\oTSimple{T}
+
+\def\oInvT{\@ifnextchar\bgroup{\oInvTComplex}{\oInvTSimple}}
+\def\oInvTComplex#1{T^{-1}\left[ #1 \right]}
+\def\oInvTSimple{T^{-1}}
+\makeatother
+
+% ----- Uncertain parameters
+\renewcommand{\u}{u}
+\newcommand{\U}{U}
+\newcommand{\vU}{\v{U}}
+
+% ----- Independent random variables
+\newcommand{\z}{\zeta}
+\newcommand{\Z}{Z}
+\newcommand{\vZ}{\v{Z}}
+
+\newcommand{\uniform}{\mathcal{U}}
+\newcommand{\normal}{\mathcal{N}}
+
+% Indexes
+\newcommand{\Npe}{{N_\text{pe}}}
+\newcommand{\Nts}{{N_\text{ts}}}
+\newcommand{\Nup}{{N_\text{up}}}
+\newcommand{\Nrv}{{N_\text{rv}}}

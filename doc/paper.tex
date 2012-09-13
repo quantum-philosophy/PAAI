@@ -15,14 +15,29 @@
 }
 \makeatother
 
+% Remove the copyright
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd{\maketitle}{\@copyrightspace}{}{}{}
+\makeatother
+
 \begin{document}
-  \title{Application-Level Uncertainty Quantification for Multiprocessor System Design}
+  \title{Uncertainty Quantification of Application-Induced Variations for Multiprocessor System Design}
 
   \maketitle
 
   \begin{abstract}
-    We are the champions \cite{ukhov2012, ukhov2013}.
+    \input{include/abstract.tex}
   \end{abstract}
+
+  \section{Preliminaries}
+  \input{include/preliminaries.tex}
+
+  \section{Proposed Framework}
+  \input{include/proposed-framework.tex}
+
+  \section{Illustrative Example}
+  \input{include/illustrative-example.tex}
 
   \printbibliography
 \end{document}
