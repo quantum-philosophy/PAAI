@@ -4,6 +4,7 @@ Since the mathematical framework employed in this paper operates on mutually ind
 \begin{equation} \elabel{dependent-uniform}
   \U'_i(\o) = \CDF_{\U_i}(\U_i(\o)) \sim \uniform(0, 1)
 \end{equation}
+In this work, $\CDF_{\U_i}(\u)$ are assumed to be strictly increasing functions; therefore, the transformation above is unique.
 
 \step{Step 2.} $\U'_i(\o)$ are then transformed into dependent, standard, normal \rvs\ $\U''_i(\o)$ by applying the inverse probability transformation:
 \begin{equation} \elabel{dependent-normal}
@@ -13,7 +14,7 @@ where $\CDF_\normal$ denotes the distribution function of the (univariate) stand
 \[
   \vU''(\o) \sim \normal(\v{0}, \mLCorr_{\vU''})
 \]
-where $\v{0} \in \real^\Nup$ is the zero vector, and $\mLCorr_{\vU''} \in \real^{\Nup \times \Nup}$ is a Pearson's correlation matrix. $\mLCorr_{\vU''}$ is to be determined such that the chain of the inverse transformations, with respect to the ones defined in Step 1--2, leads to the given correlation matrix $\mCorr_\vU$. The following step surves this purpose.
+where $\v{0} \in \real^\Nup$ is the zero vector, and $\mLCorr_{\vU''} \in \real^{\Nup \times \Nup}$ is a Pearson's correlation matrix. $\mLCorr_{\vU''}$ is to be determined such that the chain of the inverse transformations, opposite to the ones in the first two steps, leads to the given correlation matrix $\mCorr_\vU$. The following step surves this purpose.
 
 \step{Step 3.} When $\mCorr_\vU \equiv \mNCorr_\vU$, we only need to ensure that the \rvs\ $\vU''(\o)$ have the same rank correlations as $\vU(\o)$, i.e., $\mNCorr_{\vU''} = \mNCorr_{\vU}$, since such measures of correlations are resistant to nonlinear transformations. In the case of normal distributions, the relations between the Pearson's correlation coefficient, Spearman's rho, and Kendall's tau have closed forms. For instance, if $\mCorr_\vU$ is a Spearman's correlation matrix $\mNCorr_\vU$, then the corresponding Pearson's one is
 \[
@@ -23,9 +24,9 @@ which should be understood as an element-wise operation. Nonlinear transformatio
 
 \step{Step 4.} The $\Nup$ dependent \rvs\ $\vU''(\o)$ are transformed into $\Nrv$ independent, standard normal \rvs\ $\vZ(\o)$ using the principal component analysis (PCA) as follows:
 \begin{equation} \elabel{independent-normal}
-  \vZ(\o) = \m{H} \vU''(\o)
+  \vZ(\o) = \oPCA{\vU''(\o)}
 \end{equation}
-where $\m{H} \in \real^{\Nrv \times \Nup}$ is the corresponding transformation matrix of the PCA.
+where $\oPCA: \real^{\Nup \times \Nup} \to \real^{\Nrv \times \Nup}$ is the PCA transformation operator, which is linear.
 
 The overall transformation described in this section consists of \eref{dependent-uniform}, \eref{dependent-normal}, and \eref{independent-normal} and is denoted by
 \[
@@ -37,6 +38,6 @@ where $\oT: \real^\Nup \to \real^\Nrv$ is the transformation operator. The inver
 \]
 where $\oInvT: \real^\Nrv \to \real^\Nup$, and the operations involved are
 \[
-  \vU(\o) = \CDF_{\vU}^{-1}(\CDF_\normal(\m{H}^{-1} \vZ(\o)))
+  \vU(\o) = \CDF_{\vU}^{-1}(\CDF_\normal(\oInvPCA{\vZ(\o)}))
 \]
-where $\CDF^{-1}_{\vU}(\CDF_\normal(\cdot))$ denotes an element-wise operation based on the marginal distribution functions of $\vU(\o)$ and the standard normal distribution function. To sum up, the $\Nup$ uncertain parameters $\vU(\o)$ are now parametrized by $\Nrv$ independent, standard, normal \rvs\ $\vZ(\o)$.
+where $\CDF^{-1}_{\vU}(\CDF_\normal(\cdot))$ denotes an element-wise operation based on the marginal distribution functions of $\vU(\o)$ and the standard normal distribution function. To sum up, the $\Nup$ uncertain parameters $\vU(\o)$ are now parametrized by $\Nrv$ independent, standard, normal \rvs\ $\vZ(\o)$. For convenience, we shall write $\vZ(\o)$ instead of $\vU(\o)$.

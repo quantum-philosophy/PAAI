@@ -1,0 +1,23 @@
+In this section, we focus on the dynamic power dissipation of the platform $\platform$ running the application $\application$ mapped with respect to $\mM$ (see \sref{application-model}). Denote $\vPP(\t, \o) \in \real^\Npe$ the vector of the power consumption of the processing elements at time $\t$. The $i$th element of $\vPP(\t, \o)$, $\PP_i(\t, \o)$, is given as
+\begin{equation} \elabel{processor-power}
+  \PP_i(\t, \o) = \sum_{j \in \index^\pi_i} \PT_j(\o) \; \I_{\event_j(\t)}(\o)
+\end{equation}
+where $\index^\pi_i = \{ j: m_{ij} = 1 \}$ is the index set of the tasks assigned to the $i$th processing element, and $\PT_j(\o)$ is the power mode (the power consumption) of the $j$th task. $\I_\event(\o)$ is the indicator function of an event $A \in \F$ (see \sref{uncertainty-model}) defined as
+\[
+  \I_A(\o) \eqdef \begin{cases}
+      1 & \o \in \event \\
+      0 & \o \notin \event
+    \end{cases}
+\]
+The time-dependent events $\event_j(\t)$ in \eref{processor-power} are
+\[
+  \event_j(\t) = \{ \o \in \O: \S_j(\o) \leq \t < \S_j(\o) + \D_j(\o) \} \in \F
+\]
+where $\S_j(\o)$ and $\E_j(\o) = \S_j(\o) + \D_j(\o)$ are the \rvs\ that model the start and end times of the $j$th task (see \sref{application-model}). For brevity, we rewrite \eref{processor-power} in the matrix form:
+\[
+  \vPP(\t, \o) = \mM \cdot \oD{\vPT(\o)} \cdot \I_{\m{\event}(\t)}(\o)
+\]
+where $\oD: \real^n \to \real^{n \times n}$ is the operator that constructs a diagonal matrix from a vector, and
+\[
+  \I_{\m{\event}(\t)}(\o) = (\I_{\event_1(t)}(\o), \dots, \I_{\event_\Nts(\t)}(\o))^T
+\]

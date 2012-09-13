@@ -23,10 +23,15 @@
 \newcommand{\flabel}[1]{\label{fig:#1}}
 
 % Multiprocessor system
+\renewcommand{\t}{t}
+
 % ----- Platform
 \newcommand{\platform}{\Pi}
 \newcommand{\specification}{\mathcal{S}}
 \newcommand{\processor}{\pi}
+
+\newcommand{\PP}{P^\pi}
+\newcommand{\vPP}{\v{P}^\pi}
 
 % ----- Application
 \newcommand{\application}{\mathcal{A}}
@@ -34,26 +39,53 @@
 \newcommand{\dependencies}{\mathcal{E}}
 \newcommand{\task}{\tau}
 
+\renewcommand{\d}{d}
 \newcommand{\D}{D}
 \newcommand{\vD}{\v{D}}
 
-\newcommand{\mapping}{\m{M}}
+\renewcommand{\S}{S}
+\newcommand{\E}{E}
+
+\newcommand{\mM}{\m{M}}
+
+\newcommand{\PT}{P^\tau}
+\newcommand{\vPT}{\v{P}^\tau}
 
 % Mathematics
-\newcommand{\real}{\mathbb{R}}
+\newcommand{\real}{R}
+\renewcommand{\index}{I}
+\newcommand{\eqdef}{\stackrel{\text{\tiny def}}{=}}
 
 % ----- Linear algebra
 \newcommand{\m}[1]{\mathbf{#1}}
 \renewcommand{\v}[1]{\mathbf{#1}}
+
+\makeatletter
+\def\oD{\@ifnextchar\bgroup{\oDComplex}{\oDSimple}}
+\def\oDComplex#1{\mathbb{D}\left[ #1 \right]}
+\def\oDSimple{\mathbb{D}}
+
+\def\oPCA{\@ifnextchar\bgroup{\oPCAComplex}{\oPCASimple}}
+\def\oPCAComplex#1{\mathbb{C}\left[ #1 \right]}
+\def\oPCASimple{\mathbb{C}}
+
+\def\oInvPCA{\@ifnextchar\bgroup{\oInvPCAComplex}{\oInvPCASimple}}
+\def\oInvPCAComplex#1{\mathbb{C}^{-1}\left[ #1 \right]}
+\def\oInvPCASimple{\mathbb{C}^{-1}}
+\makeatother
 
 % ----- Probability theory
 \renewcommand{\O}{\Omega}
 \renewcommand{\o}{\omega}
 
 \newcommand{\F}{\mathcal{F}}
+\newcommand{\event}{A}
+
 \renewcommand{\P}{\mathcal{P}}
 
 \newcommand{\CDF}{F}
+
+\newcommand{\I}{1}
 
 \newcommand{\mCorr}{\m{\Sigma}}
 \newcommand{\mLCorr}{\m{\Sigma}^{(l)}}
@@ -61,12 +93,12 @@
 
 \makeatletter
 \def\oT{\@ifnextchar\bgroup{\oTComplex}{\oTSimple}}
-\def\oTComplex#1{T\left[ #1 \right]}
-\def\oTSimple{T}
+\def\oTComplex#1{\mathbb{T}\left[ #1 \right]}
+\def\oTSimple{\mathbb{T}}
 
 \def\oInvT{\@ifnextchar\bgroup{\oInvTComplex}{\oInvTSimple}}
-\def\oInvTComplex#1{T^{-1}\left[ #1 \right]}
-\def\oInvTSimple{T^{-1}}
+\def\oInvTComplex#1{\mathbb{T}^{-1}\left[ #1 \right]}
+\def\oInvTSimple{\mathbb{T}^{-1}}
 \makeatother
 
 % ----- Uncertain parameters
