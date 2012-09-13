@@ -1,12 +1,12 @@
 Since the mathematical framework employed in this paper operates on mutually independent \rvs, the set of $\Nup$ uncertain parameters $\vU(\o)$ is first expressed in terms of a set of $\Nrv$ independent \rvs\ $\vZ(\o)$ such that the requirement is satisfied. The procedure consists of the following steps.
 
-\step{Step 1.} The dependent parameters $\U_i(\o)$ are transformed into dependent, standard, uniform \rvs\ $\U'_i(\o)$ by applying the corresponding marginal distribution functions:
+\step{Step 1.} The dependent parameters $\U_i(\o)$ are transformed into dependent standard uniform \rvs\ $\U'_i(\o)$ by applying the corresponding marginal distribution functions:
 \begin{equation} \elabel{dependent-uniform}
   \U'_i(\o) = \CDF_{\U_i}(\U_i(\o)) \sim \uniform(0, 1)
 \end{equation}
 In this work, $\CDF_{\U_i}(\u)$ are assumed to be strictly increasing functions; therefore, the transformation above is unique.
 
-\step{Step 2.} $\U'_i(\o)$ are then transformed into dependent, standard, normal \rvs\ $\U''_i(\o)$ by applying the inverse probability transformation:
+\step{Step 2.} $\U'_i(\o)$ are then transformed into dependent standard normal \rvs\ $\U''_i(\o)$ by applying the inverse probability transformation:
 \begin{equation} \elabel{dependent-normal}
   \U''_i(\o) = \CDF^{-1}_\normal(\U'_i(\o)) \sim \normal(0, 1)
 \end{equation}
@@ -40,4 +40,4 @@ where $\oInvT: \real^\Nrv \to \real^\Nup$, and the operations involved are
 \[
   \vU(\o) = \CDF_{\vU}^{-1}(\CDF_\normal(\oInvPCA{\vZ(\o)}))
 \]
-where $\CDF^{-1}_{\vU}(\CDF_\normal(\cdot))$ denotes an element-wise operation based on the marginal distribution functions of $\vU(\o)$ and the standard normal distribution function. To sum up, the $\Nup$ uncertain parameters $\vU(\o)$ are now parametrized by $\Nrv$ independent, standard, normal \rvs\ $\vZ(\o)$. For convenience, we shall write $\vZ(\o)$ instead of $\vU(\o)$.
+where $\CDF^{-1}_{\vU}(\CDF_\normal(\cdot))$ denotes an element-wise operation based on the marginal distribution functions of $\vU(\o)$ and the standard normal distribution function. To sum up, the $\Nup$ uncertain parameters $\vU(\o)$ are now parametrized by $\Nrv$ independent standard normal \rvs\ $\vZ(\o)$. For convenience, we shall write $\vZ(\o)$ instead of $\vU(\o)$.

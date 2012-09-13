@@ -1,0 +1,15 @@
+In this paper, we utilize spectral methods in order to quantify the uncertainty by expanding probabilistic quantities into infinite sequences of orthogonal functions in terms of the independent \rvs\ $\vZ(\o)$ obtained in \sref{uncertain-parameters}. Since our focus is on the variations due to the uncertain workload of the platform $\platform$, we begin with the stochastic timing analysis of the application $\application$.
+
+First of all, we perform spectral expansions of the \rvs\ $\D_i(\o)$, $i \in \{ 1, \dots, \Nts \}$, which represent the execution times of the tasks $\tasks$ (see \sref{application-model}), as follows:
+\[
+  \D_i(\o) = \sum_{j = 1}^\infty \pcoff{\D}_{ij} \pfun_j(\vZ(\o))
+\]
+where $\pcoff{\D}_{ij}$ are coefficients of the expansion, and $\pfun_j(\vZ(\o))$ are multivariate basis functions. Since $\vZ(\o)$ are distributed normally, a natural choice of a spectral method is the Wiener-Hermite decomposition (the classical polynomial chaos) where the basis functions are Hermite polynomials. Now, let $\S_j(\o)$ and $\E_j(\o) = \S_j(\o) + \D_j(\o)$ be the \rvs\ that model the start and end times of $\task_i$. Without loss of generality, assume the given task graph of $\application$ has a single root and a single sink. Starting from the root and taking into consideration the mapping $\mM$, we gradually compute spectral expansions of $\S_i(\o)$, $\forall i$:
+\[
+  \S_i(\o) = \sum_{j = 1}^\infty \pcoff{\S}_{ij} \pfun_j(\vZ(\o))
+\]
+The procedure can be views as a delay propagation though an electrical circuit, which involves two basic operations: the add and max operations. The former is trivial as one only needs to sum up the corresponding coefficients of two expansions. For instance, the expansion of $\E_i(\o)$ is
+\[
+  \E_i(\o) = \sum_{j = 1}^\infty (\pcoff{\S}_{ij} + \pcoff{\D}_{ij}) \pfun_j(\vZ(\o))
+\]
+which is also the expansion of the start times of the successor tasks that have incoming dependencies only from $\task_i$. The max operation is performed via an additional spectral expansion. The spectral expansion of the end time $\E_\text{sink}(\o)$ of the sink node yields an anlytical expression of the total execution time of the application, which can be further analyzed in a strightforward manner.

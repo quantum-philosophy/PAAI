@@ -30,8 +30,10 @@
 \newcommand{\specification}{\mathcal{S}}
 \newcommand{\processor}{\pi}
 
-\newcommand{\PP}{P^\pi}
-\newcommand{\vPP}{\v{P}^\pi}
+\newcommand{\PP}{P}
+\newcommand{\vPP}{\v{P}}
+
+\newcommand{\vT}{{\boldsymbol\Theta}}
 
 % ----- Application
 \newcommand{\application}{\mathcal{A}}
@@ -54,24 +56,26 @@
 % Mathematics
 \newcommand{\real}{R}
 \renewcommand{\index}{I}
-\newcommand{\eqdef}{\stackrel{\text{\tiny def}}{=}}
 
-% ----- Linear algebra
 \newcommand{\m}[1]{\mathbf{#1}}
 \renewcommand{\v}[1]{\mathbf{#1}}
 
 \makeatletter
-\def\oD{\@ifnextchar\bgroup{\oDComplex}{\oDSimple}}
-\def\oDComplex#1{\mathbb{D}\left[ #1 \right]}
-\def\oDSimple{\mathbb{D}}
+\def\oDiag{\@ifnextchar\bgroup{\oDiagComplex}{\oDiagSimple}}
+\def\oDiagComplex#1{\mathbb{D}\text{iag}\left[ #1 \right]}
+\def\oDiagSimple{\mathbb{D}\text{iag}}
 
 \def\oPCA{\@ifnextchar\bgroup{\oPCAComplex}{\oPCASimple}}
-\def\oPCAComplex#1{\mathbb{C}\left[ #1 \right]}
-\def\oPCASimple{\mathbb{C}}
+\def\oPCAComplex#1{\mathbb{PCA}\left[ #1 \right]}
+\def\oPCASimple{\mathbb{PCA}}
 
 \def\oInvPCA{\@ifnextchar\bgroup{\oInvPCAComplex}{\oInvPCASimple}}
-\def\oInvPCAComplex#1{\mathbb{C}^{-1}\left[ #1 \right]}
-\def\oInvPCASimple{\mathbb{C}^{-1}}
+\def\oInvPCAComplex#1{\mathbb{PCA}^{-1}\left[ #1 \right]}
+\def\oInvPCASimple{\mathbb{PCA}^{-1}}
+
+\def\oDiff{\@ifnextchar\bgroup{\oDiffComplex}{\oDiffSimple}}
+\def\oDiffComplex#1{\mathbb{D}\text{iff}\left[ #1 \right]}
+\def\oDiffSimple{\mathbb{D}\text{iff}}
 \makeatother
 
 % ----- Probability theory
@@ -100,6 +104,12 @@
 \def\oInvTComplex#1{\mathbb{T}^{-1}\left[ #1 \right]}
 \def\oInvTSimple{\mathbb{T}^{-1}}
 \makeatother
+
+\newcommand{\pcoff}[1]{\hat{#1}}
+\newcommand{\pfun}{\Phi}
+
+\newcommand{\wcoeff}[1]{\hat{#1}}
+\newcommand{\wfun}{W}
 
 % ----- Uncertain parameters
 \renewcommand{\u}{u}
