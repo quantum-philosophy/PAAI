@@ -22,8 +22,8 @@ where $\oDiag: \real^n \to \real^{n \times n}$ is the operator that constructs a
   \I_{\m{\event}(\t)}(\o) = (\I_{\event_1(t)}(\o), \dots, \I_{\event_\Nts(\t)}(\o))^T
 \]
 
-Now, we perform a spectral expansion of \eref{platform-power}. Due to the presence of indicator functions, \eref{platform-power} is a highly discontinuous function. Therefore, the convergence rate of polynomial-based expansions can be severely deteriorated. To circumvent the difficulty, we employ the Wiener-Haar decomposition where the basis functions are Haar wavelets. The decomposition is defined as follows:
+Now, we perform a spectral expansion of \eref{platform-power}. Due to the presence of indicator functions, \eref{platform-power} is a highly discontinuous function. Therefore, the convergence rate of polynomial-based expansions can be severely deteriorated. To circumvent the difficulty, we employ the Wiener-Haar decomposition \cite{maitre2004} where the basis functions are Haar wavelets. The decomposition is defined as follows:
 \[
-  \vPP(\t, \o) = \mM \sum_{i = 1}^\infty \wcoeff{\vPP}(\t) \wfun_i(\vZ(\o))
+  \vPP(\t, \o) = \sum_{i = 1}^\infty \wcoeff{\vPP}(\t) \wfun_i(\vZ(\o))
 \]
-where $\wfun_i(\vZ(\o))$ are multivariate wavelets. Conseqently, at each moment of time $\t$, we have an analytical expression for the dynamic power dissipation of the system, which can be employed to analyze the system from different perspectives.
+where $\wfun_i(\vZ(\o))$ are multivariate wavelets. Consequently, at each moment of time $\t$, we have an analytical expression for the dynamic power dissipation of the system, which can be employed to analyze the system from different perspectives.
