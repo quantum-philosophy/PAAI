@@ -12,14 +12,19 @@
 \newcommand{\step}[1]{\textbf{#1}\hspace{0.1em}}
 \newcommand{\stage}[2]{\textbf{#1} \emph{#2} \hspace{0.1em}}
 
+\newcommand{\ie}{\emph{i.e.}}
+\newcommand{\eg}{\emph{e.g.}}
+
 % References
 \newcommand{\eref}[1]{Eq.~(\ref{equ:#1})}
 \newcommand{\sref}[1]{Sec.~\ref{sec:#1}}
+\newcommand{\aref}[1]{Sec.~\ref{app:#1}}
 \newcommand{\tref}[1]{Tab.~\ref{tab:#1}}
 \newcommand{\fref}[1]{Fig.~\ref{fig:#1}}
 
 \newcommand{\elabel}[1]{\label{equ:#1}}
 \newcommand{\slabel}[1]{\label{sec:#1}}
+\newcommand{\alabel}[1]{\label{app:#1}}
 \newcommand{\tlabel}[1]{\label{tab:#1}}
 \newcommand{\flabel}[1]{\label{fig:#1}}
 
@@ -38,9 +43,9 @@
 
 % ----- Application
 \newcommand{\application}{\mathcal{A}}
-\newcommand{\tasks}{\mathcal{T}}
+\newcommand{\tasks}{\mathcal{V}}
 \newcommand{\dependencies}{\mathcal{E}}
-\newcommand{\task}{\tau}
+\newcommand{\task}{v}
 
 \renewcommand{\d}{d}
 \newcommand{\D}{D}
@@ -51,32 +56,31 @@
 
 \newcommand{\mM}{\m{M}}
 
-\newcommand{\PT}{P^\tau}
-\newcommand{\vPT}{\v{P}^\tau}
+\newcommand{\PT}{P^\task}
+\newcommand{\vPT}{\v{P}^\task}
 
 % Mathematics
-\newcommand{\real}{R}
+\newcommand{\real}{\mathbb{R}}
 \renewcommand{\index}{I}
+\newcommand{\size}[1]{|#1|}
 
 \newcommand{\m}[1]{\mathbf{#1}}
 \renewcommand{\v}[1]{\mathbf{#1}}
 
 \makeatletter
 \def\oDiag{\@ifnextchar\bgroup{\oDiagComplex}{\oDiagSimple}}
-\def\oDiagComplex#1{\mathbb{D}\text{iag}\left[ #1 \right]}
-\def\oDiagSimple{\mathbb{D}\text{iag}}
+\def\oDiagComplex#1{\mathcal{D}\left[ #1 \right]}
+\def\oDiagSimple{\mathcal{D}}
+
+\def\pPCA{\gamma}
 
 \def\oPCA{\@ifnextchar\bgroup{\oPCAComplex}{\oPCASimple}}
-\def\oPCAComplex#1{\mathbb{PCA}\left[ #1 \right]}
-\def\oPCASimple{\mathbb{PCA}}
+\def\oPCAComplex#1{\mathcal{C}_\pPCA\left[ #1 \right]}
+\def\oPCASimple{\mathcal{C}_\pPCA}
 
 \def\oInvPCA{\@ifnextchar\bgroup{\oInvPCAComplex}{\oInvPCASimple}}
-\def\oInvPCAComplex#1{\mathbb{PCA}^{-1}\left[ #1 \right]}
-\def\oInvPCASimple{\mathbb{PCA}^{-1}}
-
-\def\oDiff{\@ifnextchar\bgroup{\oDiffComplex}{\oDiffSimple}}
-\def\oDiffComplex#1{\mathbb{D}\text{iff}\left[ #1 \right]}
-\def\oDiffSimple{\mathbb{D}\text{iff}}
+\def\oInvPCAComplex#1{\mathcal{C}_\pPCA^{-1}\left[ #1 \right]}
+\def\oInvPCASimple{\mathcal{C}_\pPCA^{-1}}
 \makeatother
 
 % ----- Probability theory
@@ -92,21 +96,26 @@
 
 \newcommand{\I}{1}
 
-\newcommand{\mCorr}{\m{\Sigma}}
-\newcommand{\mLCorr}{\m{\Sigma}^{(l)}}
-\newcommand{\mNCorr}{\m{\Sigma}^{(n)}}
+\newcommand{\vExp}{\boldsymbol{\mu}}
+\newcommand{\mCov}{\m{\Sigma}}
+\newcommand{\mCorr}{\m{\Xi}}
+\newcommand{\mLCorr}{\m{\Xi}^{(l)}}
+\newcommand{\mNCorr}{\m{\Xi}^{(n)}}
 
 \makeatletter
 \def\oT{\@ifnextchar\bgroup{\oTComplex}{\oTSimple}}
-\def\oTComplex#1{\mathbb{T}\left[ #1 \right]}
-\def\oTSimple{\mathbb{T}}
+\def\oTComplex#1{\mathcal{T}\left[ #1 \right]}
+\def\oTSimple{\mathcal{T}}
 
 \def\oInvT{\@ifnextchar\bgroup{\oInvTComplex}{\oInvTSimple}}
-\def\oInvTComplex#1{\mathbb{T}^{-1}\left[ #1 \right]}
-\def\oInvTSimple{\mathbb{T}^{-1}}
+\def\oInvTComplex#1{\mathcal{T}^{-1}\left[ #1 \right]}
+\def\oInvTSimple{\mathcal{T}^{-1}}
 \makeatother
 
-\newcommand{\pcoff}[1]{\hat{#1}}
+\newcommand{\gcoeff}[1]{\hat{#1}}
+\newcommand{\gfun}{\mathcal{B}}
+
+\newcommand{\pcoeff}[1]{\hat{#1}}
 \newcommand{\pfun}{\mathcal{H}e}
 
 \newcommand{\wcoeff}[1]{\hat{#1}}

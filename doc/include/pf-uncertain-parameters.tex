@@ -1,4 +1,4 @@
-Since the mathematical framework employed in this paper operates on mutually independent \rvs, the set of $\Nup$ uncertain parameters $\vU(\o)$ is first expressed in terms of a set of $\Nrv$ independent \rvs\ $\vZ(\o)$ such that the requirement is satisfied. As mentioned earlier, the procedure requires only the marginal distribution functions of $\vU(\o)$ and a matrix of correlations (see \sref{uncertainty-model}) since the joint probability function, in most cases, is infeasible to obtain.\footnote{If the joint distribution function is available, Rosenblatt's transformation is the most preferable choice \cite{rosenblatt1952}.} The procedure consists of the following steps.
+In this paper, we focus on one of the most realistic scenarios where (a) the uncertain parameters $\vU(\o)$ are correlated; (b) the joint probability function of $\vU(\o)$ is not known---as it is typically infeasible to obtain---and only the marginal distribution functions and a matrix of correlations (see \sref{uncertainty-model}) are available.\footnote{If the joint distribution function is available, Rosenblatt's transformation is the most preferable choice \cite{rosenblatt1952}.} Since the mathematical framework employed in this paper operates on mutually independent \rvs, $\vU(\o)$ are to be expressed in terms of independent \rvs, which we denote by $\vZ(\o)$, to satisfy the the requirement. The procedure consists of the following steps.
 
 \step{Step 1.} The dependent parameters $\U_i(\o)$ are transformed into dependent standard uniform \rvs\ $\U'_i(\o)$ by applying the corresponding marginal distribution functions:
 \begin{equation} \elabel{dependent-uniform}
@@ -12,32 +12,24 @@ In this work, $\CDF_{\U_i}(\u)$ are assumed to be strictly increasing functions;
 \end{equation}
 where $\CDF_\normal$ denotes the distribution function of the (univariate) standard normal distribution. Since each marginal distributions is normal, the joint distribution function of the random vector $\vU''(\o)$ composed of $\U''_i(\o)$, $i \in \{ 1, \dots, \Nup \}$, is a multivariate normal distribution:
 \[
-  \vU''(\o) \sim \normal(\v{0}, \mLCorr_{\vU''})
+  \vU''(\o) \sim \normal \left( \v{0}_\Nup, \mLCorr_{\vU''} \right)
 \]
-where $\v{0} \in \real^\Nup$ is the zero vector, and $\mLCorr_{\vU''} \in \real^{\Nup \times \Nup}$ is a Pearson's correlation matrix. $\mLCorr_{\vU''}$ is to be determined such that the chain of the inverse transformations, opposite to the ones in the first two steps, leads to the given correlation matrix $\mCorr_\vU$. The following step serves this purpose.
+where $\v{0}_n$ denotes the $n$-dimensional zero vector, and $\mLCorr_{\vU''}$ is a Pearson's correlation matrix of $\vU''(\o)$. $\mLCorr_{\vU''}$ is to be determined such that the chain of the inverse transformations, opposite to the ones in Step~1--2, leads to the given correlation matrix $\mCorr_\vU$. The following step serves this purpose.
 
-\step{Step 3.} When $\mCorr_\vU \equiv \mNCorr_\vU$, we only need to ensure that the \rvs\ $\vU''(\o)$ have the same rank correlations as $\vU(\o)$, i.e., $\mNCorr_{\vU''} = \mNCorr_{\vU}$, since such measures of correlations are resistant to nonlinear transformations. In the case of normal distributions, the relations between the Pearson's correlation coefficient, Spearman's rho, and Kendall's tau have closed forms. For instance, if $\mCorr_\vU$ is a Spearman's correlation matrix $\mNCorr_\vU$, then the corresponding Pearson's one is
-\[
-  \mLCorr_{\vU''} = 2 \sin \left( \frac{\pi}{6} \mNCorr_{\vU} \right)
-\]
-which should be understood as an element-wise operation. Nonlinear transformations, however, do not preserve linear measures of correlations, which the Pearson's correlation coefficient is. Therefore, when $\mCorr_\vU \equiv \mLCorr_\vU$, extra affords are required. The problem is solved using the Nataf transformation \cite{li2008}.
+\step{Step 3.} When $\mCorr_\vU \equiv \mNCorr_\vU$, we only need to ensure that the \rvs\ $\vU''(\o)$ have the same rank correlations as $\vU(\o)$, \ie, $\mNCorr_{\vU''} = \mNCorr_{\vU}$, since such measures of correlations are resistant to nonlinear transformations. In our case, the relations between the Pearson's correlation coefficient, Spearman's rho, and Kendall's tau have closed forms given in \aref{correlation-measures}. When $\mCorr_\vU \equiv \mLCorr_\vU$, extra affords are required since nonlinear transformations do not preserve linear measures of correlations, which the Pearson's correlation coefficient is. The problem is solved via the Nataf transformation \cite{li2008}.
 
 \step{Step 4.} The $\Nup$ dependent \rvs\ $\vU''(\o)$ are transformed into $\Nrv$ independent, standard normal \rvs\ $\vZ(\o)$ using the principal component analysis (PCA) as follows:
 \begin{equation} \elabel{independent-normal}
   \vZ(\o) = \oPCA{\vU''(\o)}
 \end{equation}
-where $\oPCA: \real^{\Nup \times \Nup} \to \real^{\Nrv \times \Nup}$ is the PCA transformation operator, which is linear.
+Refer to \aref{principal-component-analysis} in the appendix for further datails.
 
 The overall transformation described in this section consists of \eref{dependent-uniform}, \eref{dependent-normal}, and \eref{independent-normal} and is denoted by
 \[
-  \vZ(\o) = \oT{\vU(\o)}
+  \vZ(\o) = \oT{\vU(\o)} = \oPCA{\CDF_\normal^{-1}(\CDF_{\vU}(\vU(\o)))}
 \]
-where $\oT: \real^\Nup \to \real^\Nrv$ is the transformation operator. The inverse of $\oT$ is denoted by
+where $\CDF_\normal^{-1}(\CDF_{\vU}(\cdot))$ is an element-wise operation. The inverse of $\oT$ is denoted by
 \[
-  \vU(\o) = \oInvT{\vZ(\o)}
+  \vU(\o) = \oInvT{\vZ(\o)} = \CDF_{\vU}^{-1}(\CDF_\normal(\oInvPCA{\vZ(\o)}))
 \]
-where $\oInvT: \real^\Nrv \to \real^\Nup$, and the operations involved are
-\[
-  \vU(\o) = \CDF_{\vU}^{-1}(\CDF_\normal(\oInvPCA{\vZ(\o)}))
-\]
-where $\CDF^{-1}_{\vU}(\CDF_\normal(\cdot))$ denotes an element-wise operation based on the marginal distribution functions of $\vU(\o)$ and the standard normal distribution function. To sum up, the $\Nup$ uncertain parameters $\vU(\o)$ are now parametrized by $\Nrv$ independent standard normal \rvs\ $\vZ(\o)$. For convenience, we shall write $\vZ(\o)$ instead of $\vU(\o)$.
+where $\CDF^{-1}_{\vU}(\CDF_\normal(\cdot))$ is an element-wise operation. To sum up, the $\Nup$ uncertain parameters $\vU(\o)$ are now parametrized by $\Nrv$ independent standard normal \rvs\ $\vZ(\o)$. Note, however, if the marginal distribution functions of $\vU(\o)$ are normal, only the fourth step is required. In the following, for convenience, we shall write $\vZ(\o)$ instead of $\vU(\o)$.

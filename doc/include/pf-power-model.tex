@@ -2,28 +2,18 @@ In this section, we focus on the dynamic power dissipation of the platform $\pla
 \begin{equation} \elabel{processor-power}
   \PP_i(\t, \o) = \sum_{j \in \index^\pi_i} \PT_j(\o) \; \I_{\event_j(\t)}(\o)
 \end{equation}
-where $\index^\pi_i = \{ j: m_{ij} = 1 \}$ is the index set of the tasks mapped onto the $i$th processing element, and $\PT_j(\o)$ is the power mode (the power consumption) of the $j$th task. $\I_\event(\o)$ denotes the indicator function of an event $A \in \F$ (see \sref{uncertainty-model}) defined as
-\[
-  \I_A(\o) = \begin{cases}
-      1 & \o \in \event \\
-      0 & \o \notin \event
-    \end{cases}
-\]
-The time-dependent events $\event_j(\t)$ in \eref{processor-power} are
+where $\PT_j(\o)$ is the power mode (the power consumption) of the $j$th task, and $\I_\event(\o)$ denotes the indicator function of an event $A \in \F$ (see \sref{uncertainty-model}), which is equal to one if $\o \in \event$ and to zero, otherwise. The time-dependent events $\event_j(\t)$ in \eref{processor-power} are defined as
 \[
   \event_j(\t) = \{ \o \in \O: \S_j(\o) \leq \t < \E_j(\o) \} \in \F
 \]
-which are disjoint events for $\index^\pi_i$, i.e., $\event_i(\t) \cap \event_j(\t) = \emptyset$, $i, j \in \index^\pi_i$, $i \neq j$. For brevity, we rewrite \eref{processor-power} in the matrix form:
+Note that $\event_j(\t)$ are disjoint events with respect to $\index^\pi_i$, \ie, $\event_k(\t) \cap \event_k(\t) = \emptyset$, $j, k \in \index^\pi_i$, $j \neq k$. For brevity, we rewrite \eref{processor-power} in the matrix form:
 \begin{equation} \elabel{platform-power}
-  \vPP(\t, \o) = \mM \; \oDiag{\vPT(\o)} \; \I_{\m{\event}(\t)}(\o)
+  \vPP(\t, \o) = \mM \; \oDiag{\vPT(\o)} \: \I_{\m{\event}(\t)}(\o)
 \end{equation}
-where $\oDiag: \real^n \to \real^{n \times n}$ is the operator that constructs a diagonal matrix from a vector, and
-\[
-  \I_{\m{\event}(\t)}(\o) = (\I_{\event_1(t)}(\o), \dots, \I_{\event_\Nts(\t)}(\o))^T
-\]
+where $\oDiag: \real^n \to \real^{n \times n}$ is the operator that constructs a diagonal matrix from a vector, and $\I_{\m{\event}(\t)}(\o)$ is a vector composed of $\I_{\event_i(t)}(\o)$, $i \in \{ 1, \dots, \Nts \}$.
 
-Now, we perform a spectral expansion of \eref{platform-power}. Due to the presence of indicator functions, \eref{platform-power} is a highly discontinuous function. Therefore, the convergence rate of polynomial-based expansions can be severely deteriorated. To circumvent the difficulty, we employ the Wiener-Haar decomposition \cite{maitre2004} where the basis functions are Haar wavelets. The decomposition is defined as follows:
+Now, we perform a spectral expansion of \eref{platform-power}. Due to the presence of indicator functions, \eref{platform-power} is a highly discontinuous function. Therefore, the convergence rate of polynomial-based expansions can be severely deteriorated. To circumvent the difficulty, we employ the Wiener-Haar decomposition \cite{maitre2004} where the basis functions are the Haar wavelets (see \aref{spectral-expansions}). In this case,
 \[
   \vPP(\t, \o) = \sum_{i = 1}^\infty \wcoeff{\vPP}(\t) \wfun_i(\vZ(\o))
 \]
-where $\wfun_i(\vZ(\o))$ are multivariate wavelets. Consequently, at each moment of time $\t$, we have an analytical expression for the dynamic power dissipation of the system, which can be employed to analyze the system from different perspectives.
+where $\wfun_i(\vZ(\o))$ are the basis funcitons, which are multivariate wavelets. Consequently, at each moment of time, we have an analytical expression for the dynamic power dissipation of the system, which can be employed to analyze the system from different perspectives.

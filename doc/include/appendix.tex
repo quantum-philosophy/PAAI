@@ -1,0 +1,34 @@
+\renewcommand{\thesection}{S\arabic{section}}
+\renewcommand{\thetable}{S\arabic{table}}
+\renewcommand{\thefigure}{S\arabic{figure}}
+\setcounter{table}{0}
+\setcounter{figure}{0}
+
+\section{Correlation Measures} \alabel{correlation-measures}
+Recall that $\vU''(\o)$ has a multivariate normal distribution and assume that the given correlation matrix of $\vU(\o)$ is defined using a rank correlation coefficient, \ie, $\mCorr_\vU \equiv \mNCorr_\vU$. If $\mNCorr_\vU$ is defined in terms of the Spearman's rho, then the corresponding Pearson's correlation matrix is
+\[
+  \mLCorr_{\vU''} = 2 \sin \left( \frac{\pi}{6} \mNCorr_{\vU} \right)
+\]
+If $\mNCorr_\vU$ is defined in terms of the Kendall's tau, then
+\[
+  \mLCorr_{\vU''} = \sin \left( \frac{\pi}{2} \mNCorr_{\vU} \right)
+\]
+Both transformations should be understood as element-wise operations.
+
+\section{Principal Component Analysis} \alabel{principal-component-analysis}
+The PCA performs a linear transformation of a vector of correlated \rvs\ $\v{X} \in \real^n$, with a known expectation vector $\vExp_\v{X}$ and covariance matrix $\mCov_\v{X}$, such that the resulting vector $\v{Y} \in \real^m$ is centered, normalized, and the linear correlations are eliminated, \ie, $\vExp_\v{Y} = \v{0}_m$ and $\mCov_\v{Y} = \m{I}_{m \times m}$. Given a threshold parameter $\pPCA \in (0, 1]$, the PCA reduces the number of stochastic dimensions by identifying a set of $m$ the most significant principal components of $\mCov_\v{X}$ such that the $\pPCA$-portion of the variance of $\v{X}$ is preserved. Denote the PCA operator by $\oPCA: \real^n \to \real^m$.
+
+\section{Spectral Expansions} \alabel{spectral-expansions}
+In order to perform the TPT analysis, we rely on spectral methods, namely, the Wiener-Hermite polynomial chaos (\sref{timing-model}) and the Wiener-Haar decomposition (\sref{power-model} and \sref{thermal-model}). In this case, an expansion of an $n$-dimensional stochastic quantity $\v{X}(\t, \o)$, which is parametrized by $\t$, has the following form:
+\[
+  \v{X}(\t, \o) = \sum_{i = 1}^\infty \gcoeff{\v{X}}_i(\t) \gfun_i(\vZ(\o))
+\]
+where $\gcoeff{\v{X}}_i(\t)$ are the coefficients of the expansion, and $\gfun_i(\vZ(\o))$ are the basis functions.
+
+\subsection{Wiener-Hermite Polynomial Chaos}
+The basis functions $\gfun_i(\vZ(\o))$ are the Hermite polynomials denoted by $\pfun_i(\vZ(\o))$.
+
+\subsection{Wiener-Haar Decomposition}
+The basis functions $\gfun_i(\vZ(\o))$ are the Haar wavelet functions denoted by $\wfun_i(\vZ(\o))$.
+
+\section{Numerical Integration}
