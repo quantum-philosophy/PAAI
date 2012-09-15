@@ -4,6 +4,6 @@ In this work, the stochastic temperature analysis is based on any temperature si
 \end{equation}
 which is a system of differential equations where $\vT(\t, \o) \in \real^\Npe$ is the temperature vector. Integration of \eref{thermal-model} is performed using the equation-free approach proposed in \cite{xiu2005}, which does not require the knowledge of the functional on the right-hand side. At each integration step, a spectral expansion of \eref{thermal-model} is
 \[
-  \vT(\t, \o) = \sum_{i = 1}^\infty \wcoeff{\vT}(\t) \wfun_i(\vZ(\o))
+  \vT(\t, \o) = \sum_{i = 1}^\infty \tempCoeff{\vT}(\t) \tempBasis_i(\vZ(\o))
 \]
 which, in this case, is given in terms of wavelets.

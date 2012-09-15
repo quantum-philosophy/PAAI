@@ -14,6 +14,11 @@
 
 \newcommand{\ie}{\emph{i.e.}}
 \newcommand{\eg}{\emph{e.g.}}
+\newcommand{\apriori}{\emph{a priori}}
+
+% ---- Formulas
+\setlength\abovedisplayskip{5pt}
+\setlength\belowdisplayskip{5pt}
 
 % References
 \newcommand{\eref}[1]{Eq.~(\ref{equ:#1})}
@@ -56,21 +61,22 @@
 
 \newcommand{\mM}{\m{M}}
 
-\newcommand{\PT}{P^\task}
-\newcommand{\vPT}{\v{P}^\task}
+\newcommand{\PT}{P^{(\task)}}
+\newcommand{\vPT}{\v{P}^{(\task)}}
 
-% Mathematics
+% Linear algebra
 \newcommand{\real}{\mathbb{R}}
-\renewcommand{\index}{I}
+\renewcommand{\natural}{\mathbb{N}}
 \newcommand{\size}[1]{|#1|}
+\renewcommand{\L}[1]{\mathcal{L}^{#1}}
 
 \newcommand{\m}[1]{\mathbf{#1}}
 \renewcommand{\v}[1]{\mathbf{#1}}
 
 \makeatletter
 \def\oDiag{\@ifnextchar\bgroup{\oDiagComplex}{\oDiagSimple}}
-\def\oDiagComplex#1{\mathcal{D}\left[ #1 \right]}
-\def\oDiagSimple{\mathcal{D}}
+\def\oDiagComplex#1{\text{diag}\left[ #1 \right]}
+\def\oDiagSimple{\text{diag}}
 
 \def\pPCA{\gamma}
 
@@ -83,7 +89,7 @@
 \def\oInvPCASimple{\mathcal{C}_\pPCA^{-1}}
 \makeatother
 
-% ----- Probability theory
+% Probability theory
 \renewcommand{\O}{\Omega}
 \renewcommand{\o}{\omega}
 
@@ -112,15 +118,6 @@
 \def\oInvTSimple{\mathcal{T}^{-1}}
 \makeatother
 
-\newcommand{\gcoeff}[1]{\hat{#1}}
-\newcommand{\gfun}{\mathcal{B}}
-
-\newcommand{\pcoeff}[1]{\hat{#1}}
-\newcommand{\pfun}{\mathcal{H}e}
-
-\newcommand{\wcoeff}[1]{\hat{#1}}
-\newcommand{\wfun}{\mathcal{H}a}
-
 % ----- Uncertain parameters
 \renewcommand{\u}{u}
 \newcommand{\U}{U}
@@ -131,11 +128,42 @@
 \newcommand{\Z}{Z}
 \newcommand{\vZ}{\v{Z}}
 
+% ----- Probability distributions
 \newcommand{\uniform}{\mathcal{U}}
 \newcommand{\normal}{\mathcal{N}}
+\newcommand{\desired}{\mathcal{D}}
+
+% ------ Spectral expansions
+\newcommand{\generalCoeff}[1]{\hat{#1}}
+\newcommand{\generalBasis}{\Phi}
+
+\newcommand{\timeCoeff}[1]{\hat{#1}}
+\newcommand{\timeBasis}{\Phi^{(t)}}
+
+\newcommand{\powerCoeff}[1]{\hat{#1}}
+\newcommand{\powerBasis}{\Phi^{(p)}}
+
+\newcommand{\tempCoeff}[1]{\hat{#1}}
+\newcommand{\tempBasis}{\Phi^{(\theta)}}
+
+\makeatletter
+\def\oSE#1{\@ifnextchar\bgroup{\oSEComplex{#1}}{\oSESimple{#1}}}
+\def\oSEComplex#1#2{\mathcal{S}^{#1}\left[ #2 \right]}
+\def\oSESimple#1{\mathcal{S}^{#1}}
+
+\def\oTO{\@ifnextchar\bgroup{\oTOComplex}{\oTOSimple}}
+\def\oTOComplex#1{\text{degree}\left[ #1 \right]}
+\def\oTOSimple{\text{degree}}
+\makeatother
 
 % Indexes
 \newcommand{\Npe}{{N_\text{pe}}}
 \newcommand{\Nts}{{N_\text{ts}}}
 \newcommand{\Nup}{{N_\text{up}}}
 \newcommand{\Nrv}{{N_\text{rv}}}
+\newcommand{\Neo}{{N_\text{eo}}}
+
+\renewcommand{\index}{I}
+\newcommand{\iTask}{I^{(\task)}}
+\newcommand{\iProcessor}{I^{(\processor)}}
+\newcommand{\iExpansion}{I^{(s)}}
