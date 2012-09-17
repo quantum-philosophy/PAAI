@@ -16,6 +16,8 @@
 \newcommand{\eg}{\emph{e.g.}}
 \newcommand{\apriori}{\emph{a priori}}
 
+\newcommand{\eqdef}{\stackrel{\text{\tiny def}}{=}}
+
 % ---- Formulas
 \setlength\abovedisplayskip{5pt}
 \setlength\belowdisplayskip{5pt}
@@ -77,21 +79,12 @@
 \def\oDiag{\@ifnextchar\bgroup{\oDiagComplex}{\oDiagSimple}}
 \def\oDiagComplex#1{\text{diag}\left[ #1 \right]}
 \def\oDiagSimple{\text{diag}}
-
-\def\pPCA{\gamma}
-
-\def\oPCA{\@ifnextchar\bgroup{\oPCAComplex}{\oPCASimple}}
-\def\oPCAComplex#1{\mathcal{C}_\pPCA\left[ #1 \right]}
-\def\oPCASimple{\mathcal{C}_\pPCA}
-
-\def\oInvPCA{\@ifnextchar\bgroup{\oInvPCAComplex}{\oInvPCASimple}}
-\def\oInvPCAComplex#1{\mathcal{C}_\pPCA^{-1}\left[ #1 \right]}
-\def\oInvPCASimple{\mathcal{C}_\pPCA^{-1}}
 \makeatother
 
 % Probability theory
 \renewcommand{\O}{\Omega}
 \renewcommand{\o}{\omega}
+\newcommand{\SI}{\L{2}(\O, \F, \P)}
 
 \newcommand{\F}{\mathcal{F}}
 \newcommand{\event}{A}
@@ -147,13 +140,25 @@
 \newcommand{\tempBasis}{\Phi^{(\theta)}}
 
 \makeatletter
-\def\oSE#1{\@ifnextchar\bgroup{\oSEComplex{#1}}{\oSESimple{#1}}}
-\def\oSEComplex#1#2{\mathcal{S}^{#1}\left[ #2 \right]}
-\def\oSESimple#1{\mathcal{S}^{#1}}
+\def\oPC#1{\@ifnextchar\bgroup{\oPCComplex{#1}}{\oPCSimple{#1}}}
+\def\oPCComplex#1#2{\mathcal{C}_{#1}\left[ #2 \right]}
+\def\oPCSimple#1{\mathcal{C}_{#1}}
 
 \def\oTO{\@ifnextchar\bgroup{\oTOComplex}{\oTOSimple}}
 \def\oTOComplex#1{\text{degree}\left[ #1 \right]}
 \def\oTOSimple{\text{degree}}
+\makeatother
+
+\makeatletter
+\def\pKL{\lambda}
+
+\def\oKL{\@ifnextchar\bgroup{\oKLComplex}{\oKLSimple}}
+\def\oKLComplex#1{\mathcal{K}_\pKL\left[ #1 \right]}
+\def\oKLSimple{\mathcal{K}_\pKL}
+
+\def\oInvKL{\@ifnextchar\bgroup{\oInvKLComplex}{\oInvKLSimple}}
+\def\oInvKLComplex#1{\mathcal{K}_\pKL^{-1}\left[ #1 \right]}
+\def\oInvKLSimple{\mathcal{K}_\pKL^{-1}}
 \makeatother
 
 % Indexes
@@ -161,9 +166,9 @@
 \newcommand{\Nts}{{N_\text{ts}}}
 \newcommand{\Nup}{{N_\text{up}}}
 \newcommand{\Nrv}{{N_\text{rv}}}
+\newcommand{\Net}{{N_\text{et}}}
 \newcommand{\Neo}{{N_\text{eo}}}
 
 \renewcommand{\index}{I}
 \newcommand{\iTask}{I^{(\task)}}
 \newcommand{\iProcessor}{I^{(\processor)}}
-\newcommand{\iExpansion}{I^{(s)}}

@@ -15,27 +15,29 @@ If $\mNCorr_\vU$ is defined in terms of Kendall's tau, then
 \]
 Both transformations should be understood as element-wise operations.
 
-\section{Principal Component Analysis} \alabel{principal-component-analysis}
-Given the expectation vector $\vExp_\v{X}$ and covariance matrix $\mCov_\v{X}$ of a vector of correlated \rvs\ $\v{X}(\o) \in \real^n$, the PCA performs a linear transformation of $\v{X}(\o)$ into a vector of centered and normalized \rvs\ $\v{Y}(\o) \in \real^m$ such that the linear correlations are eliminated, \ie, $\vExp_\v{Y} = \v{0}_m$ and $\mCov_\v{Y} = \m{I}_{m \times m}$. The reduction is based on the specified parameter $\pPCA$, which defines the portion of the variance of $\v{X}$ that should be preserved. Denote the PCA operator by $\oPCA: \real^n \to \real^m$.
+\section{Spectral Methods} \alabel{spectral-methods}
+In order to perform the TPT analysis, we rely on spectral methods, namely, the Karhunen-Lo\`{e}ve (KL) expansion, \sref{uncertain-parameters}, the polynomial chaos (PC), \sref{timing-model}, and the Wiener-Haar decomposition (WH), \sref{power-model} and \sref{thermal-model}.
 
-\section{Spectral Expansions} \alabel{spectral-expansions}
-In order to perform the TPT analysis, we rely on spectral methods, namely, the polynomial chaos (PC), \sref{timing-model}, and the Wiener-Haar decomposition (WH), \sref{power-model} and \sref{thermal-model}. In this case, an expansion of an $n$-dimensional stochastic quantity $\v{X}(\t, \o)$, which is parametrized by $\t$, has the following form:
+\subsection{Karhunen-Lo\`{e}ve Expansion} \alabel{karhunen-loeve-expansion}
+The discrete version of the KL expansion, also known as the principal component analysis, is of particular interest for our analysis. Let $\v{X}(\o) \in \real^n$ be the given random vector in $\SI$. Without loss of generality, assume $\v{X}(\o)$ is centered. Then, the KL decomposition of $\v{X}(\o)$ is defined as the following operator:
 \[
-  \v{X}(\t, \o) = \sum_{i = 1}^\infty \generalCoeff{\v{X}}_i(\t) \generalBasis_i(\vZ(\o))
+  \v{X}(\o) \approx \oKL{\v{X}(\o)} \eqdef \sum_{i = 1}^m \sqrt{\lambda_i} \Z_i(\o) \v{V}_i = \m{V} \m{\Lambda}^{1/2} \vZ(\o)
 \]
-where $\generalCoeff{\v{X}}_i(\t)$ are the coefficients of the expansion, $\generalBasis_i(\vZ(\o))$ are the basis functions, and the equality is in the $\L{2}$ sense. Infinite expansions are to be truncated to become feasible for practical computations. Define the spectral expansion operator as follows:
-\[
-  \v{X}(\t, \o) \approx \oSE{p}{\v{X}}(\t, \o) = \sum\nolimits_{i \in \iExpansion_p} \generalCoeff{\v{X}}_i(\t) \generalBasis_i(\vZ(\o))
-\]
-where $\iExpansion_p$ is an index set constructed with respect to some parameter $p$, which defines a truncation strategy.
+where $m \leq n$, $\{ (\lambda_i, \v{V}_i) \}_{i = 1}^n$ are the pairs of eigenvalues and eigenvectors of the covariance matrix $\mCov_\v{X}$ of $\v{X}(\o)$ arranged in the non-decreasing order with respect to $\lambda_i$, $\m{V} \in \real^{n \times m}$ is an orthogonal matrix composed of $\v{V}_i$, $\m{\Lambda} \in \real^{m \times m}$ is a diagonal matrix composed of $\lambda_i$, and $\vZ(\o) = (\Z_1(\o), \dots, \Z_m(\o))^T$ is a vector of normalized and linearly uncorrelated \rvs, i.e., $\mCov_\vZ = \v{I}_{m \times m}$. Note, if $\v{X}(\o)$ has a multivariate normal distribution, $Y_i$ are also mutually independent. The number of terms, $m$, is controlled by the threshold parameter $\pKL \in (0, 1]$ such that $\pKL \leq \sum_{i = 1}^m \lambda_i / \sum_{i = 1}^n \lambda_i$, i.e., at most the $(1 - \pKL)$ portion of the variance of $\v{X}(\o)$ is disregarded. If $\pKL = 1$, the expansion is exact. Denote the inverse KL operator by $\oInvKL: \real^m \to \real^n$.
 
-\subsection{Polynomial Chaos Expansion}
+\subsection{Polynomial Chaos} \alabel{polynomial-chaos}
+The technique expands a stochastic quantity $\v{X}(\o) \in \real^n$ in $\SI$ into an infinite sequence of orthogonal functions denoted by $\{ \generalBasis_i(\vZ(\o)) \}_{i = 1}^\infty$, which converges to $\v{X}(\o)$ in the $\L{2}$ sense. Such an infinite expansion is to be truncated to become feasible for practical computations. Define the chaos expansion operator as follows:
+\[
+  \v{X}(\o) \approx \oPC{\Neo}{\v{X}}(\o) \eqdef \sum_{i = 1}^{\Net} \generalCoeff{\v{X}}_i \generalBasis_i(\vZ(\o))
+\]
+where $\generalCoeff{\v{X}}_i$ are the coefficients of the expansion, $\Net$ is the number of terms in the expansion. $\Net$ is determined with respect to the expansion order $\Neo$.
+
 Since the probability distribution of the stochastic quantity, which is to be expanded, is not known \apriori, it is not possible, in general, to construct the optimal polynomial basis beforehand \cite{maitre2010}. However, to start with, one should be guided by the distribution functions of the underlying \rvs, \ie, $\CDF_{\desired_i}$ in our case (see \sref{uncertain-parameters}). Since $\CDF_{\desired_i}$ are selected irrespectively of the input distributions $\CDF_{\U_i}$, it is preferable to have the ones among the standard distributions, namely, normal, $\beta$, $\gamma$,  uniform, Poisson, binomial, negative binomial, and hypergeometric. In this case, the rule-of-thumb polynomials are known and given by the Askey scheme of orthogonal polynomials \cite{xiu2002}. Otherwise, custom orthogonal polynomials are to be constructed via, \eg, the Gram-Schmidt orthogonalization process \cite{witteveen2006}.
 
-In this paper, $\iExpansion_p \equiv \{ i: \oTO{\generalBasis_i(\vZ(\o))} \leq p \}$ where $\oTO$ returns the total order of the given multivariate polynomial. $p \equiv \Neo$ is called the expansion order.
-
-\subsection{Wiener-Haar Decomposition}
-The basis functions $\generalBasis_i(\vZ(\o))$ are the Haar wavelet functions.
+\subsection{Wiener-Haar Decomposition} \alabel{wiener-haar-decomposition}
+The flow of the WH decomposition is similar to the one of the PC (\aref{polynomial-chaos}) except that the basis functions $\generalBasis_i(\vZ(\o))$ are the Haar wavelet functions.
 
 \section{Numerical Integration}
 We utilize the Clenshaw-Curtis quadrature rule, wherein the integrand is first expanded into the Chebychev polynomials, and then the polynomials are integrated exactly. As any other quadrature rule, the technique boils down to computation of a weighted sum of the integrand values evaluated at a certain set of prescribed nodes. The rule is nested and, therefore, efficient when it comes to construction of sparse grid for multidimensional integration.
+
+Integration based on sparse grids can introduce error in computing the coefficient associated with high-degree polynomials. To mitigate the problem, we employ the technique presented in \cite{constantine2012}.

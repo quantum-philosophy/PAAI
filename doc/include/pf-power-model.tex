@@ -12,8 +12,8 @@ Note that $\event_j(\t)$ are disjoint events with respect to $\iProcessor_i$, \i
 \end{equation}
 where $\oDiag: \real^n \to \real^{n \times n}$ is the operator that constructs a diagonal matrix from a vector, and $\I_{\m{\event}(\t)}(\o)$ is a vector composed of $\I_{\event_i(t)}(\o)$, $i \in \{ 1, \dots, \Nts \}$.
 
-Now, we perform a spectral expansion of \eref{platform-power}. Due to the presence of indicator functions, \eref{platform-power} is a highly discontinuous function. Therefore, the convergence rate of polynomial-based expansions can be severely deteriorated. To circumvent the difficulty, we employ the Wiener-Haar (WHa) decomposition \cite{maitre2004} where the basis functions are the Haar wavelets; see \aref{spectral-expansions} for further details. In this case,
+Now, we perform a spectral expansion of \eref{platform-power}. Due to the presence of indicator functions, \eref{platform-power} is a highly discontinuous function. Therefore, the convergence rate of polynomial-based expansions can be severely deteriorated. To circumvent the difficulty, we employ the Wiener-Haar (WHa) decomposition \cite{maitre2004} where the basis functions are the Haar wavelets; see \aref{wiener-haar-decomposition} for further details. In this case,
 \[
   \vPP(\t, \o) = \mM \sum_{i = 1}^\infty \powerCoeff{\vPP}(\t) \powerBasis_i(\vZ(\o))
 \]
-where $\powerBasis_i(\vZ(\o))$ are the basis funcitons, which are multivariate wavelets. Consequently, at each moment of time, we have an analytical expression for the dynamic power dissipation of the system, which can be employed to analyze the system from different perspectives.
+where $\powerBasis_i(\vZ(\o))$ are the basis functions, which are multivariate wavelets. Consequently, at each moment of time, we have an analytical expression for the dynamic power dissipation of the system, which can be employed to analyze the system from different perspectives.
