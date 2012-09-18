@@ -1,8 +1,8 @@
-function [ x, w ] = ccu ( l )
+function [ x, w ] = ccs ( l )
 
 %*****************************************************************************80
 %
-%% CCU computes a Clenshaw Curtis quadrature rule.
+%% CCS computes a "slow growth" Clenshaw Curtis quadrature rule.
 %
 %  Discussion:
 %
@@ -18,9 +18,24 @@ function [ x, w ] = ccu ( l )
 %
 %      Sum ( 1 <= I <= N ) W(I) * F ( X(I) )
 %
-%    The input value of L selects the size of the rule as follows:
-%    L = 1, N = 1;
-%    1 < L, N = 2^(L-1)+1.
+%    The input value L requests a rule of precision at least 2*L-1.
+%
+%    In order to preserve nestedness, this function returns a rule
+%    whose order N is the smallest value of the form 1+2^E which
+%    is greater than or equal to 2*L-1.
+%
+%     L  2*L-1   N
+%    --  -----  --
+%     1      1   1
+%     2      3   3
+%     3      5   5
+%     4      7   9
+%     5      9   9
+%     6     11  17
+%     7     13  17
+%     8     15  17
+%     9     17  17
+%    10     19  33
 %
 %  Licensing:
 %
@@ -43,26 +58,32 @@ function [ x, w ] = ccu ( l )
 %
 %    Output, real W(N,1), the weights.
 %
-  if ( l == 1 )
-    n = 1;
-  else
-    n = 2^(l-1) + 1;
-  end
-
   if ( l < 1 )
     fprintf ( 1, '\n' );
     fprintf ( 1, 'CCU - Fatal error!\n' );
     fprintf ( 1, '  Illegal value of L = %d\n', l );
     error ( 'CCU - Fatal error!' );
   end
+%
+%  Find the order N that satisfies the precision requirement.
+%
+  if ( l == 1 )
+    n = 1;
+  else
+    n = 3;
+    while ( n < 2 * l - 1 )
+      n = 2 * n - 1;
+    end
+  end
 
   w = zeros ( n, 1 );
   x = zeros ( n, 1 );
-
+%
+%  Set X.
+%
   if ( n == 1 )
 
     x(1) = 0.0;
-    w(1) = 2.0;
 
   else
 
@@ -75,6 +96,16 @@ function [ x, w ] = ccu ( l )
       x((n+1)/2) = 0.0;
     end
     x(n) = +1.0;
+
+  end
+%
+%  Set W.
+%
+  if ( n == 1 )
+
+    w(1) = 2.0;
+
+  else
 
     w(1:n) = 1.0;
 

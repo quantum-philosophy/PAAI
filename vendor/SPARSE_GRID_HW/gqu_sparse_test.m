@@ -21,7 +21,7 @@ function gqu_sparse_test ( )
   d = 10;
   maxk = 4;
 
-  func = 'prod( exp(-(x/2).^2/2)/2/sqrt(2*pi), 2)';
+  func = 'prod ( exp(-(x/2).^2/2)/2/sqrt(2*pi), 2 ) ';
 
   trueval = fu_integral ( d );
 
@@ -38,20 +38,20 @@ function gqu_sparse_test ( )
 %  Compute sparse grid estimate.
 %
     [ x, w ] = nwspgr ( 'gqu', d, k );
-  	g = eval(func);
-    SGappr = g'*w;
-    SGerror = sqrt((SGappr - trueval).^2)/trueval;
+    g = eval ( func );
+    SGappr = g' * w;
+    SGerror = sqrt ( ( SGappr - trueval ) .^ 2 ) / trueval;
 %
 %  Compute 1000 Monte Carlo estimate with same number of points, and average.
 %
-    numnodes = length(w);
-    sim = zeros(1000,1);
-    for r=1:1000
-      x = rand(numnodes,d);
-      g = eval(func);
-      sim(r) = mean(g);
+    numnodes = length ( w );
+    sim = zeros ( 1000, 1 );
+    for r = 1 : 1000
+      x = rand ( numnodes, d );
+      g = eval ( func );
+      sim(r) = mean ( g );
     end
-    Simerror = sqrt(mean((sim-trueval).^2))/trueval;
+    Simerror = sqrt ( mean ( ( sim - trueval ) .^ 2 ) ) / trueval;
 
     fprintf( '  %2d     %2d  %6d  %10.5g  %10.5g\n', d, k, numnodes, SGerror, Simerror )
 

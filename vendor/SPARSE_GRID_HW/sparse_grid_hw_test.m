@@ -10,7 +10,7 @@ function sparse_grid_hw_test ( )
 %
 %  Modified:
 %
-%    26 June 2012
+%    04 September 2012
 %
 %  Author:
 %
@@ -22,6 +22,8 @@ function sparse_grid_hw_test ( )
   fprintf ( 1, '  MATLAB version\n' );
   fprintf ( 1, '  Test the SPARSE_GRID_HW library.\n' );
 
+  ccs_sparse_test ( );
+  ccs_test ( );
   ccu_sparse_test ( );
   ccu_test ( );
   get_seq_test ( );

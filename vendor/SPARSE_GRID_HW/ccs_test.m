@@ -1,8 +1,8 @@
-function ccu_test ( )
+function ccs_test ( )
 
 %*****************************************************************************80
 %
-%% CCU_TEST uses the CCU function for 1D quadrature over [0,1].
+%% CCS_TEST uses the CCS function for 1D quadrature over [0,1].
 %
 %  Licensing:
 %
@@ -17,8 +17,8 @@ function ccu_test ( )
 %    John Burkardt
 %
   fprintf ( 1, '\n' );
-  fprintf ( 1, 'CCU_TEST:\n' );
-  fprintf ( 1, '  Clenshaw Curtis quadrature over [0,1]:\n' );
+  fprintf ( 1, 'CCS_TEST:\n' );
+  fprintf ( 1, '  Clenshaw Curtis (slow) quadrature over [0,1]:\n' );
   fprintf ( 1, '\n' );
   fprintf ( 1, '   Level   Nodes    Estimate  Error\n' );
   fprintf ( 1, '\n' );
@@ -28,7 +28,7 @@ function ccu_test ( )
 
   for l = 1 : 10
 
-    [ x, w ] = ccu ( l );
+    [ x, w ] = ccs ( l );
     n = length ( w );
     fx = fu_value ( d, n, x );
     q = w' * fx;

@@ -1,8 +1,8 @@
-function ccu_sparse_test ( )
+function ccs_sparse_test ( )
 
 %*****************************************************************************80
 %
-%% CCU_SPARSE_TEST uses the CCU function to build a sparse grid.
+%% CCS_SPARSE_TEST uses the CCS function to build a sparse grid.
 %
 %  Licensing:
 %
@@ -10,7 +10,7 @@ function ccu_sparse_test ( )
 %
 %  Modified:
 %
-%    07 May 2012
+%    04 September 2012
 %
 %  Author:
 %
@@ -30,8 +30,8 @@ function ccu_sparse_test ( )
   trueval = fu_integral ( d );
 
   fprintf ( 1, '\n' );
-  fprintf ( 1, 'CCU_SPARSE_TEST:\n' );
-  fprintf ( 1, '  CCU sparse grid:\n' );
+  fprintf ( 1, 'CCS_SPARSE_TEST:\n' );
+  fprintf ( 1, '  CCS sparse grid:\n' );
   fprintf ( 1, '  Sparse Gaussian unweighted quadrature over [0,1].\n' );
   fprintf ( 1, '\n' );
   fprintf ( 1, '   D  Level   Nodes    SG error    MC error\n' );
@@ -41,7 +41,7 @@ function ccu_sparse_test ( )
 %
 %  Compute sparse grid estimate.
 %
-    [ x, w ] = nwspgr ( 'ccu', d, k );
+    [ x, w ] = nwspgr ( 'ccs', d, k );
   	g = eval ( func );
     SGappr = g'*w;
     SGerror = sqrt ( ( SGappr - trueval ).^2 ) / trueval;
