@@ -2,6 +2,7 @@ classdef Heterogeneous < UncertainParameters.Base
   properties (SetAccess = 'protected')
     distributions
     correlation
+    transformation
   end
 
   methods
@@ -13,13 +14,12 @@ classdef Heterogeneous < UncertainParameters.Base
 
       up.distributions = distributions;
       up.correlation = correlation;
+
+      up.transformation = ProbabilityTransformation.Normal(up);
     end
 
     function rvs = sample(up, samples)
-      rvs = zeros(samples, up.dimension);
-      for i = 1:up.dimension
-        rvs(:, i) = up.distributions{i}.sample(samples, 1);
-      end
+      rvs = up.transformation.sample(samples);
     end
 
     function rvs = invert(up, rvs)

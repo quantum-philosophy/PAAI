@@ -4,8 +4,12 @@ classdef Uniform < ProbabilityDistribution.Base
       pd = pd@ProbabilityDistribution.Base(varargin{:});
     end
 
-    function rvs = sample(pd, samples, dimension)
-      rvs = rand(samples, dimension);
+    function rvs = sample(pd, samples)
+      rvs = rand(samples, pd.dimension);
+    end
+
+    function rvs = apply(pd, rvs)
+      rvs = unifcdf(rvs);
     end
 
     function rvs = invert(pd, rvs)

@@ -2,14 +2,22 @@ classdef Spearman < Correlation.Base
   methods
     function cr = Spearman(varargin)
       cr = cr@Correlation.Base(varargin{:});
-      cr.matrix = Correlation.Spearman.generate(cr.dimension);
+    end
+
+    function display(cr)
+      fprintf('Spearman''s rho:\n');
+      display@Correlation.Base(cr);
     end
   end
 
   methods (Static)
-    function Cs = generate(dimension)
-      Cp = Correlation.Pearson.generate(dimension);
-      Cs = Correlation.convertPearsonToSpearman(Cp);
+    function matrix = generate(dimension)
+      matrix = Correlation.Pearson.generate(dimension);
+      matrix = Correlation.convertPearsonToSpearman(matrix);
+    end
+
+    function matrix = compute(rvs)
+      matrix = corr(rvs, 'type', 'Spearman');
     end
   end
 end

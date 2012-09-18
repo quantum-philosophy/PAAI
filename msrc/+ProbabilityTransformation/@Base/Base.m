@@ -7,9 +7,14 @@ classdef Base < handle
     function pt = Base(up)
       pt.parameters = up;
     end
+
+    function rvs = sample(pt, samples)
+      rvs = pt.apply(pt.generate(samples));
+    end
   end
 
   methods (Abstract)
-    rvs = sample(pt, samples)
+    rvs = generate(pt, samples)
+    rvs = apply(pt, rvs)
   end
 end
