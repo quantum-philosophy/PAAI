@@ -28,7 +28,11 @@ classdef Options < dynamicprops
           o.(names{i}) = options.(names{i});
         end
       otherwise
-        options = struct(varargin{1:end});
+        options = struct();
+
+        for i = 1:(count / 2)
+          options.(varargin{2 * (i - 1) + 1}) = varargin{2 * (i - 1) + 2};
+        end
 
         names = fieldnames(options);
         for i = 1:length(names)
