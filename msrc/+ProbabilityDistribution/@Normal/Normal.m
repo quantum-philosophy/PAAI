@@ -1,19 +1,19 @@
 classdef Normal < ProbabilityDistribution.Base
   methods
-    function pd = Normal(varargin)
-      pd = pd@ProbabilityDistribution.Base(varargin{:});
+    function this = Normal(varargin)
+      this = this@ProbabilityDistribution.Base(varargin{:});
     end
 
-    function rvs = sample(pd, samples)
-      rvs = randn(samples, pd.dimension);
+    function data = sample(this, samples, dimension)
+      data = randn(samples, dimension);
     end
 
-    function rvs = apply(pd, rvs)
-      rvs = normcdf(rvs);
+    function data = apply(this, data)
+      rvs = normcdf(data);
     end
 
-    function rvs = invert(pd, rvs)
-      rvs = norminv(rvs);
+    function data = invert(this, data)
+      data = norminv(data);
     end
   end
 end

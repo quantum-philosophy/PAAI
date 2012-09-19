@@ -1,21 +1,12 @@
 classdef Base < handle
-  properties (SetAccess = 'private')
-    dimension
-  end
-
   methods
-    function pd = Base(dimension)
-      if nargin < 1, dimension = 1; end
-
-      assert(dimension > 0, 'The dimension is invalid.');
-
-      pd.dimension = dimension;
+    function pd = Base()
     end
   end
 
   methods (Abstract)
-    rvs = sample(pd, samples)
-    rvs = apply(pd, rvs)
-    rvs = invert(pd, rvs)
+    data = sample(this, samples, dimension)
+    data = apply(this, data)
+    data = invert(this, data)
   end
 end

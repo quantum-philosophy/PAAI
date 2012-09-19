@@ -4,13 +4,12 @@ classdef Base < handle
   end
 
   methods
-    function up = Base(dimension)
-      up.dimension = dimension;
+    function this = Base(dimension)
+      this.dimension = dimension;
     end
   end
 
   methods (Abstract)
-    rvs = sample(up, samples)
-    rvs = invert(up, rvs)
+    data = invert(this, data)
   end
 end

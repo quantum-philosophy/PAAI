@@ -1,19 +1,19 @@
 classdef Exponential < ProbabilityDistribution.Base
   methods
-    function pd = Exponential(varargin)
-      pd = pd@ProbabilityDistribution.Base(varargin{:});
+    function this = Exponential(varargin)
+      this = this@ProbabilityDistribution.Base(varargin{:});
     end
 
-    function rvs = sample(pd, samples)
-      rvs = exprnd(1, samples, pd.dimension);
+    function data = sample(this, samples, dimension)
+      data = exprnd(1, samples, dimension);
     end
 
-    function rvs = apply(pd, rvs)
-      rvs = expcdf(rvs);
+    function data = apply(this, data)
+      data = expcdf(data);
     end
 
-    function rvs = invert(pd, rvs)
-      rvs = expinv(rvs);
+    function data = invert(this, data)
+      data = expinv(data);
     end
   end
 end

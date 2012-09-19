@@ -1,96 +1,75 @@
 classdef Base < handle
   properties (SetAccess = 'private')
     %
-    % Precomputed value of each of the polynomials in the PC expansion in
-    % each of the points of the sparse grid multiplied by the corresponding
-    % weight and divided by the corresponding normalization constant.
-    %
-    grid
-
-    %
-    % The normalization constants of the expansion, i.e., <psi_i^2>.
-    %
-    norm
-  end
-
-  properties (SetAccess = 'private')
-    %
-    % The evaluation points for the integration.
+    % Integration nodes.
     %
     nodes
 
     %
-    % The number of points.
+    % Integration weights.
     %
-    points
+    weights
   end
 
   methods
-    function qd = Base(x, psi, index, method)
-      method = qd.prepare(method);
-
-      [ qd.nodes, qd.grid, qd.norm ] = qd.precomputeGrid(x, psi, index, method);
-      qd.points = size(qd.nodes, 2);
+    function this = Base(varargin)
+      options = Options('method', 'tensor', varargin{:});
+      [ this.nodes, this.weights ] = this.fetch(options);
     end
-  end
 
-  methods (Abstract, Access = 'protected')
-    [ nodes, weights ] = construct1D(qd, order);
-    [ nodes, weights, points ] = constructSparseGrid(qd, sdim, order);
-    norm = computeNormalizationConstant(qd, i, index);
-  end
-
-  methods (Static, Abstract)
-    points = countSparseGridPoints(qd, sdim, order);
+    function result = integrate(this, f)
+      values = eval(f, this.nodes);
+      codimension = size(values, 1);
+      result = sum(repmat(this.weights, codimension, 1) .* values, 2);
+    end
   end
 
   methods (Access = 'protected')
-    [ nodes, weights, points ] = constructTensorProduct(qd, sdim, order);
-    [ nodes, grid, norm ] = doPrecomputeGrid(qd, x, psi, order, index, method)
+    [ nodes, weights ] = construct(this, dimension, level)
 
-    function method = prepare(qd, method)
-      if ~isfield(method, 'quadratureOrder') || isempty(method.quadratureOrder)
-        %
-        % The order of a Gaussian quadrature rule, denoted by `order', means that
-        % the rule is exact for (2 * `order' - 1)-order polynomials. We want to have
-        % exactness for polynomials of order (2 * `order'), therefore, the rule order
-        % should be increased by one.
-        %
-        method.quadratureOrder = method.chaosOrder + 1;
-      end
-      if ~isfield(method, 'quadratureLevel') || isempty(method.quadratureLevel)
-        %
-        %   order = 2^(level + 1) - 1
-        %   level = log2(order + 1) - 1
-        %
-        method.quadratureLevel = ceil(log2(method.quadratureOrder + 1) - 1);
-      end
-    end
-
-    function [ nodes, grid, norm ] = finalize(qd, sdim, nodes, grid, norm)
-    end
-
-    function [ nodes, grid, norm ] = precomputeGrid(qd, x, psi, index, method)
-      sdim = length(x);
-      terms = length(psi);
-
-      filename = [ Quadrature.methodStamp(method), ...
-        '_sd', num2str(sdim), '_pt', num2str(terms), '.mat' ];
+    function [ nodes, weights ] = fetch(this, options)
+      filename = [ class(this), '_', string(options), '.mat' ];
 
       filename = Utils.resolvePath(filename, 'cache');
 
       if exist(filename, 'file')
         load(filename);
       else
-        [ nodes, grid, norm ] = qd.doPrecomputeGrid(x, psi, index, method);
-        save(filename, 'nodes', 'grid', 'norm', '-v7.3');
+        switch lower(options.method)
+        case 'tensor'
+          [ nodes, weights ] = this.constructTensorProduct( ...
+            options.dimension, options.level);
+        case 'sparse'
+          [ nodes, weights ] = this.constructSparseGrid( ...
+            options.dimension, options.level);
+        otherwise
+          error('The quadrature type is unknown.');
+        end
+        save(filename, 'nodes', 'weights', '-v7.3');
       end
     end
-  end
 
-  methods (Static)
-    function points = countTensorProductPoints(sdim, order)
-      points = order^sdim;
+    function [ Nodes, Weights ] = constructTensorProduct(this, dimension, level)
+      [ nodes, weights ] = this.construct(1, level);
+      nodes = transpose(nodes);
+      weights = transpose(weights);
+
+      Nodes = {};
+      Weights = {};
+
+      for i = 1:dimension
+        Nodes{end + 1} = nodes;
+        Weights{end + 1} = weights;
+      end
+
+      [ Nodes, Weights ] = tensor_product(Nodes, Weights);
+
+      Nodes = transpose(Nodes);
+      Weights = transpose(Weights);
+    end
+
+    function [ nodes, weights ] = constructSparseGrid(this, dimension, level)
+      [ nodes, weights ] = this.construct(dimension, level);
     end
   end
 end

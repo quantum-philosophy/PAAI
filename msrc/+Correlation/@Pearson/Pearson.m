@@ -1,19 +1,19 @@
 classdef Pearson < Correlation.Base
   methods
-    function cr = Pearson(varargin)
-      cr = cr@Correlation.Base(varargin{:});
+    function this = Pearson(varargin)
+      this = this@Correlation.Base(varargin{:});
     end
   end
 
   methods (Static)
-    function matrix = generate(dimension)
+    function correlation = random(dimension)
       S = randn(dimension);
       S = S' * S;
-      matrix = corrcov(S);
+      correlation = Correlation.Pearson(corrcov(S));
     end
 
-    function matrix = compute(rvs)
-      matrix = corr(rvs, 'type', 'Pearson');
+    function correlation = compute(data)
+      correlation = Correlation.Pearson(corr(data, 'type', 'Pearson'));
     end
   end
 end
