@@ -1,4 +1,9 @@
 classdef Base < handle
+  properties (SetAccess = 'protected')
+    mu
+    sigma
+  end
+
   methods
     function pd = Base()
     end

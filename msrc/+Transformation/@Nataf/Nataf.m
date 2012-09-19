@@ -1,6 +1,12 @@
 classdef Nataf < Transformation.Base
   properties
-    quadratureLevel = 4
+    quadratureOptions = Options( ...
+      'dimension', 2, ...
+      'level', 5, ...
+      'method', 'tensor');
+
+    optimizationOptions = optimset( ...
+      'TolX', 1e-6);
   end
 
   properties (SetAccess = 'private')
@@ -15,9 +21,9 @@ classdef Nataf < Transformation.Base
   methods
     function this = Nataf(varargin)
       this = this@Transformation.Base(varargin{:});
+      this.normal = ProbabilityDistribution.Normal();
       this.correlation = this.computeCorrelation(this.variables);
       this.R = chol(this.correlation.matrix);
-      this.normal = ProbabilityDistribution.Normal();
     end
 
     function data = sample(this, samples)

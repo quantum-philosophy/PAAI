@@ -12,6 +12,15 @@ classdef Base < handle
       this.matrix = matrix;
       this.dimension = size(matrix, 1);
     end
+
+    function value = subsref(this, S)
+      switch S.type
+      case '()'
+        value = builtin('subsref', this.matrix, S);
+      otherwise
+        value = builtin('subsref', this, S);
+      end
+    end
   end
 
   methods (Static, Abstract)

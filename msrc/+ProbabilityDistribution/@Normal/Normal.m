@@ -1,7 +1,7 @@
 classdef Normal < ProbabilityDistribution.Base
   methods
-    function this = Normal(varargin)
-      this = this@ProbabilityDistribution.Base(varargin{:});
+    function this = Normal()
+      this = this@ProbabilityDistribution.Base();
     end
 
     function data = sample(this, samples, dimension)
@@ -9,7 +9,7 @@ classdef Normal < ProbabilityDistribution.Base
     end
 
     function data = apply(this, data)
-      rvs = normcdf(data);
+      data = normcdf(data);
     end
 
     function data = invert(this, data)

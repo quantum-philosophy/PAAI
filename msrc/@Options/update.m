@@ -1,29 +1,20 @@
 function update(this, varargin)
-  count = length(varargin);
+  i = 1;
 
-  switch count
-  case 0
-    return;
-  case 1
-    options = varargin{1};
-    assert(isa(options, 'Options'), 'The option format is invalid.');
+  while i <= length(varargin)
+    item = varargin{i};
 
-    names = properties(options);
-    for i = 1:length(names)
-      if ~isprop(this, names{i}) this.addprop(names{i}); end
-      this.(names{i}) = options.(names{i});
-    end
-  otherwise
-    options = struct();
-
-    for i = 1:(count / 2)
-      options.(varargin{2 * (i - 1) + 1}) = varargin{2 * (i - 1) + 2};
-    end
-
-    names = fieldnames(options);
-    for i = 1:length(names)
-      if ~isprop(this, names{i}) this.addprop(names{i}); end
-      this.(names{i}) = options.(names{i});
+    if isa(item, 'Options')
+      names = properties(item);
+      for j = 1:length(names)
+        if ~isprop(this, names{j}) this.addprop(names{j}); end
+        this.(names{j}) = item.(names{j});
+      end
+      i = i + 1;
+    else
+      if ~isprop(this, item) this.addprop(item); end
+      this.(item) = varargin{i + 1};
+      i = i + 2;
     end
   end
 end

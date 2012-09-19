@@ -1,7 +1,18 @@
 classdef Exponential < ProbabilityDistribution.Base
+  properties (SetAccess = 'private')
+    lambda
+  end
+
   methods
     function this = Exponential(varargin)
       this = this@ProbabilityDistribution.Base(varargin{:});
+
+      options = Options('lambda', 1, varargin{:});
+
+      this.lambda = options.lambda;
+
+      this.mu = 1 / this.lambda;
+      this.sigma = sqrt(this.mu);
     end
 
     function data = sample(this, samples, dimension)
