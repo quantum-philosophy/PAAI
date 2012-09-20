@@ -26,7 +26,7 @@ function correlation = computeCorrelation(this, rvs)
       two = @(rho) rv2.invert(normal.apply(rho * nodes(1, :) + sqrt(1 - rho^2) * nodes(2, :))) - mu2;
       goal = @(rho) abs(rho0 - sum(weightsOne .* two(rho)) / sigma1 / sigma2);
 
-      [ matrix(i, j), ~, ~, out ] = fminbnd(goal, -0.9, 0.9, this.optimizationOptions);
+      [ matrix(i, j), ~, ~, out ] = fminbnd(goal, -1, 1, this.optimizationOptions);
 
       matrix(j, i) = matrix(i, j);
     end

@@ -116,9 +116,7 @@ function configureProcessor(processor, names, values)
     error('The fourth column is invalid.');
   end
 
-  for i = 1:size(values, 1)
-    processor.addType(values(3), values(4));
-  end
+  processor.configureTypes(values(:, 3), values(:, 4));
 end
 
 function header = parseHeader(line)
