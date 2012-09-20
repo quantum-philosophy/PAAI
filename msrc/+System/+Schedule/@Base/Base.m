@@ -2,11 +2,11 @@ classdef Base < handle
   properties (SetAccess = 'private')
     platform
     application
-
-    priority
   end
 
   properties (SetAccess = 'protected')
+    priority
+
     mapping
     order
 
@@ -15,30 +15,20 @@ classdef Base < handle
   end
 
   methods
-    function this = Base(platform, application)
+    function this = Base(platform, application, varargin)
       this.platform = platform;
       this.application = application;
+
+      options = Options(varargin{:});
+
+      this.priority = options.get('priority', []);
+      this.mapping = options.get('mapping', []);
 
       this.perform();
     end
   end
 
   methods (Static, Access = 'protected')
-    performWithMapping(this)
-  end
-
-  methods (Access = 'private')
-    function perform(this)
-      %
-      % Find priorities of the tasks.
-      %
-      profile = System.Profile.Average(this.platform, this.application);
-      this.priority = profile.taskMobility;
-
-      %
-      % Now, the order, mapping, start and execution times.
-      %
-      this.performWithMapping();
-    end
+    perform(this)
   end
 end

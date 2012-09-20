@@ -6,7 +6,7 @@ function draw(this)
 
   colors = Constants.roundRobinColors;
 
-  title('Mapping and Scheduling', 'FontSize', 16);
+  title('Schedule', 'FontSize', 16);
   xlabel('Time, s', 'FontSize', 14);
   set(gca,'YTick', [], 'YTickLabel', []);
 

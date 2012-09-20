@@ -6,6 +6,6 @@ classdef Dense < System.Schedule.Base
   end
 
   methods (Access = 'protected')
-    performWithMapping(this)
+    perform(this)
   end
 end
