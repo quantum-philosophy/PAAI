@@ -5,22 +5,26 @@ dimension = 2;
 
 %% Generate a correlation matrix.
 %
-correlation = Correlation.Pearson.random(dimension);
+correlation = Correlation.Pearson([ 1 -0.7; -0.7 1 ]);
 fprintf('Desired correlation matrix:\n');
 correlation
 
 %% Define the marginal distributions.
 %
-distribution = ProbabilityDistribution.Exponential();
+distributions = { ...
+  ProbabilityDistribution.Gamma('a', 2, 'b', 3), ...
+  ProbabilityDistribution.Gamma('a', 2, 'b', 3), ...
+};
 
 %% Construct a vector of correlated RVs.
 %
-rvsDependent = RandomVariables.Homogeneous( ...
-  distribution, correlation);
+rvsDependent = RandomVariables.Heterogeneous( ...
+  distributions, correlation);
 
 %% Transform the dependent RVs into independent ones.
 %
-transformation = Transformation.Nataf(rvsDependent);
+transformation = Transformation.Nataf();
+transformation.perform(rvsDependent);
 
 fprintf('Transformed correlation matrix:\n');
 transformation.correlation

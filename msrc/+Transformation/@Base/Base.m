@@ -5,7 +5,10 @@ classdef Base < handle
   end
 
   methods
-    function this = Base(rvs)
+    function this = Base(varargin)
+    end
+
+    function perform(this, rvs)
       this.dimension = rvs.dimension;
       this.variables = rvs;
     end

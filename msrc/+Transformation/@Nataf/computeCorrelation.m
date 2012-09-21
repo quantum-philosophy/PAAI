@@ -34,7 +34,3 @@ function correlation = computeCorrelation(this, rvs)
 
   correlation = Correlation.Pearson(matrix);
 end
-
-function rho = echo(rho)
-  rho
-end
