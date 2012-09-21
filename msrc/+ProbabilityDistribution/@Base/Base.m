@@ -5,7 +5,13 @@ classdef Base < handle
   end
 
   methods
-    function pd = Base()
+    function this = Base()
+    end
+
+    function plot(this, varargin)
+      options = Options(varargin{:});
+      data = this.sample(options.get('samples', 1e3), 1);
+      Stats.observe(data, 'draw', true, options);
     end
   end
 

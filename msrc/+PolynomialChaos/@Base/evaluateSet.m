@@ -1,21 +1,24 @@
-function raw = evaluateSet(pc, coeffSet, rvs)
-  [ ddim, terms, tdim ] = size(coeffSet);
-  assert(ddim == pc.ddim, 'The deterministic dimension is invalid.');
-  assert(terms == pc.terms, 'The number of terms is invalid.');
+function data = evaluateSet(this, coefficientSet, nodes)
+  [ codimension, terms, count ] = size(coefficientSet);
 
-  mterms = size(pc.rvProd, 1);
-  points = size(rvs, 2);
+  assert(codimension == this.codimension, 'The deterministic dimension is invalid.');
+  assert(terms == length(this.norm), 'The number of terms is invalid.');
 
-  rvPower = pc.rvPower;
-  rvProd = zeros(mterms, points);
+  monomialTerms = size(this.rvPower, 2);
+  points = size(nodes, 2);
 
-  for i = 1:mterms
-    rvProd(i, :) = prod(realpow(rvs, irep(rvPower(:, i), 1, points)), 1);
+  rvPower = this.rvPower;
+  rvProduct = zeros(monomialTerms, points);
+  rvMap = this.rvMap;
+
+  for i = 1:monomialTerms
+    rvProduct(i, :) = prod(realpow( ...
+      nodes, irep(rvPower(:, i), 1, points)), 1);
   end
 
-  raw = zeros(points, ddim, tdim);
+  data = zeros(points, codimension, count);
 
-  for i = 1:tdim
-    raw(:, :, i) = transpose((coeffSet(:, :, i) * pc.coeffMap) * rvProd);
+  for i = 1:count
+    data(:, :, i) = transpose((coefficientSet(:, :, i) * rvMap) * rvProduct);
   end
 end

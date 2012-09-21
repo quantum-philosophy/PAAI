@@ -1,25 +1,17 @@
 classdef Hermite < PolynomialChaos.Base
   methods
-    function pc = Hermite(varargin)
-      pc = pc@PolynomialChaos.Base(varargin{:});
+    function this = Hermite(varargin)
+      this = this@PolynomialChaos.Base(varargin{:});
+      this.distribution = ProbabilityDistribution.Normal();
     end
   end
 
   methods (Access = 'protected')
-    function method = prepare(pc, method)
-      method = Utils.merge(struct( ...
-        'chaosType', 'TotalOrder', ...
-        'quadratureName', 'GaussHermite', ...
-        'quadratureType', 'Adaptive'), method);
-
-      method.chaosName = 'Hermite';
-    end
-
-    function psi = construct1D(pc, x, order)
-      psi(1) = sympoly(1);
+    function basis = constructUnivariateBasis(this, x, order)
+      basis(1) = sympoly(1);
 
       for i = 2:(order + 1)
-        psi(i) = x * psi(i - 1) - diff(psi(i - 1), x);
+        basis(i) = x * basis(i - 1) - diff(basis(i - 1), x);
       end
     end
   end

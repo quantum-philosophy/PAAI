@@ -1,31 +1,23 @@
-function [ Exp, Var, Raw ] = sample(pc, f, samples)
-  %
-  % Output:
-  %
-  %   * Exp - the expectation of `f',
-  %   * Var - the variance of `f',
-  %   * Raw - a bunch of samples.
-  %
-  %   NOTE: `Raw' is not used to compute the expectation and variance.
-  %
+function [ Exp, Var, Data ] = sample(this, f, points)
+  if nargin < 3, points = 1e4; end
 
-  if nargin < 3, samples = 10000; end
-
-  ddim = pc.ddim;
+  codimension = this.codimension;
 
   %
   % Obtain the coefficients.
   %
-  coeff = pc.computeExpansion(f);
+  coefficients = this.expand(f);
 
   %
   % Straight-forward stats.
   %
-  Exp = coeff(:, 1);
-  Var = diag(sum(coeff(:, 2:end).^2 .* Utils.replicate(pc.norm(2:end), ddim, 1), 2));
+  Exp = coefficients(:, 1);
+  Var = diag(sum(coefficients(:, 2:end).^2 .* ...
+    Utils.replicate(this.norm(2:end), codimension, 1), 2));
 
   %
-  % Now sampling.
+  % Now, sample.
   %
-  Raw = transpose(pc.evaluate(coeff, pc.generateSampleNodes(samples)));
+  Data = transpose(this.evaluate(coefficients, ...
+    this.distribution.sample(this.dimension, points)));
 end

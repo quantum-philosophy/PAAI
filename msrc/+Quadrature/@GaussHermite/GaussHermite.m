@@ -3,6 +3,10 @@ classdef GaussHermite < Quadrature.Base
     function this = GaussHermite(varargin);
       this = this@Quadrature.Base(varargin{:});
     end
+
+    function norm = computeNormalizationConstant(this, i, index)
+      norm = prod(factorial(index(i, :) - 1));
+    end
   end
 
   methods (Access = 'protected')

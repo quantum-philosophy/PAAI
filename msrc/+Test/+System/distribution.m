@@ -56,5 +56,5 @@ fprintf('  Simulation time: %.2f s\n', time);
 
 for i = 2:10
   Stats.observe(startTime(:, i), ...
-    'draw', 'true', 'method', 'histogram');
+    'draw', 'true', 'method', 'histogram', 'range', 'unbounded');
 end

@@ -14,7 +14,7 @@ classdef Base < handle
   methods
     function this = Base(varargin)
       options = Options('method', 'tensor', varargin{:});
-      [ this.nodes, this.weights ] = this.fetch(options);
+      this.initialize(options);
     end
 
     function result = integrate(this, f)
@@ -24,12 +24,15 @@ classdef Base < handle
     end
   end
 
+  methods (Abstract)
+    norm = computeNormalizationConstant(this, i, index)
+  end
+
   methods (Access = 'protected')
     [ nodes, weights ] = construct(this, dimension, level)
 
-    function [ nodes, weights ] = fetch(this, options)
+    function initialize(this, options)
       filename = [ class(this), '_', string(options), '.mat' ];
-
       filename = Utils.resolvePath(filename, 'cache');
 
       if exist(filename, 'file')
@@ -47,6 +50,9 @@ classdef Base < handle
         end
         save(filename, 'nodes', 'weights', '-v7.3');
       end
+
+      this.nodes = nodes;
+      this.weights = weights;
     end
 
     function [ Nodes, Weights ] = constructTensorProduct(this, dimension, level)

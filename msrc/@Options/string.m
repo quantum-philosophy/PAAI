@@ -1,6 +1,6 @@
 function line = string(this)
   line = '';
-  names = properties(this);
+  names = sort(properties(this));
 
   for i = 1:length(names)
     name = names{i};
@@ -10,8 +10,10 @@ function line = string(this)
       chunk = sprintf('%s_%s', name, value);
     elseif isa(value, 'double')
       chunk = sprintf('%s_%d', name, value);
+    elseif isa(value, 'Options')
+      chunk = sprintf('%s_%s', name, string(value));
     else
-      chunk = name;
+      continue;
     end
 
     if i == 1
