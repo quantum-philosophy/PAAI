@@ -12,13 +12,14 @@ filename = Utils.resolvePath('004_080.tgff');
 schedule = System.Schedule.Dense(platform, application);
 priority = schedule.priority;
 mapping = schedule.mapping;
+executionTime = schedule.executionTime;
 
 tic;
 for i = 1:samples
   %% Construct another schedule.
   %
   schedule = System.Schedule.Dense(platform, application, ...
-    'priority', priority, 'mapping', mapping);
+    'priority', priority, 'mapping', mapping, 'executionTime', executionTime);
 end
 time = toc;
 

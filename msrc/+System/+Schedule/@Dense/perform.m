@@ -13,27 +13,16 @@ function perform(this)
   %
   % Ensure that we have a vector of priorities.
   %
-  if ~isempty(this.priority)
-    priority = this.priority;
-  else
+  if any(isnan(this.priority))
     profile = System.Profile.Average(platform, application);
-    priority = profile.taskMobility;
-  end
-
-  %
-  % Initialize the mapping.
-  %
-  if ~isempty(this.mapping)
-    mapping = this.mapping;
-  else
-    mapping = zero;
+    this.priority = profile.taskMobility;
   end
 
   %
   % Obtain roots and sort them according to their priority.
   %
   ids = application.getRoots();
-  [ dummy, I ] = sort(priority(ids));
+  [ dummy, I ] = sort(this.priority(ids));
   ids = ids(I);
 
   pool = application(ids);
@@ -41,15 +30,11 @@ function perform(this)
   processed = zero;
   ordered = zero;
 
-  startTime = zero;
-  executionTime = zero;
-
   taskTime = zero;
   processorTime = zeros(1, processorCount);
 
   position = 0;
   processed(ids) = 1;
-  order = zeros;
 
   while ~isempty(pool)
     %
@@ -67,15 +52,14 @@ function perform(this)
     % Append to the schedule.
     %
     position = position + 1;
-    order(id) = position;
+    this.order(id) = position;
     ordered(id) = 1;
 
     %
     % Find the earliest processor if needed.
     %
-    if mapping(id) > 0
-      pid = mapping(id);
-    else
+    pid = this.mapping(id);
+    if isnan(pid)
       pid = 1;
       earliestTime = processorTime(1);
       for i = 2:processorCount
@@ -84,12 +68,16 @@ function perform(this)
           pid = i;
         end
       end
-      mapping(id) = pid;
+      this.mapping(id) = pid;
     end
 
-    startTime(id) = max(taskTime(id), processorTime(pid));
-    executionTime(id) = platform{pid}.executionTime(task.type);
-    finish = startTime(id) + executionTime(id);
+    this.startTime(id) = max(taskTime(id), processorTime(pid));
+
+    if isnan(this.executionTime(id))
+      this.executionTime(id) = platform{pid}.executionTime(task.type);
+    end
+
+    finish = this.startTime(id) + this.executionTime(id);
 
     processorTime(pid) = finish;
 
@@ -127,10 +115,10 @@ function perform(this)
       % to keep the pool sorted by the priority.
       %
       index = 1;
-      childPriority = priority(child.id);
+      childPriority = this.priority(child.id);
       for competitor = pool
         competitor = competitor{1};
-        if priority(competitor.id) > childPriority
+        if this.priority(competitor.id) > childPriority
           break;
         end
         index = index + 1;
@@ -146,12 +134,4 @@ function perform(this)
       processed(child.id) = 1;
     end
   end
-
-  this.priority = priority;
-
-  this.mapping = mapping;
-  this.order = order;
-
-  this.startTime = startTime;
-  this.executionTime = executionTime;
 end

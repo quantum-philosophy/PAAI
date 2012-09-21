@@ -30,7 +30,7 @@ function draw(this)
 
     x = [ 0 ];
     y = [ y0 ];
-    for j = ids
+    for j = ids'
       startTime = this.startTime(j);
       executionTime = this.executionTime(j);
 

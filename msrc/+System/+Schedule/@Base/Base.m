@@ -21,8 +21,15 @@ classdef Base < handle
 
       options = Options(varargin{:});
 
-      this.priority = options.get('priority', []);
-      this.mapping = options.get('mapping', []);
+      nan = ones(length(application), 1) * NaN;
+
+      this.priority = options.get('priority', nan);
+
+      this.mapping = options.get('mapping', nan);
+      this.order = nan;
+
+      this.executionTime = options.get('executionTime', nan);
+      this.startTime = nan;
 
       this.perform();
     end
