@@ -17,6 +17,12 @@ function [ x, data ] = processHistogram(x, raw, options)
   x = x(:);
   raw = raw(:);
 
+  if length(x) == 1
+    data = [ 1 ];
+    return;
+  end
+
+  data = [ 1 ];
   dx = x(2:end) - x(1:end - 1);
   dx = [ dx(1); dx; dx(end) ];
 

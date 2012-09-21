@@ -21,7 +21,7 @@ classdef Base < handle
 
       options = Options(varargin{:});
 
-      nan = ones(length(application), 1) * NaN;
+      nan = ones(1, length(application)) * NaN;
 
       this.priority = options.get('priority', nan);
 
