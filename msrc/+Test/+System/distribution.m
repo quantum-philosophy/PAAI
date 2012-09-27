@@ -31,9 +31,9 @@ correlation = Correlation.Pearson.random(length(application));
 %
 parameters = RandomVariables.Heterogeneous(distributions, correlation);
 
-%% Perform the Nataf transformation.
+%% Perform the probability transformation.
 %
-transformation = Transformation.Nataf();
+transformation = Transformation.Normal();
 transformation.perform(parameters);
 
 startTime = zeros(samples, length(application));
@@ -57,4 +57,7 @@ fprintf('  Simulation time: %.2f s\n', time);
 for i = 2:10
   Stats.observe(startTime(:, i), ...
     'draw', 'true', 'method', 'histogram', 'range', 'unbounded');
+  title([ 'Start time of Task ', num2str(i) ]);
+  xlabel('Time, s');
+  ylabel('Empirical PDF');
 end

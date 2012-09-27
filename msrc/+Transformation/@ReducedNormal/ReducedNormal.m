@@ -1,4 +1,4 @@
-classdef PCANataf < Transformation.Nataf
+classdef ReducedNormal < Transformation.Normal
   properties
     %
     % The percentage of the variance of the data to preserve.
@@ -7,9 +7,9 @@ classdef PCANataf < Transformation.Nataf
   end
 
   methods
-    function this = PCANataf(varargin)
+    function this = ReducedNormal(varargin)
       options = Options(varargin{:});
-      this = this@Transformation.Nataf(options);
+      this = this@Transformation.Normal(options);
 
       this.threshold = options.get('threshold', 95);
     end

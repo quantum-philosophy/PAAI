@@ -1,4 +1,4 @@
-classdef Nataf < Transformation.Base
+classdef Normal < Transformation.Base
   properties
     %
     % Configuration of the numerical integration procedure
@@ -19,7 +19,8 @@ classdef Nataf < Transformation.Base
 
   properties (SetAccess = 'private')
     %
-    % The correlation matrix as produced by the pure Nataf transformation.
+    % The correlation matrix as produced by the pure probability
+    % transformation.
     %
     correlation
 
@@ -37,7 +38,7 @@ classdef Nataf < Transformation.Base
   end
 
   methods
-    function this = Nataf(varargin)
+    function this = Normal(varargin)
       options = Options(varargin{:});
       this = this@Transformation.Base(options);
 

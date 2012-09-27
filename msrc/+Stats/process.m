@@ -27,13 +27,13 @@ function [ x, data ] = processHistogram(x, raw, options)
   dx = [ dx(1); dx; dx(end) ];
 
   data = histc(raw, [ -Inf; x; Inf ]);
-  data = data(1:end - 1);
+  data = data(1:end - 1) ./ dx;
 
-  data = data ./ dx / sum(data);
   x = [ x(1) - dx(1); x ];
 
   switch options.get('function', 'pdf')
   case 'pdf'
+    data = data / sum(data);
   case 'cdf'
     data = cumsum(data);
     data = data / data(end);

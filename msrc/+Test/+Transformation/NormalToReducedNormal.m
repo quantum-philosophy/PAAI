@@ -17,14 +17,14 @@ rvsDependent = RandomVariables.Homogeneous(distribution, C0);
 
 %% Transformation without reduction.
 %
-transformation = Transformation.Nataf();
+transformation = Transformation.Normal();
 transformation.perform(rvsDependent);
 data = transformation.sample(samples);
 C1 = Correlation.Pearson.compute(data);
 
 %% Transformation with reduction.
 %
-transformation = Transformation.PCANataf();
+transformation = Transformation.ReducedNormal();
 transformation.perform(rvsDependent);
 data = transformation.sample(samples);
 C2 = Correlation.Pearson.compute(data);

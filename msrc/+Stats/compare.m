@@ -3,11 +3,11 @@ function [ globalError, localError ] = compare(varargin)
   assert(length(raw) == 2, 'The comparison is supported only for two sets of data.');
 
   mcSize = size(raw{1});
-  pcSize = size(raw{2});
+  sdSize = size(raw{2});
 
   dims = length(mcSize);
 
-  assert(dims == length(pcSize), 'The dimensions are invalid.');
+  assert(dims == length(sdSize), 'The dimensions are invalid.');
   assert(dims == 2 || dims == 3, 'The given number of dimensions is not supported.');
 
   if dims == 2
@@ -17,9 +17,9 @@ function [ globalError, localError ] = compare(varargin)
   end
 end
 
-function [ globalError, localError ] = compare2D(mcRaw, pcRaw, options)
+function [ globalError, localError ] = compare2D(mcRaw, sdRaw, options)
   [ ~, ddim ] = size(mcRaw);
-  assert(ddim == size(pcRaw, 2), 'The dimensions are invalid.');
+  assert(ddim == size(sdRaw, 2), 'The dimensions are invalid.');
 
   draw = options.get('draw', false);
 
@@ -31,21 +31,21 @@ function [ globalError, localError ] = compare2D(mcRaw, pcRaw, options)
     if draw, p = subplot(1, ddim, i); end
 
     mcraw = mcRaw(:, i);
-    pcraw = pcRaw(:, i);
+    sdraw = sdRaw(:, i);
 
-    x = Stats.constructLinearSpace(mcraw, pcraw, options);
+    x = Stats.constructLinearSpace(mcraw, sdraw, options);
 
     [ mcx, mcData ] = Stats.process(x, mcraw, options);
-    [ pcx, pcData ] = Stats.process(x, pcraw, options);
+    [ sdx, sdData ] = Stats.process(x, sdraw, options);
 
-    assert(nnz(mcx - pcx) == 0, 'The supports are invalid.');
+    assert(nnz(mcx - sdx) == 0, 'The supports are invalid.');
 
-    localError(i) = Stats.NRMSE(mcData, pcData);
+    localError(i) = Stats.NRMSE(mcData, sdData);
 
     if draw
-      Stats.draw(mcx, mcData, pcData, options);
+      Stats.draw(mcx, mcData, sdData, options);
       title(sprintf('NRMSE %.2f %%', localError(i) * 100));
-      labels = options.get('labels', { 'MC', 'PC' });
+      labels = options.get('labels', {});
       legend(labels{:});
     end
   end
@@ -53,9 +53,9 @@ function [ globalError, localError ] = compare2D(mcRaw, pcRaw, options)
   globalError = sqrt(sum(localError .^ 2) / ddim);
 end
 
-function [ globalError, localError ] = compare3D(mcRaw, pcRaw, options)
+function [ globalError, localError ] = compare3D(mcRaw, sdRaw, options)
   [ ~, ddim, tdim ] = size(mcRaw);
-  assert(ddim == size(pcRaw, 2) && tdim == size(pcRaw, 3), ...
+  assert(ddim == size(sdRaw, 2) && tdim == size(sdRaw, 3), ...
     'The dimensions are invalid.');
 
   draw = options.get('draw', false);
@@ -66,7 +66,7 @@ function [ globalError, localError ] = compare3D(mcRaw, pcRaw, options)
   localError = zeros(ddim, tdim);
 
   for i = 1:tdim
-    [ ~, localError(:, i) ] = compare2D(mcRaw(:, :, i), pcRaw(:, :, i), options);
+    [ ~, localError(:, i) ] = compare2D(mcRaw(:, :, i), sdRaw(:, :, i), options);
     increase(h);
   end
 

@@ -10,7 +10,7 @@ variables = RandomVariables.Single(distribution);
 
 %% Perform the transformation.
 %
-transformation = Transformation.Single();
+transformation = Transformation.SingleNormal();
 transformation.perform(variables);
 
 %% Construct the PC expansion.
@@ -37,4 +37,5 @@ fprintf('Error of variance: %.2f %%\n', ...
   100 * (mcVar - sdVar) / mcVar);
 
 Stats.compare(mcData, sdData, ...
-  'draw', true, 'method', 'histogram', 'range', 'unbounded');
+  'draw', true, 'method', 'histogram', 'range', 'unbounded', ...
+  'labels', {{ 'Monte Carlo', 'Polynomial chaos' }});

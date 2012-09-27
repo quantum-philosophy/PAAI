@@ -1,10 +1,10 @@
-classdef Single < Transformation.Base
+classdef SingleNormal < Transformation.Base
   properties (Access = 'private')
     normal
   end
 
   methods
-    function this = Single(varargin)
+    function this = SingleNormal(varargin)
       options = Options(varargin{:});
       this = this@Transformation.Base(options);
 

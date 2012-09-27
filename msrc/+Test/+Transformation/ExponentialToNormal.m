@@ -20,7 +20,7 @@ rvsDependent = RandomVariables.Homogeneous( ...
 
 %% Transform the dependent RVs into independent ones.
 %
-transformation = Transformation.Nataf();
+transformation = Transformation.Normal();
 transformation.perform(rvsDependent);
 
 fprintf('Transformed correlation matrix:\n');
