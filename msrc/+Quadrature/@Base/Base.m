@@ -24,10 +24,6 @@ classdef Base < handle
     end
   end
 
-  methods (Abstract)
-    norm = computeNormalizationConstant(this, i, index)
-  end
-
   methods (Access = 'protected')
     [ nodes, weights ] = construct(this, dimension, level)
 

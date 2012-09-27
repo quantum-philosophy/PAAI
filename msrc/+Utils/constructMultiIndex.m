@@ -19,11 +19,6 @@ function index = computeMultiIndex(dimension, maxOrder, weights, method)
   otherwise
     error('The construction method is unknown.');
   end
-
-  %
-  % (+1) since now everything starts from 0.
-  %
-  index = index(I, :) + 1;
 end
 
 function index = constructTensorProduct(dimension, maxOrder)

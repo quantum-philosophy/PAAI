@@ -11,10 +11,10 @@ function [ nodes, norm, projectionMatrix, evaluationMatrix, rvPower, rvMap ] = c
   end
 
   %
-  % Compute the desired multi-index.
+  % Compute the multi-index.
   %
-  index = PolynomialChaos.constructMultiIndex( ...
-    dimension, order, [], options.method);
+  index = Utils.constructMultiIndex( ...
+    dimension, order, [], options.method) + 1;
 
   %
   % Construct the corresponding multivariate basis.
@@ -38,7 +38,7 @@ function [ nodes, norm, projectionMatrix, evaluationMatrix, rvPower, rvMap ] = c
 
   for i = 1:terms
     f = Utils.toFunction(basis(i), x, 'rows');
-    norm(i) = qd.computeNormalizationConstant(i, index);
+    norm(i) = this.computeNormalizationConstant(i, index);
     projectionMatrix(:, i) = f(nodes) .* weights / norm(i);
   end
 

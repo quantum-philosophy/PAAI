@@ -16,25 +16,25 @@ transformation.perform(variables);
 %% Construct the PC expansion.
 %
 quadratureOptions = Options('level', 10);
-chaos = PolynomialChaos.Hermite('order', 5, ...
+decomposition = PolynomialChaos.Hermite('order', 5, ...
   'quadratureName', 'GaussHermite', ...
   'quadratureOptions', quadratureOptions);
 
 %% Sample the expansion.
 %
-[ pcExp, pcVar, pcData ] = chaos.sample(@transformation.evaluate, samples);
+[ sdExp, sdVar, sdData ] = decomposition.sample( ...
+  @transformation.evaluate, samples);
 
 %% Compare.
 %
 mcData = distribution.sample(samples, 1);
-
-exp = distribution.mu;
-var = distribution.sigma^2;
+mcExp = distribution.mu;
+mcVar = distribution.sigma^2;
 
 fprintf('Error of expectation: %.2f %%\n', ...
-  100 * (exp - pcExp) / exp);
+  100 * (mcExp - sdExp) / mcExp);
 fprintf('Error of variance: %.2f %%\n', ...
-  100 * (var - pcVar) / var);
+  100 * (mcVar - sdVar) / mcVar);
 
-Stats.compare(mcData, pcData, ...
+Stats.compare(mcData, sdData, ...
   'draw', true, 'method', 'histogram', 'range', 'unbounded');

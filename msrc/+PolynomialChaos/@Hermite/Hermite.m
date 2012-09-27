@@ -14,5 +14,9 @@ classdef Hermite < PolynomialChaos.Base
         basis(i) = x * basis(i - 1) - diff(basis(i - 1), x);
       end
     end
+
+    function norm = computeNormalizationConstant(this, i, index)
+      norm = prod(factorial(index(i, :) - 1));
+    end
   end
 end

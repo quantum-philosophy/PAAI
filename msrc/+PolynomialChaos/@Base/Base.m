@@ -74,6 +74,7 @@ classdef Base < handle
 
   methods (Abstract, Access = 'protected')
     basis = constructUnivariateBasis(this, x, order)
+    norm = computeNormalizationConstant(this, i, index)
   end
 
   methods (Access = 'private')
