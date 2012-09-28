@@ -8,14 +8,16 @@ classdef ReducedNormal < Transformation.Normal
 
   methods
     function this = ReducedNormal(varargin)
-      options = Options(varargin{:});
-      this = this@Transformation.Normal(options);
-
-      this.threshold = options.get('threshold', 95);
+      this = this@Transformation.Normal(varargin{:});
     end
   end
 
   methods (Access = 'protected')
     multiplier = computeMultiplier(this, correlation)
+
+    function initialize(this, variable, options)
+      this.threshold = options.get('threshold', 95);
+      initialize@Transformation.Normal(this, variable, options);
+    end
   end
 end

@@ -20,5 +20,5 @@ function [ nodes, weights ] = construct(this, options)
     end
   end
 
-  [ nodes, weights ] = tensor_product(nodes, weights);
+  [ nodes, weights ] = tensor_product(nodeSet, weightSet);
 end

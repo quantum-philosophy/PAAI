@@ -1,9 +1,9 @@
 function correlation = computeCorrelation(this, rvs)
   dimension = rvs.dimension;
 
-  qd = Quadrature.GaussHermite(this.quadratureOptions);
-  nodes = qd.nodes;
-  weights = qd.weights;
+  qd = Quadrature.Tensor('rules', 'GaussHermite', this.quadratureOptions);
+  nodes = transpose(qd.nodes);
+  weights = transpose(qd.weights);
 
   normal = this.normal;
 

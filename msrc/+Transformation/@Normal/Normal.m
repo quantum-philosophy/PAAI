@@ -39,24 +39,7 @@ classdef Normal < Transformation.Base
 
   methods
     function this = Normal(varargin)
-      options = Options(varargin{:});
-      this = this@Transformation.Base(options);
-
-      this.quadratureOptions = options.get('quadratureOptions', ...
-        Options('dimension', 2, 'level', 5, 'method', 'tensor'));
-      this.optimizationOptions = options.get('optimizationOptions', ...
-        optimset('TolX', 1e-6));
-
-      this.normal = ProbabilityDistribution.Normal();
-    end
-
-    function perform(this, rvs)
-      perform@Transformation.Base(this, rvs);
-
-      this.correlation = this.computeCorrelation(rvs);
-      this.multiplier = this.computeMultiplier(this.correlation);
-
-      this.reducedDimension = size(this.multiplier, 1);
+      this = this@Transformation.Base(varargin{:});
     end
 
     function data = sample(this, samples)
@@ -88,5 +71,21 @@ classdef Normal < Transformation.Base
 
   methods (Access = 'protected')
     multiplier = computeMultiplier(this, correlation)
+
+    function initialize(this, variables, options)
+      initialize@Transformation.Base(this, variables, options);
+
+      this.quadratureOptions = options.get('quadratureOptions', ...
+        Options('dimension', 2, 'level', 5));
+      this.optimizationOptions = options.get('optimizationOptions', ...
+        optimset('TolX', 1e-6));
+
+      this.normal = ProbabilityDistribution.Normal();
+
+      this.correlation = this.computeCorrelation(variables);
+      this.multiplier = this.computeMultiplier(this.correlation);
+
+      this.reducedDimension = size(this.multiplier, 1);
+    end
   end
 end

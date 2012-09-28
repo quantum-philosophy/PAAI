@@ -10,8 +10,7 @@ variables = RandomVariables.Single(distribution);
 
 %% Perform the transformation.
 %
-transformation = Transformation.SingleNormal();
-transformation.perform(variables);
+transformation = Transformation.SingleNormal(variables);
 
 %% Construct the PC expansion.
 %

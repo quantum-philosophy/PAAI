@@ -33,8 +33,7 @@ parameters = RandomVariables.Heterogeneous(distributions, correlation);
 
 %% Perform the probability transformation.
 %
-transformation = Transformation.Normal();
-transformation.perform(parameters);
+transformation = Transformation.Normal(parameters);
 
 startTime = zeros(samples, length(application));
 

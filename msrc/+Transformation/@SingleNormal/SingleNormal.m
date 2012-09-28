@@ -5,10 +5,7 @@ classdef SingleNormal < Transformation.Base
 
   methods
     function this = SingleNormal(varargin)
-      options = Options(varargin{:});
-      this = this@Transformation.Base(options);
-
-      this.normal = ProbabilityDistribution.Normal();
+      this = this@Transformation.Base(varargin{:});
     end
 
     function data = sample(this, samples)
@@ -33,6 +30,13 @@ classdef SingleNormal < Transformation.Base
       % The RV with the desired distribution.
       %
       data = this.variables.invert(data);
+    end
+  end
+
+  methods (Access = 'protected')
+    function initialize(this, variable, options)
+      this.normal = ProbabilityDistribution.Normal();
+      initialize@Transformation.Base(this, variable, options);
     end
   end
 end

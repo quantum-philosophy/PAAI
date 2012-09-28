@@ -1,4 +1,4 @@
-classdef Tensor < handle
+classdef Tensor < Quadrature.Base
   methods
     function this = Tensor(varargin)
       this = this@Quadrature.Base(varargin{:});
