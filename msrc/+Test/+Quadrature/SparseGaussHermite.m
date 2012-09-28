@@ -1,6 +1,6 @@
 init;
 
-dimension = 5;
+dimension = 2;
 level = 5;
 
 grid = Quadrature.Sparse( ...

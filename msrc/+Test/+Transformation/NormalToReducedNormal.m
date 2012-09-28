@@ -17,20 +17,18 @@ rvsDependent = RandomVariables.Homogeneous(distribution, C0);
 
 %% Transformation without reduction.
 %
-transformation = Transformation.Normal();
-transformation.perform(rvsDependent);
+transformation = Transformation.Normal(rvsDependent);
 data = transformation.sample(samples);
 C1 = Correlation.Pearson.compute(data);
 
 %% Transformation with reduction.
 %
-transformation = Transformation.ReducedNormal();
-transformation.perform(rvsDependent);
+transformation = Transformation.ReducedNormal(rvsDependent);
 data = transformation.sample(samples);
 C2 = Correlation.Pearson.compute(data);
 
 fprintf('Initial dimensions: %d\n', dimension);
-fprintf('Reduced dimensions: %d\n', transformation.reducedDimension);
+fprintf('Reduced dimensions: %d\n', transformation.dimension);
 
 fprintf('Infinity norm without reduction: %e\n', ...
   norm(C0.matrix - C1.matrix, Inf));

@@ -9,14 +9,14 @@ function [ nodes, weights ] = construct(this, options)
   if isa(rules, 'cell')
     for i = 1:dimension
       [ nodes, weights ] = Quadrature.Rules.(rules{i})(level);
-      nodeSet{end + 1} = nodes;
-      weightSet{end + 1} = weights;
+      nodeSet{i} = nodes;
+      weightSet{i} = weights;
     end
   else
     [ nodes, weights ] = Quadrature.Rules.(rules)(level);
     for i = 1:dimension
-      nodeSet{end + 1} = nodes;
-      weightSet{end + 1} = weights;
+      nodeSet{i} = nodes;
+      weightSet{i} = weights;
     end
   end
 
