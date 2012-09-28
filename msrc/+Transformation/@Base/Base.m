@@ -1,5 +1,5 @@
 classdef Base < handle
-  properties (SetAccess = 'private')
+  properties (SetAccess = 'protected')
     dimension
     variables
   end
@@ -13,6 +13,7 @@ classdef Base < handle
 
   methods (Abstract)
     data = sample(this, samples)
+    data = evaluate(this, data)
   end
 
   methods (Access = 'protected')

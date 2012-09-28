@@ -30,11 +30,6 @@ classdef Normal < Transformation.Base
     % correlation matrix.
     %
     multiplier
-
-    %
-    % The number of dimensions left after the decomposition.
-    %
-    reducedDimension
   end
 
   methods
@@ -46,8 +41,15 @@ classdef Normal < Transformation.Base
       %
       % Independent normal RVs.
       %
-      data = this.normal.sample(samples, this.reducedDimension);
+      data = this.normal.sample(samples, this.dimension);
 
+      %
+      % Dependent RVs with the desired distributions.
+      %
+      data = this.evaluate(data);
+    end
+
+    function data = evaluate(this, data)
       %
       % Dependent normal RVs.
       %
@@ -85,7 +87,7 @@ classdef Normal < Transformation.Base
       this.correlation = this.computeCorrelation(variables);
       this.multiplier = this.computeMultiplier(this.correlation);
 
-      this.reducedDimension = size(this.multiplier, 1);
+      this.dimension = size(this.multiplier, 1);
     end
   end
 end
