@@ -15,9 +15,9 @@ transformation.perform(variables);
 
 %% Construct the PC expansion.
 %
-quadratureOptions = Options('level', 10);
+quadratureOptions = Options('rules', 'GaussHermite', 'level', 10);
 decomposition = PolynomialChaos.Hermite('order', 5, ...
-  'quadratureName', 'GaussHermite', ...
+  'quadratureName', 'Sparse', ...
   'quadratureOptions', quadratureOptions);
 
 %% Sample the expansion.

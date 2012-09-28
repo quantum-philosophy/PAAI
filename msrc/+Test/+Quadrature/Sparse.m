@@ -3,11 +3,13 @@ init;
 dimension = 5;
 level = 5;
 
-grid = SparseGrid.Smolyak( ...
+grid = Quadrature.Sparse( ...
   'dimension', dimension, 'level', level, ...
-  'quadratureName', 'GaussHermite');
+  'rules', 'GaussHermite');
 
-[ nodes, weights ] = nwspgr('gqn', dimension, level);
+f = @(l) nwspgr('gqn', 1, l);
+
+[ nodes, weights ] = nwspgr(f, dimension, level);
 points = length(weights);
 
 fprintf('Expected points: %d\n', points);

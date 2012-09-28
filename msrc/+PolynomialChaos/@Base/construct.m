@@ -29,9 +29,9 @@ function [ nodes, norm, projectionMatrix, evaluationMatrix, rvPower, rvMap ] = c
   qd = Quadrature.(options.quadratureName)( ...
     'dimension', dimension, options.quadratureOptions);
 
-  nodes = qd.nodes;
-  weights = qd.weights;
-  points = length(weights);
+  points = qd.points;
+  nodes = transpose(qd.nodes);
+  weights = transpose(qd.weights);
 
   projectionMatrix = zeros(points, terms);
   norm = zeros(1, terms);

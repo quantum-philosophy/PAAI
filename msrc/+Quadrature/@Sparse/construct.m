@@ -1,26 +1,24 @@
 function [ nodes, weights ] = construct(this, options)
   dimension = options.dimension;
-  order = options.level;
+  maxLevel = options.level;
+  rules = options.rules;
 
-  pointSet = zeros(1, order);
-  nodeSet = cell(order);
-  weightSet = cell(order);
+  assert(isa(rules, 'char'), ...
+    'Only isotropic grids are currently supported.');
+
+  minLevel = max(0, maxLevel - dimension + 1);
+
+  pointSet = zeros(1, maxLevel);
+  nodeSet = cell(maxLevel);
+  weightSet = cell(maxLevel);
 
   %
   % Compute one-dimensional rules for all the needed levels.
   %
-  for level = 1:order
-    quadrature = Quadrature.(options.quadratureName)( ...
-      'dimension', 1, 'level', level, 'method', 'tensor', ...
-      options.get('quadratureOptions', Options()));
-
-    pointSet(level) = length(quadrature.weights);
-    nodeSet{level} = quadrature.nodes;
-    weightSet{level} = quadrature.weights;
+  for level = 1:maxLevel
+    [ nodeSet{level}, weightSet{level} ] = Quadrature.Rules.(rules)(level);
+    pointSet(level) = length(weightSet{level});
   end
-
-  maxLevel = order - 1;
-  minLevel = max(0, order - dimension);
 
   points = 0;
   nodes = [];
@@ -28,12 +26,13 @@ function [ nodes, weights ] = construct(this, options)
 
   for level = minLevel:maxLevel
     coefficient = (-1)^(maxLevel - level) * ...
-      nchoosek(dimension - 1, dimension + level - order);
+      nchoosek(dimension - 1, maxLevel - level);
 
     %
-    % Compute all combinations that sum up to `level'.
+    % Compute all combinations of positive integers that
+    % sum up to `dimension + level - 1'.
     %
-    indexSet = get_seq(dimension, dimension + level);
+    indexSet = get_seq(dimension, dimension + level - 1);
 
     newPoints = prod(pointSet(indexSet), 2);
     totalNewPoints = sum(newPoints);

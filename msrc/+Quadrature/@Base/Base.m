@@ -1,19 +1,17 @@
 classdef Base < handle
   properties (SetAccess = 'private')
-    %
-    % Integration nodes.
-    %
-    nodes
+    dimension
+    level
+    rules
 
-    %
-    % Integration weights.
-    %
+    points
+    nodes
     weights
   end
 
   methods
     function this = Base(varargin)
-      options = Options('method', 'tensor', varargin{:});
+      options = Options(varargin{:});
       this.initialize(options);
     end
 
@@ -24,54 +22,29 @@ classdef Base < handle
     end
   end
 
-  methods (Access = 'protected')
-    [ nodes, weights ] = construct(this, dimension, level)
+  methods (Abstract, Access = 'protected')
+    [ nodes, weights ] = construct(this, options)
+  end
 
+  methods (Access = 'private')
     function initialize(this, options)
+      this.dimension = options.dimension;
+      this.level = options.level;
+      this.rules = options.rules;
+
       filename = [ class(this), '_', string(options), '.mat' ];
       filename = Utils.resolvePath(filename, 'cache');
 
       if exist(filename, 'file')
         load(filename);
       else
-        switch lower(options.method)
-        case 'tensor'
-          [ nodes, weights ] = this.constructTensorProduct( ...
-            options.dimension, options.level);
-        case 'sparse'
-          [ nodes, weights ] = this.constructSparseGrid( ...
-            options.dimension, options.level);
-        otherwise
-          error('The quadrature type is unknown.');
-        end
+        [ nodes, weights ] = this.construct(options);
         save(filename, 'nodes', 'weights', '-v7.3');
       end
 
+      this.points = length(weights);
       this.nodes = nodes;
       this.weights = weights;
-    end
-
-    function [ Nodes, Weights ] = constructTensorProduct(this, dimension, level)
-      [ nodes, weights ] = this.construct(1, level);
-      nodes = transpose(nodes);
-      weights = transpose(weights);
-
-      Nodes = {};
-      Weights = {};
-
-      for i = 1:dimension
-        Nodes{end + 1} = nodes;
-        Weights{end + 1} = weights;
-      end
-
-      [ Nodes, Weights ] = tensor_product(Nodes, Weights);
-
-      Nodes = transpose(Nodes);
-      Weights = transpose(Weights);
-    end
-
-    function [ nodes, weights ] = constructSparseGrid(this, dimension, level)
-      [ nodes, weights ] = this.construct(dimension, level);
     end
   end
 end
