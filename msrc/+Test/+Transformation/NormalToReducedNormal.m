@@ -1,4 +1,4 @@
-init;
+setup;
 
 samples = 1e6;
 dimension = 4;

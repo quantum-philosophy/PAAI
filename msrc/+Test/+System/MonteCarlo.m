@@ -1,4 +1,4 @@
-init;
+setup;
 
 samples = 1e2;
 

@@ -1,4 +1,4 @@
-init;
+setup;
 
 %% Load a platform and an application.
 %

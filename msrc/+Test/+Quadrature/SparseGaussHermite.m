@@ -1,4 +1,4 @@
-init;
+setup;
 
 dimension = 2;
 level = 5;
