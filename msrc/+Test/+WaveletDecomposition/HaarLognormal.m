@@ -1,5 +1,5 @@
-function doit
-  init;
+function HaarLognormal
+  setup;
 
   samples = 1e4;
 
@@ -11,8 +11,7 @@ function doit
 
   %% Perform the transformation.
   %
-  transformation = Transformation.Single();
-  transformation.perform(variables);
+  transformation = Transformation.SingleNormal(variables);
 
   f = @transformation.evaluate;
   % f = @(x) (-0.2 <= x) .* (x < 0.5);
