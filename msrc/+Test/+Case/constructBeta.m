@@ -2,11 +2,11 @@ function [ platform, application, schedule, parameters ] = constructBeta(name, d
   %% Load a platform and an application.
   %
   filename = Utils.resolvePath([ name, '.tgff' ]);
-  [ platform, application ] = System.parseTGFF(filename);
+  [ platform, application ] = parseTGFF(filename);
 
   %% Construct a schedule.
   %
-  schedule = System.Schedule.Dense(platform, application);
+  schedule = Schedule.Dense(platform, application);
 
   if nargin < 2, dimension = length(schedule); end
 
