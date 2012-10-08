@@ -4,6 +4,7 @@ function setup
   includeLibrary('Interpolation');
   includeLibrary('SystemSimulation');
   includeLibrary('TemperatureAnalysis');
+  includeLibrary('ProbabilityTheory');
 
   path = File.trace();
   addpath(File.join(path, '..', 'vendor', 'sympoly'));

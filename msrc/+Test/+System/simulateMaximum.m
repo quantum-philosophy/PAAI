@@ -6,7 +6,7 @@ samples = 1e2;
 
 %% Perform the probability transformation.
 %
-transformation = Transformation.Normal(parameters);
+transformation = ProbabilityTransformation.Normal(parameters);
 
 executionTime = schedule.executionTime;
 startTime = zeros(samples, length(application));
@@ -25,7 +25,7 @@ fprintf('  Samples: %d\n', samples);
 fprintf('  Simulation time: %.2f s\n', time);
 
 for i = 2:10
-  Stats.observe(startTime(:, i), ...
+  observeData(startTime(:, i), ...
     'draw', 'true', 'method', 'histogram', 'range', 'unbounded');
   title([ 'Start time of Task ', num2str(i) ]);
   xlabel('Time, s');
