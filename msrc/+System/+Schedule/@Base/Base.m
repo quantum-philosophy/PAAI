@@ -38,6 +38,14 @@ classdef Base < handle
 
       this.perform();
     end
+
+    function count = length(this)
+      count = length(this.application);
+    end
+
+    function time = duration(this)
+      time = max(this.startTime + this.executionTime);
+    end
   end
 
   methods (Static, Access = 'protected')

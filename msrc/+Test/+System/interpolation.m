@@ -1,11 +1,11 @@
-function interpolation
+function interpolant = interpolation
   setup;
 
   %
   % Construct a test case.
   %
   tic;
-  [ platform, application, schedule, parameters ] = Test.Case.constructBeta('002_020');
+  [ platform, application, schedule, parameters ] = Test.Case.constructBeta('002_020', 1);
   fprintf('Initialization: %.2f s\n', toc);
 
   %
@@ -24,19 +24,25 @@ function interpolation
   fprintf('Dimension: %d\n', dimension);
 
   f = @(u) compute(schedule, executionTime, ...
-    transformation.evaluate(norminv(u)));
+    transformation.evaluateUniform(u));
 
   tic;
   interpolant = AdaptiveCollocation(f, ...
-    'inputDimension', dimension, 'maxLevel', 15, 'tolerance', 1e-2);
+    'inputDimension', dimension, 'maxLevel', 20, 'tolerance', 1e-4);
   fprintf('Interpolant construction: %.2f s\n', toc);
+
+  display(interpolant);
+  plot(interpolant);
 end
 
 function result = compute(schedule, executionTime, addition)
-  points = size(addition, 1);
+  taskCount = size(executionTime, 2);
+  [ points, dimension ] = size(addition);
+
   result = zeros(points, 1);
+
   for i = 1:points
-    schedule.adjustExecutionTime(executionTime + addition(i, :));
+    schedule.adjustExecutionTime(executionTime + [ addition(i), zeros(1, taskCount - dimension) ]);
     result(i) = max(schedule.startTime + schedule.executionTime);
   end
 end

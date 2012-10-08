@@ -17,10 +17,10 @@ classdef SingleNormal < Transformation.Base
       %
       % The RV with the desired distribution.
       %
-      data = this.evaluate(data);
+      data = this.evaluateNative(data);
     end
 
-    function data = evaluate(this, data)
+    function data = evaluateNative(this, data)
       %
       % Uniform RV.
       %

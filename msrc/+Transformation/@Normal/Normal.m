@@ -46,10 +46,10 @@ classdef Normal < Transformation.Base
       %
       % Dependent RVs with the desired distributions.
       %
-      data = this.evaluate(data);
+      data = this.evaluateNative(data);
     end
 
-    function data = evaluate(this, data)
+    function data = evaluateNative(this, data)
       %
       % Dependent normal RVs.
       %
@@ -64,6 +64,18 @@ classdef Normal < Transformation.Base
       % Dependent RVs with the desired distributions.
       %
       data = this.variables.invert(data);
+    end
+
+    function data = evaluateUniform(this, data)
+      %
+      % Independent normal RVs.
+      %
+      data = this.normal.invert(data);
+
+      %
+      % Dependent RVs with the desired distributions.
+      %
+      data = this.evaluateNative(data);
     end
   end
 

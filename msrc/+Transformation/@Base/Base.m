@@ -13,7 +13,8 @@ classdef Base < handle
 
   methods (Abstract)
     data = sample(this, samples)
-    data = evaluate(this, data)
+    data = evaluateNative(this, data)
+    data = evaluateUniform(this, data)
   end
 
   methods (Access = 'protected')
