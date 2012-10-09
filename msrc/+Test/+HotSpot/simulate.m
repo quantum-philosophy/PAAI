@@ -43,7 +43,7 @@ power = PowerProfile(samplingInterval);
 %
 hotspot = HotSpot.Analytic(floorplan, hotspotConfig, hotspotLine);
 
-maxStepCount = 1.5 * duration(schedule) / samplingInterval;
+maxStepCount = floor(1.5 * duration(schedule) / samplingInterval);
 
 filename = sprintf('HotSpot_simulate_%s.mat', ...
   DataHash({ processorCount, taskCount, taskIndex, ...
