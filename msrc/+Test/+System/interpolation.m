@@ -5,7 +5,8 @@ function interpolant = interpolation
   % Construct a test case.
   %
   tic;
-  [ platform, application, schedule, parameters ] = Test.Case.constructBeta('002_020', 1);
+  [ platform, application, schedule, parameters ] = ...
+    Test.Case.constructBeta('002_020', 1);
   fprintf('Initialization: %.2f s\n', toc);
 
   %
