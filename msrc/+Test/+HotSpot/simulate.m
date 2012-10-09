@@ -4,11 +4,6 @@ includeLibrary('Vendor/DataHash');
 samplingInterval = 1e-4;
 sampleCount = 1e2;
 
-%% Select what we want to observe.
-%
-timeMoment = 0.1;
-timeStep = floor(timeMoment / samplingInterval);
-
 %% Configuration.
 %
 [ platform, application, floorplan, hotspotConfig, hotspotLine ] = ...
@@ -34,6 +29,18 @@ executionTime = schedule.executionTime;
 transformation = ProbabilityTransformation.Normal(parameters);
 
 dimensionCount = transformation.dimension;
+
+if dimensionCount > 1
+  timeMoment = 0.1;
+
+  fprintf('  Time moment to inspect (0~%.3f) [%.3f]: ', ...
+    duration(schedule), timeMoment);
+  out = input('');
+
+  if ~isempty(out), timeMoment = out; end
+
+  timeStep = floor(timeMoment / samplingInterval);
+end
 
 %% Initialize the power computation.
 %
@@ -91,29 +98,41 @@ if dimensionCount == 1
   [ X, Y ] = meshgrid(timeSpan, samples + executionTime(taskIndex));
 end
 
+minTemperature = min(min(min(data)));
+maxTemperature = max(max(max(data)));
+
 fprintf('Monte Carlo:\n');
-fprintf('  Number of samples:  %d\n', sampleCount);
-fprintf('  Simulation time:    %.2f s\n', time);
-fprintf('  Minimal time steps: %d\n', minStepCount);
-fprintf('  Minimal schedule:   %.2f s\n', minStepCount * samplingInterval);
+fprintf('  Number of samples:   %d\n', sampleCount);
+fprintf('  Simulation time:     %.3f s\n', time);
+fprintf('  Minimal time steps:  %d\n', minStepCount);
+fprintf('  Minimal schedule:    %.3f s\n', minStepCount * samplingInterval);
+fprintf('  Minimal temperature: %.3f C\n', minTemperature);
+fprintf('  Maximal temperature: %.3f C\n', maxTemperature);
 
 for i = 1:processorCount
   switch dimensionCount
   case 1
     figure;
-    mesh(X, Y, squeeze(data(:, i, :)));
+
+    Z = squeeze(data(:, i, :));
+
+    mesh(X, Y, Z);
+    colormap(Color.map(Z, minTemperature, maxTemperature));
+    colorbar;
+
     title(sprintf('Temperature of Core %d', i));
+
     xlabel('Time, s');
     ylabel(sprintf('Execution time of Task %d', taskIndex));
     zlabel('Temperature, C');
+
     xlim([ min(min(X)), max(max(X)) ]);
     ylim([ min(min(Y)), max(max(Y)) ]);
+
     view([ 0 90 ]);
-    colormap('jet');
-    colorbar;
   otherwise
     observeData(data(:, i, timeStep), ...
-      'draw', 'true', 'method', 'histogram', 'range', 'unbounded');
+      'draw', true, 'method', 'histogram', 'range', 'unbounded');
     title(sprintf('Temperature of Core %d at time %.2f s', i, timeMoment));
     xlabel('Temperature, C');
     ylabel('Empirical PDF');
