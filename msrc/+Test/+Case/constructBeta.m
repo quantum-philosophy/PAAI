@@ -1,7 +1,8 @@
 function [ schedule, parameters ] = constructBeta(platform, application, varargin)
   options = Options(varargin{:});
 
-  %% Construct a schedule.
+  %
+  % Construct a schedule.
   %
   schedule = Schedule.Dense(platform, application);
 
@@ -12,7 +13,8 @@ function [ schedule, parameters ] = constructBeta(platform, application, varargi
   beta = options.get('beta', 3);
   deviation = options.get('deviation', 0.5);
 
-  %% Determine the marginal distributions.
+  %
+  % Determine the marginal distributions.
   %
   distributions = {};
   for time = schedule.executionTime(taskIndex)
@@ -26,11 +28,17 @@ function [ schedule, parameters ] = constructBeta(platform, application, varargi
   case 1
     parameters = RandomVariables.Single(distributions{1});
   otherwise
-    %% Generate a correlation matrix.
     %
-    correlation = Correlation.Pearson.random(length(taskIndex));
+    % Generate a correlation matrix.
+    %
+    if options.get('independent', false)
+      correlation = Correlation.Pearson(diag(ones(1, length(taskIndex))));
+    else
+      correlation = Correlation.Pearson.random(length(taskIndex));
+    end
 
-    %% Construct a vector of correlated RVs.
+    %
+    % Construct a vector of correlated RVs.
     %
     parameters = RandomVariables.Heterogeneous(distributions, correlation);
   end

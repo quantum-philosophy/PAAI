@@ -1,4 +1,6 @@
-function interpolant = interpolation
+function approximation
+  rng(0);
+
   setup;
   includeLibrary('Vendor/DataHash');
 
@@ -9,10 +11,18 @@ function interpolant = interpolation
   % Configure the test case.
   %
   [ platform, application, floorplan, hotspotConfig, hotspotLine ] = ...
-    Test.Case.request('samplingInterval', samplingInterval);
+    Test.Case.request('samplingInterval', samplingInterval, 'silent', true);
 
   processorCount = length(platform);
   taskCount = length(application);
+
+  %
+  % Pick a method.
+  %
+  method = 'ASGC';
+
+  fprintf('  Method to employ (ASGC, MC) [%s]: ', method);
+  method = Input.read('default', method, 'char', true, 'upper', true);
 
   %
   % Pick a processing element.
@@ -20,8 +30,7 @@ function interpolant = interpolation
   processorIndex = 1;
 
   fprintf('  Processor to inspect (1-%d) [%d]: ', processorCount, processorIndex);
-  out = input('');
-  if ~isempty(out), processorIndex = out; end
+  processorIndex = Input.read('default', processorIndex);
 
   %
   % Pick a set of tasks.
@@ -29,21 +38,19 @@ function interpolant = interpolation
   taskIndex = 1;
 
   fprintf('  Tasks to inspect (1-%d) [[%d]]: ', taskCount, taskIndex);
-  out = input('');
-  if ~isempty(out), taskIndex = out; end
+  taskIndex = Input.read('default', taskIndex);
 
   %
   % Construct a schedule and a set of uncertain parameters.
   %
   [ schedule, parameters ] = Test.Case.constructBeta(platform, application, ...
-    'taskIndex', taskIndex, 'alpha', 1.4, 'beta', 3, 'deviation', 0.7);
+    'taskIndex', taskIndex, 'independent', true, ...
+    'alpha', 1.4, 'beta', 3, 'deviation', 0.7);
 
   %
   % Perform the probability transformation.
   %
-  tic;
   transformation = ProbabilityTransformation.Normal(parameters);
-  fprintf('Transformation: %.2f s\n', toc);
 
   %
   % Initialize the power computation.
@@ -65,31 +72,44 @@ function interpolant = interpolation
 
   fprintf('Dimension: %d\n', dimensionCount);
 
-  filename = sprintf('HotSpot_interpolation_%s.mat', ...
-    DataHash({ processorCount, taskCount, processorIndex, taskIndex, ...
-      samplingInterval, stepCount }));
+  %
+  % ============================================================================
+  %
 
-  if File.exist(filename)
-    load(filename);
-  else
-    %
-    % Construct an interpolant.
-    %
-    tic;
-    interpolant = ASGC(@(u) compute(power, hotspot, schedule, ...
-      executionTime, processorIndex, taskIndex, stepCount, ...
-      transformation.evaluateUniform(u)), ...
-      'inputDimension', dimensionCount, 'outputDimension', stepCount, ...
-      'maxLevel', 10, 'tolerance', 1e-2);
-    time = toc;
+  switch method
+  case 'ASGC'
+    filename = sprintf('HotSpot_approximation_%s.mat', ...
+      DataHash({ processorCount, taskCount, processorIndex, taskIndex, ...
+        samplingInterval, stepCount }));
 
-    save(filename, 'interpolant', 'time', '-v7.3');
+    if File.exist(filename)
+      load(filename);
+    else
+      tic;
+      interpolant = ASGC(@(u) compute(power, hotspot, schedule, ...
+        executionTime, processorIndex, taskIndex, stepCount, ...
+        transformation.evaluateUniform(u)), ...
+        'inputDimension', dimensionCount, 'outputDimension', stepCount, ...
+        'maxLevel', 10, 'tolerance', 1e-2);
+      time = toc;
+
+      save(filename, 'interpolant', 'time', '-v7.3');
+    end
+
+    fprintf('Interpolant construction: %.2f s\n', time);
+    display(interpolant);
+
+    computeData = @(samples, uniformSamples) interpolant.evaluate(uniformSamples);
+  case 'MC'
+    computeData = @(samples, uniformSamples) compute(power, hotspot, ...
+      schedule, executionTime, processorIndex, taskIndex, stepCount, ...
+      transformation.evaluateUniform(uniformSamples));
+  otherwise
+    error('The method is unknown.');
   end
 
-  fprintf('Interpolant construction: %.2f s\n', time);
-
   %
-  % Assess and visualize the interpolant.
+  % ============================================================================
   %
 
   index = taskIndex(1);
@@ -111,7 +131,8 @@ function interpolant = interpolation
     uniformSamples(:, position) = linspace(0, 1, sampleCount).';
 
     samples = transformation.evaluateUniform(uniformSamples);
-    data = interpolant.evaluate(uniformSamples);
+
+    data = computeData(samples, uniformSamples);
 
     figure;
 
@@ -125,7 +146,7 @@ function interpolant = interpolation
     colormap(Color.map(Z, 0, 100));
     colorbar;
 
-    title(sprintf('Temperature of Core %d', processorIndex));
+    title(sprintf('%s: Temperature of Core %d', method, processorIndex));
 
     xlabel('Time, s');
     ylabel(sprintf('Execution time of Task %d', index));
@@ -140,13 +161,13 @@ function interpolant = interpolation
   end
 end
 
-function result = compute(power, hotspot, ...
+function data = compute(power, hotspot, ...
   schedule, executionTime, processorIndex, taskIndex, stepCount, delta)
 
   taskCount = size(executionTime, 2);
   [ pointCount, dimensionCount ] = size(delta);
 
-  result = zeros(pointCount, stepCount);
+  data = zeros(pointCount, stepCount);
 
   for i = 1:pointCount
     time = executionTime;
@@ -157,6 +178,6 @@ function result = compute(power, hotspot, ...
     temperatureProfile = hotspot.compute(powerProfile);
 
     count = min(stepCount, size(temperatureProfile, 2));
-    result(i, 1:count) = temperatureProfile(processorIndex, 1:count);
+    data(i, 1:count) = temperatureProfile(processorIndex, 1:count);
   end
 end
