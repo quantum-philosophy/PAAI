@@ -4,6 +4,7 @@ function approximation
   setup;
   includeLibrary('Vendor/DataHash');
 
+  independent = false;
   samplingInterval = 1e-4;
   sampleCount = 1e2;
 
@@ -44,7 +45,7 @@ function approximation
   % Construct a schedule and a set of uncertain parameters.
   %
   [ schedule, parameters ] = Test.Case.constructBeta(platform, application, ...
-    'taskIndex', taskIndex, 'independent', true, ...
+    'taskIndex', taskIndex, 'independent', independent, ...
     'alpha', 1.4, 'beta', 3, 'deviation', 0.7);
 
   %
@@ -80,7 +81,7 @@ function approximation
   case 'ASGC'
     filename = sprintf('HotSpot_approximation_%s.mat', ...
       DataHash({ processorCount, taskCount, processorIndex, taskIndex, ...
-        samplingInterval, stepCount }));
+        samplingInterval, stepCount, independent }));
 
     if File.exist(filename)
       load(filename);
@@ -99,9 +100,9 @@ function approximation
     fprintf('Interpolant construction: %.2f s\n', time);
     display(interpolant);
 
-    computeData = @(samples, uniformSamples) interpolant.evaluate(uniformSamples);
+    computeData = @(uniformSamples) interpolant.evaluate(uniformSamples);
   case 'MC'
-    computeData = @(samples, uniformSamples) compute(power, hotspot, ...
+    computeData = @(uniformSamples) compute(power, hotspot, ...
       schedule, executionTime, processorIndex, taskIndex, stepCount, ...
       transformation.evaluateUniform(uniformSamples));
   otherwise
@@ -112,27 +113,23 @@ function approximation
   % ============================================================================
   %
 
-  index = taskIndex(1);
+  position = 1;
 
   while true
     if dimensionCount > 1
-      fprintf('  Task to visualize [%d]: ', index);
-      out = input('');
-      if ~isempty(out), index = out; end
-    end
+      fprintf('  Independent RV to visualize [%d]: ', position);
+      position = Input.read('default', position);
 
-    position = find(taskIndex == index);
-    if length(position) ~= 1
-      index = taskIndex(1);
-      continue;
+      if position < 1 || position > dimensionCount
+        position = 1;
+        continue;
+      end
     end
 
     uniformSamples = 0.5 * ones(sampleCount, dimensionCount);
     uniformSamples(:, position) = linspace(0, 1, sampleCount).';
 
-    samples = transformation.evaluateUniform(uniformSamples);
-
-    data = computeData(samples, uniformSamples);
+    data = computeData(uniformSamples);
 
     figure;
 
@@ -140,7 +137,7 @@ function approximation
     Z = convertKelvinToCelsius(data(:, 1:minStepCount));
 
     timeSpan = (1:minStepCount) * samplingInterval;
-    [ X, Y ] = meshgrid(timeSpan, samples(:, position) + executionTime(index));
+    [ X, Y ] = meshgrid(timeSpan, uniformSamples(:, position));
 
     mesh(X, Y, Z);
     colormap(Color.map(Z, 0, 100));
@@ -149,7 +146,7 @@ function approximation
     title(sprintf('%s: Temperature of Core %d', method, processorIndex));
 
     xlabel('Time, s');
-    ylabel(sprintf('Execution time of Task %d', index));
+    ylabel(sprintf('Independent variable %d', position));
     zlabel('Temperature, C');
 
     xlim([ min(min(X)), max(max(X)) ]);
