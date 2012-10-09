@@ -1,4 +1,5 @@
 setup;
+includeLibrary('Vendor/DataHash');
 
 sampleCount = 1e2;
 
