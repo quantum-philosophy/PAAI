@@ -6,7 +6,7 @@ function interpolant = interpolation
   %
   tic;
   [ platform, application, schedule, parameters ] = ...
-    Test.Case.constructBeta('002_020', 1);
+    Test.Case.constructBeta('002_020', 'taskIndex', 1);
   fprintf('Initialization: %.2f s\n', toc);
 
   %

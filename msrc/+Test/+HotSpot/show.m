@@ -2,14 +2,10 @@ setup;
 
 samplingInterval = 1e-4; % s
 
-systemFilename = Utils.resolvePath('002_020.tgff');
-floorplanFilename = Utils.resolvePath('002.flp', 'test');
-configFilename = Utils.resolvePath('hotspot.config');
-configLine = sprintf('sampling_intvl %e', samplingInterval);
-
-%% Construct a multiprocessor system running an application.
+%% Configuration.
 %
-[ platform, application ] = parseTGFF(systemFilename);
+[ platform, application, floorplan, hotspotConfig, hotspotLine ] = ...
+  Test.Case.request('samplingInterval', samplingInterval);
 
 %% Schedule the application.
 %
@@ -28,7 +24,7 @@ power.draw(powerProfile);
 
 %% Compute the corresponding temperature profile.
 %
-hotspot = HotSpot.Analytic(floorplanFilename, configFilename, configLine);
+hotspot = HotSpot.Analytic(floorplan, hotspotConfig, hotspotLine);
 temperatureProfile = hotspot.compute(powerProfile);
 
 display(hotspot);

@@ -1,24 +1,33 @@
 setup;
 includeLibrary('Vendor/DataHash');
 
-sampleCount = 1e3;
-samplingInterval = 1e-4; % s
+samplingInterval = 1e-4;
+sampleCount = 1e2;
 
 %% Select what we want to observe.
 %
 timeMoment = 0.1;
 timeStep = floor(timeMoment / samplingInterval);
 
-taskIndex = 1;
-
-%% Configuration files.
+%% Configuration.
 %
-floorplanFilename = Utils.resolvePath('002.flp', 'test');
-configFilename = Utils.resolvePath('hotspot.config');
-configLine = sprintf('sampling_intvl %e', samplingInterval);
+[ platform, application, floorplan, hotspotConfig, hotspotLine ] = ...
+  Test.Case.request('samplingInterval', samplingInterval);
 
-[ platform, application, schedule, parameters ] = ...
-  Test.Case.constructBeta('002_020', taskIndex);
+processorCount = length(platform);
+taskCount = length(application);
+
+taskIndex = 1:taskCount;
+
+fprintf('  Task number to inspect (1-%d) [all]: ', taskCount);
+out = input('');
+
+if ~isempty(out), taskIndex = out; end
+
+[ schedule, parameters ] = Test.Case.constructBeta(platform, application, ...
+  'taskIndex', taskIndex, 'alpha', 1.4, 'beta', 3, 'deviation', 0.7);
+
+executionTime = schedule.executionTime;
 
 %% Perform the probability transformation.
 %
@@ -32,16 +41,13 @@ power = PowerProfile(samplingInterval);
 
 %% Initialize the temperature simulator.
 %
-hotspot = HotSpot.Analytic(floorplanFilename, configFilename, configLine);
-
-processorCount = length(platform);
-taskCount = length(application);
-executionTime = schedule.executionTime;
+hotspot = HotSpot.Analytic(floorplan, hotspotConfig, hotspotLine);
 
 maxStepCount = 1.5 * duration(schedule) / samplingInterval;
 
 filename = sprintf('HotSpot_simulate_%s.mat', ...
-  DataHash({ taskIndex, samplingInterval, sampleCount }));
+  DataHash({ processorCount, taskCount, taskIndex, ...
+    samplingInterval, sampleCount }));
 
 if File.exist(filename)
   load(filename);
@@ -80,11 +86,9 @@ end
 minStepCount = find(all(squeeze(all(data, 1)), 1), 1, 'last');
 data = convertKelvinToCelsius(data(:, :, 1:minStepCount));
 
-size(data)
-
 if dimensionCount == 1
   timeSpan = (1:minStepCount) * samplingInterval;
-  [ X, Y ] = meshgrid(timeSpan, samples);
+  [ X, Y ] = meshgrid(timeSpan, samples + executionTime(taskIndex));
 end
 
 fprintf('Monte Carlo:\n');
@@ -100,8 +104,13 @@ for i = 1:processorCount
     mesh(X, Y, squeeze(data(:, i, :)));
     title(sprintf('Temperature of Core %d', i));
     xlabel('Time, s');
-    ylabel('Uncertain parameter');
+    ylabel(sprintf('Execution time of Task %d', taskIndex));
     zlabel('Temperature, C');
+    xlim([ min(min(X)), max(max(X)) ]);
+    ylim([ min(min(Y)), max(max(Y)) ]);
+    view([ 0 90 ]);
+    colormap('jet');
+    colorbar;
   otherwise
     observeData(data(:, i, timeStep), ...
       'draw', 'true', 'method', 'histogram', 'range', 'unbounded');

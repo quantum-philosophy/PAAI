@@ -1,24 +1,25 @@
-function [ platform, application, schedule, parameters ] = ...
-  constructBeta(name, taskIndex)
-
-  %% Load a platform and an application.
-  %
-  filename = Utils.resolvePath([ name, '.tgff' ]);
-  [ platform, application ] = parseTGFF(filename);
+function [ schedule, parameters ] = constructBeta(platform, application, varargin)
+  options = Options(varargin{:});
 
   %% Construct a schedule.
   %
   schedule = Schedule.Dense(platform, application);
 
-  if nargin < 2, taskIndex = 1:length(application); end
+  taskIndex = options.get('taskIndex', []);
+  if isempty(taskIndex), taskIndex = 1:length(application); end
+
+  alpha = options.get('alpha', 1);
+  beta = options.get('beta', 3);
+  deviation = options.get('deviation', 0.5);
 
   %% Determine the marginal distributions.
   %
   distributions = {};
   for time = schedule.executionTime(taskIndex)
+    delta = deviation * time;
     distributions{end + 1} = ...
       ProbabilityDistribution.Beta( ...
-        'alpha', 1, 'beta', 3, 'a', 0, 'b', 0.5 * time);
+        'alpha', alpha, 'beta', beta, 'a', -delta / 4, 'b', 3 * delta / 4);
   end
 
   switch length(taskIndex)
@@ -27,7 +28,7 @@ function [ platform, application, schedule, parameters ] = ...
   otherwise
     %% Generate a correlation matrix.
     %
-    correlation = Correlation.Pearson.random(dimensionCount);
+    correlation = Correlation.Pearson.random(length(taskIndex));
 
     %% Construct a vector of correlated RVs.
     %

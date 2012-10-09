@@ -1,31 +1,44 @@
 setup;
 
-samples = 1e2;
+sampleCount = 1e2;
 
-[ platform, application, schedule, parameters ] = Test.Case.constructBeta('002_020');
+%% Configuration.
+%
+[ platform, application ] = Test.Case.request();
+[ schedule, parameters ] = Test.Case.constructBeta(platform, application);
 
 %% Perform the probability transformation.
 %
 transformation = ProbabilityTransformation.Normal(parameters);
 
 executionTime = schedule.executionTime;
-startTime = zeros(samples, length(application));
 
-tic;
-for i = 1:samples
-  schedule.adjustExecutionTime( ...
-    executionTime + transformation.sample(1));
+filename = sprintf('System_simulate_%s.mat', ...
+  DataHash({ length(platform), length(application), sampleCount }));
 
-  startTime(i, :) = schedule.startTime;
+if File.exist(filename)
+  load(filename);
+else
+  data = zeros(sampleCount, length(application));
+
+  tic;
+  for i = 1:sampleCount
+    schedule.adjustExecutionTime( ...
+      executionTime + transformation.sample(1));
+
+    data(i, :) = schedule.startTime;
+  end
+  time = toc;
+
+  save(filename, 'data', 'time', '-v7.3');
 end
-time = toc;
 
 fprintf('Monte Carlo:\n');
-fprintf('  Samples: %d\n', samples);
+fprintf('  sampleCount: %d\n', sampleCount);
 fprintf('  Simulation time: %.2f s\n', time);
 
 for i = 2:10
-  observeData(startTime(:, i), ...
+  observeData(data(:, i), ...
     'draw', 'true', 'method', 'histogram', 'range', 'unbounded');
   title([ 'Start time of Task ', num2str(i) ]);
   xlabel('Time, s');
