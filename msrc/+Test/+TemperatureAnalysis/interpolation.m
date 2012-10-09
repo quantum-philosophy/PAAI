@@ -1,21 +1,42 @@
 function interpolant = interpolation
   setup;
+  includeLibrary('Vendor/DataHash');
 
-  processorIndex = 1;
-  taskIndex = 1;
   samplingInterval = 1e-4;
   sampleCount = 1e2;
 
   %
   % Configure the test case.
   %
-  tic;
   [ platform, application, floorplan, hotspotConfig, hotspotLine ] = ...
     Test.Case.request('samplingInterval', samplingInterval);
 
+  processorCount = length(platform);
+  taskCount = length(application);
+
+  %
+  % Pick a processing element.
+  %
+  processorIndex = 1;
+
+  fprintf('  Processor to inspect (1-%d) [%d]: ', processorCount, processorIndex);
+  out = input('');
+  if ~isempty(out), processorIndex = out; end
+
+  %
+  % Pick a set of tasks.
+  %
+  taskIndex = 1;
+
+  fprintf('  Tasks to inspect (1-%d) [[%d]]: ', taskCount, taskIndex);
+  out = input('');
+  if ~isempty(out), taskIndex = out; end
+
+  %
+  % Construct a schedule and a set of uncertain parameters.
+  %
   [ schedule, parameters ] = Test.Case.constructBeta(platform, application, ...
     'taskIndex', taskIndex, 'alpha', 1.4, 'beta', 3, 'deviation', 0.7);
-  fprintf('Initialization: %.2f s\n', toc);
 
   %
   % Perform the probability transformation.
@@ -44,49 +65,79 @@ function interpolant = interpolation
 
   fprintf('Dimension: %d\n', dimensionCount);
 
-  %
-  % Construct an interpolant.
-  %
-  tic;
-  interpolant = ASGC(@(u) compute(power, hotspot, schedule, ...
-    executionTime, processorIndex, taskIndex, stepCount, ...
-    transformation.evaluateUniform(u)), ...
-    'inputDimension', dimensionCount, 'outputDimension', stepCount, ...
-    'maxLevel', 10, 'tolerance', 1e-2);
-  fprintf('Interpolant construction: %.2f s\n', toc);
+  filename = sprintf('HotSpot_interpolation_%s.mat', ...
+    DataHash({ processorCount, taskCount, processorIndex, taskIndex, ...
+      samplingInterval, stepCount }));
+
+  if File.exist(filename)
+    load(filename);
+  else
+    %
+    % Construct an interpolant.
+    %
+    tic;
+    interpolant = ASGC(@(u) compute(power, hotspot, schedule, ...
+      executionTime, processorIndex, taskIndex, stepCount, ...
+      transformation.evaluateUniform(u)), ...
+      'inputDimension', dimensionCount, 'outputDimension', stepCount, ...
+      'maxLevel', 10, 'tolerance', 1e-2);
+    time = toc;
+
+    save(filename, 'interpolant', 'time', '-v7.3');
+  end
+
+  fprintf('Interpolant construction: %.2f s\n', time);
 
   %
-  % Assess the interpolant.
+  % Assess and visualize the interpolant.
   %
-  uniformSamples = linspace(0, 1, sampleCount).';
-  samples = transformation.evaluateUniform(uniformSamples);
-  data = interpolant.evaluate(uniformSamples);
 
-  %
-  % Display.
-  %
-  figure;
+  index = taskIndex(1);
 
-  minStepCount = find(all(data, 1), 1, 'last');
-  Z = convertKelvinToCelsius(data(:, 1:minStepCount));
+  while true
+    if dimensionCount > 1
+      fprintf('  Task to visualize [%d]: ', index);
+      out = input('');
+      if ~isempty(out), index = out; end
+    end
 
-  timeSpan = (1:minStepCount) * samplingInterval;
-  [ X, Y ] = meshgrid(timeSpan, samples + executionTime(taskIndex));
+    position = find(taskIndex == index);
+    if length(position) ~= 1
+      index = taskIndex(1);
+      continue;
+    end
 
-  mesh(X, Y, Z);
-  colormap(Color.map);
-  colorbar;
+    uniformSamples = 0.5 * ones(sampleCount, dimensionCount);
+    uniformSamples(:, position) = linspace(0, 1, sampleCount).';
 
-  title(sprintf('Temperature of Core %d', processorIndex));
+    samples = transformation.evaluateUniform(uniformSamples);
+    data = interpolant.evaluate(uniformSamples);
 
-  xlabel('Time, s');
-  ylabel(sprintf('Execution time of Task %d', taskIndex));
-  zlabel('Temperature, C');
+    figure;
 
-  xlim([ min(min(X)), max(max(X)) ]);
-  ylim([ min(min(Y)), max(max(Y)) ]);
+    minStepCount = find(all(data, 1), 1, 'last');
+    Z = convertKelvinToCelsius(data(:, 1:minStepCount));
 
-  view([ 0 90 ]);
+    timeSpan = (1:minStepCount) * samplingInterval;
+    [ X, Y ] = meshgrid(timeSpan, samples(:, position) + executionTime(index));
+
+    mesh(X, Y, Z);
+    colormap(Color.map(Z, 0, 100));
+    colorbar;
+
+    title(sprintf('Temperature of Core %d', processorIndex));
+
+    xlabel('Time, s');
+    ylabel(sprintf('Execution time of Task %d', index));
+    zlabel('Temperature, C');
+
+    xlim([ min(min(X)), max(max(X)) ]);
+    ylim([ min(min(Y)), max(max(Y)) ]);
+
+    view([ 0 90 ]);
+
+    if dimensionCount == 1, break; end
+  end
 end
 
 function result = compute(power, hotspot, ...

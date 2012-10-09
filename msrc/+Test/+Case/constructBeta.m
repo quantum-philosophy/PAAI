@@ -19,7 +19,7 @@ function [ schedule, parameters ] = constructBeta(platform, application, varargi
     delta = deviation * time;
     distributions{end + 1} = ...
       ProbabilityDistribution.Beta( ...
-        'alpha', alpha, 'beta', beta, 'a', -delta / 4, 'b', 3 * delta / 4);
+        'alpha', alpha, 'beta', beta, 'a', 0, 'b', delta);
   end
 
   switch length(taskIndex)
