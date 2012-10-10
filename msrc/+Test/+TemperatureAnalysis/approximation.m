@@ -99,6 +99,7 @@ function approximation
 
     fprintf('Interpolant construction: %.2f s\n', time);
     display(interpolant);
+    if dimensionCount <= 2, plot(interpolant); end
 
     computeData = @(uniformSamples) interpolant.evaluate(uniformSamples);
   case 'MC'
@@ -143,11 +144,9 @@ function approximation
     colormap(Color.map(Z, 0, 100));
     colorbar;
 
-    title(sprintf('%s: Temperature of Core %d', method, processorIndex));
-
-    xlabel('Time, s');
-    ylabel(sprintf('Independent variable %d', position));
-    zlabel('Temperature, C');
+    Plot.title('%s: Temperature of Core %d', method, processorIndex);
+    Plot.label('Time, s', ...
+      sprintf('Independent variable %d', position), 'Temperature, C');
 
     xlim([ min(min(X)), max(max(X)) ]);
     ylim([ min(min(Y)), max(max(Y)) ]);

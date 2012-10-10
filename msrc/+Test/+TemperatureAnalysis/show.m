@@ -11,7 +11,7 @@ samplingInterval = 1e-4; % s
 %
 schedule = Schedule.Dense(platform, application);
 
-draw(schedule);
+plot(schedule);
 display(schedule);
 
 %% Obtain the dynamic power profile.
@@ -20,7 +20,7 @@ power = PowerProfile(samplingInterval);
 powerProfile = power.compute(schedule);
 
 power.display(powerProfile);
-power.draw(powerProfile);
+power.plot(powerProfile);
 
 %% Compute the corresponding temperature profile.
 %
@@ -28,4 +28,4 @@ hotspot = HotSpot.Analytic(floorplan, hotspotConfig, hotspotLine);
 temperatureProfile = hotspot.compute(powerProfile);
 
 display(hotspot);
-hotspot.draw(temperatureProfile);
+hotspot.plot(temperatureProfile);
