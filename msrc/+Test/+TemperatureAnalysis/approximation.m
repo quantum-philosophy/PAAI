@@ -92,7 +92,7 @@ function approximation
 
   f = @(u) compute(power, hotspot, schedule, ...
     executionTime, processorIndex, taskIndex, stepCount, ...
-    transformation.evaluateUniform(u));
+    transformation.evaluateUniform(preprocess(u)));
 
   switch method
   case 'HDMR'
@@ -127,11 +127,11 @@ function approximation
     display(interpolant);
     if dimensionCount <= 2, plot(interpolant); end
 
-    computeData = @(uniformSamples) interpolant.evaluate(uniformSamples);
+    computeData = @(u) interpolant.evaluate(u);
   case 'MC'
-    computeData = @(uniformSamples) compute(power, hotspot, ...
+    computeData = @(u) compute(power, hotspot, ...
       schedule, executionTime, processorIndex, taskIndex, stepCount, ...
-      transformation.evaluateUniform(uniformSamples));
+      transformation.evaluateUniform(preprocess(u)));
   otherwise
     error('The method is unknown.');
   end
@@ -181,6 +181,10 @@ function approximation
 
     if dimensionCount == 1, break; end
   end
+end
+
+function data = preprocess(data)
+  data = (1 - 2 * 1e-6) * data + 1e-6;
 end
 
 function data = compute(power, hotspot, ...
