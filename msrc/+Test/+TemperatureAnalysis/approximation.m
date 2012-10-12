@@ -20,9 +20,9 @@ function approximation
   %
   % Pick a method.
   %
-  method = 'ASGC';
+  method = 'HDMR';
 
-  fprintf('  Method to employ (ASGC, MC) [%s]: ', method);
+  fprintf('  Method to employ (HDMR, ASGC, MC) [%s]: ', method);
   method = Input.read('default', method, 'char', true, 'upper', true);
 
   %
@@ -77,27 +77,53 @@ function approximation
   % ============================================================================
   %
 
+  filename = sprintf('HotSpot_approximation_%s.mat', ...
+    DataHash({ processorCount, taskCount, processorIndex, taskIndex, ...
+      samplingInterval, stepCount, independent, method }));
+
+  asgcOptions = Options( ...
+    'inputDimension', dimensionCount, 'outputDimension', stepCount, ...
+    'maxLevel', 10, 'tolerance', 1e-4);
+
+  hdmrOptions = Options( ...
+    'inputDimension', dimensionCount, 'outputDimension', stepCount, ...
+    'maxOrder', 10, 'interpolantOptions', asgcOptions, ...
+    'orderTolerance', 1e-2, 'dimensionTolerance', 1e-2);
+
+  f = @(u) compute(power, hotspot, schedule, ...
+    executionTime, processorIndex, taskIndex, stepCount, ...
+    transformation.evaluateUniform(u));
+
   switch method
-  case 'ASGC'
-    filename = sprintf('HotSpot_approximation_%s.mat', ...
-      DataHash({ processorCount, taskCount, processorIndex, taskIndex, ...
-        samplingInterval, stepCount, independent }));
+  case 'HDMR'
+    asgcOptions.tolerance = 1e-2;
 
     if File.exist(filename)
+      warning('Loading cached data "%s".', filename);
       load(filename);
     else
       tic;
-      interpolant = ASGC(@(u) compute(power, hotspot, schedule, ...
-        executionTime, processorIndex, taskIndex, stepCount, ...
-        transformation.evaluateUniform(u)), ...
-        'inputDimension', dimensionCount, 'outputDimension', stepCount, ...
-        'maxLevel', 10, 'tolerance', 1e-2);
+      interpolant = HDMR(f, hdmrOptions);
       time = toc;
-
       save(filename, 'interpolant', 'time', '-v7.3');
     end
 
-    fprintf('Interpolant construction: %.2f s\n', time);
+    fprintf('HDMR construction: %.2f s\n', time);
+    display(interpolant);
+
+    computeData = @(uniformSamples) interpolant.evaluate(uniformSamples);
+  case 'ASGC'
+    if File.exist(filename)
+      warning('Loading cached data "%s".', filename);
+      load(filename);
+    else
+      tic;
+      interpolant = ASGC(f, asgcOptions);
+      time = toc;
+      save(filename, 'interpolant', 'time', '-v7.3');
+    end
+
+    fprintf('ASGC construction: %.2f s\n', time);
     display(interpolant);
     if dimensionCount <= 2, plot(interpolant); end
 
@@ -160,8 +186,7 @@ end
 function data = compute(power, hotspot, ...
   schedule, executionTime, processorIndex, taskIndex, stepCount, delta)
 
-  taskCount = size(executionTime, 2);
-  [ pointCount, dimensionCount ] = size(delta);
+  pointCount = size(delta, 1);
 
   data = zeros(pointCount, stepCount);
 
