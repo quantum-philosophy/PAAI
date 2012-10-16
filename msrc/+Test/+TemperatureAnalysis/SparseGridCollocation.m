@@ -1,12 +1,15 @@
-function approximation
+function interpolant = SparseGridCollocation
   rng(0);
 
   setup;
-  includeLibrary('Vendor/DataHash');
+  use('Vendor', 'DataHash');
 
-  independent = false;
+  independent = true;
   samplingInterval = 1e-4;
   sampleCount = 1e2;
+
+  processorIndex = 1;
+  taskIndex = 1;
 
   %
   % Configure the test case.
@@ -26,20 +29,15 @@ function approximation
   method = Input.read('default', method, 'char', true, 'upper', true);
 
   %
-  % Pick a processing element.
+  % A questionnaire.
   %
-  processorIndex = 1;
+  processorIndex = Input.read( ...
+    'prompt', sprintf('  Processor to inspect (1-%d) [%d]: ', processorCount, processorIndex), ...
+    'default', processorIndex);
 
-  fprintf('  Processor to inspect (1-%d) [%d]: ', processorCount, processorIndex);
-  processorIndex = Input.read('default', processorIndex);
-
-  %
-  % Pick a set of tasks.
-  %
-  taskIndex = 1;
-
-  fprintf('  Tasks to inspect (1-%d) [[%d]]: ', taskCount, taskIndex);
-  taskIndex = Input.read('default', taskIndex);
+  taskIndex = Input.read( ...
+    'prompt', sprintf('  Tasks to inspect (1-%d) [[%d]]: ', taskCount, taskIndex), ...
+    'default', taskIndex);
 
   %
   % Construct a schedule and a set of uncertain parameters.
@@ -70,40 +68,63 @@ function approximation
   executionTime = schedule.executionTime;
 
   stepCount = floor(duration(schedule) / samplingInterval);
+  stepCount = floor(0.06 / samplingInterval);
 
-  fprintf('Dimension: %d\n', dimensionCount);
+  %
+  % Target.
+  %
+  newExecutionTime = executionTime;
+  newPowerProfile = zeros(processorCount, stepCount);
+  function data = compute(standardUniformRVs)
+    cutUniformRVs = (1 - 2 * 1e-6) * standardUniformRVs + 1e-6;
+    variables = transformation.evaluateUniform(cutUniformRVs);
+
+    pointCount = size(variables, 1);
+
+    data = zeros(pointCount, stepCount);
+
+    for i = 1:pointCount
+      newExecutionTime(taskIndex) = executionTime(taskIndex) + variables(i, :);
+      newSchedule = Schedule.Dense(schedule, 'executionTime', newExecutionTime);
+
+      powerProfile = power.compute(newSchedule);
+      count = min(stepCount, size(newPowerProfile, 2));
+
+      newPowerProfile(:, 1:count) = powerProfile(:, 1:count);
+      newPowerProfile(:, (count + 1):end) = 0;
+
+      newTemperatureProfile = hotspot.compute(newPowerProfile);
+
+      data(i, :) = newTemperatureProfile(processorIndex, :);
+    end
+  end
 
   %
   % ============================================================================
   %
 
-  filename = sprintf('HotSpot_approximation_%s.mat', ...
+  filename = sprintf('TemperatureAnalysis_SparseGridCollocation_%s.mat', ...
     DataHash({ processorCount, taskCount, processorIndex, taskIndex, ...
       samplingInterval, stepCount, independent, method }));
 
   asgcOptions = Options( ...
     'inputDimension', dimensionCount, 'outputDimension', stepCount, ...
-    'maxLevel', 10, 'tolerance', 1e-4);
+    'adaptivityControl', 'norm', 'minLevel', 2, 'maxLevel', 10, ...
+    'tolerance', 1e-4);
 
   hdmrOptions = Options( ...
     'inputDimension', dimensionCount, 'outputDimension', stepCount, ...
     'maxOrder', 10, 'interpolantOptions', asgcOptions, ...
-    'orderTolerance', 1e-2, 'dimensionTolerance', 1e-2);
-
-  f = @(u) compute(power, hotspot, schedule, ...
-    executionTime, processorIndex, taskIndex, stepCount, ...
-    transformation.evaluateUniform(preprocess(u)));
+    'orderTolerance', 1e-5, 'dimensionTolerance', 1e-5);
 
   switch method
   case 'HDMR'
-    asgcOptions.tolerance = 1e-2;
-
     if File.exist(filename)
       warning('Loading cached data "%s".', filename);
       load(filename);
     else
       tic;
-      interpolant = HDMR(f, hdmrOptions);
+      interpolant = HDMR(@compute, hdmrOptions);
       time = toc;
       save(filename, 'interpolant', 'time', '-v7.3');
     end
@@ -113,12 +134,17 @@ function approximation
 
     computeData = @(uniformSamples) interpolant.evaluate(uniformSamples);
   case 'ASGC'
+    asgcOptions.adaptivityControl = 'norm';
+    asgcOptions.maxLevel = 12;
+    asgcOptions.set('verbose', true);
+    asgcOptions.tolerance = 1e-4;
+
     if File.exist(filename)
       warning('Loading cached data "%s".', filename);
       load(filename);
     else
       tic;
-      interpolant = ASGC(f, asgcOptions);
+      interpolant = ASGC(@compute, asgcOptions);
       time = toc;
       save(filename, 'interpolant', 'time', '-v7.3');
     end
@@ -129,11 +155,24 @@ function approximation
 
     computeData = @(u) interpolant.evaluate(u);
   case 'MC'
-    computeData = @(u) compute(power, hotspot, ...
-      schedule, executionTime, processorIndex, taskIndex, stepCount, ...
-      transformation.evaluateUniform(preprocess(u)));
+    interpolant = [];
+    computeData = @compute;
   otherwise
     error('The method is unknown.');
+  end
+
+  figure;
+
+  trials = [ 0.4, 0.5 ];
+  x = (1:stepCount) * samplingInterval;
+
+  for i = 1:length(trials)
+    u = trials(i) * ones(1, dimensionCount);
+    one = Utils.toCelsius(compute(u));
+    two = Utils.toCelsius(computeData(u));
+    color = Color.pick(i);
+    line(x, one, 'Color', color);
+    line(x, two, 'Color', color, 'LineStyle', '--');
   end
 
   %
@@ -141,16 +180,12 @@ function approximation
   %
 
   position = 1;
-
   while true
     if dimensionCount > 1
-      fprintf('  Independent RV to visualize [%d]: ', position);
-      position = Input.read('default', position);
-
-      if position < 1 || position > dimensionCount
-        position = 1;
-        continue;
-      end
+      fprintf('  Independent RV to visualize: ');
+      position = Input.read;
+      if isempty(position), break; end
+      if position < 1 || position > dimensionCount, continue; end
     end
 
     uniformSamples = 0.5 * ones(sampleCount, dimensionCount);
@@ -161,7 +196,7 @@ function approximation
     figure;
 
     minStepCount = find(all(data, 1), 1, 'last');
-    Z = convertKelvinToCelsius(data(:, 1:minStepCount));
+    Z = Utils.toCelsius(data(:, 1:minStepCount));
 
     timeSpan = (1:minStepCount) * samplingInterval;
     [ X, Y ] = meshgrid(timeSpan, uniformSamples(:, position));
@@ -173,36 +208,10 @@ function approximation
     Plot.title('%s: Temperature of Core %d', method, processorIndex);
     Plot.label('Time, s', ...
       sprintf('Independent variable %d', position), 'Temperature, C');
-
-    xlim([ min(min(X)), max(max(X)) ]);
-    ylim([ min(min(Y)), max(max(Y)) ]);
+    Plot.limit(X, Y);
 
     view([ 0 90 ]);
 
     if dimensionCount == 1, break; end
-  end
-end
-
-function data = preprocess(data)
-  data = (1 - 2 * 1e-6) * data + 1e-6;
-end
-
-function data = compute(power, hotspot, ...
-  schedule, executionTime, processorIndex, taskIndex, stepCount, delta)
-
-  pointCount = size(delta, 1);
-
-  data = zeros(pointCount, stepCount);
-
-  for i = 1:pointCount
-    time = executionTime;
-    time(taskIndex) = time(taskIndex) + delta(i, :);
-    schedule.adjustExecutionTime(time);
-
-    powerProfile = power.compute(schedule);
-    temperatureProfile = hotspot.compute(powerProfile);
-
-    count = min(stepCount, size(temperatureProfile, 2));
-    data(i, 1:count) = temperatureProfile(processorIndex, 1:count);
   end
 end

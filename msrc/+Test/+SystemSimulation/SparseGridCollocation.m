@@ -1,4 +1,4 @@
-function interpolant = interpolation
+function interpolant = SparseGridCollocation
   setup;
 
   %
@@ -28,6 +28,7 @@ function interpolant = interpolation
   tic;
   interpolant = ASGC(@(u) compute(schedule, executionTime, ...
     transformation.evaluateUniform(u)), ...
+    'adaptivityControl', 'variance', ...
     'inputDimension', dimensionCount, ...
     'maxLevel', 20, 'tolerance', 1e-4);
   fprintf('Interpolant construction: %.2f s\n', toc);
@@ -37,8 +38,7 @@ function interpolant = interpolation
 end
 
 function result = compute(schedule, executionTime, delta)
-  taskCount = size(executionTime, 2);
-  [ pointCount, dimensionCount ] = size(delta);
+  pointCount = size(delta, 1);
 
   result = zeros(pointCount, 1);
 
