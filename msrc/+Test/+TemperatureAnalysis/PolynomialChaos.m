@@ -7,7 +7,6 @@ function PolynomialChaos
   processorIndex = 1;
   taskIndex = 1;
   polynomialOrder = 3;
-  quadratureLevel = 5;
 
   %
   % Configure the test case.
@@ -33,16 +32,17 @@ function PolynomialChaos
     'prompt', sprintf('  Polynomial order [%d]: ', polynomialOrder), ...
     'default', polynomialOrder);
 
-  quadratureLevel = Input.read( ...
-    'prompt', sprintf('  Quadrature level [%d]: ', quadratureLevel), ...
-    'default', quadratureLevel);
+  quadratureOrder = polynomialOrder + 1;
+  quadratureOrder = Input.read( ...
+    'prompt', sprintf('  Quadrature order [%d]: ', quadratureOrder), ...
+    'default', quadratureOrder);
 
   %
   % Construct a schedule and a set of uncertain parameters.
   %
   [ schedule, parameters ] = Test.Case.constructBeta(platform, application, ...
     'taskIndex', taskIndex, 'independent', independent, ...
-    'alpha', 1.4, 'beta', 3, 'deviation', 0.7);
+    'alpha', 1, 'beta', 1, 'deviation', 0.7);
 
   %
   % Perform the probability transformation.
@@ -65,14 +65,13 @@ function PolynomialChaos
   dimension = transformation.dimension;
   executionTime = schedule.executionTime;
 
-  stepCount = floor(duration(schedule) / samplingInterval);
-  stepCount = floor(0.1 / samplingInterval);
+  stepIndex = 1:floor(0.1 / samplingInterval);
+  stepCount = length(stepIndex);
 
   %
   % Target.
   %
   newExecutionTime = executionTime;
-  newPowerProfile = zeros(processorCount, stepCount);
   function data = compute(standardNormalRVs)
     variables = transformation.evaluateNative(standardNormalRVs);
 
@@ -83,32 +82,32 @@ function PolynomialChaos
     for i = 1:pointCount
       newExecutionTime(taskIndex) = executionTime(taskIndex) + variables(i, :);
       newSchedule = Schedule.Dense(schedule, 'executionTime', newExecutionTime);
+      newPowerProfile = power.compute(newSchedule);
 
-      powerProfile = power.compute(newSchedule);
-      count = min(stepCount, size(newPowerProfile, 2));
+      powerProfile = newPowerProfile(:, stepIndex);
+      temperatureProfile = hotspot.compute(powerProfile);
 
-      newPowerProfile(:, 1:count) = powerProfile(:, 1:count);
-      newPowerProfile(:, (count + 1):end) = 0;
-
-      newTemperatureProfile = hotspot.compute(newPowerProfile);
-
-      data(i, :) = newTemperatureProfile(processorIndex, :);
+      data(i, :) = temperatureProfile(processorIndex, :);
     end
   end
 
   %
-  % Polynomial chaos.
+  % ############################################################################
   %
-  qdOptions = Options( ...
-    'rules', 'GaussHermite', ...
-    'level', quadratureLevel);
-  pcOptions = Options( ...
-    'quadratureName', 'Tensor', ...
-    'quadratureOptions', qdOptions, ...
+
+  %
+  % Polynomial chaos for the whole curve.
+  %
+  quadratureOptions = Options( ...
+    'name', 'Tensor', ...
+    'dimension', dimension, ...
+    'order', quadratureOrder);
+  chaosOptions = Options( ...
+    'quadratureOptions', quadratureOptions, ...
     'dimension', dimension, ...
     'codimension', stepCount, ...
     'order', polynomialOrder);
-  chaos = PolynomialChaos.Hermite(pcOptions);
+  chaos = PolynomialChaos.ProbabilistHermite(chaosOptions);
 
   display(chaos);
 
@@ -117,7 +116,7 @@ function PolynomialChaos
   fprintf('Expansion construction: %.2f s\n', toc);
 
   %
-  % Have a look at the algorithm.
+  % Have a look at the curve.
   %
   figure;
 
@@ -136,24 +135,55 @@ function PolynomialChaos
   Plot.limit(time);
 
   %
-  % Have a look at a time slice.
+  % ############################################################################
+  %
+
+  timeSlice = 0.033;
+  stepIndex = floor(timeSlice / samplingInterval);
+  stepCount = 1;
+
+  %
+  % Polynomial chaos for a time slice.
+  %
+  chaosOptions.codimension = 1;
+  chaos = PolynomialChaos.ProbabilistHermite(chaosOptions);
+
+  display(chaos);
+
+  tic;
+  coefficients = chaos.expand(@compute);
+  fprintf('Expansion construction: %.2f s\n', toc);
+
+  %
+  % Have a look at the slice.
   %
   figure;
 
-  RVs = transpose(-1:0.1:1);
-  time = [ 0.033 ];
+  RVs = transpose(-3:0.1:3);
 
-  for k = 1:length(time)
-    l = floor(time / samplingInterval);
-    one = Utils.toCelsius(compute(RVs));
-    one = one(:, l);
-    two = Utils.toCelsius(chaos.evaluate(coefficients(:, l), RVs));
-    color = Color.pick(k);
-    line(RVs, one, 'Color', color);
-    line(RVs, two, 'Color', color, 'LineStyle', '--');
+  one = Utils.toCelsius(compute(RVs));
+  two = Utils.toCelsius(chaos.evaluate(coefficients, RVs));
+
+  color = Color.pick(1);
+  line(RVs, one,   'Color', color);
+  line(RVs, two,   'Color', color, 'Marker', 'x');
+
+  if false
+    %
+    % Verification with pmpack.
+    %
+    solution = pseudospectral(@(standardNormalRVs) ...
+      compute(standardNormalRVs), [ parameter('gaussian') ], polynomialOrder);
+    three = zeros(size(one));
+    for m = 1:length(RVs)
+      three(m) = evaluate_expansion(solution, RVs(m));
+    end
+    three = Utils.toCelsius(three);
+    line(RVs, three, 'Color', color, 'Marker', 'o');
   end
-  Plot.title('Polynomial order %d, quadrature level %d', ...
-    polynomialOrder, quadratureLevel);
+
+  Plot.title('Time %.2f s, polynomial order %d, quadrature order %d', ...
+    timeSlice, polynomialOrder, quadratureOrder);
   Plot.label('Random variable, s', 'Temperature, C');
   Plot.limit(RVs);
 end
