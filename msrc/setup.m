@@ -1,5 +1,5 @@
 function setup
-  evalin('base', 'clear all');
+  evalin('base', 'clear removes all');
 
   use('Approximation');
   use('SystemSimulation');

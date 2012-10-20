@@ -32,9 +32,9 @@ function [ schedule, parameters ] = constructBeta(platform, application, varargi
     % Generate a correlation matrix.
     %
     if options.get('independent', false)
-      correlation = Correlation.Pearson(diag(ones(1, length(taskIndex))));
+      correlation = eye(length(taskIndex));
     else
-      correlation = Correlation.Pearson.random(length(taskIndex));
+      correlation = Utils.generateCorrelation(length(taskIndex));
     end
 
     %
