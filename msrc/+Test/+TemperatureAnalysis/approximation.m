@@ -14,9 +14,16 @@ function solution = approximation
   independent = true;
   samplingInterval = 1e-4;
 
-  method = 'PC';
-  processorIndex = uint8(1);
-  taskIndex = uint8(1);
+  [ ~, ~, functionName ] = File.trace;
+  filename = sprintf('%s_input.mat', functionName);
+
+  if File.exist(filename)
+    load(filename);
+  else
+    method = 'PC';
+    processorIndex = uint8(1);
+    taskIndex = uint8(1);
+  end
 
   %
   % Construct the test case.
@@ -43,6 +50,8 @@ function solution = approximation
     'prompt', sprintf('Tasks to inspect (1-%d) [%s]: ', ...
       taskCount, Utils.toString(taskIndex)), ...
     'default', taskIndex, 'convert', 'uint8');
+
+  save(filename, 'method', 'processorIndex', 'taskIndex', '-v7.3');
 
   %
   % Construct a schedule and a set of uncertain parameters.
@@ -74,9 +83,9 @@ function solution = approximation
   dimensionCount = transformation.dimension;
   executionTime = schedule.executionTime;
 
-  startTime = 0.11;
-  endTime = 0.15;
-  stepIndex = floor(startTime / samplingInterval):floor(endTime / samplingInterval);
+  startTime = 0;
+  endTime = duration(schedule);
+  stepIndex = max(1, floor(startTime / samplingInterval)):floor(endTime / samplingInterval);
   stepCount = length(stepIndex);
 
   newExecutionTime = executionTime;
@@ -172,8 +181,8 @@ function solution = approximation
   %
   header('Construction of the approximation');
 
-  filename = sprintf('TemperatureAnalysis_PolynomialChaos_%s.mat', ...
-    DataHash({ method, processorCount, taskCount, processorIndex, taskIndex, ...
+  filename = sprintf('%s_%s_%s.mat', functionName, method, ...
+    DataHash({ processorCount, taskCount, processorIndex, taskIndex, ...
       samplingInterval, stepIndex, independent, additionalParameters }));
 
   if File.exist(filename)
@@ -202,12 +211,46 @@ function solution = approximation
   fprintf('Solution construction: %.2f s\n', time);
   display(solution);
 
+  sdExpectation = Utils.toCelsius(solution.expectation);
+  sdVariance = solution.variance;
+
+  %
+  % ----------------------------------------------------------------------------
+  % Monte Carlo sampling
+  % ----------------------------------------------------------------------------
+  %
+  header('Monte Carlo sampling');
+
+  sampleCount = 1e4;
+  fprintf('Number of samples: %d\n', sampleCount);
+
+  filename = sprintf('%s_MC_%s.mat', functionName, ...
+    DataHash({ processorCount, taskCount, processorIndex, taskIndex, ...
+      samplingInterval, stepIndex, independent, sampleCount }));
+
+  if File.exist(filename)
+    warning('Loading cached data "%s".', filename);
+    load(filename);
+  else
+    tic;
+    mcData = compute(rand(sampleCount, dimensionCount));
+    time = toc;
+    save(filename, 'mcData', 'time', '-v7.3');
+  end
+
+  fprintf('Monte Carlo simulation: %.2f s\n', time);
+
+  mcExpectation = Utils.toCelsius(mean(mcData, 1));
+  mcVariance = var(mcData, [], 1);
+
   %
   % ----------------------------------------------------------------------------
   % Inspection of the approximated solution
   % ----------------------------------------------------------------------------
   %
   header('Inspection of the approximated solution');
+
+  time = stepIndex * samplingInterval;
 
   switch method
   case 'PC'
@@ -224,6 +267,30 @@ function solution = approximation
   end
 
   %
+  % Have a look at the expected value and variance.
+  %
+  figure;
+
+  color1 = Color.pick(1);
+  color2 = Color.pick(2);
+
+  subplot(2, 1, 1);
+  line(time, mcExpectation, 'Color', color1);
+  line(time, sdExpectation, 'Color', color2);
+  Plot.title('%s [%s]: Expectation', method, title);
+  Plot.label('Time, s', 'Temperature, C');
+  Plot.limit(time);
+  legend('Monte Carlo', 'Approximated');
+
+  subplot(2, 1, 2);
+  line(time, mcVariance, 'Color', color1);
+  line(time, sdVariance, 'Color', color2);
+  Plot.title('%s [%s]: Variance', method, title);
+  Plot.label('Time, s', 'Temperature^2, C^2');
+  Plot.limit(time);
+  legend('Monte Carlo', 'Approximated');
+
+  %
   % Have a look at some overall curves.
   %
   figure;
@@ -234,8 +301,6 @@ function solution = approximation
   otherwise
     RVs = [  0.25, 0.50, 0.75 ];
   end
-
-  time = stepIndex * samplingInterval;
 
   names = {};
   for k = 1:length(RVs)
@@ -248,7 +313,7 @@ function solution = approximation
     names{end + 1} = sprintf('Exact at %.2f', RVs(k));
     names{end + 1} = 'Approximated';
   end
-  Plot.title('%s: %s', method, title);
+  Plot.title('%s [%s]: Examples', method, title);
   Plot.label('Time, s', 'Temperature, C');
   Plot.limit(time);
   legend(names{:});
@@ -294,12 +359,11 @@ function solution = approximation
     two = Utils.toCelsius(solution.evaluate(RVs));
     two = two(:, timeIndex);
 
-    color = Color.pick(1);
-    line(rvs, one, 'Color', color, 'Marker', 'o');
-    line(rvs, two, 'Color', color, 'Marker', 'x');
+    line(rvs, one, 'Color', color1);
+    line(rvs, two, 'Color', color2);
 
-    switch lower(method)
-    case 'pc'
+    switch method
+    case 'PC'
       if false && dimensionCount == 1
         %
         % Verification with the toolbox pmpack.
@@ -311,13 +375,14 @@ function solution = approximation
           three(m) = evaluate_expansion(alternative, RVs(m));
         end
         three = Utils.toCelsius(three);
-        line(rvs, three, 'Color', color, 'Marker', 's');
+        line(rvs, three, 'Color', color1, 'Marker', 'x');
       end
     end
 
-    Plot.title('%s: %s', method, title);
+    Plot.title('%s [%s]: Time slice', method, title);
     Plot.label('Random variable', 'Temperature, C');
     Plot.limit(rvs);
+    legend('Exact', 'Approximated');
   end
 end
 
