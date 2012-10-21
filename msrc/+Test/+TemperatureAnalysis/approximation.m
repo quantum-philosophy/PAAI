@@ -71,7 +71,7 @@ function solution = approximation
   dimensionCount = transformation.dimension;
   executionTime = schedule.executionTime;
 
-  stepIndex = 1:floor(0.1 / samplingInterval);
+  stepIndex = 1:floor(0.2 / samplingInterval);
   stepCount = length(stepIndex);
 
   newExecutionTime = executionTime;
@@ -130,8 +130,8 @@ function solution = approximation
     asgcOptions = Options( ...
       'inputDimension', dimensionCount, ...
       'outputDimension', stepCount, ...
-      'adaptivityControl', 'InfNorm', ...
-      'tolerance', 1e-3, ...
+      'adaptivityControl', 'NormNormExpectation', ...
+      'tolerance', 1e-4, ...
       'maximalLevel', 10, ...
       'verbose', true);
 
@@ -139,8 +139,8 @@ function solution = approximation
       'inputDimension', dimensionCount, ...
       'outputDimension', stepCount, ...
       'interpolantOptions', asgcOptions, ...
-      'orderTolerance', 1e-5, ...
-      'dimensionTolerance', 1e-5, ...
+      'orderTolerance', 1e-3, ...
+      'dimensionTolerance', 1e-3, ...
       'maximalOrder', 10, ...
       'verbose', true);
   otherwise
@@ -161,6 +161,8 @@ function solution = approximation
     warning('Loading cached data "%s".', filename);
     load(filename);
   else
+    profile on;
+    profile clear;
     tic;
     switch method
     case 'PC'
@@ -173,6 +175,8 @@ function solution = approximation
       error('The method is unknown.');
     end
     time = toc;
+    profile report;
+    profile off;
     save(filename, 'solution', 'time', '-v7.3');
   end
 
@@ -218,8 +222,8 @@ function solution = approximation
     one = Utils.toCelsius(compute(nodes));
     two = Utils.toCelsius(solution.evaluate(nodes));
     color = Color.pick(k);
-    line(time, one, 'Color', color);
-    line(time, two, 'Color', color, 'LineStyle', '--');
+    line(time, one, 'Color', color, 'Marker', 'o');
+    line(time, two, 'Color', color, 'Marker', 'x');
   end
   Plot.title('%s: %s', method, title);
   Plot.label('Time, s', 'Temperature, C');
@@ -265,8 +269,8 @@ function solution = approximation
     two = two(:, timeIndex);
 
     color = Color.pick(1);
-    line(RVs, one, 'Color', color);
-    line(RVs, two, 'Color', color, 'Marker', 'x');
+    line(rvs, one, 'Color', color, 'Marker', 'o');
+    line(rvs, two, 'Color', color, 'Marker', 'x');
 
     switch lower(method)
     case 'pc'
@@ -281,12 +285,12 @@ function solution = approximation
           three(m) = evaluate_expansion(alternative, RVs(m));
         end
         three = Utils.toCelsius(three);
-        line(RVs, three, 'Color', color, 'Marker', 'o');
+        line(rvs, three, 'Color', color, 'Marker', 's');
       end
     end
 
     Plot.title('%s: %s', method, title);
     Plot.label('Random variable', 'Temperature, C');
-    Plot.limit(RVs);
+    Plot.limit(rvs);
   end
 end
