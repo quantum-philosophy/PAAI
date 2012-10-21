@@ -6,15 +6,17 @@ function solution = approximation
 
   %
   % ----------------------------------------------------------------------------
-  % Preliminary configuration
+  % Configuration of the system
   % ----------------------------------------------------------------------------
   %
+  header('Configuration of the system');
+
   independent = true;
   samplingInterval = 1e-4;
 
   method = 'PC';
-  processorIndex = 1;
-  taskIndex = 1;
+  processorIndex = uint8(1);
+  taskIndex = uint8(1);
 
   %
   % Construct the test case.
@@ -29,17 +31,18 @@ function solution = approximation
   % Conduct a short survey.
   %
   method = Input.read( ...
-    'prompt', sprintf('  Method to employ (PC, ASGC, HDMR) [%s]: ', method), ...
+    'prompt', sprintf('Method to employ (PC, ASGC, HDMR) [%s]: ', method), ...
     'default', method);
   method = upper(method);
 
   processorIndex = Input.read( ...
-    'prompt', sprintf('  Processor to inspect (1-%d) [%d]: ', processorCount, processorIndex), ...
+    'prompt', sprintf('Processor to inspect (1-%d) [%d]: ', processorCount, processorIndex), ...
     'default', processorIndex);
 
   taskIndex = Input.read( ...
-    'prompt', sprintf('  Tasks to inspect (1-%d) [[%d]]: ', taskCount, taskIndex), ...
-    'default', taskIndex);
+    'prompt', sprintf('Tasks to inspect (1-%d) [%s]: ', ...
+      taskCount, Utils.toString(taskIndex)), ...
+    'default', taskIndex, 'convert', 'uint8');
 
   %
   % Construct a schedule and a set of uncertain parameters.
@@ -65,13 +68,15 @@ function solution = approximation
 
   %
   % ----------------------------------------------------------------------------
-  % Problem definition
+  % Definition of the problem
   % ----------------------------------------------------------------------------
   %
   dimensionCount = transformation.dimension;
   executionTime = schedule.executionTime;
 
-  stepIndex = 1:floor(0.2 / samplingInterval);
+  startTime = 0.11;
+  endTime = 0.15;
+  stepIndex = floor(startTime / samplingInterval):floor(endTime / samplingInterval);
   stepCount = length(stepIndex);
 
   newExecutionTime = executionTime;
@@ -96,21 +101,23 @@ function solution = approximation
 
   %
   % ----------------------------------------------------------------------------
-  % Method configuration
+  % Configuration of the approximation method
   % ----------------------------------------------------------------------------
   %
+  header('Configuration of the approximation method');
+
   additionalParameters = {};
 
   switch method
   case 'PC'
     polynomialOrder = 3;
     polynomialOrder = Input.read( ...
-      'prompt', sprintf('  Polynomial order [%d]: ', polynomialOrder), ...
+      'prompt', sprintf('Polynomial order [%d]: ', polynomialOrder), ...
       'default', polynomialOrder);
 
     quadratureOrder = polynomialOrder + 1;
     quadratureOrder = Input.read( ...
-      'prompt', sprintf('  Quadrature order [%d]: ', quadratureOrder), ...
+      'prompt', sprintf('Quadrature order [%d]: ', quadratureOrder), ...
       'default', quadratureOrder);
 
     quadratureOptions = Options( ...
@@ -147,15 +154,27 @@ function solution = approximation
     error('The solution method is unknown.');
   end
 
+  switch method
+  case 'PC'
+    display(chaosOptions);
+  case 'ASGC'
+    display(asgcOptions);
+  case 'HDMR'
+    display(hdmrOptions);
+  otherwise
+    assert(false);
+  end
+
   %
   % ----------------------------------------------------------------------------
-  % Approximation
+  % Construction of the approximation
   % ----------------------------------------------------------------------------
   %
+  header('Construction of the approximation');
 
   filename = sprintf('TemperatureAnalysis_PolynomialChaos_%s.mat', ...
     DataHash({ method, processorCount, taskCount, processorIndex, taskIndex, ...
-      samplingInterval, stepCount, independent, additionalParameters }));
+      samplingInterval, stepIndex, independent, additionalParameters }));
 
   if File.exist(filename)
     warning('Loading cached data "%s".', filename);
@@ -185,9 +204,10 @@ function solution = approximation
 
   %
   % ----------------------------------------------------------------------------
-  % Inspection
+  % Inspection of the approximated solution
   % ----------------------------------------------------------------------------
   %
+  header('Inspection of the approximated solution');
 
   switch method
   case 'PC'
@@ -215,8 +235,9 @@ function solution = approximation
     RVs = [  0.25, 0.50, 0.75 ];
   end
 
-  time = (1:stepCount) * samplingInterval;
+  time = stepIndex * samplingInterval;
 
+  names = {};
   for k = 1:length(RVs)
     nodes = RVs(k) * ones(1, dimensionCount);
     one = Utils.toCelsius(compute(nodes));
@@ -224,44 +245,49 @@ function solution = approximation
     color = Color.pick(k);
     line(time, one, 'Color', color, 'Marker', 'o');
     line(time, two, 'Color', color, 'Marker', 'x');
+    names{end + 1} = sprintf('Exact at %.2f', RVs(k));
+    names{end + 1} = 'Approximated';
   end
   Plot.title('%s: %s', method, title);
   Plot.label('Time, s', 'Temperature, C');
   Plot.limit(time);
+  legend(names{:});
 
   %
   % Have a look at a time slice.
   %
-  switch lower(method)
-  case 'pc'
+  switch method
+  case 'PC'
     rvs = transpose(-3:0.1:3);
   otherwise
-    rvs = transpose(0:0.1:1);
+    rvs = transpose(0:0.05:1);
   end
 
-  rvIndex = 1;
-  timeSlice = 0.033;
+  rvIndex = uint8(1:dimensionCount);
+  timeSlice = (startTime + endTime) / 2;
   while true
     if dimensionCount > 1
       rvIndex = Input.read( ...
-        'prompt', sprintf('  Independent RV to visualize [%d]: ', rvIndex), ...
-        'default', rvIndex);
-      if rvIndex == 0, break; end
-      if rvIndex < 0 || rvIndex > dimensionCount, continue; end
+        'prompt', sprintf('Independent RV to visualize [%s]: ', Utils.toString(rvIndex)), ...
+        'default', rvIndex, 'convert', 'uint8');
+      if any(rvIndex == 0), break; end
+      if any(rvIndex < 0) || any(rvIndex > dimensionCount), continue; end
     end
 
     timeSlice = Input.read( ...
-      'prompt', sprintf('  The moment of time to visualize [%.3f s]: ', timeSlice), ...
+      'prompt', sprintf('The moment of time to visualize [%.3f s]: ', timeSlice), ...
       'default', timeSlice);
     if timeSlice == 0, break; end
-    if timeSlice < 0 || timeSlice > time(end), continue; end
+    if timeSlice < time(1) || timeSlice > time(end), continue; end
 
-    timeIndex = floor(timeSlice / samplingInterval);
+    timeIndex = floor((timeSlice - startTime) / samplingInterval);
 
     figure;
 
     RVs = zeros(length(rvs), dimensionCount);
-    RVs(:, rvIndex) = rvs;
+    for i = 1:length(rvIndex)
+      RVs(:, rvIndex(i)) = rvs;
+    end
 
     one = Utils.toCelsius(compute(RVs));
     one = one(:, timeIndex);
@@ -293,4 +319,10 @@ function solution = approximation
     Plot.label('Random variable', 'Temperature, C');
     Plot.limit(rvs);
   end
+end
+
+function header(text)
+  fprintf('--------------------------------------------------------------------------------\n');
+  fprintf('%s\n', upper(text));
+  fprintf('--------------------------------------------------------------------------------\n');
 end

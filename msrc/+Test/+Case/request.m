@@ -7,7 +7,9 @@ function [ platform, application, floorplan, hotspotConfig, hotspotLine ] = ...
 
   samplingInterval = options.get('samplingInterval', 1e-3);
 
-  fprintf('Test case:\n');
+  if ~silent
+    fprintf('Test case:\n');
+  end
 
   %
   % Pick a number of processing elements.
