@@ -2,7 +2,7 @@ function solution = approximation
   setup;
   rng(0);
 
-  independent = true;
+  independent = false;
   samplingInterval = 1e-4;
   timeDivision = 2;
 
