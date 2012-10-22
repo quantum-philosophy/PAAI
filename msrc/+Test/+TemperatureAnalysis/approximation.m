@@ -2,7 +2,45 @@ function solution = approximation
   setup;
   rng(0);
 
+  independent = true;
+  samplingInterval = 1e-4;
+  timeDivision = 2;
+
   use('Vendor', 'DataHash');
+
+  [ ~, ~, functionName ] = File.trace;
+
+  input = Input(sprintf('%s_input.mat', functionName));
+
+  input.append('method', ...
+    'description', 'the approximation method (PC, ASGC, HDMR)', ...
+    'default', 'PC', ...
+    'type', 'char');
+
+  input.append('processorIndex', ...
+    'description', 'a processor to inspect', ...
+    'default', uint8(1), ...
+    'type', 'uint8');
+
+  input.append('taskIndex', ...
+    'description', 'a task set to inspect', ...
+    'default', uint8(1), ...
+    'type', 'uint8');
+
+  input.append('timeSpan', ...
+    'description', 'a time span', ...
+    'default', [ 0, 0 ], ...
+    'format', '%.3f');
+
+  input.append('rvIndex', ...
+    'description', 'an independent RV to visualize', ...
+    'type', 'uint8');
+
+  input.append('timeSlice', ...
+    'description', 'a moment of time to visualize', ...
+    'format', '%.3f');
+
+  input.load();
 
   %
   % ----------------------------------------------------------------------------
@@ -10,20 +48,6 @@ function solution = approximation
   % ----------------------------------------------------------------------------
   %
   header('Configuration of the system');
-
-  independent = true;
-  samplingInterval = 1e-4;
-
-  [ ~, ~, functionName ] = File.trace;
-  filename = sprintf('%s_input.mat', functionName);
-
-  if File.exist(filename)
-    load(filename);
-  else
-    method = 'PC';
-    processorIndex = uint8(1);
-    taskIndex = uint8(1);
-  end
 
   %
   % Construct the test case.
@@ -37,21 +61,14 @@ function solution = approximation
   %
   % Conduct a short survey.
   %
-  method = Input.read( ...
-    'prompt', sprintf('Method to employ (PC, ASGC, HDMR) [%s]: ', method), ...
-    'default', method);
+  method = input.read('method');
+  processorIndex = input.read('processorIndex');
+  taskIndex = input.read('taskIndex');
+  timeSpan = input.read('timeSpan');
+
+  input.save();
+
   method = upper(method);
-
-  processorIndex = Input.read( ...
-    'prompt', sprintf('Processor to inspect (1-%d) [%d]: ', processorCount, processorIndex), ...
-    'default', processorIndex);
-
-  taskIndex = Input.read( ...
-    'prompt', sprintf('Tasks to inspect (1-%d) [%s]: ', ...
-      taskCount, Utils.toString(taskIndex)), ...
-    'default', taskIndex, 'convert', 'uint8');
-
-  save(filename, 'method', 'processorIndex', 'taskIndex', '-v7.3');
 
   %
   % Construct a schedule and a set of uncertain parameters.
@@ -83,9 +100,20 @@ function solution = approximation
   dimensionCount = transformation.dimension;
   executionTime = schedule.executionTime;
 
-  startTime = 0;
-  endTime = duration(schedule);
-  stepIndex = max(1, floor(startTime / samplingInterval)):floor(endTime / samplingInterval);
+  if timeSpan(end) == 0
+    timeSpan(end) = duration(schedule);
+  end
+
+  %
+  % First, all the steps.
+  %
+  stepIndex = max(1, floor(timeSpan(1) / samplingInterval)):floor(timeSpan(end) / samplingInterval);
+
+  %
+  % Make it sparse.
+  %
+  stepIndex = stepIndex(1:timeDivision:end);
+
   stepCount = length(stepIndex);
 
   newExecutionTime = executionTime;
@@ -119,15 +147,20 @@ function solution = approximation
 
   switch method
   case 'PC'
-    polynomialOrder = 3;
-    polynomialOrder = Input.read( ...
-      'prompt', sprintf('Polynomial order [%d]: ', polynomialOrder), ...
-      'default', polynomialOrder);
+    input.append('polynomialOrder', ...
+      'description', 'the polynomial order', ...
+      'default', 3);
 
-    quadratureOrder = polynomialOrder + 1;
-    quadratureOrder = Input.read( ...
-      'prompt', sprintf('Quadrature order [%d]: ', quadratureOrder), ...
-      'default', quadratureOrder);
+    input.append('quadratureOrder', ...
+      'description', 'the quadrature order');
+
+    input.load();
+
+    polynomialOrder = input.read('polynomialOrder');
+    quadratureOrder = input.read('quadratureOrder', ...
+      'default', polynomialOrder + 1);
+
+    input.save();
 
     quadratureOptions = Options( ...
       'name', 'Tensor', ...
@@ -183,7 +216,7 @@ function solution = approximation
 
   filename = sprintf('%s_%s_%s.mat', functionName, method, ...
     DataHash({ processorCount, taskCount, processorIndex, taskIndex, ...
-      samplingInterval, stepIndex, independent, additionalParameters }));
+      timeSpan, samplingInterval, stepIndex, independent, additionalParameters }));
 
   if File.exist(filename)
     warning('Loading cached data "%s".', filename);
@@ -212,7 +245,7 @@ function solution = approximation
   display(solution);
 
   sdExpectation = Utils.toCelsius(solution.expectation);
-  sdVariance = solution.variance;
+  sdVariance    = solution.variance;
 
   %
   % ----------------------------------------------------------------------------
@@ -226,16 +259,17 @@ function solution = approximation
 
   filename = sprintf('%s_MC_%s.mat', functionName, ...
     DataHash({ processorCount, taskCount, processorIndex, taskIndex, ...
-      samplingInterval, stepIndex, independent, sampleCount }));
+      timeSpan, samplingInterval, stepIndex, independent, sampleCount }));
 
   if File.exist(filename)
     warning('Loading cached data "%s".', filename);
     load(filename);
   else
     tic;
-    mcData = compute(rand(sampleCount, dimensionCount));
+    mcSamples = rand(sampleCount, dimensionCount);
+    mcData = compute(mcSamples);
     time = toc;
-    save(filename, 'mcData', 'time', '-v7.3');
+    save(filename, 'mcSamples', 'mcData', 'time', '-v7.3');
   end
 
   fprintf('Monte Carlo simulation: %.2f s\n', time);
@@ -249,6 +283,26 @@ function solution = approximation
   % ----------------------------------------------------------------------------
   %
   header('Inspection of the approximated solution');
+
+  fprintf('Expectation:\n');
+  fprintf('  Normalized L2:   %.4e\n', ...
+    Error.computeNL2(mcExpectation, sdExpectation));
+  fprintf('  Normalized RMSE: %.4e\n', ...
+    Error.computeNRMSE(mcExpectation, sdExpectation));
+
+  fprintf('Variance:\n');
+  fprintf('  Normalized L2:   %.4e\n', ...
+    Error.computeNL2(mcVariance, sdVariance));
+  fprintf('  Normalized RMSE: %.4e\n', ...
+    Error.computeNRMSE(mcVariance, sdVariance));
+
+  sdData = solution.evaluate(mcSamples);
+
+  fprintf('Random sampling:\n');
+  fprintf('  Normalized L2:   %.4e\n', ...
+    Error.computeNL2(mcData, sdData));
+  fprintf('  Normalized RMSE: %.4e\n', ...
+    Error.computeNRMSE(mcData, sdData));
 
   time = stepIndex * samplingInterval;
 
@@ -329,23 +383,21 @@ function solution = approximation
   end
 
   rvIndex = uint8(1:dimensionCount);
-  timeSlice = (startTime + endTime) / 2;
+  timeSlice = (timeSpan(1) + timeSpan(end)) / 2;
   while true
     if dimensionCount > 1
-      rvIndex = Input.read( ...
-        'prompt', sprintf('Independent RV to visualize [%s]: ', Utils.toString(rvIndex)), ...
-        'default', rvIndex, 'convert', 'uint8');
+      rvIndex = input.read('rvIndex', 'default', rvIndex);
       if any(rvIndex == 0), break; end
       if any(rvIndex < 0) || any(rvIndex > dimensionCount), continue; end
     end
 
-    timeSlice = Input.read( ...
-      'prompt', sprintf('The moment of time to visualize [%.3f s]: ', timeSlice), ...
-      'default', timeSlice);
+    timeSlice = input.read('timeSlice', 'default', timeSlice);
     if timeSlice == 0, break; end
     if timeSlice < time(1) || timeSlice > time(end), continue; end
 
-    timeIndex = floor((timeSlice - startTime) / samplingInterval);
+    input.save();
+
+    timeIndex = floor((timeSlice - timeSpan(1)) / samplingInterval / timeDivision);
 
     figure;
 
