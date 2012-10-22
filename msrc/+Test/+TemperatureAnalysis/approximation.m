@@ -222,8 +222,6 @@ function solution = approximation
     warning('Loading cached data "%s".', filename);
     load(filename);
   else
-    profile on;
-    profile clear;
     tic;
     switch method
     case 'PC'
@@ -236,8 +234,6 @@ function solution = approximation
       error('The method is unknown.');
     end
     time = toc;
-    profile report;
-    profile off;
     save(filename, 'solution', 'time', '-v7.3');
   end
 
