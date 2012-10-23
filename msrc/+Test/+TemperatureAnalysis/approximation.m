@@ -2,7 +2,7 @@ function solution = approximation
   setup;
   rng(0);
 
-  independent = false;
+  independent = true;
   samplingInterval = 1e-4;
   timeDivision = 2;
 
@@ -80,7 +80,7 @@ function solution = approximation
   %
   % Perform the probability transformation.
   %
-  transformation = ProbabilityTransformation.Normal(parameters);
+  transformation = ProbabilityTransformation.Uniform(parameters);
 
   %
   % Initialize the power computation.
@@ -104,17 +104,14 @@ function solution = approximation
     timeSpan(end) = duration(schedule);
   end
 
-  %
-  % First, all the steps.
-  %
-  stepIndex = max(1, floor(timeSpan(1) / samplingInterval)):floor(timeSpan(end) / samplingInterval);
+  firstIndex = max(1, floor(timeSpan(1) / samplingInterval));
+  lastIndex = floor(timeSpan(end) / samplingInterval);
 
-  %
-  % Make it sparse.
-  %
-  stepIndex = stepIndex(1:timeDivision:end);
-
+  stepIndex = firstIndex:timeDivision:lastIndex;
   stepCount = length(stepIndex);
+
+  mapping = schedule.mapping;
+  order = schedule.order;
 
   newExecutionTime = executionTime;
   function data = compute(standardNormalRVs)
@@ -343,30 +340,37 @@ function solution = approximation
   %
   % Have a look at some overall curves.
   %
-  figure;
 
-  switch method
-  case 'PC'
-    RVs = [ -0.50, 0.00, 0.50 ];
-  otherwise
-    RVs = [  0.25, 0.50, 0.75 ];
-  end
+  k = 1;
+  while Input.question('Generate a sample path? ')
+    if k == 1
+      sampleFigure = figure;
+    end
+    figure(sampleFigure);
 
-  names = {};
-  for k = 1:length(RVs)
-    nodes = RVs(k) * ones(1, dimensionCount);
-    one = Utils.toCelsius(compute(nodes));
-    two = Utils.toCelsius(solution.evaluate(nodes));
-    color = Color.pick(k);
-    line(time, one, 'Color', color, 'Marker', 'o');
-    line(time, two, 'Color', color, 'Marker', 'x');
-    names{end + 1} = sprintf('Exact at %.2f', RVs(k));
-    names{end + 1} = 'Approximated';
+    Plot.title('%s [%s]: Sample paths', method, title);
+    Plot.label('Time, s', 'Temperature, C');
+    Plot.limit(time);
+
+    switch method
+    case 'PC'
+      sample = randn(1, dimensionCount);
+    otherwise
+      sample = rand(1, dimensionCount);
+    end
+
+    fprintf('Chosen sample: %s\n', Utils.toString(sample));
+
+    one = Utils.toCelsius(compute(sample));
+    two = Utils.toCelsius(solution.evaluate(sample));
+
+    color = Color.random();
+
+    line(time, one, 'Color', color);
+    line(time, smooth(two, 10), 'Color', color, 'LineStyle', '--');
+
+    k = k + 1;
   end
-  Plot.title('%s [%s]: Examples', method, title);
-  Plot.label('Time, s', 'Temperature, C');
-  Plot.limit(time);
-  legend(names{:});
 
   %
   % Have a look at a time slice.
