@@ -6,38 +6,39 @@ function solution = approximation
 
   use('Vendor', 'DataHash');
 
-  functionName = 'SS.approximation';
+  prefix = 'SS';
 
-  input = Input(sprintf('%s_input.mat', functionName));
+  questions = Terminal.Questionnaire( ...
+    sprintf('%s_questions.mat', prefix));
 
-  input.append('method', ...
+  questions.append('method', ...
     'description', 'the approximation method (PC, ASGC, HDMR)', ...
     'default', 'PC', ...
     'type', 'char');
 
-  input.append('taskIndex', ...
+  questions.append('taskIndex', ...
     'description', 'a task set to inspect', ...
     'default', uint8(1), ...
     'type', 'uint8');
 
-  input.append('rvIndex', ...
+  questions.append('rvIndex', ...
     'description', 'an independent RV to visualize', ...
     'type', 'uint8');
 
-  input.load();
+  questions.load();
 
   %
   % ----------------------------------------------------------------------------
   % Configuration of the system
   % ----------------------------------------------------------------------------
   %
-  header('Configuration of the system');
+  Terminal.printHeader('Test case configuration');
 
   %
   % Construct the test case.
   %
   [ platform, application, floorplan, hotspotConfig, hotspotLine ] = ...
-    Test.Case.request('samplingInterval', 1e-4, 'silent', true);
+    Test.Case.request('samplingInterval', 1e-4);
 
   processorCount = length(platform);
   taskCount = length(application);
@@ -45,10 +46,10 @@ function solution = approximation
   %
   % Conduct a short survey.
   %
-  method = input.read('method');
-  taskIndex = input.read('taskIndex');
+  method = questions.request('method');
+  taskIndex = questions.request('taskIndex');
 
-  input.save();
+  questions.save();
 
   method = upper(method);
 
@@ -93,26 +94,26 @@ function solution = approximation
   % Configuration of the approximation method
   % ----------------------------------------------------------------------------
   %
-  header('Configuration of the approximation method');
+  Terminal.printHeader('Configuration of the approximation method');
 
   additionalParameters = {};
 
   switch method
   case 'PC'
-    input.append('polynomialOrder', ...
+    questions.append('polynomialOrder', ...
       'description', 'the polynomial order', ...
       'default', 3);
 
-    input.append('quadratureOrder', ...
+    questions.append('quadratureOrder', ...
       'description', 'the quadrature order');
 
-    input.load();
+    questions.load();
 
-    polynomialOrder = input.read('polynomialOrder');
-    quadratureOrder = input.read('quadratureOrder', ...
+    polynomialOrder = questions.request('polynomialOrder');
+    quadratureOrder = questions.request('quadratureOrder', ...
       'default', polynomialOrder + 1);
 
-    input.save();
+    questions.save();
 
     quadratureOptions = Options( ...
       'name', 'Tensor', ...
@@ -164,9 +165,9 @@ function solution = approximation
   % Construction of the approximation
   % ----------------------------------------------------------------------------
   %
-  header('Construction of the approximation');
+  Terminal.printHeader('Construction of the approximation');
 
-  filename = sprintf('%s_%s_%s.mat', functionName, method, ...
+  filename = sprintf('%s_%s_%s.mat', prefix, method, ...
     DataHash({ processorCount, taskCount, taskIndex, ...
       independent, additionalParameters }));
 
@@ -200,12 +201,12 @@ function solution = approximation
   % Monte Carlo sampling
   % ----------------------------------------------------------------------------
   %
-  header('Monte Carlo sampling');
+  Terminal.printHeader('Monte Carlo sampling');
 
   sampleCount = 1e4;
   fprintf('Number of samples: %d\n', sampleCount);
 
-  filename = sprintf('%s_MC_%s.mat', functionName, ...
+  filename = sprintf('%s_MC_%s.mat', prefix, ...
     DataHash({ processorCount, taskCount, taskIndex, ...
       independent, sampleCount }));
 
@@ -230,7 +231,7 @@ function solution = approximation
   % Inspection of the approximated solution
   % ----------------------------------------------------------------------------
   %
-  header('Inspection of the approximated solution');
+  Terminal.printHeader('Inspection of the approximated solution');
 
   fprintf('Expectation:\n');
   fprintf('  Normalized L2:   %.4e\n', ...
@@ -281,12 +282,12 @@ function solution = approximation
   rvIndex = uint8(1:inputDimension);
   while true
     if inputDimension > 1
-      rvIndex = input.read('rvIndex', 'default', rvIndex);
+      rvIndex = questions.request('rvIndex', 'default', rvIndex);
       if any(rvIndex == 0), break; end
       if any(rvIndex < 0) || any(rvIndex > inputDimension), continue; end
     end
 
-    input.save();
+    questions.save();
 
     figure;
 
@@ -304,11 +305,7 @@ function solution = approximation
     Plot.title('%s [%s]', method, title);
     Plot.label('Random variable', 'Start time, s');
     Plot.limit(rvs);
-  end
-end
 
-function header(text)
-  fprintf('--------------------------------------------------------------------------------\n');
-  fprintf('%s\n', upper(text));
-  fprintf('--------------------------------------------------------------------------------\n');
+    if inputDimension == 1, break; end
+  end
 end

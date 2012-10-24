@@ -5,7 +5,7 @@ samplingInterval = 1e-4; % s
 %% Configuration.
 %
 [ platform, application, floorplan, hotspotConfig, hotspotLine ] = ...
-  Test.Case.request('samplingInterval', samplingInterval, 'silent', true);
+  Test.Case.request('samplingInterval', samplingInterval);
 
 %% Schedule the application.
 %

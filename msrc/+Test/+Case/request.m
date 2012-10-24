@@ -5,30 +5,29 @@ function [ platform, application, floorplan, hotspotConfig, hotspotLine ] = ...
 
   silent = options.get('silent', false);
 
-  samplingInterval = options.get('samplingInterval', 1e-3);
+  samplingInterval = options.get('samplingInterval', 1e-4);
+
+  processorCount = uint16(options.get('processorCount', 2));
+  taskCount = uint16(options.get('taskCount', 10 * processorCount));
 
   if ~silent
-    fprintf('Test case:\n');
-  end
+    questions = Terminal.Questionnaire('TC_questions.mat');
 
-  %
-  % Pick a number of processing elements.
-  %
-  processorCount = options.get('processorCount', 2);
+    questions.append('processorCount', ...
+      'description', 'the number of processing elements', ...
+      'default', processorCount, 'type', 'uint16');
 
-  if ~silent
-    fprintf('  Number of processing elements [%d]: ', processorCount);
-    processorCount = Input.read('default', processorCount);
-  end
+    questions.append('taskCount', ...
+      'description', 'the number of tasks', ...
+      'type', 'uint16');
 
-  %
-  % Pick a number of tasks.
-  %
-  taskCount = options.get('taskCount', 10 * processorCount);
+    questions.load();
 
-  if ~silent
-    fprintf('  Number of tasks [%d]: ', taskCount);
-    taskCount = Input.read('default', taskCount);
+    processorCount = questions.request('processorCount');
+    taskCount = questions.request('taskCount', ...
+      'default', 10 * processorCount);
+
+    questions.save();
   end
 
   tgffFilename = Utils.resolvePath( ...
