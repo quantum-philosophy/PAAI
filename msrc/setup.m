@@ -5,4 +5,5 @@ function setup
   use('SystemSimulation');
   use('TemperatureAnalysis');
   use('ProbabilityTheory');
+  use('Vendor', 'DataHash');
 end
