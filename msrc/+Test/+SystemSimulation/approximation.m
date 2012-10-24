@@ -2,13 +2,11 @@ function solution = approximation
   setup;
   rng(0);
 
-  independent = true;
-  samplingInterval = 1e-4;
-  timeDivision = 2;
+  independent = false;
 
   use('Vendor', 'DataHash');
 
-  functionName = 'TA.approximation';
+  functionName = 'SS.approximation';
 
   input = Input(sprintf('%s_input.mat', functionName));
 
@@ -17,28 +15,14 @@ function solution = approximation
     'default', 'PC', ...
     'type', 'char');
 
-  input.append('processorIndex', ...
-    'description', 'a processor to inspect', ...
-    'default', uint8(1), ...
-    'type', 'uint8');
-
   input.append('taskIndex', ...
     'description', 'a task set to inspect', ...
     'default', uint8(1), ...
     'type', 'uint8');
 
-  input.append('timeSpan', ...
-    'description', 'a time span', ...
-    'default', [ 0, 0 ], ...
-    'format', '%.3f');
-
   input.append('rvIndex', ...
     'description', 'an independent RV to visualize', ...
     'type', 'uint8');
-
-  input.append('timeSlice', ...
-    'description', 'a moment of time to visualize', ...
-    'format', '%.3f');
 
   input.load();
 
@@ -53,7 +37,7 @@ function solution = approximation
   % Construct the test case.
   %
   [ platform, application, floorplan, hotspotConfig, hotspotLine ] = ...
-    Test.Case.request('samplingInterval', samplingInterval, 'silent', true);
+    Test.Case.request('samplingInterval', 1e-4, 'silent', true);
 
   processorCount = length(platform);
   taskCount = length(application);
@@ -62,9 +46,7 @@ function solution = approximation
   % Conduct a short survey.
   %
   method = input.read('method');
-  processorIndex = input.read('processorIndex');
   taskIndex = input.read('taskIndex');
-  timeSpan = input.read('timeSpan');
 
   input.save();
 
@@ -75,39 +57,20 @@ function solution = approximation
   %
   [ schedule, parameters ] = Test.Case.constructBeta(platform, application, ...
     'taskIndex', taskIndex, 'independent', independent, ...
-    'alpha', 1, 'beta', 1, 'deviation', 0.2);
+    'alpha', 1.4, 'beta', 3, 'deviation', 0.7);
 
   %
   % Perform the probability transformation.
   %
-  transformation = ProbabilityTransformation.Uniform(parameters);
-
-  %
-  % Initialize the power computation.
-  %
-  power = PowerProfile(samplingInterval);
-
-  %
-  % Initialize the temperature simulator.
-  %
-  hotspot = HotSpot.Analytic(floorplan, hotspotConfig, hotspotLine);
+  transformation = ProbabilityTransformation.Normal(parameters);
 
   %
   % ----------------------------------------------------------------------------
   % Definition of the problem
   % ----------------------------------------------------------------------------
   %
-  if timeSpan(end) == 0
-    timeSpan(end) = duration(schedule);
-  end
-
-  firstIndex = max(1, floor(timeSpan(1) / samplingInterval));
-  lastIndex = floor(timeSpan(end) / samplingInterval);
-
-  stepIndex = firstIndex:timeDivision:lastIndex;
-
   inputDimension = transformation.dimension;
-  outputDimension = length(stepIndex);
+  outputDimension = taskCount;
 
   executionTime = schedule.executionTime;
   newExecutionTime = executionTime;
@@ -121,12 +84,7 @@ function solution = approximation
     for i = 1:pointCount
       newExecutionTime(taskIndex) = executionTime(taskIndex) + variables(i, :);
       newSchedule = Schedule.Dense(schedule, 'executionTime', newExecutionTime);
-      newPowerProfile = power.compute(newSchedule);
-
-      powerProfile = newPowerProfile(:, stepIndex);
-      temperatureProfile = hotspot.compute(powerProfile);
-
-      data(i, :) = temperatureProfile(processorIndex, :);
+      data(i, :) = newSchedule.startTime;
     end
   end
 
@@ -209,8 +167,8 @@ function solution = approximation
   header('Construction of the approximation');
 
   filename = sprintf('%s_%s_%s.mat', functionName, method, ...
-    DataHash({ processorCount, taskCount, processorIndex, taskIndex, ...
-      timeSpan, samplingInterval, stepIndex, independent, additionalParameters }));
+    DataHash({ processorCount, taskCount, taskIndex, ...
+      independent, additionalParameters }));
 
   if File.exist(filename)
     warning('Loading cached data "%s".', filename);
@@ -234,7 +192,7 @@ function solution = approximation
   fprintf('Solution construction: %.2f s\n', time);
   display(solution);
 
-  sdExpectation = Utils.toCelsius(solution.expectation);
+  sdExpectation = solution.expectation;
   sdVariance    = solution.variance;
 
   %
@@ -248,8 +206,8 @@ function solution = approximation
   fprintf('Number of samples: %d\n', sampleCount);
 
   filename = sprintf('%s_MC_%s.mat', functionName, ...
-    DataHash({ processorCount, taskCount, processorIndex, taskIndex, ...
-      timeSpan, samplingInterval, stepIndex, independent, sampleCount }));
+    DataHash({ processorCount, taskCount, taskIndex, ...
+      independent, sampleCount }));
 
   if File.exist(filename)
     warning('Loading cached data "%s".', filename);
@@ -264,7 +222,7 @@ function solution = approximation
 
   fprintf('Monte Carlo simulation: %.2f s\n', time);
 
-  mcExpectation = Utils.toCelsius(mean(mcData, 1));
+  mcExpectation = mean(mcData, 1);
   mcVariance = var(mcData, [], 1);
 
   %
@@ -296,8 +254,6 @@ function solution = approximation
   fprintf('  Normalized RMSE: %.4e\n', ...
     Error.computeNRMSE(mcData, sdData));
 
-  time = stepIndex * samplingInterval;
-
   switch method
   case 'PC'
     title = sprintf('polynomial order %d, quadrature order %d', ...
@@ -313,63 +269,6 @@ function solution = approximation
   end
 
   %
-  % Have a look at the expected value and variance.
-  %
-  color1 = Color.pick(1);
-  color2 = Color.pick(2);
-
-  figure;
-  line(time, mcExpectation, 'Color', color1);
-  line(time, sdExpectation, 'Color', color2);
-  Plot.title('%s [%s]: Expectation', method, title);
-  Plot.label('Time, s', 'Temperature, C');
-  Plot.limit(time);
-  legend('Monte Carlo', 'Approximated');
-
-  figure;
-  line(time, mcVariance, 'Color', color1);
-  line(time, sdVariance, 'Color', color2);
-  Plot.title('%s [%s]: Variance', method, title);
-  Plot.label('Time, s', 'Temperature^2, C^2');
-  Plot.limit(time);
-  legend('Monte Carlo', 'Approximated');
-
-  %
-  % Have a look at some overall curves.
-  %
-
-  k = 1;
-  while Input.question('Generate a sample path? ')
-    if k == 1
-      sampleFigure = figure;
-    end
-    figure(sampleFigure);
-
-    Plot.title('%s [%s]: Sample paths', method, title);
-    Plot.label('Time, s', 'Temperature, C');
-    Plot.limit(time);
-
-    switch method
-    case 'PC'
-      sample = randn(1, inputDimension);
-    otherwise
-      sample = rand(1, inputDimension);
-    end
-
-    fprintf('Chosen sample: %s\n', Utils.toString(sample));
-
-    one = Utils.toCelsius(compute(sample));
-    two = Utils.toCelsius(solution.evaluate(sample));
-
-    color = Color.random();
-
-    line(time, one, 'Color', color);
-    line(time, smooth(two, 10), 'Color', color, 'LineStyle', '--');
-
-    k = k + 1;
-  end
-
-  %
   % Have a look at a time slice.
   %
   switch method
@@ -380,7 +279,6 @@ function solution = approximation
   end
 
   rvIndex = uint8(1:inputDimension);
-  timeSlice = (timeSpan(1) + timeSpan(end)) / 2;
   while true
     if inputDimension > 1
       rvIndex = input.read('rvIndex', 'default', rvIndex);
@@ -388,13 +286,7 @@ function solution = approximation
       if any(rvIndex < 0) || any(rvIndex > inputDimension), continue; end
     end
 
-    timeSlice = input.read('timeSlice', 'default', timeSlice);
-    if timeSlice == 0, break; end
-    if timeSlice < time(1) || timeSlice > time(end), continue; end
-
     input.save();
-
-    timeIndex = floor((timeSlice - timeSpan(1)) / samplingInterval / timeDivision);
 
     figure;
 
@@ -403,35 +295,15 @@ function solution = approximation
       RVs(:, rvIndex(j)) = rvs;
     end
 
-    one = Utils.toCelsius(compute(RVs));
-    one = one(:, timeIndex);
-    two = Utils.toCelsius(solution.evaluate(RVs));
-    two = two(:, timeIndex);
+    one = compute(RVs);
+    two = solution.evaluate(RVs);
 
-    line(rvs, one, 'Color', color1);
-    line(rvs, two, 'Color', color2);
+    line(rvs, one, 'Color', Color.pick(1), 'Marker', 'o');
+    line(rvs, two, 'Color', Color.pick(2), 'Marker', 'x');
 
-    switch method
-    case 'PC'
-      if false && inputDimension == 1
-        %
-        % Verification with the toolbox pmpack.
-        %
-        alternative = pseudospectral(@(standardRVs) ...
-          compute(standardRVs), parameter('gaussian'), polynomialOrder);
-        three = zeros(size(one));
-        for m = 1:length(RVs)
-          three(m) = evaluate_expansion(alternative, RVs(m));
-        end
-        three = Utils.toCelsius(three);
-        line(rvs, three, 'Color', color1, 'Marker', 'x');
-      end
-    end
-
-    Plot.title('%s [%s]: Time slice', method, title);
-    Plot.label('Random variable', 'Temperature, C');
+    Plot.title('%s [%s]', method, title);
+    Plot.label('Random variable', 'Start time, s');
     Plot.limit(rvs);
-    legend('Exact', 'Approximated');
   end
 end
 
