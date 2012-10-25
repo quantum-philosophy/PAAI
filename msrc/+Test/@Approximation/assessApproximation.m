@@ -1,6 +1,4 @@
 function assessApproximation(this)
-  Terminal.printHeader('Assess the approximation');
-
   approximation = this.approximation;
 
   mcSamples = this.mcSamples;
@@ -9,20 +7,23 @@ function assessApproximation(this)
   mcExpectation = mean(mcData, 1);
   mcVariance = var(mcData, [], 1);
 
+  apExpectation = this.apExpectation;
+  apVariance = this.apVariance;
+
   fprintf('Expectation:\n');
   fprintf('  Normalized L2:   %.4e\n', ...
-    Error.computeNL2(mcExpectation, approximation.expectation));
+    Error.computeNL2(mcExpectation, apExpectation));
   fprintf('  Normalized RMSE: %.4e\n', ...
-    Error.computeNRMSE(mcExpectation, approximation.expectation));
+    Error.computeNRMSE(mcExpectation, apExpectation));
 
   fprintf('Variance:\n');
   fprintf('  Normalized L2:   %.4e\n', ...
-    Error.computeNL2(mcVariance, approximation.variance));
+    Error.computeNL2(mcVariance, apVariance));
   fprintf('  Normalized RMSE: %.4e\n', ...
-    Error.computeNRMSE(mcVariance, approximation.variance));
+    Error.computeNRMSE(mcVariance, apVariance));
 
   tic;
-  apData = approximation.evaluate(mcSamples);
+  apData = this.approximate(mcSamples);
   fprintf('Evaluation of %d samples: %.2f s\n', this.sampleCount, toc);
 
   fprintf('Random sampling:\n');

@@ -1,4 +1,4 @@
-function data = compute(this, rvs)
+function data = evaluate(this, rvs)
   taskIndex = this.taskIndex;
   schedule = this.schedule;
 

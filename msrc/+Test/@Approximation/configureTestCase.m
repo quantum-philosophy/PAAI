@@ -1,6 +1,4 @@
 function configureTestCase(this)
-  Terminal.printHeader('Configuration of the system');
-
   skip = Terminal.question('Use the previous settings? ');
 
   if skip, this.questions.autoreply(); end
@@ -60,7 +58,5 @@ function configureTestCase(this)
         'default', this.methodOptions.order + 1)));
   end
 
-  if skip
-    questions.save();
-  end
+  questions.save();
 end

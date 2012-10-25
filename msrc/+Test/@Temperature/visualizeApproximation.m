@@ -26,7 +26,7 @@ function visualizeApproximation(this)
 
   figure;
   line(time, this.mcExpectation, 'Color', color1);
-  line(time, approximation.expectation, 'Color', color2);
+  line(time, this.apExpectation, 'Color', color2);
   Plot.title('%s [%s]: Expectation', this.method, title);
   Plot.label('Time, s', 'Temperature, C');
   Plot.limit(time);
@@ -34,7 +34,7 @@ function visualizeApproximation(this)
 
   figure;
   line(time, this.mcVariance, 'Color', color1);
-  line(time, approximation.variance, 'Color', color2);
+  line(time, this.apVariance, 'Color', color2);
   Plot.title('%s [%s]: Variance', this.method, title);
   Plot.label('Time, s', 'Temperature^2, C^2');
   Plot.limit(time);
@@ -63,8 +63,8 @@ function visualizeApproximation(this)
 
     fprintf('Chosen sample: %s\n', Utils.toString(sample));
 
-    one = Utils.toCelsius(this.evaluate(sample));
-    two = Utils.toCelsius(approximation.evaluate(sample));
+    one = Utils.toCelsius(this.simulate(sample));
+    two = Utils.toCelsius(this.approximate(sample));
 
     color = Color.random();
 
@@ -111,9 +111,9 @@ function visualizeApproximation(this)
       RVs(:, rvIndex(j)) = rvs;
     end
 
-    one = Utils.toCelsius(this.evaluate(RVs));
+    one = Utils.toCelsius(this.simulate(RVs));
     one = one(:, timeIndex);
-    two = Utils.toCelsius(approximation.evaluate(RVs));
+    two = Utils.toCelsius(this.approximate(RVs));
     two = two(:, timeIndex);
 
     line(rvs, one, 'Color', color1);

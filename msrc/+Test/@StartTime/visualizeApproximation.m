@@ -40,8 +40,8 @@ function visualizeApproximation(this)
       RVs(:, rvIndex(j)) = rvs;
     end
 
-    one = this.evaluate(RVs);
-    two = approximation.evaluate(RVs);
+    one = this.simulate(RVs);
+    two = this.approximate(RVs);
 
     line(rvs, one, 'Color', Color.pick(1), 'Marker', 'o');
     line(rvs, two, 'Color', Color.pick(2), 'Marker', 'x');

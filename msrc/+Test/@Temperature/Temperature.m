@@ -4,7 +4,7 @@ classdef Temperature < Test.Approximation
     timeDivision = 2;
   end
 
-  properties (SetAccess = 'private')
+  properties (SetAccess = 'protected')
     timeSpan
     stepIndex
 

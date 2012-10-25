@@ -31,6 +31,9 @@ classdef Approximation < handle
 
     approximation
 
+    apExpectation
+    apVariance
+
     mcSamples
     mcData
 
@@ -43,19 +46,30 @@ classdef Approximation < handle
       this.name = name;
 
       this.questions = Terminal.Questionnaire( ...
-        sprintf('%s_questions.mat', name));
+        sprintf('Approximation_questions.mat', name));
 
       this.methodOptions = Options();
 
+      Terminal.printHeader('Configuration of the system');
       this.configureTestCase();
+
       this.configureSystem();
       this.configureParameters();
-      this.configureMethod();
 
+      Terminal.printHeader('Configuration of the approximation method');
+      this.configureMethod();
+      display(this.methodOptions);
+
+      Terminal.printHeader('Construction of the approximation');
       this.performApproximation();
+      display(this.approximation);
+
+      Terminal.printHeader('Monte Carlo simulations');
       this.performMonteCarlo();
 
+      Terminal.printHeader('Assessment of the approximation');
       this.assessApproximation();
+
       this.visualizeApproximation();
     end
   end
@@ -70,7 +84,11 @@ classdef Approximation < handle
     performMonteCarlo(this)
 
     assessApproximation(this)
+
     visualizeApproximation(this)
+
+    data = simulate(this, rvs)
+    data = approximate(this, rvs)
 
     data = serialize(this)
   end

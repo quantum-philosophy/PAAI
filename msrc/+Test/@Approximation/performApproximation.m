@@ -1,6 +1,4 @@
 function performApproximation(this)
-  Terminal.printHeader('Approximation');
-
   methodParameters = {};
 
   switch this.method
@@ -37,7 +35,8 @@ function performApproximation(this)
   end
 
   fprintf('Approximation: %.2f s\n', time);
-  display(approximation);
 
   this.approximation = approximation;
+  this.apExpectation = approximation.expectation;
+  this.apVariance = approximation.variance;
 end
