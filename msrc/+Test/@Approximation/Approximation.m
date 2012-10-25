@@ -1,7 +1,7 @@
 classdef Approximation < handle
   properties (Constant)
     independent = true;
-    sampleCount = 1e4;
+    sampleCount = 1e3;
   end
 
   properties (SetAccess = 'protected')

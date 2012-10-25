@@ -23,6 +23,8 @@ function visualizeApproximation(this)
     rvs = transpose(0:0.05:1);
   end
 
+  this.questions.autoreply(false);
+
   rvIndex = uint8(1:this.inputDimension);
   while true
     if this.inputDimension > 1

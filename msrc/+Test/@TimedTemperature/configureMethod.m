@@ -5,6 +5,8 @@ function configureMethod(this)
   case 'ASGC'
     this.methodOptions.set( ...
       'adaptivityRange', this.timeRange);
+    this.methodOptions.adaptivityControl = 'InfNormSurpluses2';
+    this.methodOptions.tolerance = 1e-6;
   case 'HDMR'
     this.methodOptions.interpolantOptions.set( ...
       'adaptivityRange', this.timeRange);

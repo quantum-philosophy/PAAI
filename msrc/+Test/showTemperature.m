@@ -1,11 +1,20 @@
 setup;
 
 samplingInterval = 1e-4; % s
+processorCount = 2;
+taskCount = 20;
 
 %% Configuration.
 %
-[ platform, application, floorplan, hotspotConfig, hotspotLine ] = ...
-  Test.Case.request('samplingInterval', samplingInterval);
+[ platform, application ] = parseTGFF(Utils.resolvePath( ...
+sprintf('%03d_%03d.tgff', processorCount, taskCount)));
+
+floorplan = Utils.resolvePath( ...
+sprintf('%03d.flp', processorCount), 'test');
+hotspotConfig = Utils.resolvePath( ...
+  'hotspot.config', 'test');
+hotspotLine = sprintf('sampling_intvl %e', ...
+  samplingInterval);
 
 %% Schedule the application.
 %
