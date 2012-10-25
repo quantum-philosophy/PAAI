@@ -1,17 +1,17 @@
-classdef Temperature < Test.TemporalApproximation
+classdef Power < Test.TemporalApproximation
   properties (SetAccess = 'protected')
     power
-    hotspot
   end
 
   methods
-    function this = Temperature(varargin)
+    function this = Power(varargin)
       this = this@Test.TemporalApproximation(varargin{:});
     end
   end
 
   methods (Access = 'protected')
     configureSystem(this)
+
     data = evaluate(this, rvs)
   end
 end

@@ -1,5 +1,6 @@
 function visualizeApproximation(this)
   approximation = this.approximation;
+  distribution = this.transformation.distribution;
 
   switch this.method
   case 'PC'
@@ -8,6 +9,10 @@ function visualizeApproximation(this)
   case 'ASGC'
     title = sprintf('level %d, nodes %d', ...
       approximation.level, approximation.nodeCount);
+
+    if this.inputDimension < 3
+      plot(approximation);
+    end
   case 'HDMR'
     title = sprintf('order %d, interpolants %d, nodes %d', ...
       approximation.order, length(approximation.interpolants), ...
@@ -21,20 +26,20 @@ function visualizeApproximation(this)
   %
   % Have a look at the expected value and variance.
   %
-  color1 = Color.pick(1);
-  color2 = Color.pick(2);
+  mcColor = Color.pick(1);
+  apColor = Color.pick(2);
 
   figure;
-  line(time, this.mcExpectation, 'Color', color1);
-  line(time, this.apExpectation, 'Color', color2);
+  line(time, this.mcExpectation, 'Color', mcColor);
+  line(time, this.apExpectation, 'Color', apColor);
   Plot.title('%s [%s]: Expectation', this.method, title);
   Plot.label('Time, s', 'Temperature, C');
   Plot.limit(time);
   legend('Monte Carlo', 'Approximation');
 
   figure;
-  line(time, this.mcVariance, 'Color', color1);
-  line(time, this.apVariance, 'Color', color2);
+  line(time, this.mcVariance, 'Color', mcColor);
+  line(time, this.apVariance, 'Color', apColor);
   Plot.title('%s [%s]: Variance', this.method, title);
   Plot.label('Time, s', 'Temperature^2, C^2');
   Plot.limit(time);
@@ -51,20 +56,15 @@ function visualizeApproximation(this)
     figure(sampleFigure);
 
     Plot.title('%s [%s]: Sample paths', this.method, title);
-    Plot.label('Time, s', 'Temperature, C');
+    Plot.label('Time, s');
     Plot.limit(time);
 
-    switch this.method
-    case 'PC'
-      sample = randn(1, this.inputDimension);
-    otherwise
-      sample = rand(1, this.inputDimension);
-    end
+    sample = distribution.sample(1, this.inputDimension);
 
     fprintf('Chosen sample: %s\n', Utils.toString(sample));
 
-    one = Utils.toCelsius(this.simulate(sample));
-    two = Utils.toCelsius(this.approximate(sample));
+    one = this.simulate(sample);
+    two = this.approximate(sample);
 
     color = Color.random();
 
@@ -74,29 +74,31 @@ function visualizeApproximation(this)
     k = k + 1;
   end
 
+  this.questions.autoreply(false);
+
   %
   % Have a look at a time slice.
   %
-  switch this.method
-  case 'PC'
-    rvs = transpose(-3:0.1:3);
-  otherwise
-    rvs = transpose(0:0.05:1);
+  support = distribution.support;
+  if support(1) == -Inf
+    support(1) = distribution.expectation - ...
+      2 * sqrt(distribution.variance);
   end
-
-  this.questions.autoreply(false);
+  if support(2) == Inf
+    support(2) = distribution.expectation + ...
+      2 * sqrt(distribution.variance);
+  end
+  rvSweep = transpose(linspace(support(1), support(end), 50));
 
   rvIndex = uint8(1:this.inputDimension);
   timeSlice = (this.timeSpan(1) + this.timeSpan(end)) / 2;
-  while true
+  while Terminal.question('Sweep a set of random variables? ')
     if this.inputDimension > 1
       rvIndex = this.questions.request('rvIndex', 'default', rvIndex);
-      if any(rvIndex == 0), break; end
       if any(rvIndex < 0) || any(rvIndex > this.inputDimension), continue; end
     end
 
     timeSlice = this.questions.request('timeSlice', 'default', timeSlice);
-    if timeSlice == 0, break; end
     if timeSlice < time(1) || timeSlice > time(end), continue; end
 
     this.questions.save();
@@ -106,22 +108,23 @@ function visualizeApproximation(this)
 
     figure;
 
-    RVs = zeros(length(rvs), this.inputDimension);
+    rvs = zeros(length(rvSweep), this.inputDimension);
     for j = 1:length(rvIndex)
-      RVs(:, rvIndex(j)) = rvs;
+      rvs(:, rvIndex(j)) = rvSweep;
     end
 
-    one = Utils.toCelsius(this.simulate(RVs));
-    one = one(:, timeIndex);
-    two = Utils.toCelsius(this.approximate(RVs));
-    two = two(:, timeIndex);
+    mcData = this.simulate(rvs);
+    mcData = mcData(:, timeIndex);
 
-    line(rvs, one, 'Color', color1);
-    line(rvs, two, 'Color', color2);
+    apData = this.approximate(rvs);
+    apData = apData(:, timeIndex);
+
+    line(rvSweep, mcData, 'Color', mcColor);
+    line(rvSweep, apData, 'Color', apColor);
 
     Plot.title('%s [%s]: Time slice', this.method, title);
-    Plot.label('Random variable', 'Temperature, C');
-    Plot.limit(rvs);
+    Plot.label('Random variable');
+    Plot.limit(rvSweep);
     legend('Exact', 'Approximation');
   end
 end

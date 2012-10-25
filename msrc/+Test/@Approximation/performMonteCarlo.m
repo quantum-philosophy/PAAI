@@ -9,12 +9,8 @@ function performMonteCarlo(this)
     load(filename);
   else
     tic;
-    switch this.method
-    case 'PC'
-      mcSamples = randn(this.sampleCount, this.inputDimension);
-    otherwise
-      mcSamples = rand(this.sampleCount, this.inputDimension);
-    end
+    mcSamples = this.transformation.distribution.sample( ...
+      this.sampleCount, this.inputDimension);
     mcData = this.simulate(mcSamples);
     time = toc;
     save(filename, 'mcSamples', 'mcData', 'time', '-v7.3');
