@@ -4,8 +4,8 @@ function visualizeApproximation(this)
 
   switch this.method
   case 'PC'
-    title = sprintf('polynomial order %d, quadrature order %d', ...
-      approximation.order, this.methodOptions.quadratureOptions.order);
+    title = sprintf('polynomial order %d, quadrature level %d', ...
+      approximation.order, this.methodOptions.quadratureOptions.level);
   case 'ASGC'
     title = sprintf('level %d, nodes %d', ...
       approximation.level, approximation.nodeCount);
@@ -33,7 +33,7 @@ function visualizeApproximation(this)
   line(time, this.mcExpectation, 'Color', mcColor);
   line(time, this.apExpectation, 'Color', apColor);
   Plot.title('%s [%s]: Expectation', this.method, title);
-  Plot.label('Time, s', 'Temperature, C');
+  Plot.label('Time, s');
   Plot.limit(time);
   legend('Monte Carlo', 'Approximation');
 
@@ -41,7 +41,7 @@ function visualizeApproximation(this)
   line(time, this.mcVariance, 'Color', mcColor);
   line(time, this.apVariance, 'Color', apColor);
   Plot.title('%s [%s]: Variance', this.method, title);
-  Plot.label('Time, s', 'Temperature^2, C^2');
+  Plot.label('Time, s');
   Plot.limit(time);
   legend('Monte Carlo', 'Approximation');
 

@@ -38,6 +38,3 @@ temperatureProfile = hotspot.compute(powerProfile);
 
 display(hotspot);
 hotspot.plot(temperatureProfile);
-
-stepCount = size(temperatureProfile, 2);
-csvwrite('dump.csv', [ (1:stepCount).' temperatureProfile.' ]);
