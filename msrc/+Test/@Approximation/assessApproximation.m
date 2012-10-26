@@ -22,9 +22,21 @@ function assessApproximation(this)
   fprintf('  Normalized RMSE: %.4e\n', ...
     Error.computeNRMSE(mcVariance, apVariance));
 
-  tic;
-  apData = this.approximate(mcSamples);
-  fprintf('Evaluation of %d samples: %.2f s\n', this.sampleCount, toc);
+  filename = sprintf('%s_%s_MC_%s.mat', this.name, this.method, ...
+    DataHash({ this.serialize(), this.sampleCount, ...
+      this.methodSerialization }));
+
+  if File.exist(filename)
+    warning('Loading cached data "%s".', filename);
+    load(filename);
+  else
+    tic;
+    apData = this.approximate(mcSamples);
+    time = toc;
+    save(filename, 'apData', 'time', '-v7.3');
+  end
+
+  fprintf('Evaluation of %d samples: %.2f s\n', this.sampleCount, time);
 
   fprintf('Random sampling:\n');
   fprintf('  Normalized L2:   %.4e\n', ...
@@ -34,4 +46,6 @@ function assessApproximation(this)
 
   this.mcExpectation = mcExpectation;
   this.mcVariance = mcVariance;
+
+  this.apData = apData;
 end

@@ -46,10 +46,10 @@ function visualizeApproximation(this)
   legend('Monte Carlo', 'Approximation');
 
   %
-  % Have a look at random traces.
+  % Have a look at sample paths.
   %
   k = 1;
-  while Terminal.question('Generate a sample path? ')
+  while Terminal.question('Have a look at a sample path? ')
     if k == 1
       sampleFigure = figure;
     end
@@ -92,19 +92,17 @@ function visualizeApproximation(this)
 
   rvIndex = uint8(1:this.inputDimension);
   timeSlice = (this.timeSpan(1) + this.timeSpan(end)) / 2;
-  while Terminal.question('Sweep a set of random variables? ')
+  while Terminal.question('Have a look at a sweep of random variables? ')
     if this.inputDimension > 1
       rvIndex = this.questions.request('rvIndex', 'default', rvIndex);
       if any(rvIndex < 0) || any(rvIndex > this.inputDimension), continue; end
     end
 
     timeSlice = this.questions.request('timeSlice', 'default', timeSlice);
-    if timeSlice < time(1) || timeSlice > time(end), continue; end
+    timeIndex = timeToIndex(this, timeSlice);
+    if ~timeIndex, continue; end
 
     this.questions.save();
-
-    timeIndex = floor((timeSlice - this.timeSpan(1)) / ...
-      this.samplingInterval / this.timeDivision);
 
     figure;
 
@@ -126,5 +124,30 @@ function visualizeApproximation(this)
     Plot.label('Random variable');
     Plot.limit(rvSweep);
     legend('Exact', 'Approximation');
+  end
+
+  mcData = this.mcData;
+  apData = this.apData;
+
+  %
+  % Have a look at a PDF.
+  %
+  while Terminal.question('Have a look at a PDF? ')
+    timeSlice = this.questions.request('timeSlice', 'default', timeSlice);
+    timeIndex = timeToIndex(this, timeSlice);
+    if ~timeIndex, continue; end
+
+    this.questions.save();
+
+    compareData(mcData(:, timeIndex), apData(:, timeIndex), ...
+      'draw', true, 'method', 'histogram', 'range', 'unbounded');
+  end
+end
+
+function index = timeToIndex(this, time)
+  index = floor((time - this.timeSpan(1)) / ...
+    this.samplingInterval / this.timeDivision);
+  if index < 1 || index > length(this.stepIndex)
+    index = 0;
   end
 end

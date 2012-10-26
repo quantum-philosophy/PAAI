@@ -14,6 +14,7 @@ classdef Approximation < handle
 
     method
     methodOptions
+    methodSerialization
 
     processorCount
     taskCount
@@ -39,6 +40,8 @@ classdef Approximation < handle
 
     mcExpectation
     mcVariance
+
+    apData
   end
 
   methods

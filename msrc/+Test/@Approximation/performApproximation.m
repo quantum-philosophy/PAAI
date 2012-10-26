@@ -1,16 +1,6 @@
 function performApproximation(this)
-  methodParameters = {};
-
-  switch this.method
-  case 'PC'
-    methodParameters{end + 1} = ...
-      this.methodOptions.order;
-    methodParameters{end + 1} = ...
-      this.methodOptions.quadratureOptions.level;
-  end
-
   filename = sprintf('%s_%s_%s.mat', this.name, this.method, ...
-    DataHash({ this.serialize(), methodParameters }));
+    DataHash({ this.serialize(), this.methodSerialization }));
 
   if File.exist(filename)
     warning('Loading cached data "%s".', filename);
