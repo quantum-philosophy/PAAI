@@ -7,9 +7,9 @@ function assessApproximation(this)
 
   fprintf('Variance:\n');
   fprintf('  Normalized L2:   %.4e\n', ...
-    Error.computeNL2(mcVariance, this.apVariance));
+    Error.computeNL2(this.mcVariance, this.apVariance));
   fprintf('  Normalized RMSE: %.4e\n', ...
-    Error.computeNRMSE(mcVariance, this.apVariance));
+    Error.computeNRMSE(this.mcVariance, this.apVariance));
 
   fprintf('Random sampling:\n');
   fprintf('  Normalized L2:   %.4e\n', ...

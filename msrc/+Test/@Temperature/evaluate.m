@@ -10,7 +10,7 @@ function data = evaluate(this, rvs)
   pointCount = size(rvs, 1);
   data = zeros(pointCount, this.outputCount);
 
-  for i = 1:pointCount
+  parfor i = 1:pointCount
     newExecutionTime = schedule.executionTime;
     newExecutionTime(taskIndex) = ...
       schedule.executionTime(taskIndex) + rvs(i, :);
