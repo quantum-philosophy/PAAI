@@ -70,8 +70,8 @@ function solution = approximation
   % Definition of the problem
   % ----------------------------------------------------------------------------
   %
-  inputDimension = transformation.dimension;
-  outputDimension = taskCount;
+  inputCount = transformation.dimension;
+  outputCount = taskCount;
 
   executionTime = schedule.executionTime;
   newExecutionTime = executionTime;
@@ -80,7 +80,7 @@ function solution = approximation
 
     pointCount = size(variables, 1);
 
-    data = zeros(pointCount, outputDimension);
+    data = zeros(pointCount, outputCount);
 
     for i = 1:pointCount
       newExecutionTime(taskIndex) = executionTime(taskIndex) + variables(i, :);
@@ -117,29 +117,29 @@ function solution = approximation
 
     quadratureOptions = Options( ...
       'name', 'Tensor', ...
-      'dimension', inputDimension, ...
+      'dimension', inputCount, ...
       'order', quadratureOrder);
 
     chaosOptions = Options( ...
       'quadratureOptions', quadratureOptions, ...
-      'inputDimension', inputDimension, ...
-      'outputDimension', outputDimension, ...
+      'inputCount', inputCount, ...
+      'outputCount', outputCount, ...
       'order', polynomialOrder);
 
     additionalParameters{end + 1} = polynomialOrder;
     additionalParameters{end + 1} = quadratureOrder;
   case { 'ASGC', 'HDMR' }
     asgcOptions = Options( ...
-      'inputDimension', inputDimension, ...
-      'outputDimension', outputDimension, ...
+      'inputCount', inputCount, ...
+      'outputCount', outputCount, ...
       'adaptivityControl', 'NormNormExpectation', ...
       'tolerance', 1e-4, ...
       'maximalLevel', 10, ...
       'verbose', true);
 
     hdmrOptions = Options( ...
-      'inputDimension', inputDimension, ...
-      'outputDimension', outputDimension, ...
+      'inputCount', inputCount, ...
+      'outputCount', outputCount, ...
       'interpolantOptions', asgcOptions, ...
       'orderTolerance', 1e-3, ...
       'dimensionTolerance', 1e-3, ...
@@ -215,7 +215,7 @@ function solution = approximation
     load(filename);
   else
     tic;
-    mcSamples = rand(sampleCount, inputDimension);
+    mcSamples = rand(sampleCount, inputCount);
     mcData = compute(mcSamples);
     time = toc;
     save(filename, 'mcSamples', 'mcData', 'time', '-v7.3');
@@ -279,19 +279,19 @@ function solution = approximation
     rvs = transpose(0:0.05:1);
   end
 
-  rvIndex = uint8(1:inputDimension);
+  rvIndex = uint8(1:inputCount);
   while true
-    if inputDimension > 1
+    if inputCount > 1
       rvIndex = questions.request('rvIndex', 'default', rvIndex);
       if any(rvIndex == 0), break; end
-      if any(rvIndex < 0) || any(rvIndex > inputDimension), continue; end
+      if any(rvIndex < 0) || any(rvIndex > inputCount), continue; end
     end
 
     questions.save();
 
     figure;
 
-    RVs = zeros(length(rvs), inputDimension);
+    RVs = zeros(length(rvs), inputCount);
     for j = 1:length(rvIndex)
       RVs(:, rvIndex(j)) = rvs;
     end
@@ -306,6 +306,6 @@ function solution = approximation
     Plot.label('Random variable', 'Start time, s');
     Plot.limit(rvs);
 
-    if inputDimension == 1, break; end
+    if inputCount == 1, break; end
   end
 end

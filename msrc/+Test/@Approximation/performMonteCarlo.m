@@ -10,7 +10,7 @@ function performMonteCarlo(this)
   else
     tic;
     mcSamples = this.transformation.distribution.sample( ...
-      this.sampleCount, this.inputDimension);
+      this.sampleCount, this.inputCount);
     mcData = this.simulate(mcSamples);
     time = toc;
     save(filename, 'mcSamples', 'mcData', 'time', '-v7.3');

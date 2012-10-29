@@ -1,5 +1,5 @@
 function configureParameters(this)
-  this.inputDimension = length(this.taskIndex);
+  this.inputCount = length(this.taskIndex);
 
   %
   % Determine the marginal distributions.
@@ -11,7 +11,7 @@ function configureParameters(this)
         'alpha', 1, 'beta', 1, 'a', 0, 'b', deviation);
   end
 
-  switch this.inputDimension
+  switch this.inputCount
   case 1
     this.parameters = RandomVariables.Single(distributions{1});
   otherwise
@@ -19,9 +19,9 @@ function configureParameters(this)
     % Generate a correlation matrix.
     %
     if this.independent
-      correlation = eye(this.inputDimension);
+      correlation = eye(this.inputCount);
     else
-      correlation = Utils.generateCorrelation(this.inputDimension);
+      correlation = Utils.generateCorrelation(this.inputCount);
     end
 
     %

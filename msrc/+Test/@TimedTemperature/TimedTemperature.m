@@ -1,7 +1,7 @@
 classdef TimedTemperature < Test.Temperature
   properties (SetAccess = 'protected')
     timeRange
-    tempRange
+    dataRange
   end
 
   methods

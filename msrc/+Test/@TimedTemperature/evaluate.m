@@ -6,11 +6,11 @@ function data = evaluate(this, rvs)
   schedule = this.schedule;
 
   timeRange = this.timeRange;
-  tempRange = this.tempRange;
+  dataRange = this.dataRange;
 
   rvs = this.transformation.evaluate(rvs);
   pointCount = size(rvs, 1);
-  data = zeros(pointCount, this.outputDimension);
+  data = zeros(pointCount, this.outputCount);
 
   newExecutionTime = schedule.executionTime;
   for i = 1:pointCount
@@ -23,7 +23,8 @@ function data = evaluate(this, rvs)
     powerProfile = newPowerProfile(:, this.stepIndex);
     temperatureProfile = hotspot.compute(powerProfile);
 
-    data(i, timeRange) = newSchedule.startTime;
-    data(i, tempRange) = temperatureProfile(processorIndex, :);
+    data(i, timeRange) = ...
+      [ newSchedule.startTime, newSchedule.startTime + newExecutionTime ];
+    data(i, dataRange) = temperatureProfile(processorIndex, :);
   end
 end

@@ -22,8 +22,8 @@ classdef Approximation < handle
     processorIndex
     taskIndex
 
-    inputDimension
-    outputDimension
+    inputCount
+    outputCount
 
     schedule
 

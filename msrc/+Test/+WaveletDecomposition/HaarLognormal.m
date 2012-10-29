@@ -11,7 +11,7 @@ function HaarLognormal
 
   %% Perform the transformation.
   %
-  transformation = Transformation.SingleNormal(variables);
+  transformation = ProbabilityTransformation.SingleNormal(variables);
 
   f = @transformation.evaluate;
   % f = @(x) (-0.2 <= x) .* (x < 0.5);
@@ -31,7 +31,7 @@ function HaarLognormal
   fprintf('Error of variance: %.2f %%\n', ...
     100 * (mcVar - smVar) / mcVar);
 
-  Stats.compare(mcData, smData, ...
+  compareData(mcData, smData, ...
     'draw', true, 'method', 'histogram', 'range', 'unbounded');
 end
 

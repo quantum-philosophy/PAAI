@@ -3,13 +3,8 @@ function configureMethod(this)
 
   switch this.method
   case 'ASGC'
-    this.methodOptions.set( ...
-      'adaptivityRange', this.timeRange);
-    this.methodOptions.adaptivityControl = 'InfNormSurpluses2';
-    this.methodOptions.tolerance = 1e-6;
-  case 'HDMR'
-    this.methodOptions.interpolantOptions.set( ...
-      'adaptivityRange', this.timeRange);
+    this.methodOptions.set('agentCount', this.taskCount);
+    this.methodOptions.set('samplingInterval', this.samplingInterval);
   otherwise
     assert(false);
   end

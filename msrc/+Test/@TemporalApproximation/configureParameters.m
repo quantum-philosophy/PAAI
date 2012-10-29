@@ -10,5 +10,5 @@ function configureParameters(this)
 
   this.stepIndex = firstIndex:this.timeDivision:lastIndex;
 
-  this.outputDimension = length(this.stepIndex);
+  this.outputCount = length(this.stepIndex);
 end
