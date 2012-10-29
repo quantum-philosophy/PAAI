@@ -4,21 +4,21 @@ function data = evaluate(this, rvs)
   power = this.power;
   hotspot = this.hotspot;
   schedule = this.schedule;
+  stepIndex = this.stepIndex;
 
   rvs = this.transformation.evaluate(rvs);
   pointCount = size(rvs, 1);
   data = zeros(pointCount, this.outputCount);
 
-  newExecutionTime = schedule.executionTime;
   for i = 1:pointCount
+    newExecutionTime = schedule.executionTime;
     newExecutionTime(taskIndex) = ...
       schedule.executionTime(taskIndex) + rvs(i, :);
     newSchedule = Schedule.Dense(schedule, ...
       'executionTime', newExecutionTime);
-    newPowerProfile = power.compute(newSchedule);
 
-    powerProfile = newPowerProfile(:, this.stepIndex);
-    temperatureProfile = hotspot.compute(powerProfile);
+    powerProfile = power.compute(newSchedule);
+    temperatureProfile = hotspot.compute(powerProfile, stepIndex);
 
     data(i, :) = temperatureProfile(processorIndex, :);
   end

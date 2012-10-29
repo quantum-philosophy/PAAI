@@ -16,6 +16,8 @@ classdef Approximation < handle
     methodOptions
     methodSerialization
 
+    onlyMC
+
     processorCount
     taskCount
 
@@ -30,26 +32,26 @@ classdef Approximation < handle
     parameters
     transformation
 
+    mcSamples
+
+    mcExpectation
+    mcVariance
+    mcData
+
     approximation
 
     apExpectation
     apVariance
-
-    mcSamples
-    mcData
-
-    mcExpectation
-    mcVariance
-
     apData
   end
 
   methods
     function this = Approximation(name)
       this.name = name;
+      this.onlyMC = false;
 
       this.questions = Terminal.Questionnaire( ...
-        sprintf('Approximation_questions.mat', name));
+        'Approximation_questions.mat');
 
       this.methodOptions = Options();
 
@@ -59,19 +61,21 @@ classdef Approximation < handle
       this.configureSystem();
       this.configureParameters();
 
-      Terminal.printHeader('Configuration of the approximation method');
-      this.configureMethod();
-      display(this.methodOptions);
-
-      Terminal.printHeader('Construction of the approximation');
-      this.performApproximation();
-      display(this.approximation);
-
       Terminal.printHeader('Monte Carlo simulations');
       this.performMonteCarlo();
 
-      Terminal.printHeader('Assessment of the approximation');
-      this.assessApproximation();
+      if ~this.onlyMC
+        Terminal.printHeader('Configuration of the approximation method');
+        this.configureMethod();
+        display(this.methodOptions);
+
+        Terminal.printHeader('Construction of the approximation');
+        this.performApproximation();
+        display(this.approximation);
+
+        Terminal.printHeader('Assessment of the approximation');
+        this.assessApproximation();
+      end
 
       this.visualizeApproximation();
     end

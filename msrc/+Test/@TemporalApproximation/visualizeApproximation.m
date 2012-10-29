@@ -1,25 +1,22 @@
 function visualizeApproximation(this)
-  approximation = this.approximation;
-  distribution = this.transformation.distribution;
-
-  mcData = this.mcData;
-  apData = this.apData;
-
   switch this.method
+  case 'MC'
+    title = sprintf('samples %d, time step %s s', ...
+      this.sampleCount, num2str(this.samplingInterval));
   case 'PC'
     title = sprintf('polynomial order %d, quadrature level %d', ...
-      approximation.order, this.methodOptions.quadratureOptions.level);
+      this.approximation.order, this.methodOptions.quadratureOptions.level);
   case 'ASGC'
     title = sprintf('level %d, nodes %d', ...
-      approximation.level, approximation.nodeCount);
+      this.approximation.level, this.approximation.nodeCount);
 
     if this.inputCount < 3
-      plot(approximation);
+      plot(this.approximation);
     end
   case 'HDMR'
     title = sprintf('order %d, interpolants %d, nodes %d', ...
-      approximation.order, length(approximation.interpolants), ...
-      approximation.nodeCount);
+      this.approximation.order, length(this.approximation.interpolants), ...
+      this.approximation.nodeCount);
   otherwise
     assert(false);
   end
@@ -34,23 +31,31 @@ function visualizeApproximation(this)
 
   figure;
   line(time, this.mcExpectation, 'Color', mcColor);
-  line(time, this.apExpectation, 'Color', apColor);
-  line(time, mean(apData, 1), 'Color', apColor, 'LineStyle', '--');
   Plot.title('%s [%s]: Expectation', this.method, title);
   Plot.label('Time, s');
   Plot.limit(time);
-  legend('Monte Carlo', ...
-    'Approximation (analytical)', 'Approximation (empirical)');
+
+  if ~this.onlyMC
+    line(time, this.apExpectation, 'Color', apColor);
+    line(time, mean(this.apData, 1), 'Color', apColor, 'LineStyle', '--');
+    legend('Monte Carlo', ...
+      'Approximation (analytical)', 'Approximation (empirical)');
+  end
 
   figure;
   line(time, this.mcVariance, 'Color', mcColor);
-  line(time, this.apVariance, 'Color', apColor);
-  line(time, var(apData, [], 1), 'Color', apColor, 'LineStyle', '--');
   Plot.title('%s [%s]: Variance', this.method, title);
   Plot.label('Time, s');
   Plot.limit(time);
-  legend('Monte Carlo', ...
-    'Approximation (analytical)', 'Approximation (empirical)');
+
+  if ~this.onlyMC
+    line(time, this.apVariance, 'Color', apColor);
+    line(time, var(this.apData, [], 1), 'Color', apColor, 'LineStyle', '--');
+    legend('Monte Carlo', ...
+      'Approximation (analytical)', 'Approximation (empirical)');
+  end
+
+  distribution = this.transformation.distribution;
 
   %
   % Have a look at sample paths.
@@ -70,13 +75,15 @@ function visualizeApproximation(this)
 
     fprintf('Chosen sample: %s\n', Utils.toString(sample));
 
-    one = this.simulate(sample);
-    two = this.approximate(sample);
-
     color = Color.random();
 
-    line(time, one, 'Color', color);
-    line(time, two, 'Color', color, 'LineStyle', '--');
+    mcdata = this.simulate(sample);
+    line(time, mcdata, 'Color', color);
+
+    if ~this.onlyMC
+      apdata = this.approximate(sample);
+      line(time, apdata, 'Color', color, 'LineStyle', '--');
+    end
 
     k = k + 1;
   end
@@ -120,17 +127,18 @@ function visualizeApproximation(this)
 
     mcdata = this.simulate(rvs);
     mcdata = mcdata(:, timeIndex);
-
-    apdata = this.approximate(rvs);
-    apdata = apdata(:, timeIndex);
-
     line(rvSweep, mcdata, 'Color', mcColor);
-    line(rvSweep, apdata, 'Color', apColor);
 
     Plot.title('%s [%s]: Time slice', this.method, title);
     Plot.label('Random variable');
     Plot.limit(rvSweep);
-    legend('Exact', 'Approximation');
+
+    if ~this.onlyMC
+      apdata = this.approximate(rvs);
+      apdata = apdata(:, timeIndex);
+      line(rvSweep, apdata, 'Color', apColor);
+      legend('Exact', 'Approximation');
+    end
   end
 
   %
@@ -143,8 +151,13 @@ function visualizeApproximation(this)
 
     this.questions.save();
 
-    compareData(mcData(:, timeIndex), apData(:, timeIndex), ...
-      'draw', true, 'method', 'histogram', 'range', 'unbounded');
+    if this.onlyMC
+      observeData(this.mcData(:, timeIndex), ...
+        'draw', true, 'method', 'histogram', 'range', 'unbounded');
+    else
+      compareData(this.mcData(:, timeIndex), this.apData(:, timeIndex), ...
+        'draw', true, 'method', 'histogram', 'range', 'unbounded');
+    end
   end
 end
 

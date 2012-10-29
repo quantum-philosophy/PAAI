@@ -20,4 +20,7 @@ function performMonteCarlo(this)
 
   this.mcSamples = mcSamples;
   this.mcData = mcData;
+
+  this.mcExpectation = mean(mcData, 1);
+  this.mcVariance = var(mcData, [], 1);
 end
