@@ -1,5 +1,5 @@
 function configureParameters(this)
   configureParameters@Test.Approximation(this);
 
-  this.outputDimension = this.taskCount;
+  this.outputCount = this.taskCount;
 end

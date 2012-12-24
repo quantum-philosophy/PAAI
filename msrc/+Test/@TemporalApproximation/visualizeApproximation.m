@@ -137,7 +137,7 @@ function visualizeApproximation(this)
       apdata = this.approximate(rvs);
       apdata = apdata(:, timeIndex);
       line(rvSweep, apdata, 'Color', apColor);
-      legend('Exact', 'Approximation');
+      legend('Monte Carlo', 'Approximation');
     end
   end
 
@@ -152,11 +152,12 @@ function visualizeApproximation(this)
     this.questions.save();
 
     if this.onlyMC
-      observeData(this.mcData(:, timeIndex), ...
+      Data.observe(this.mcData(:, timeIndex), ...
         'draw', true, 'method', 'histogram', 'range', 'unbounded');
     else
-      compareData(this.mcData(:, timeIndex), this.apData(:, timeIndex), ...
+      Data.compare(this.mcData(:, timeIndex), this.apData(:, timeIndex), ...
         'draw', true, 'method', 'histogram', 'range', 'unbounded');
+      legend('Monte Carlo', 'Approximation');
     end
   end
 end

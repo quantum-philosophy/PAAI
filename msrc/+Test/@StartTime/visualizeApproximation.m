@@ -25,19 +25,19 @@ function visualizeApproximation(this)
 
   this.questions.autoreply(false);
 
-  rvIndex = uint8(1:this.inputDimension);
+  rvIndex = uint8(1:this.inputCount);
   while true
-    if this.inputDimension > 1
+    if this.inputCount > 1
       rvIndex = this.questions.request('rvIndex', 'default', rvIndex);
       if any(rvIndex == 0), break; end
-      if any(rvIndex < 0) || any(rvIndex > this.inputDimension), continue; end
+      if any(rvIndex < 0) || any(rvIndex > this.inputCount), continue; end
     end
 
     this.questions.save();
 
     figure;
 
-    RVs = zeros(length(rvs), this.inputDimension);
+    RVs = zeros(length(rvs), this.inputCount);
     for j = 1:length(rvIndex)
       RVs(:, rvIndex(j)) = rvs;
     end
@@ -52,6 +52,6 @@ function visualizeApproximation(this)
     Plot.label('Random variable', 'Start time, s');
     Plot.limit(rvs);
 
-    if this.inputDimension == 1, break; end
+    if this.inputCount == 1, break; end
   end
 end

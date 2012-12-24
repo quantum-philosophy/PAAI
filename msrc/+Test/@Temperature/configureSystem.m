@@ -8,6 +8,6 @@ function configureSystem(this)
   hotspotLine = sprintf('sampling_intvl %e', ...
     this.samplingInterval);
 
-  this.power = PowerProfile(this.samplingInterval);
+  this.power = DynamicPower(this.samplingInterval);
   this.hotspot = HotSpot.Analytic(floorplan, hotspotConfig, hotspotLine);
 end

@@ -25,7 +25,7 @@ display(schedule);
 
 %% Obtain the dynamic power profile.
 %
-power = PowerProfile(samplingInterval);
+power = DynamicPower(samplingInterval);
 powerProfile = power.compute(schedule);
 
 power.display(powerProfile);

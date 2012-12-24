@@ -4,7 +4,7 @@ function data = evaluate(this, rvs)
 
   rvs = this.transformation.evaluate(rvs);
   pointCount = size(rvs, 1);
-  data = zeros(pointCount, this.outputDimension);
+  data = zeros(pointCount, this.outputCount);
 
   newExecutionTime = schedule.executionTime;
   for i = 1:pointCount

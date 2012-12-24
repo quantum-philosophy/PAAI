@@ -18,7 +18,7 @@ function data = evaluate(this, rvs)
       'executionTime', newExecutionTime);
 
     powerProfile = power.compute(newSchedule);
-    temperatureProfile = hotspot.compute(powerProfile, stepIndex);
+    temperatureProfile = hotspot.computeSparse(powerProfile, stepIndex);
 
     data(i, :) = temperatureProfile(processorIndex, :);
   end

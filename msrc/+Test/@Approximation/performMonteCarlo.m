@@ -1,8 +1,8 @@
 function performMonteCarlo(this)
   fprintf('Number of samples: %d\n', this.sampleCount);
 
-  filename = sprintf('%s_MC_%s_%s.mat', this.name, this.method, ...
-    DataHash({ this.serialize(), this.sampleCount }));
+  filename = File.temporal(sprintf('%s_MC_%s_%s.mat', this.name, ...
+    this.method, DataHash({ this.serialize(), this.sampleCount })));
 
   if File.exist(filename)
     warning('Loading cached data "%s".', filename);
