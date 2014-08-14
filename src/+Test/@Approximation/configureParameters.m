@@ -11,33 +11,30 @@ function configureParameters(this)
         'alpha', 1, 'beta', 1, 'a', 0, 'b', deviation);
   end
 
-  switch this.inputCount
-  case 1
-    this.parameters = RandomVariables.Single(distributions{1});
-  otherwise
-    %
-    % Generate a correlation matrix.
-    %
-    if this.independent
-      correlation = eye(this.inputCount);
-    else
-      correlation = Utils.generateCorrelation(this.inputCount);
-    end
-
-    %
-    % Construct a vector of correlated RVs.
-    %
-    this.parameters = RandomVariables.Heterogeneous( ...
-      distributions, correlation);
+  %
+  % Generate a correlation matrix.
+  %
+  if this.independent
+    correlation = eye(this.inputCount);
+  else
+    correlation = Utils.generateCorrelation(this.inputCount);
   end
+
+  %
+  % Construct a vector of correlated RVs.
+  %
+  this.parameters = RandomVariables( ...
+    'distributions', distributions, 'correlation', correlation);
 
   %
   % Perform the probability transformation.
   %
   switch this.method
   case 'PC'
-    this.transformation = ProbabilityTransformation.Normal(this.parameters);
+    this.transformation = ProbabilityTransformation.Normal( ...
+      'variables', this.parameters);
   otherwise
-    this.transformation = ProbabilityTransformation.Uniform(this.parameters);
+    this.transformation = ProbabilityTransformation.Uniform( ...
+      'variables', this.parameters);
   end
 end

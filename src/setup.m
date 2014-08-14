@@ -1,9 +1,5 @@
 function setup
-  evalin('base', 'clear removes all');
+  use('Interaction');
 
-  use('Approximation');
-  use('SystemSimulation');
-  use('TemperatureAnalysis');
-  use('ProbabilityTheory');
-  use('Vendor', 'DataHash');
+  use('ElectronicSystems', 'StochasticAnalysis');
 end

@@ -2,7 +2,8 @@ function configureParameters(this)
   configureParameters@Test.Approximation(this);
 
   if this.timeSpan(end) == 0
-    this.timeSpan(end) = duration(this.schedule);
+    duration = max(this.schedule.startTime + this.schedule.executionTime);
+    this.timeSpan(end) = duration;
   end
 
   firstIndex = max(1, floor(this.timeSpan(1) / this.samplingInterval));

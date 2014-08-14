@@ -1,6 +1,9 @@
 function configureSystem(this)
-  [ this.platform, this.application ] = parseTGFF(Utils.resolvePath( ...
+  [this.platform, this.application] = Utils.parseTGFF(Utils.resolvePath( ...
     sprintf('%03d_%03d.tgff', this.processorCount, this.taskCount)));
 
-  this.schedule = Schedule.Dense(this.platform, this.application);
+  this.scheduler = Scheduler.Dense( ...
+    'platform', this.platform, 'application', this.application);
+
+  this.schedule = this.scheduler.decode(this.scheduler.compute());
 end

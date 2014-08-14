@@ -61,7 +61,7 @@ function visualizeApproximation(this)
   % Have a look at sample paths.
   %
   k = 1;
-  while Terminal.question('Have a look at a sample path? ')
+  while Console.question('Have a look at a sample path? ')
     if k == 1
       sampleFigure = figure;
     end
@@ -106,7 +106,7 @@ function visualizeApproximation(this)
 
   rvIndex = uint8(1:this.inputCount);
   timeSlice = (this.timeSpan(1) + this.timeSpan(end)) / 2;
-  while Terminal.question('Have a look at a sweep of random variables? ')
+  while Console.question('Have a look at a sweep of random variables? ')
     if this.inputCount > 1
       rvIndex = this.questions.request('rvIndex', 'default', rvIndex);
       if any(rvIndex < 0) || any(rvIndex > this.inputCount), continue; end
@@ -144,7 +144,7 @@ function visualizeApproximation(this)
   %
   % Have a look at a PDF.
   %
-  while Terminal.question('Have a look at a PDF? ')
+  while Console.question('Have a look at a PDF? ')
     timeSlice = this.questions.request('timeSlice', 'default', timeSlice);
     timeIndex = timeToIndex(this, timeSlice);
     if ~timeIndex, continue; end

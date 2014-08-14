@@ -1,5 +1,5 @@
 function configureTestCase(this)
-  skip = Terminal.question('Use the previous settings? ');
+  skip = Console.question('Use the previous settings? ');
 
   if skip, this.questions.autoreply(); end
 

@@ -27,6 +27,7 @@ classdef Approximation < handle
     inputCount
     outputCount
 
+    scheduler
     schedule
 
     parameters
@@ -50,30 +51,30 @@ classdef Approximation < handle
       this.name = name;
       this.onlyMC = false;
 
-      this.questions = Terminal.Questionnaire( ...
+      this.questions = Questionnaire( ...
         'Approximation_questions.mat');
 
       this.methodOptions = Options();
 
-      Terminal.printHeader('Configuration of the system');
+      Print.header('Configuration of the system');
       this.configureTestCase();
 
       this.configureSystem();
       this.configureParameters();
 
-      Terminal.printHeader('Monte Carlo simulations');
+      Print.header('Monte Carlo simulations');
       this.performMonteCarlo();
 
       if ~this.onlyMC
-        Terminal.printHeader('Configuration of the approximation method');
+        Print.header('Configuration of the approximation method');
         this.configureMethod();
         display(this.methodOptions);
 
-        Terminal.printHeader('Construction of the approximation');
+        Print.header('Construction of the approximation');
         this.performApproximation();
         display(this.approximation);
 
-        Terminal.printHeader('Assessment of the approximation');
+        Print.header('Assessment of the approximation');
         this.assessApproximation();
       end
 

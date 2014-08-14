@@ -8,7 +8,7 @@ function solution = approximation
 
   prefix = 'SS';
 
-  questions = Terminal.Questionnaire( ...
+  questions = Questionnaire( ...
     sprintf('%s_questions.mat', prefix));
 
   questions.append('method', ...
@@ -32,12 +32,12 @@ function solution = approximation
   % Configuration of the system
   % ----------------------------------------------------------------------------
   %
-  Terminal.printHeader('Test case configuration');
+  Print.header('Test case configuration');
 
   %
   % Construct the test case.
   %
-  [ platform, application, floorplan, hotspotConfig, hotspotLine ] = ...
+  [platform, application, floorplan, hotspotConfig, hotspotLine] = ...
     Test.Case.request('samplingInterval', 1e-4);
 
   processorCount = length(platform);
@@ -56,7 +56,7 @@ function solution = approximation
   %
   % Construct a schedule and a set of uncertain parameters.
   %
-  [ schedule, parameters ] = Test.Case.constructBeta(platform, application, ...
+  [schedule, parameters] = Test.Case.constructBeta(platform, application, ...
     'taskIndex', taskIndex, 'independent', independent, ...
     'alpha', 1.4, 'beta', 3, 'deviation', 0.7);
 
@@ -94,7 +94,7 @@ function solution = approximation
   % Configuration of the approximation method
   % ----------------------------------------------------------------------------
   %
-  Terminal.printHeader('Configuration of the approximation method');
+  Print.header('Configuration of the approximation method');
 
   additionalParameters = {};
 
@@ -165,7 +165,7 @@ function solution = approximation
   % Construction of the approximation
   % ----------------------------------------------------------------------------
   %
-  Terminal.printHeader('Construction of the approximation');
+  Print.header('Construction of the approximation');
 
   filename = sprintf('%s_%s_%s.mat', prefix, method, ...
     DataHash({ processorCount, taskCount, taskIndex, ...
@@ -201,7 +201,7 @@ function solution = approximation
   % Monte Carlo sampling
   % ----------------------------------------------------------------------------
   %
-  Terminal.printHeader('Monte Carlo sampling');
+  Print.header('Monte Carlo sampling');
 
   sampleCount = 1e4;
   fprintf('Number of samples: %d\n', sampleCount);
@@ -231,7 +231,7 @@ function solution = approximation
   % Inspection of the approximated solution
   % ----------------------------------------------------------------------------
   %
-  Terminal.printHeader('Inspection of the approximated solution');
+  Print.header('Inspection of the approximated solution');
 
   fprintf('Expectation:\n');
   fprintf('  Normalized L2:   %.4e\n', ...
