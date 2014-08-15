@@ -73,7 +73,7 @@ function visualizeApproximation(this)
 
     sample = distribution.sample(1, this.inputCount);
 
-    fprintf('Chosen sample: %s\n', Utils.toString(sample));
+    fprintf('Chosen sample: %s\n', String(sample));
 
     color = Color.random();
 
@@ -152,10 +152,11 @@ function visualizeApproximation(this)
     this.questions.save();
 
     if this.onlyMC
-      Data.observe(this.mcData(:, timeIndex), ...
+      Plot.distribution(this.mcData(:, timeIndex), ...
         'draw', true, 'method', 'histogram', 'range', 'unbounded');
     else
-      Data.compare(this.mcData(:, timeIndex), this.apData(:, timeIndex), ...
+      Utils.compareDistributions( ...
+        this.mcData(:, timeIndex), this.apData(:, timeIndex), ...
         'draw', true, 'method', 'histogram', 'range', 'unbounded');
       legend('Monte Carlo', 'Approximation');
     end
