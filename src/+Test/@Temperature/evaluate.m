@@ -1,25 +1,28 @@
 function data = evaluate(this, rvs)
   processorIndex = this.processorIndex;
   taskIndex = this.taskIndex;
-  power = this.power;
-  hotspot = this.hotspot;
-  schedule = this.schedule;
   stepIndex = this.stepIndex;
+
+  power = this.power;
+  temperature = this.temperature;
+
+  scheduler = this.scheduler;
+  schedule = this.schedule;
+  arguments = { schedule.mapping, schedule.priority, schedule.order, [] };
 
   rvs = this.transformation.evaluate(rvs);
   pointCount = size(rvs, 1);
   data = zeros(pointCount, this.outputCount);
 
-  parfor i = 1:pointCount
+  for i = 1:pointCount
     newExecutionTime = schedule.executionTime;
     newExecutionTime(taskIndex) = ...
       schedule.executionTime(taskIndex) + rvs(i, :);
-    newSchedule = Schedule.Dense(schedule, ...
-      'executionTime', newExecutionTime);
+    newSchedule = scheduler.compute(arguments{:}, newExecutionTime);
 
     powerProfile = power.compute(newSchedule);
-    temperatureProfile = hotspot.computeSparse(powerProfile, stepIndex);
+    temperatureProfile = temperature.compute(powerProfile);
 
-    data(i, :) = temperatureProfile(processorIndex, :);
+    data(i, :) = temperatureProfile(processorIndex, stepIndex);
   end
 end

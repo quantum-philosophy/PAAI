@@ -5,7 +5,7 @@ function visualizeApproximation(this)
   case 'PC'
     title = sprintf('polynomial order %d, quadrature order %d', ...
       approximation.order, this.methodOptions.quadratureOptions.order);
-  case 'ASGC'
+  case 'SC'
     title = sprintf('level %d, nodes %d', ...
       approximation.level, approximation.nodeCount);
   case 'HDMR'

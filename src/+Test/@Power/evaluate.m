@@ -1,6 +1,7 @@
 function data = evaluate(this, rvs)
   processorIndex = this.processorIndex;
   taskIndex = this.taskIndex;
+
   power = this.power;
 
   scheduler = this.scheduler;

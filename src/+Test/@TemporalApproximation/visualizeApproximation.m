@@ -6,13 +6,11 @@ function visualizeApproximation(this)
   case 'PC'
     title = sprintf('polynomial order %d, quadrature order %d', ...
       this.approximation.order, this.methodOptions.quadratureOptions.order);
-  case 'ASGC'
+  case 'SC'
     title = sprintf('level %d, nodes %d', ...
-      this.approximation.level, this.approximation.nodeCount);
+      this.apOutput.level, this.apOutput.nodeCount);
 
-    if this.inputCount < 3
-      plot(this.approximation);
-    end
+    plot(this.approximation, this.apOutput);
   case 'HDMR'
     title = sprintf('order %d, interpolants %d, nodes %d', ...
       this.approximation.order, length(this.approximation.interpolants), ...
@@ -35,7 +33,7 @@ function visualizeApproximation(this)
   Plot.label('Time, s');
   Plot.limit(time);
 
-  if ~this.onlyMC
+  if ~this.onlyMC && ~isempty(this.apExpectation)
     line(time, this.apExpectation, 'Color', apColor);
     line(time, mean(this.apData, 1), 'Color', apColor, 'LineStyle', '--');
     legend('Monte Carlo', ...
@@ -48,7 +46,7 @@ function visualizeApproximation(this)
   Plot.label('Time, s');
   Plot.limit(time);
 
-  if ~this.onlyMC
+  if ~this.onlyMC && ~isempty(this.apVariance)
     line(time, this.apVariance, 'Color', apColor);
     line(time, var(this.apData, [], 1), 'Color', apColor, 'LineStyle', '--');
     legend('Monte Carlo', ...

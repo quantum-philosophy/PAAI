@@ -1,9 +1,13 @@
 function data = evaluate(this, rvs)
   processorIndex = this.processorIndex;
   taskIndex = this.taskIndex;
+
   power = this.power;
-  hotspot = this.hotspot;
+  temperature = this.temperature;
+
+  scheduler = this.scheduler;
   schedule = this.schedule;
+  arguments = { schedule.mapping, schedule.priority, schedule.order, [] };
 
   timeRange = this.timeRange;
   dataRange = this.dataRange;
@@ -16,15 +20,16 @@ function data = evaluate(this, rvs)
   for i = 1:pointCount
     newExecutionTime(taskIndex) = ...
       schedule.executionTime(taskIndex) + rvs(i, :);
-    newSchedule = Schedule.Dense(schedule, ...
-      'executionTime', newExecutionTime);
+    newSchedule = scheduler.compute(arguments{:}, newExecutionTime);
     newPowerProfile = power.compute(newSchedule);
 
     powerProfile = newPowerProfile(:, this.stepIndex);
-    temperatureProfile = hotspot.compute(powerProfile);
+    temperatureProfile = temperature.compute(powerProfile);
+
+    newSchedule = scheduler.decode(newSchedule);
 
     data(i, timeRange) = ...
-      [ newSchedule.startTime, newSchedule.startTime + newExecutionTime ];
+      [newSchedule.startTime, newSchedule.startTime + newExecutionTime];
     data(i, dataRange) = temperatureProfile(processorIndex, :);
   end
 end

@@ -9,12 +9,13 @@ function performApproximation(this)
     tic;
     switch this.method
     case 'PC'
-      approximation = PolynomialChaos.Hermite(this.methodOptions);
+      approximation = PolynomialChaos(this.methodOptions);
       apOutput = approximation.construct(@this.evaluate);
       apStats = approximation.analyze(apOutput);
-    case 'ASGC'
-      approximation = ASGC( ...
-        @this.evaluate, this.methodOptions);
+    case 'SC'
+      approximation = StochasticCollocation(this.methodOptions);
+      apOutput = approximation.construct(@this.evaluate);
+      apStats = approximation.analyze(apOutput);
     case 'HDMR'
       approximation = HDMR( ...
         @this.evaluate, this.methodOptions);

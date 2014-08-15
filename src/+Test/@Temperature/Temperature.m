@@ -1,7 +1,7 @@
 classdef Temperature < Test.TemporalApproximation
   properties (SetAccess = 'protected')
     power
-    hotspot
+    temperature
   end
 
   methods
