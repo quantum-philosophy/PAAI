@@ -41,6 +41,7 @@ classdef Approximation < handle
 
     approximation
 
+    apOutput
     apExpectation
     apVariance
     apData
@@ -72,7 +73,7 @@ classdef Approximation < handle
 
         Print.header('Construction of the approximation');
         this.performApproximation();
-        display(this.approximation);
+        display(this.approximation, this.apOutput);
 
         Print.header('Assessment of the approximation');
         this.assessApproximation();

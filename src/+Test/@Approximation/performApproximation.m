@@ -9,8 +9,9 @@ function performApproximation(this)
     tic;
     switch this.method
     case 'PC'
-      approximation = PolynomialChaos.Hermite( ...
-        @this.evaluate, this.methodOptions);
+      approximation = PolynomialChaos.Hermite(this.methodOptions);
+      apOutput = approximation.construct(@this.evaluate);
+      apStats = approximation.analyze(apOutput);
     case 'ASGC'
       approximation = ASGC( ...
         @this.evaluate, this.methodOptions);
@@ -21,15 +22,16 @@ function performApproximation(this)
       assert(false);
     end
     time = toc;
-    save(filename, 'approximation', 'time', '-v7.3');
+    save(filename, 'approximation', 'apOutput', 'apStats', 'time', '-v7.3');
   end
 
   fprintf('Approximation construction: %.2f s\n', time);
 
   this.approximation = approximation;
 
-  this.apExpectation = approximation.expectation;
-  this.apVariance = approximation.variance;
+  this.apOutput = apOutput;
+  this.apExpectation = apStats.expectation;
+  this.apVariance = apStats.variance;
 
   filename = File.temporal(sprintf('%s_%s_MC_%s.mat', this.name, ...
     this.method, DataHash({ this.serialize(), this.sampleCount, ...
@@ -45,8 +47,8 @@ function performApproximation(this)
     save(filename, 'apData', 'time', '-v7.3');
   end
 
-  fprintf('Approximation evaluation:   %.2f s (%d samples)\n', ...
-    time, this.sampleCount);
+  fprintf('Approximation evaluation:   %.2f s (%d samples)\n', time, ...
+    this.sampleCount);
 
   this.apData = apData;
 end
