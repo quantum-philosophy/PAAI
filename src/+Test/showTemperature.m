@@ -10,12 +10,9 @@ function showTemperature()
   [platform, application] = Utils.parseTGFF(Utils.resolvePath( ...
   sprintf('%03d_%03d.tgff', processorCount, taskCount)));
 
-  floorplan = Utils.resolvePath( ...
-    sprintf('%03d.flp', processorCount), 'test');
-  hotspotConfig = Utils.resolvePath( ...
-    'hotspot.config', 'test');
-  hotspotLine = sprintf('sampling_intvl %e', ...
-    samplingInterval);
+  floorplan = Utils.resolvePath(sprintf('%03d.flp', processorCount));
+  hotspotConfig = Utils.resolvePath('hotspot.config');
+  hotspotLine = sprintf('sampling_intvl %e', samplingInterval);
 
   %% Schedule the application.
   %
