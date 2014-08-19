@@ -16,9 +16,6 @@ function performApproximation(this)
       approximation = StochasticCollocation(this.methodOptions);
       apOutput = approximation.construct(@this.evaluate);
       apStats = approximation.analyze(apOutput);
-    case 'HDMR'
-      approximation = HDMR( ...
-        @this.evaluate, this.methodOptions);
     otherwise
       assert(false);
     end

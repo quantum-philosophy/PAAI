@@ -8,10 +8,6 @@ function visualizeApproximation(this)
   case 'SC'
     title = sprintf('level %d, nodes %d', ...
       approximation.level, approximation.nodeCount);
-  case 'HDMR'
-    title = sprintf('order %d, interpolants %d, nodes %d', ...
-      approximation.order, length(approximation.interpolants), ...
-      approximation.nodeCount);
   otherwise
     assert(false);
   end

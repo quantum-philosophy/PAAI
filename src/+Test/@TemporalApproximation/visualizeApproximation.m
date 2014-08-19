@@ -13,10 +13,6 @@ function visualizeApproximation(this)
     if this.inputCount < 3
       plot(this.approximation, this.apOutput);
     end
-  case 'HDMR'
-    title = sprintf('order %d, interpolants %d, nodes %d', ...
-      this.approximation.order, length(this.approximation.interpolants), ...
-      this.approximation.nodeCount);
   otherwise
     assert(false);
   end
