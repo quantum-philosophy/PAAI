@@ -10,7 +10,9 @@ function visualizeApproximation(this)
     title = sprintf('level %d, nodes %d', ...
       this.apOutput.level, this.apOutput.nodeCount);
 
-    plot(this.approximation, this.apOutput);
+    if this.inputCount < 3
+      plot(this.approximation, this.apOutput);
+    end
   case 'HDMR'
     title = sprintf('order %d, interpolants %d, nodes %d', ...
       this.approximation.order, length(this.approximation.interpolants), ...
