@@ -1,7 +1,7 @@
 classdef TemporalApproximation < Test.Approximation
   properties (Constant)
-    samplingInterval = 1e-5;
-    timeDivision = 10;
+    samplingInterval = 1e-3;
+    timeDivision = 1;
   end
 
   properties (SetAccess = 'protected')

@@ -1,7 +1,7 @@
 function showTemperature()
   setup;
 
-  samplingInterval = 1e-4; % s
+  samplingInterval = 1e-3; % s
   processorCount = 2;
   taskCount = 20;
 
