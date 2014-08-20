@@ -3,8 +3,8 @@ function visualizeApproximation(this)
 
   switch this.method
   case 'PC'
-    title = sprintf('polynomial order %d, quadrature order %d', ...
-      approximation.order, this.methodOptions.quadratureOptions.order);
+    title = sprintf('polynomial order %d, quadrature level %d', ...
+      approximation.order, this.methodOptions.quadratureOptions.level);
   case 'SC'
     title = sprintf('level %d, nodes %d', ...
       approximation.level, approximation.nodeCount);

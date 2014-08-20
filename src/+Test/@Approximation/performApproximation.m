@@ -6,7 +6,7 @@ function performApproximation(this)
     warning('Loading cached data "%s".', filename);
     load(filename);
   else
-    tic;
+    time = tic;
     switch this.method
     case 'PC'
       approximation = PolynomialChaos(this.methodOptions);
@@ -19,7 +19,7 @@ function performApproximation(this)
     otherwise
       assert(false);
     end
-    time = toc;
+    time = toc(time);
     save(filename, 'approximation', 'apOutput', 'apStats', 'time', '-v7.3');
   end
 
