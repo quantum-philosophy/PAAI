@@ -4,7 +4,7 @@ tgffs := $(patsubst %.tgffopt,%.tgff,$(wildcard *.tgffopt))
 
 all: $(tgffs)
 
-%.tgff:
+%.tgff: %.tgffopt
 	$(TGFF) $*
 
 clean:
