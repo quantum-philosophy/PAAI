@@ -1,6 +1,6 @@
 function performApproximation(this)
-  filename = File.temporal(sprintf('%s_%s_%s.mat', this.name, ...
-    this.method, DataHash({ this.serialize(), this.methodSerialization })));
+  filename = sprintf('%s_%s_%s.mat', this.name, this.method, ...
+    DataHash({ this.serialize(), this.methodSerialization }));
 
   if File.exist(filename)
     warning('Loading cached data "%s".', filename);
@@ -31,9 +31,8 @@ function performApproximation(this)
   this.apExpectation = apStats.expectation;
   this.apVariance = apStats.variance;
 
-  filename = File.temporal(sprintf('%s_%s_MC_%s.mat', this.name, ...
-    this.method, DataHash({ this.serialize(), this.sampleCount, ...
-      this.methodSerialization })));
+  filename = sprintf('%s_%s_MC_%s.mat', this.name, this.method, ...
+    DataHash({ this.serialize(), this.sampleCount, this.methodSerialization }));
 
   if File.exist(filename)
     warning('Loading cached data "%s".', filename);
