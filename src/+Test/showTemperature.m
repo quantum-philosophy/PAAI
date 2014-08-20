@@ -35,4 +35,12 @@ function showTemperature()
 
   temperatureProfile = temperature.compute(powerProfile);
   temperature.plot(temperatureProfile);
+
+  maximalTemperature = Utils.toCelsius(max(temperatureProfile, [], 2));
+  for i = 1:processorCount
+    Plot.hline(maximalTemperature(i), 'style', { 'Color', Color.pick(i) });
+  end
+  fprintf('Maximal temparature (C): ');
+  fprintf('%8.2f', maximalTemperature);
+  fprintf('\n');
 end
