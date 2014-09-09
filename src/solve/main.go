@@ -30,8 +30,5 @@ func main() {
 		return
 	}
 
-	err = problem.solve()
-	if err != nil {
-		printError(err)
-	}
+	problem.solve()
 }

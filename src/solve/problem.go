@@ -1,6 +1,7 @@
 package main
 
 import (
+	"errors"
 	"math"
 
 	"github.com/go-eslab/persim/power"
@@ -18,6 +19,7 @@ type problem struct {
 
 	cores uint16
 	tasks uint16
+	steps uint16
 
 	inputs  uint16
 	outputs uint16
@@ -39,6 +41,10 @@ func newProblem(path string) (*problem, error) {
 		return nil, err
 	}
 
+	if err = p.config.validate(); err != nil {
+		return nil, err
+	}
+
 	plat, app, err := system.LoadTGFF(p.config.TGFF)
 	if err != nil {
 		return nil, err
@@ -49,13 +55,13 @@ func newProblem(path string) (*problem, error) {
 	p.power = power.New(plat, app, p.config.TimeStep)
 
 	sched := p.time.Compute(p.priority)
-	steps := uint16(math.Floor(sched.Span() / p.config.TimeStep))
 
 	p.cores = uint16(len(plat.Cores))
 	p.tasks = uint16(len(app.Tasks))
+	p.steps = uint16(math.Floor(sched.Span() / p.config.TimeStep))
 
-	p.inputs = p.tasks
-	p.outputs = p.cores * steps
+	p.inputs = uint16(len(p.config.taskIndex))
+	p.outputs = uint16(len(p.config.coreIndex)) * p.steps
 
 	p.tempan, err = expint.New((*expint.Config)(&p.config.ExpInt))
 	if err != nil {
@@ -64,12 +70,15 @@ func newProblem(path string) (*problem, error) {
 
 	p.interp = adhier.New(newcot.New(p.inputs), linhat.New(p.inputs), p.outputs)
 
+	if err = p.validate(); err != nil {
+		return nil, err
+	}
+
 	return p, nil
 }
 
-func (p *problem) solve() error {
-	p.interp.Construct(p.evaluate)
-	return nil
+func (p *problem) solve() *adhier.Surrogate {
+	return p.interp.Compute(p.evaluate)
 }
 
 func (p *problem) evaluate(nodes []float64) []float64 {
@@ -84,4 +93,28 @@ func (p *problem) evaluate(nodes []float64) []float64 {
 	p.tempan.ComputeTransient(P, Q, uint32(p.cores), uint32(steps))
 
 	return Q
+}
+
+func (p *problem) validate() error {
+	if len(p.config.coreIndex) == 0 {
+		return errors.New("the core index is empty")
+	}
+
+	for _, id := range p.config.coreIndex {
+		if id >= p.cores {
+			return errors.New("the core index is invalid")
+		}
+	}
+
+	if len(p.config.taskIndex) == 0 {
+		return errors.New("the task index is empty")
+	}
+
+	for _, id := range p.config.taskIndex {
+		if id >= p.tasks {
+			return errors.New("the task index is invalid")
+		}
+	}
+
+	return nil
 }
