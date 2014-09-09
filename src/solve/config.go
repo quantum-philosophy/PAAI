@@ -13,8 +13,9 @@ type ExpInt expint.Config
 type Config struct {
 	TGFF string
 
-	coreIndex []uint16
-	taskIndex []uint16
+	CoreIndex []uint16
+	TaskIndex []uint16
+	DelayRate float64
 
 	ExpInt
 }
@@ -45,6 +46,10 @@ func (c *Config) load(path string) error {
 }
 
 func (c *Config) validate() error {
+	if c.DelayRate <= 0 {
+		return errors.New("the delay rate is invalid")
+	}
+
 	if c.TimeStep <= 0 {
 		return errors.New("the time step is invalid")
 	}

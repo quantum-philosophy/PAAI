@@ -2,6 +2,7 @@
 	"tgff": "../Assets/002_020.tgff",
 	"coreIndex": [0],
 	"taskIndex": [0],
+	"delayRate": 0.2,
 	"floorplan": "../Assets/002.flp",
 	"hotspot": {
 		"config": "../Assets/hotspot.config",

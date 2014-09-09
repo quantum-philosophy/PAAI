@@ -26,7 +26,9 @@ type problem struct {
 
 	priority []float64
 	time     *time.List
+	schedule *time.Schedule
 	power    *power.Self
+	delay    []float64
 
 	tempan *expint.Self
 	interp *adhier.Self
@@ -52,16 +54,20 @@ func newProblem(path string) (*problem, error) {
 
 	p.priority = system.NewProfile(plat, app).Mobility
 	p.time = time.NewList(plat, app)
+	p.schedule = p.time.Compute(p.priority)
 	p.power = power.New(plat, app, p.config.TimeStep)
-
-	sched := p.time.Compute(p.priority)
 
 	p.cores = uint16(len(plat.Cores))
 	p.tasks = uint16(len(app.Tasks))
-	p.steps = uint16(math.Floor(sched.Span() / p.config.TimeStep))
+	p.steps = uint16(math.Floor(p.schedule.Span() / p.config.TimeStep))
 
-	p.inputs = uint16(len(p.config.taskIndex))
-	p.outputs = uint16(len(p.config.coreIndex)) * p.steps
+	p.inputs = uint16(len(p.config.TaskIndex))
+	p.outputs = uint16(len(p.config.CoreIndex)) * p.steps
+
+	p.delay = make([]float64, p.tasks)
+	for i := range p.delay {
+		p.delay[i] = p.config.DelayRate * (p.schedule.Finish[i] - p.schedule.Start[i])
+	}
 
 	p.tempan, err = expint.New((*expint.Config)(&p.config.ExpInt))
 	if err != nil {
@@ -96,21 +102,21 @@ func (p *problem) evaluate(nodes []float64) []float64 {
 }
 
 func (p *problem) validate() error {
-	if len(p.config.coreIndex) == 0 {
+	if len(p.config.CoreIndex) == 0 {
 		return errors.New("the core index is empty")
 	}
 
-	for _, id := range p.config.coreIndex {
+	for _, id := range p.config.CoreIndex {
 		if id >= p.cores {
 			return errors.New("the core index is invalid")
 		}
 	}
 
-	if len(p.config.taskIndex) == 0 {
+	if len(p.config.TaskIndex) == 0 {
 		return errors.New("the task index is empty")
 	}
 
-	for _, id := range p.config.taskIndex {
+	for _, id := range p.config.TaskIndex {
 		if id >= p.tasks {
 			return errors.New("the task index is invalid")
 		}
