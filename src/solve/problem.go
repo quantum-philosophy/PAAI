@@ -23,10 +23,10 @@ type problem struct {
 	ic uint32 // inputs
 	oc uint32 // outputs
 
-	time     *time.List
-	schedule *time.Schedule
-	power    *power.Self
-	delay    []float64
+	time  *time.List
+	sched *time.Schedule
+	power *power.Self
+	delay []float64
 
 	tempan *expint.Self
 	interp *adhier.Self
@@ -51,17 +51,17 @@ func newProblem(path string) (*problem, error) {
 	}
 
 	p.time = time.NewList(plat, app)
-	p.schedule = p.time.Compute(system.NewProfile(plat, app).Mobility)
+	p.sched = p.time.Compute(system.NewProfile(plat, app).Mobility)
 	p.power = power.New(plat, app, p.config.TimeStep)
 
 	p.cc = uint32(len(plat.Cores))
 	p.tc = uint32(len(app.Tasks))
-	p.sc = uint32(math.Floor(p.schedule.Span() / p.config.TimeStep))
+	p.sc = uint32(math.Floor(p.sched.Span() / p.config.TimeStep))
 	p.ic = uint32(len(p.config.TaskIndex))
 	p.oc = uint32(len(p.config.CoreIndex)) * p.sc
 
 	if len(p.config.StepIndex) == 0 {
-		p.config.StepIndex = make([]uint32, p.sc / uint32(p.config.StepThinning))
+		p.config.StepIndex = make([]uint32, p.sc/uint32(p.config.StepThinning))
 		for i := range p.config.StepIndex {
 			p.config.StepIndex[i] = uint32(i) * uint32(p.config.StepThinning)
 		}
@@ -73,7 +73,7 @@ func newProblem(path string) (*problem, error) {
 
 	p.delay = make([]float64, p.tc)
 	for i := range p.delay {
-		p.delay[i] = p.config.DelayRate * (p.schedule.Finish[i] - p.schedule.Start[i])
+		p.delay[i] = p.config.DelayRate * (p.sched.Finish[i] - p.sched.Start[i])
 	}
 
 	p.tempan, err = expint.New((*expint.Config)(&p.config.TempConfig))
@@ -107,7 +107,7 @@ func (p *problem) evaluate(nodes []float64) []float64 {
 			delay[tid] = nodes[i*p.ic+uint32(j)] * p.delay[tid]
 		}
 
-		p.power.Compute(p.time.Recompute(p.schedule, delay), P, p.sc)
+		p.power.Compute(p.time.Recompute(p.sched, delay), P, p.sc)
 		p.tempan.ComputeTransient(P, Q, p.sc)
 
 		for _, sid := range p.config.StepIndex {
@@ -125,11 +125,9 @@ func (p *problem) validate() error {
 	if p.sc >= math.MaxUint16 {
 		return errors.New("the number of steps is too large")
 	}
-
 	if p.ic >= math.MaxUint16 {
 		return errors.New("the number of inputs is too large")
 	}
-
 	if p.oc >= math.MaxUint16 {
 		return errors.New("the number of outputs is too large")
 	}
@@ -137,7 +135,6 @@ func (p *problem) validate() error {
 	if len(p.config.CoreIndex) == 0 {
 		return errors.New("the core index is empty")
 	}
-
 	for _, cid := range p.config.CoreIndex {
 		if uint32(cid) >= p.cc {
 			return errors.New("the core index is invalid")
@@ -147,7 +144,6 @@ func (p *problem) validate() error {
 	if len(p.config.TaskIndex) == 0 {
 		return errors.New("the task index is empty")
 	}
-
 	for _, tid := range p.config.TaskIndex {
 		if uint32(tid) >= p.tc {
 			return errors.New("the task index is invalid")
@@ -157,7 +153,6 @@ func (p *problem) validate() error {
 	if len(p.config.StepIndex) == 0 {
 		return errors.New("the step index is empty")
 	}
-
 	for _, sid := range p.config.StepIndex {
 		if sid >= p.sc {
 			return errors.New("the step index is invalid")
