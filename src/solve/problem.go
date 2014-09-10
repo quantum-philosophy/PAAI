@@ -17,12 +17,11 @@ import (
 type problem struct {
 	config *Config
 
-	cores uint16
-	tasks uint16
-	steps uint16
-
-	inputs  uint16
-	outputs uint16
+	cc uint16
+	tc uint16
+	sc uint16
+	ic uint16
+	oc uint16
 
 	priority []float64
 	time     *time.List
@@ -57,14 +56,24 @@ func newProblem(path string) (*problem, error) {
 	p.schedule = p.time.Compute(p.priority)
 	p.power = power.New(plat, app, p.config.TimeStep)
 
-	p.cores = uint16(len(plat.Cores))
-	p.tasks = uint16(len(app.Tasks))
-	p.steps = uint16(math.Floor(p.schedule.Span() / p.config.TimeStep))
+	p.cc = uint16(len(plat.Cores))
+	p.tc = uint16(len(app.Tasks))
 
-	p.inputs = uint16(len(p.config.TaskIndex))
-	p.outputs = uint16(len(p.config.CoreIndex)) * p.steps
+	if count := math.Floor(p.schedule.Span() / p.config.TimeStep); count > math.MaxUint16 {
+		return nil, errors.New("the number of steps is too large")
+	} else {
+		p.sc = uint16(count)
+	}
 
-	p.delay = make([]float64, p.tasks)
+	p.ic = uint16(len(p.config.TaskIndex))
+
+	if count := uint32(len(p.config.CoreIndex)) * uint32(p.sc); count > math.MaxUint16 {
+		return nil, errors.New("the number of outputs is too large")
+	} else {
+		p.oc = uint16(count)
+	}
+
+	p.delay = make([]float64, p.tc)
 	for i := range p.delay {
 		p.delay[i] = p.config.DelayRate * (p.schedule.Finish[i] - p.schedule.Start[i])
 	}
@@ -74,7 +83,7 @@ func newProblem(path string) (*problem, error) {
 		return nil, err
 	}
 
-	p.interp = adhier.New(newcot.New(p.inputs), linhat.New(p.inputs), p.outputs)
+	p.interp = adhier.New(newcot.New(p.ic), linhat.New(p.ic), p.oc)
 
 	if err = p.validate(); err != nil {
 		return nil, err
@@ -92,11 +101,11 @@ func (p *problem) evaluate(nodes []float64) []float64 {
 
 	P := p.power.Compute(sched)
 
-	steps := uint16(len(P)) / p.cores
+	sc := uint16(len(P)) / p.cc
 
-	Q := make([]float64, p.cores*steps)
+	Q := make([]float64, p.cc*sc)
 
-	p.tempan.ComputeTransient(P, Q, uint32(p.cores), uint32(steps))
+	p.tempan.ComputeTransient(P, Q, uint32(p.cc), uint32(sc))
 
 	return Q
 }
@@ -107,7 +116,7 @@ func (p *problem) validate() error {
 	}
 
 	for _, id := range p.config.CoreIndex {
-		if id >= p.cores {
+		if id >= p.cc {
 			return errors.New("the core index is invalid")
 		}
 	}
@@ -117,7 +126,7 @@ func (p *problem) validate() error {
 	}
 
 	for _, id := range p.config.TaskIndex {
-		if id >= p.tasks {
+		if id >= p.tc {
 			return errors.New("the task index is invalid")
 		}
 	}
