@@ -8,16 +8,23 @@ import (
 	"github.com/go-eslab/tempan/expint"
 )
 
-type ExpInt expint.Config
+type TempConfig expint.Config
 
 type Config struct {
+	// The TGFF file of the system at hand.
 	TGFF string
-
+	// The IDs of the cores to analyze.
 	CoreIndex []uint16
+	// The IDs of the tasks to analyze.
 	TaskIndex []uint16
+	// The IDs of the steps to analyze.
+	StepIndex []uint32
+	// The divider used to populate StepIndex if empty.
+	StepThinning uint16
+	// The multiplier used to calculate the maximal delay of a task.
 	DelayRate float64
-
-	ExpInt
+	// The configuration of the algorithm for temperature analysis.
+	TempConfig
 }
 
 func newConfig(path string) (*Config, error) {
@@ -46,6 +53,10 @@ func (c *Config) load(path string) error {
 }
 
 func (c *Config) validate() error {
+	if c.StepThinning <= 0 {
+		return errors.New("the step thining is invalid")
+	}
+
 	if c.DelayRate <= 0 {
 		return errors.New("the delay rate is invalid")
 	}
