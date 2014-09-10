@@ -57,8 +57,6 @@ func newProblem(path string) (*problem, error) {
 	p.cc = uint32(len(plat.Cores))
 	p.tc = uint32(len(app.Tasks))
 	p.sc = uint32(math.Floor(p.sched.Span() / p.config.TimeStep))
-	p.ic = uint32(len(p.config.TaskIndex))
-	p.oc = uint32(len(p.config.CoreIndex)) * p.sc
 
 	if len(p.config.StepIndex) == 0 {
 		p.config.StepIndex = make([]uint32, p.sc/uint32(p.config.StepThinning))
@@ -66,6 +64,9 @@ func newProblem(path string) (*problem, error) {
 			p.config.StepIndex[i] = uint32(i) * uint32(p.config.StepThinning)
 		}
 	}
+
+	p.ic = uint32(len(p.config.TaskIndex))
+	p.oc = uint32(len(p.config.CoreIndex)) * uint32(len(p.config.StepIndex))
 
 	if err = p.validate(); err != nil {
 		return nil, err

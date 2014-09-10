@@ -8,6 +8,7 @@ function configureParameters(this)
 
   firstIndex = max(1, floor(this.timeSpan(1) / this.samplingInterval));
   lastIndex = floor(this.timeSpan(end) / this.samplingInterval);
+  lastIndex = floor(lastIndex / this.timeDivision) * this.timeDivision;
 
   this.stepIndex = firstIndex:this.timeDivision:lastIndex;
 

@@ -2,7 +2,7 @@
 	"tgff": "../Assets/002_020.tgff",
 	"coreIndex": [0],
 	"taskIndex": [0],
-	"stepThinning": 1e2,
+	"stepThinning": 100,
 	"delayRate": 0.2,
 	"floorplan": "../Assets/002.flp",
 	"hotspot": {
