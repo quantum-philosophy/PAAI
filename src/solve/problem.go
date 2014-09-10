@@ -15,7 +15,7 @@ import (
 )
 
 type problem struct {
-	config *Config
+	config Config
 
 	cc uint32 // cores
 	tc uint32 // tasks
@@ -36,7 +36,7 @@ func newProblem(path string) (*problem, error) {
 	p := &problem{}
 	var err error
 
-	p.config, err = newConfig(path)
+	p.config, err = loadConfig(path)
 	if err != nil {
 		return nil, err
 	}
@@ -77,12 +77,13 @@ func newProblem(path string) (*problem, error) {
 		p.delay[i] = p.config.DelayRate * (p.sched.Finish[i] - p.sched.Start[i])
 	}
 
-	p.tempan, err = expint.New((*expint.Config)(&p.config.TempConfig))
+	p.tempan, err = expint.New(expint.Config(p.config.TempConfig))
 	if err != nil {
 		return nil, err
 	}
 
-	p.interp = adhier.New(newcot.New(uint16(p.ic)), linhat.New(uint16(p.ic)), uint16(p.oc))
+	p.interp = adhier.New(newcot.New(uint16(p.ic)), linhat.New(uint16(p.ic)),
+		adhier.Config(p.config.InterpConfig), uint16(p.oc))
 
 	return p, nil
 }
@@ -158,6 +159,13 @@ func (p *problem) validate() error {
 		if sid >= p.sc {
 			return errors.New("the step index is invalid")
 		}
+	}
+
+	if p.config.AbsError <= 0 {
+		return errors.New("the absolute-error tolerance is invalid")
+	}
+	if p.config.RelError <= 0 {
+		return errors.New("the relative-error tolerance is invalid")
 	}
 
 	return nil
