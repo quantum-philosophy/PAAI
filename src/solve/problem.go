@@ -45,7 +45,7 @@ func newProblem(path string) (*problem, error) {
 		return nil, err
 	}
 
-	plat, app, err := system.LoadTGFF(p.config.TGFF)
+	plat, app, err := system.Load(p.config.TGFF)
 	if err != nil {
 		return nil, err
 	}
