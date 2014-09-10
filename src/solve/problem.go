@@ -17,13 +17,12 @@ import (
 type problem struct {
 	config *Config
 
-	cc uint32
-	tc uint32
-	sc uint32
-	ic uint32
-	oc uint32
+	cc uint32 // cores
+	tc uint32 // tasks
+	sc uint32 // steps
+	ic uint32 // inputs
+	oc uint32 // outputs
 
-	priority []float64
 	time     *time.List
 	schedule *time.Schedule
 	power    *power.Self
@@ -51,9 +50,8 @@ func newProblem(path string) (*problem, error) {
 		return nil, err
 	}
 
-	p.priority = system.NewProfile(plat, app).Mobility
 	p.time = time.NewList(plat, app)
-	p.schedule = p.time.Compute(p.priority)
+	p.schedule = p.time.Compute(system.NewProfile(plat, app).Mobility)
 	p.power = power.New(plat, app, p.config.TimeStep)
 
 	p.cc = uint32(len(plat.Cores))
