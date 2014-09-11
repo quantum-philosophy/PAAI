@@ -9,7 +9,6 @@ import (
 	"github.com/go-math/numan/interp/adhier"
 )
 
-
 type Config struct {
 	// The TGFF file of the system to analyze.
 	TGFF string
