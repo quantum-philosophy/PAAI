@@ -5,8 +5,8 @@ import (
 	"errors"
 	"os"
 
-	"github.com/go-math/numan/interp/adhier"
 	"github.com/go-eslab/tempan/expint"
+	"github.com/go-math/numan/interp/adhier"
 )
 
 type TempConfig expint.Config
