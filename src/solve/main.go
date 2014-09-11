@@ -3,6 +3,7 @@ package main
 import (
 	"flag"
 	"fmt"
+	"time"
 )
 
 var config = flag.String("config", "", "the configuration file in JSON")
@@ -30,5 +31,12 @@ func main() {
 		return
 	}
 
-	problem.solve()
+	fmt.Println(problem)
+
+	start := time.Now()
+	surrogate := problem.solve()
+	finish := time.Now()
+
+	fmt.Println(surrogate)
+	fmt.Println("Time elapsed:", finish.Sub(start))
 }
