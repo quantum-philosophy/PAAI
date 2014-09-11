@@ -9,11 +9,9 @@ import (
 	"github.com/go-math/numan/interp/adhier"
 )
 
-type TempConfig expint.Config
-type InterpConfig adhier.Config
 
 type Config struct {
-	// The TGFF file of the system at hand.
+	// The TGFF file of the system to analyze.
 	TGFF string
 	// The multiplier used to calculate the maximal delay of a task.
 	DelayRate float64 // in [0, 1)
@@ -27,11 +25,15 @@ type Config struct {
 
 	// The divider used to populate StepIndex if empty.
 	StepThinning uint16
+
 	// The configuration of the algorithm for temperature analysis.
-	TempConfig
+	Analysis expint.Config
 
 	// The configuration of the algorithm for interpolation.
-	InterpConfig
+	Interpolation adhier.Config
+
+	// A flag to display progress information.
+	Verbose bool
 }
 
 func loadConfig(path string) (Config, error) {
@@ -60,7 +62,7 @@ func (c *Config) validate() error {
 		return errors.New("the delay rate is invalid")
 	}
 
-	if c.TimeStep <= 0 {
+	if c.Analysis.TimeStep <= 0 {
 		return errors.New("the time step is invalid")
 	}
 

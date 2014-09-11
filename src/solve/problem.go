@@ -2,6 +2,7 @@ package main
 
 import (
 	"errors"
+	"fmt"
 	"math"
 
 	"github.com/go-eslab/persim/power"
@@ -32,6 +33,11 @@ type problem struct {
 	interp *adhier.Self
 }
 
+func (p *problem) String() string {
+	return fmt.Sprintf("Problem{ cores: %d, tasks: %d, steps: %d, inputs: %d, outputs: %d }",
+		p.cc, p.tc, p.sc, p.ic, p.oc)
+}
+
 func newProblem(path string) (*problem, error) {
 	p := &problem{}
 	var err error
@@ -52,11 +58,11 @@ func newProblem(path string) (*problem, error) {
 
 	p.time = time.NewList(plat, app)
 	p.sched = p.time.Compute(system.NewProfile(plat, app).Mobility)
-	p.power = power.New(plat, app, p.config.TimeStep)
+	p.power = power.New(plat, app, p.config.Analysis.TimeStep)
 
 	p.cc = uint32(len(plat.Cores))
 	p.tc = uint32(len(app.Tasks))
-	p.sc = uint32(math.Floor(p.sched.Span() / p.config.TimeStep))
+	p.sc = uint32(math.Floor(p.sched.Span() / p.config.Analysis.TimeStep))
 
 	if len(p.config.StepIndex) == 0 {
 		p.config.StepIndex = make([]uint32, p.sc/uint32(p.config.StepThinning))
@@ -77,13 +83,13 @@ func newProblem(path string) (*problem, error) {
 		p.delay[i] = p.config.DelayRate * (p.sched.Finish[i] - p.sched.Start[i])
 	}
 
-	p.tempan, err = expint.New(expint.Config(p.config.TempConfig))
+	p.tempan, err = expint.New(expint.Config(p.config.Analysis))
 	if err != nil {
 		return nil, err
 	}
 
 	p.interp = adhier.New(newcot.New(uint16(p.ic)), linhat.New(uint16(p.ic)),
-		adhier.Config(p.config.InterpConfig), uint16(p.oc))
+		adhier.Config(p.config.Interpolation), uint16(p.oc))
 
 	return p, nil
 }
@@ -95,7 +101,11 @@ func (p *problem) solve() *adhier.Surrogate {
 func (p *problem) evaluate(nodes []float64) []float64 {
 	nc := uint32(len(nodes)) / p.ic
 
-	values := make([]float64, uint32(p.oc)*nc)
+	if p.config.Verbose {
+		fmt.Printf("Evaluate: nodes %5d\n", nc)
+	}
+
+	values := make([]float64, p.oc*nc)
 
 	delay := make([]float64, p.tc)
 	P := make([]float64, p.cc*p.sc)
@@ -161,10 +171,10 @@ func (p *problem) validate() error {
 		}
 	}
 
-	if p.config.AbsError <= 0 {
+	if p.config.Interpolation.AbsError <= 0 {
 		return errors.New("the absolute-error tolerance is invalid")
 	}
-	if p.config.RelError <= 0 {
+	if p.config.Interpolation.RelError <= 0 {
 		return errors.New("the relative-error tolerance is invalid")
 	}
 
