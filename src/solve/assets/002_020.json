@@ -22,5 +22,8 @@
 		"relError": 1e-2
 	},
 
+	"seed": 0,
+	"samples": 1000,
+
 	"verbose": true
 }

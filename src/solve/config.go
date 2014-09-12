@@ -31,7 +31,12 @@ type Config struct {
 	// The configuration of the algorithm for interpolation.
 	Interpolation adhier.Config
 
-	// A flag to display progress information.
+	// The seed for random number generation.
+	Seed int64
+	// The number of samples to take.
+	Samples uint32
+
+	// True to display progress information.
 	Verbose bool
 }
 

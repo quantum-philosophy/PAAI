@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"math"
+	"math/rand"
 
 	"github.com/go-eslab/persim/power"
 	"github.com/go-eslab/persim/system"
@@ -38,17 +39,11 @@ func (p *problem) String() string {
 		p.cc, p.tc, p.sc, p.ic, p.oc)
 }
 
-func newProblem(path string) (*problem, error) {
-	p := &problem{}
+func newProblem(config Config) (*problem, error) {
 	var err error
 
-	p.config, err = loadConfig(path)
-	if err != nil {
-		return nil, err
-	}
-
-	if err = p.config.validate(); err != nil {
-		return nil, err
+	p := &problem{
+		config: config,
 	}
 
 	plat, app, err := system.Load(p.config.TGFF)
@@ -102,7 +97,7 @@ func (p *problem) evaluate(nodes []float64) []float64 {
 	nc := uint32(len(nodes)) / p.ic
 
 	if p.config.Verbose {
-		fmt.Printf("Evaluate: nodes %5d\n", nc)
+		fmt.Printf("%8d nodes\n", nc)
 	}
 
 	values := make([]float64, p.oc*nc)
@@ -179,4 +174,17 @@ func (p *problem) validate() error {
 	}
 
 	return nil
+}
+
+func (p *problem) sample(s *adhier.Surrogate, nc uint32) ([]float64, []float64) {
+	values := make([]float64, p.oc*nc)
+
+	nodes := make([]float64, p.ic*nc)
+	for i := range nodes {
+		nodes[i] = rand.Float64()
+	}
+
+	p.interp.Evaluate(s, nodes)
+
+	return values, nodes
 }
