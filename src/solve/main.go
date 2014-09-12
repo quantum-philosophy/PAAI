@@ -3,10 +3,12 @@ package main
 import (
 	"flag"
 	"fmt"
+	"math"
 	"math/rand"
 	"time"
 
 	"github.com/go-math/format/mat"
+	"github.com/go-math/numan/interp/adhier"
 )
 
 var config = flag.String("config", "", "a configuratin file in JSON")
@@ -46,36 +48,30 @@ func main() {
 		return
 	}
 
-	if config.Verbose {
-		fmt.Println(problem)
-		fmt.Println("Constructing a surrogate...")
-	}
+	fmt.Println(problem)
 
-	start := time.Now()
-	surrogate := problem.solve()
-	finish := time.Now()
+	var surrogate *adhier.Surrogate
+	var nodes, values, realValues []float64
 
-	if config.Verbose {
-		fmt.Printf("Done in %v.\n", finish.Sub(start))
-		fmt.Println(surrogate)
-	}
+	track("Constructing a surrogate...", true, func() {
+		surrogate = problem.solve()
+	})
 
-	var nodes, values []float64
+	fmt.Println(surrogate)
 
 	if config.Samples > 0 {
-		if config.Verbose {
-			fmt.Printf("Drawing %d samples...\n", config.Samples)
-		}
-
 		rand.Seed(config.Seed)
+		track(fmt.Sprintf("Drawing %d samples...", config.Samples), true, func() {
+			values, nodes = problem.sample(surrogate, config.Samples)
+		})
+	}
 
-		start = time.Now()
-		values, nodes = problem.sample(surrogate, config.Samples)
-		finish = time.Now()
+	if config.Samples > 0 && config.Assess {
+		track("Assessing the surrogate...", true, func() {
+			realValues = problem.compute(nodes)
+		})
 
-		if config.Verbose {
-			fmt.Printf("Done in %v.\n", finish.Sub(start))
-		}
+		fmt.Printf("L2 error: %e\n", computeL2(realValues, values))
 	}
 
 	if len(*output) == 0 {
@@ -110,4 +106,39 @@ func main() {
 		printError(err)
 		return
 	}
+
+	if !config.Assess {
+		return
+	}
+
+	err = file.PutMatrix("realValues", realValues, problem.oc, config.Samples)
+	if err != nil {
+		printError(err)
+		return
+	}
+}
+
+func track(description string, verbose bool, work func()) {
+	if verbose {
+		fmt.Println(description)
+	}
+
+	start := time.Now()
+	work()
+	duration := time.Now().Sub(start)
+
+	if verbose {
+		fmt.Printf("Done in %v.\n", duration)
+	}
+}
+
+func computeL2(observed, predicted []float64) float64 {
+	var sum, delta float64
+
+	for i := range observed {
+		delta = observed[i] - predicted[i]
+		sum += delta * delta
+	}
+
+	return math.Sqrt(sum)
 }

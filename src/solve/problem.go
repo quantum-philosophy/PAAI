@@ -90,10 +90,10 @@ func newProblem(config Config) (*problem, error) {
 }
 
 func (p *problem) solve() *adhier.Surrogate {
-	return p.interp.Compute(p.evaluate)
+	return p.interp.Compute(p.compute)
 }
 
-func (p *problem) evaluate(nodes []float64) []float64 {
+func (p *problem) compute(nodes []float64) []float64 {
 	nc := uint32(len(nodes)) / p.ic
 
 	if p.config.Verbose {
@@ -126,6 +126,19 @@ func (p *problem) evaluate(nodes []float64) []float64 {
 	}
 
 	return values
+}
+
+func (p *problem) sample(s *adhier.Surrogate, nc uint32) ([]float64, []float64) {
+	values := make([]float64, p.oc*nc)
+
+	nodes := make([]float64, p.ic*nc)
+	for i := range nodes {
+		nodes[i] = rand.Float64()
+	}
+
+	p.interp.Evaluate(s, nodes)
+
+	return values, nodes
 }
 
 func (p *problem) validate() error {
@@ -174,17 +187,4 @@ func (p *problem) validate() error {
 	}
 
 	return nil
-}
-
-func (p *problem) sample(s *adhier.Surrogate, nc uint32) ([]float64, []float64) {
-	values := make([]float64, p.oc*nc)
-
-	nodes := make([]float64, p.ic*nc)
-	for i := range nodes {
-		nodes[i] = rand.Float64()
-	}
-
-	p.interp.Evaluate(s, nodes)
-
-	return values, nodes
 }

@@ -24,6 +24,7 @@
 
 	"seed": 0,
 	"samples": 1000,
+	"assess": true,
 
 	"verbose": true
 }

@@ -35,6 +35,8 @@ type Config struct {
 	Seed int64
 	// The number of samples to take.
 	Samples uint32
+	// True to assess the taken samples using the original model.
+	Assess bool
 
 	// True to display progress information.
 	Verbose bool
