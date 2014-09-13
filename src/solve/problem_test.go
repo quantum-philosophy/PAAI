@@ -7,8 +7,10 @@ import (
 )
 
 func TestNewProblem(t *testing.T) {
-	p, err := newProblem("assets/002_020.json")
+	config, err := loadConfig("assets/002_020.json")
+	assert.Success(err, t)
 
+	p, err := newProblem(config)
 	assert.Success(err, t)
 
 	assert.Equal(p.cc, uint32(2), t)
