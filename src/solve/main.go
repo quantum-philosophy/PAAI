@@ -11,17 +11,8 @@ import (
 	"github.com/go-math/stat/assess"
 )
 
-var config = flag.String("config", "", "a configuratin file in JSON")
+var config = flag.String("config", "", "a configuration file in JSON")
 var output = flag.String("output", "", "an output file in MAT")
-
-func printUsage() {
-	fmt.Printf("Usage: solve [options]\nOptions:\n")
-	flag.PrintDefaults()
-}
-
-func printError(err error) {
-	fmt.Printf("Error: %s", err)
-}
 
 func main() {
 	flag.Parse()
@@ -130,4 +121,13 @@ func track(description string, verbose bool, work func()) {
 	if verbose {
 		fmt.Printf("Done in %v.\n", duration)
 	}
+}
+
+func printUsage() {
+	fmt.Printf("Usage: solve [options]\nOptions:\n")
+	flag.PrintDefaults()
+}
+
+func printError(err error) {
+	fmt.Printf("Error: %s", err)
 }
