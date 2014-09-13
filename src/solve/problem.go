@@ -1,10 +1,14 @@
 package main
 
+// #include <string.h>
+import "C"
+
 import (
 	"errors"
 	"fmt"
 	"math"
 	"math/rand"
+	"unsafe"
 
 	"github.com/go-eslab/persim/power"
 	"github.com/go-eslab/persim/system"
@@ -103,8 +107,14 @@ func (p *problem) compute(nodes []float64) []float64 {
 	values := make([]float64, p.oc*nc)
 
 	delay := make([]float64, p.tc)
-	P := make([]float64, p.cc*p.sc)
-	Q := make([]float64, len(P))
+
+	count := p.cc * p.sc
+
+	P := make([]float64, count)
+	Q := make([]float64, count)
+
+	addrP := unsafe.Pointer(&P[0])
+	sizeP := C.size_t(8 * count)
 
 	var k uint32
 
@@ -112,6 +122,10 @@ func (p *problem) compute(nodes []float64) []float64 {
 		for j, tid := range p.config.TaskIndex {
 			// NOTE: nodes contains values in the interval [0, 1].
 			delay[tid] = nodes[i*p.ic+uint32(j)] * p.delay[tid]
+		}
+
+		if i > 0 {
+			C.memset(addrP, 0, sizeP)
 		}
 
 		p.power.Compute(p.time.Recompute(p.sched, delay), P, p.sc)
@@ -129,16 +143,12 @@ func (p *problem) compute(nodes []float64) []float64 {
 }
 
 func (p *problem) sample(s *adhier.Surrogate, nc uint32) ([]float64, []float64) {
-	values := make([]float64, p.oc*nc)
-
 	nodes := make([]float64, p.ic*nc)
 	for i := range nodes {
 		nodes[i] = rand.Float64()
 	}
 
-	p.interp.Evaluate(s, nodes)
-
-	return values, nodes
+	return p.interp.Evaluate(s, nodes), nodes
 }
 
 func (p *problem) validate() error {
