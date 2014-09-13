@@ -71,7 +71,7 @@ func newProblem(config Config) (*problem, error) {
 	}
 
 	p.ic = uint32(len(p.config.TaskIndex))
-	p.oc = uint32(len(p.config.CoreIndex)) * uint32(len(p.config.StepIndex))
+	p.oc = uint32(len(p.config.StepIndex)) * uint32(len(p.config.CoreIndex))
 
 	if err = p.validate(); err != nil {
 		return nil, err
@@ -79,7 +79,7 @@ func newProblem(config Config) (*problem, error) {
 
 	p.delay = make([]float64, p.tc)
 	for i := range p.delay {
-		p.delay[i] = p.config.DelayRate * (p.sched.Finish[i] - p.sched.Start[i])
+		p.delay[i] = p.config.DelayRate * plat.Cores[p.sched.Mapping[i]].Time[app.Tasks[i].Type]
 	}
 
 	p.tempan, err = expint.New(expint.Config(p.config.Analysis))
@@ -104,11 +104,11 @@ func (p *problem) compute(nodes []float64) []float64 {
 		fmt.Printf("%8d nodes\n", nc)
 	}
 
-	values := make([]float64, p.oc*nc)
+	values := make([]float64, nc*p.oc)
 
 	delay := make([]float64, p.tc)
 
-	count := p.cc * p.sc
+	count := p.sc * p.cc
 
 	P := make([]float64, count)
 	Q := make([]float64, count)
@@ -142,13 +142,14 @@ func (p *problem) compute(nodes []float64) []float64 {
 	return values
 }
 
-func (p *problem) sample(s *adhier.Surrogate, nc uint32) ([]float64, []float64) {
-	nodes := make([]float64, p.ic*nc)
-	for i := range nodes {
-		nodes[i] = rand.Float64()
+func (p *problem) sample(s *adhier.Surrogate, pc uint32) ([]float64, []float64) {
+	points := make([]float64, pc*p.ic)
+	for i := range points {
+		// http://golang.org/src/pkg/math/rand/rand.go#L104
+		points[i] = float64(rand.Int63n(1<<53)) / (1 << 53)
 	}
 
-	return p.interp.Evaluate(s, nodes), nodes
+	return p.interp.Evaluate(s, points), points
 }
 
 func (p *problem) validate() error {

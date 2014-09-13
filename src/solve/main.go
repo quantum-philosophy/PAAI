@@ -7,8 +7,8 @@ import (
 	"time"
 
 	"github.com/go-math/format/mat"
-	"github.com/go-math/linal/metric"
 	"github.com/go-math/numan/interp/adhier"
+	"github.com/go-math/stat/assess"
 )
 
 var config = flag.String("config", "", "a configuratin file in JSON")
@@ -51,7 +51,7 @@ func main() {
 	fmt.Println(problem)
 
 	var surrogate *adhier.Surrogate
-	var nodes, values, realValues []float64
+	var points, values, realValues []float64
 
 	track("Constructing a surrogate...", true, func() {
 		surrogate = problem.solve()
@@ -62,16 +62,16 @@ func main() {
 	if config.Samples > 0 {
 		rand.Seed(config.Seed)
 		track(fmt.Sprintf("Drawing %d samples...", config.Samples), true, func() {
-			values, nodes = problem.sample(surrogate, config.Samples)
+			values, points = problem.sample(surrogate, config.Samples)
 		})
 	}
 
 	if config.Samples > 0 && config.Assess {
 		track("Assessing the surrogate...", true, func() {
-			realValues = problem.compute(nodes)
+			realValues = problem.compute(points)
 		})
 
-		fmt.Printf("L2 error: %e\n", metric.L2(realValues, values))
+		fmt.Printf("NRMSE: %e\n", assess.NRMSE(values, realValues))
 	}
 
 	if len(*output) == 0 {
@@ -95,7 +95,7 @@ func main() {
 		return
 	}
 
-	err = file.PutMatrix("nodes", nodes, problem.ic, config.Samples)
+	err = file.PutMatrix("points", points, problem.ic, config.Samples)
 	if err != nil {
 		printError(err)
 		return
