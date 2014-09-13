@@ -3,11 +3,11 @@ package main
 import (
 	"flag"
 	"fmt"
-	"math"
 	"math/rand"
 	"time"
 
 	"github.com/go-math/format/mat"
+	"github.com/go-math/linal/metric"
 	"github.com/go-math/numan/interp/adhier"
 )
 
@@ -71,7 +71,7 @@ func main() {
 			realValues = problem.compute(nodes)
 		})
 
-		fmt.Printf("L2 error: %e\n", computeL2(realValues, values))
+		fmt.Printf("L2 error: %e\n", metric.L2(realValues, values))
 	}
 
 	if len(*output) == 0 {
@@ -130,15 +130,4 @@ func track(description string, verbose bool, work func()) {
 	if verbose {
 		fmt.Printf("Done in %v.\n", duration)
 	}
-}
-
-func computeL2(observed, predicted []float64) float64 {
-	var sum, delta float64
-
-	for i := range observed {
-		delta = observed[i] - predicted[i]
-		sum += delta * delta
-	}
-
-	return math.Sqrt(sum)
 }
