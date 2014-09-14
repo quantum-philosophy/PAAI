@@ -90,7 +90,7 @@ func findCommand(name string) func(*problem, *mat.File, *mat.File) error {
 
 func printUsage() {
 	fmt.Printf(
-`Usage: solve <command> [options]
+		`Usage: solve <command> [options]
 
 Commands:
     construct - to construct a surrogate model

@@ -1,13 +1,13 @@
 package main
 
 import (
-	"fmt"
 	"errors"
+	"fmt"
 	"math/rand"
 
 	"github.com/go-math/format/mat"
-	"github.com/go-math/stat/assess"
 	"github.com/go-math/numan/interp/adhier"
+	"github.com/go-math/stat/assess"
 )
 
 func doConstruct(p *problem, _ *mat.File, f *mat.File) error {
