@@ -7,7 +7,6 @@ import (
 	"errors"
 	"fmt"
 	"math"
-	"math/rand"
 	"unsafe"
 
 	"github.com/go-eslab/persim/power"
@@ -142,14 +141,8 @@ func (p *problem) compute(nodes []float64) []float64 {
 	return values
 }
 
-func (p *problem) sample(s *adhier.Surrogate, pc uint32) ([]float64, []float64) {
-	points := make([]float64, pc*p.ic)
-	for i := range points {
-		// http://golang.org/src/pkg/math/rand/rand.go#L104
-		points[i] = float64(rand.Int63n(1<<53)) / (1 << 53)
-	}
-
-	return p.interp.Evaluate(s, points), points
+func (p *problem) evaluate(s *adhier.Surrogate, points []float64) []float64 {
+	return p.interp.Evaluate(s, points)
 }
 
 func (p *problem) validate() error {

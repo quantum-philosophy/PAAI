@@ -1,24 +1,41 @@
 package main
 
 import (
+	"errors"
 	"flag"
 	"fmt"
-	"math/rand"
-	"time"
+	"os"
 
 	"github.com/go-math/format/mat"
-	"github.com/go-math/numan/interp/adhier"
-	"github.com/go-math/stat/assess"
 )
 
-var config = flag.String("config", "", "a configuration file in JSON")
-var output = flag.String("output", "", "an output file in MAT")
+var config = flag.String("config", "", "")
+var input = flag.String("input", "", "")
+var output = flag.String("output", "", "")
 
 func main() {
+	if len(os.Args) == 1 {
+		printUsage()
+		return
+	}
+
+	var command func(*problem, *mat.File, *mat.File) error
+	var problem *problem
+	var ifile, ofile *mat.File
+
+	if command = findCommand(os.Args[1]); command == nil {
+		printError(errors.New("the command is unknown"))
+		return
+	}
+
+	// Remove the command name.
+	os.Args[1] = os.Args[0]
+	os.Args = os.Args[1:]
+
 	flag.Parse()
 
 	if len(*config) == 0 {
-		printUsage()
+		printError(errors.New("a problem specification is required"))
 		return
 	}
 
@@ -33,101 +50,59 @@ func main() {
 		return
 	}
 
-	problem, err := newProblem(config)
-	if err != nil {
+	if problem, err = newProblem(config); err != nil {
 		printError(err)
 		return
 	}
 
-	fmt.Println(problem)
-
-	var surrogate *adhier.Surrogate
-	var points, values, realValues []float64
-
-	track("Constructing a surrogate...", true, func() {
-		surrogate = problem.solve()
-	})
-
-	fmt.Println(surrogate)
-
-	if config.Samples > 0 {
-		rand.Seed(config.Seed)
-		track(fmt.Sprintf("Drawing %d samples...", config.Samples), true, func() {
-			values, points = problem.sample(surrogate, config.Samples)
-		})
+	if len(*input) > 0 {
+		if ifile, err = mat.Open(*input, "r"); err != nil {
+			printError(err)
+			return
+		}
+		defer ifile.Close()
 	}
 
-	if config.Samples > 0 && config.Assess {
-		track("Assessing the surrogate...", true, func() {
-			realValues = problem.compute(points)
-		})
-
-		fmt.Printf("NRMSE: %e\n", assess.NRMSE(values, realValues))
+	if len(*output) > 0 {
+		if ofile, err = mat.Open(*output, "w7.3"); err != nil {
+			printError(err)
+			return
+		}
+		defer ofile.Close()
 	}
 
-	if len(*output) == 0 {
-		return
-	}
-
-	file, err := mat.Open(*output, "w7.3")
-	if err != nil {
-		printError(err)
-		return
-	}
-	defer file.Close()
-
-	err = file.Put("surrogate", *surrogate)
-	if err != nil {
-		printError(err)
-		return
-	}
-
-	if config.Samples == 0 {
-		return
-	}
-
-	err = file.PutMatrix("points", points, problem.ic, config.Samples)
-	if err != nil {
-		printError(err)
-		return
-	}
-
-	err = file.PutMatrix("values", values, problem.oc, config.Samples)
-	if err != nil {
-		printError(err)
-		return
-	}
-
-	if !config.Assess {
-		return
-	}
-
-	err = file.PutMatrix("realValues", realValues, problem.oc, config.Samples)
-	if err != nil {
+	if err = command(problem, ifile, ofile); err != nil {
 		printError(err)
 		return
 	}
 }
 
-func track(description string, verbose bool, work func()) {
-	if verbose {
-		fmt.Println(description)
-	}
-
-	start := time.Now()
-	work()
-	duration := time.Now().Sub(start)
-
-	if verbose {
-		fmt.Printf("Done in %v.\n", duration)
+func findCommand(name string) func(*problem, *mat.File, *mat.File) error {
+	switch name {
+	case "construct":
+		return doConstruct
+	case "assess":
+		return doAssess
+	default:
+		return nil
 	}
 }
 
 func printUsage() {
-	fmt.Printf("Usage: solve [options]\nOptions:\n")
-	flag.PrintDefaults()
+	fmt.Printf(
+`Usage: solve <command> [options]
+
+Commands:
+    construct - to construct a surrogate model
+    assess    - to construct a surrogate model
+
+Options:
+    config    - a problem specification in JSON (required)
+    input     - an input MAT file
+    output    - an output MAT file
+`)
 }
 
 func printError(err error) {
-	fmt.Printf("Error: %s", err)
+	fmt.Printf("Error: %s.\n", err)
 }
