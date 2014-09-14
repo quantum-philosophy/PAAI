@@ -3,11 +3,11 @@ package main
 import (
 	"errors"
 	"fmt"
-	"math/rand"
 
 	"github.com/go-math/format/mat"
 	"github.com/go-math/numan/interp/adhier"
 	"github.com/go-math/stat/assess"
+	"github.com/go-math/prob/sample"
 )
 
 func doConstruct(p *problem, _ *mat.File, f *mat.File) error {
@@ -49,13 +49,8 @@ func doAssess(p *problem, fi *mat.File, fo *mat.File) error {
 		return errors.New("the number of samples is zero")
 	}
 
-	rand.Seed(c.Seed)
-
-	points := make([]float64, c.Samples*p.ic)
-	for i := range points {
-		// http://golang.org/src/pkg/math/rand/rand.go#L104
-		points[i] = float64(rand.Int63n(1<<53)) / (1 << 53)
-	}
+	sample.Seed(c.Seed)
+	points := sample.Uniform(c.Samples*p.ic)
 
 	var values, realValues []float64
 
