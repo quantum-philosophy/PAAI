@@ -7,7 +7,7 @@ import (
 )
 
 func TestNewProblem(t *testing.T) {
-	config, err := loadConfig("assets/002_020.json")
+	config, err := loadConfig("fixtures/002_020.json")
 	assert.Success(err, t)
 
 	p, err := newProblem(config)

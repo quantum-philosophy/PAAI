@@ -1,14 +1,14 @@
 {
-	"tgff": "../Assets/002_020.tgff",
+	"tgff": "fixtures/002_020.tgff",
 	"delayRate": 0.2,
 	"coreIndex": [0],
 	"taskIndex": [0],
 	"stepThinning": 100,
 
 	"analysis": {
-		"floorplan": "../Assets/002.flp",
+		"floorplan": "fixtures/002.flp",
 		"hotspot": {
-			"config": "../Assets/hotspot.config",
+			"config": "fixtures/hotspot.config",
 			"params": ""
 		},
 		"timeStep": 1e-5,
