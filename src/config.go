@@ -15,11 +15,12 @@ type Config struct {
 	// The multiplier used to calculate the maximal delay of a task.
 	DelayRate float64 // in [0, 1)
 
-	// The IDs of the cores to analyze.
+	// The IDs of the cores to analyze; if empty, set to all cores.
 	CoreIndex []uint16
-	// The IDs of the tasks to analyze.
+	// The IDs of the tasks to analyze; if empty, set to all tasks.
 	TaskIndex []uint16
-	// The IDs of the steps to analyze.
+	// The IDs of the steps to analyze; if empty, set to contain each
+	// (StepThinning)th step starting from zero.
 	StepIndex []uint32
 
 	// The divider used to populate StepIndex if empty.
@@ -58,7 +59,7 @@ func loadConfig(path string) (Config, error) {
 }
 
 func (c *Config) validate() error {
-	if c.StepThinning <= 0 {
+	if c.StepThinning == 0 {
 		return errors.New("the step thining is invalid")
 	}
 

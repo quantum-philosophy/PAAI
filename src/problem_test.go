@@ -36,3 +36,26 @@ func TestNewProblem(t *testing.T) {
 	assert.Equal(len(p.config.StepIndex), 291, t)
 	assert.Equal(p.delay[0], 0.002, t)
 }
+
+func TestNewProblemNoCores(t *testing.T) {
+	config, _ := loadConfig("fixtures/002_020.json")
+	config.CoreIndex = []uint16{}
+
+	p, err := newProblem(config)
+	assert.Success(err, t)
+
+	assert.Equal(p.config.CoreIndex, []uint16{0, 1}, t)
+}
+
+func TestNewProblemNoTasks(t *testing.T) {
+	config, _ := loadConfig("fixtures/002_020.json")
+	config.TaskIndex = []uint16{}
+
+	p, err := newProblem(config)
+	assert.Success(err, t)
+
+	assert.Equal(p.config.TaskIndex, []uint16{
+		0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
+		11, 12, 13, 14, 15, 16, 17, 18, 19,
+	}, t)
+}

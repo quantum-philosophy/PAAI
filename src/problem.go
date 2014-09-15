@@ -59,13 +59,27 @@ func newProblem(config Config) (*problem, error) {
 	p.power = power.New(plat, app, p.config.Analysis.TimeStep)
 
 	p.cc = uint32(len(plat.Cores))
-	p.tc = uint32(len(app.Tasks))
-	p.sc = uint32(math.Floor(p.sched.Span() / p.config.Analysis.TimeStep))
+	if len(p.config.CoreIndex) == 0 {
+		p.config.CoreIndex = make([]uint16, p.cc)
+		for i := uint16(0); i < uint16(p.cc); i++ {
+			p.config.CoreIndex[i] = i
+		}
+	}
 
+	p.tc = uint32(len(app.Tasks))
+	if len(p.config.TaskIndex) == 0 {
+		p.config.TaskIndex = make([]uint16, p.tc)
+		for i := uint16(0); i < uint16(p.tc); i++ {
+			p.config.TaskIndex[i] = i
+		}
+	}
+
+	p.sc = uint32(math.Floor(p.sched.Span() / p.config.Analysis.TimeStep))
 	if len(p.config.StepIndex) == 0 {
-		p.config.StepIndex = make([]uint32, p.sc/uint32(p.config.StepThinning))
-		for i := range p.config.StepIndex {
-			p.config.StepIndex[i] = uint32(i) * uint32(p.config.StepThinning)
+		count := p.sc / uint32(p.config.StepThinning)
+		p.config.StepIndex = make([]uint32, count)
+		for i := uint32(0); i < count; i++ {
+			p.config.StepIndex[i] = i * uint32(p.config.StepThinning)
 		}
 	}
 
