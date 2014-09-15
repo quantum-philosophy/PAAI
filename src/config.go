@@ -13,7 +13,7 @@ type Config struct {
 	// The TGFF file of the system to analyze.
 	TGFF string
 	// The multiplier used to calculate the maximal delay of a task.
-	DelayRate float64 // in [0, 1)
+	DelayRate float64 // >= 0
 
 	// The IDs of the cores to analyze; if empty, set to all cores.
 	CoreIndex []uint16
@@ -24,7 +24,7 @@ type Config struct {
 	StepIndex []uint32
 
 	// The divider used to populate StepIndex if empty.
-	StepThinning uint16
+	StepThinning uint16 // > 0
 
 	// The configuration of the algorithm for temperature analysis.
 	Analysis expint.Config
@@ -63,7 +63,7 @@ func (c *Config) validate() error {
 		return errors.New("the step thining is invalid")
 	}
 
-	if c.DelayRate <= 0 {
+	if c.DelayRate < 0 {
 		return errors.New("the delay rate is invalid")
 	}
 
