@@ -1,13 +1,9 @@
-TGFF ?= tgff
-
-tgffs := $(patsubst %.tgffopt,%.tgff,$(wildcard *.tgffopt))
-
-all: $(tgffs)
+all: $(patsubst %.tgffopt,%.tgff,$(wildcard *.tgffopt))
 
 %.tgff: %.tgffopt
-	$(TGFF) $*
+	tgff $*
 
 clean:
-	$(RM) *.vcg *.eps *.tgff
+	rm -f *.tgff *.eps *.vcg
 
-.PHONY: all
+.PHONY: all clean
