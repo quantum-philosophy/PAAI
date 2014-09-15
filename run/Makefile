@@ -2,7 +2,7 @@ bin := run
 src := ../src
 gos := $(wildcard $(src)/*.go)
 
-cases := 002_020
+cases := 002_020 002_040 004_080
 
 all: $(bin)
 
