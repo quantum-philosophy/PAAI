@@ -111,31 +111,28 @@ func (p *problem) solve() *adhier.Surrogate {
 }
 
 func (p *problem) compute(nodes []float64) []float64 {
-	nc := uint32(len(nodes)) / p.ic
+	cc, sc, ic := p.cc, p.sc, p.ic
+	nc := uint32(len(nodes)) / ic
 
 	if p.config.Verbose {
 		fmt.Printf("%8d nodes\n", nc)
 	}
 
-	values := make([]float64, nc*p.oc)
+	values := make([]float64, p.oc*nc)
 
 	delay := make([]float64, p.tc)
 
-	count := p.sc * p.cc
-
-	P := make([]float64, count)
-	Q := make([]float64, count)
-	S := make([]float64, p.tempan.Nodes*p.sc)
+	P := make([]float64, cc*sc)
+	Q := make([]float64, cc*sc)
+	S := make([]float64, p.tempan.Nodes*sc)
 
 	addrP := unsafe.Pointer(&P[0])
-	sizeP := C.size_t(8 * count)
+	sizeP := C.size_t(8 * cc * sc)
 
-	var k uint32
-
-	for i := uint32(0); i < nc; i++ {
+	for i, k := uint32(0), uint32(0); i < nc; i++ {
 		for j, tid := range p.config.TaskIndex {
 			// NOTE: nodes contains values in the interval [0, 1].
-			delay[tid] = nodes[i*p.ic+uint32(j)] * p.delay[tid]
+			delay[tid] = nodes[i*ic+uint32(j)] * p.delay[tid]
 		}
 
 		if i > 0 {
@@ -143,12 +140,12 @@ func (p *problem) compute(nodes []float64) []float64 {
 			C.memset(addrP, 0, sizeP)
 		}
 
-		p.power.Compute(p.time.Recompute(p.sched, delay), P, p.sc)
-		p.tempan.ComputeTransient(P, Q, S, p.sc)
+		p.power.Compute(p.time.Recompute(p.sched, delay), P, sc)
+		p.tempan.ComputeTransient(P, Q, S, sc)
 
 		for _, sid := range p.config.StepIndex {
 			for _, cid := range p.config.CoreIndex {
-				values[k] = Q[sid*p.cc+uint32(cid)]
+				values[k] = Q[sid*cc+uint32(cid)]
 				k++
 			}
 		}
