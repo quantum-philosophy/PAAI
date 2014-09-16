@@ -32,7 +32,7 @@ func doConstruct(p *problem, _ *mat.File, f *mat.File) error {
 }
 
 func doAssess(p *problem, fi *mat.File, fo *mat.File) error {
-	var s *adhier.Surrogate = new(adhier.Surrogate)
+	s := new(adhier.Surrogate)
 	if fi == nil {
 		return errors.New("an input file is required")
 	}

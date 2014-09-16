@@ -59,3 +59,13 @@ func TestNewProblemNoTasks(t *testing.T) {
 		11, 12, 13, 14, 15, 16, 17, 18, 19,
 	}, t)
 }
+
+func BenchmarkProblemSolve(b *testing.B) {
+	config, _ := loadConfig("fixtures/002_020.json")
+	config.Verbose = false
+	p, _ := newProblem(config)
+
+	for i := 0; i < b.N; i++ {
+		p.solve()
+	}
+}
