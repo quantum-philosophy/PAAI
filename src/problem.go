@@ -125,6 +125,7 @@ func (p *problem) compute(nodes []float64) []float64 {
 
 	P := make([]float64, count)
 	Q := make([]float64, count)
+	S := make([]float64, p.tempan.Nodes*p.sc)
 
 	addrP := unsafe.Pointer(&P[0])
 	sizeP := C.size_t(8 * count)
@@ -142,7 +143,7 @@ func (p *problem) compute(nodes []float64) []float64 {
 		}
 
 		p.power.Compute(p.time.Recompute(p.sched, delay), P, p.sc)
-		p.tempan.ComputeTransient(P, Q, p.sc)
+		p.tempan.ComputeTransient(P, Q, S, p.sc)
 
 		for _, sid := range p.config.StepIndex {
 			for _, cid := range p.config.CoreIndex {
