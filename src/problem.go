@@ -139,6 +139,7 @@ func (p *problem) compute(nodes []float64) []float64 {
 		}
 
 		if i > 0 {
+			// FIXME: This is a job of power.Compute!
 			C.memset(addrP, 0, sizeP)
 		}
 
