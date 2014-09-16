@@ -18,6 +18,6 @@ test:
 	cd $(src) && go test
 
 clean:
-	rm -f $(bin)
+	rm -f $(bin) *.mat
 
 .PHONY: all test clean
