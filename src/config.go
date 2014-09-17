@@ -19,16 +19,9 @@ type Config struct {
 	CoreIndex []uint16
 	// The IDs of the tasks to analyze; if empty, set to all tasks.
 	TaskIndex []uint16
-	// The IDs of the steps to analyze; if empty, set to contain each
-	// (StepThinning)th step starting from zero.
-	StepIndex []uint32
-
-	// The divider used to populate StepIndex if empty.
-	StepThinning uint16 // > 0
 
 	// The configuration of the algorithm for temperature analysis.
 	Analysis expint.Config
-
 	// The configuration of the algorithm for interpolation.
 	Interpolation adhier.Config
 
@@ -59,10 +52,6 @@ func loadConfig(path string) (Config, error) {
 }
 
 func (c *Config) validate() error {
-	if c.StepThinning == 0 {
-		return errors.New("the step thining is invalid")
-	}
-
 	if c.DelayRate < 0 {
 		return errors.New("the delay rate is invalid")
 	}

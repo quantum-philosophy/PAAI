@@ -24,8 +24,8 @@ func (c *cache) String() string {
 
 func newCache(length uint32, space uint32) *cache {
 	return &cache{
-		length: length,
-		buffer: make([]byte, 8*length),
+		length:  length,
+		buffer:  make([]byte, 8*length),
 		storage: make(map[string][]float64, space),
 	}
 }

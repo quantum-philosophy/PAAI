@@ -76,19 +76,11 @@ func newProblem(config Config) (*problem, error) {
 		}
 	}
 
-	p.sc = uint32(p.sched.Span() / p.config.Analysis.TimeStep)
-	if len(p.config.StepIndex) == 0 {
-		count := p.sc / uint32(p.config.StepThinning)
-		p.config.StepIndex = make([]uint32, count)
-		for i := uint32(0); i < count; i++ {
-			p.config.StepIndex[i] = i * uint32(p.config.StepThinning)
-		}
-	}
-
+	p.sc = uint32(p.sched.Span / p.config.Analysis.TimeStep)
 	p.ic = 1 + uint32(len(p.config.TaskIndex)) // +1 for time
 	p.oc = uint32(len(p.config.CoreIndex))     // a curve for each core
 
-	p.cache = newCache(p.ic - 1, 1000) // -1 for time
+	p.cache = newCache(p.ic-1, 1000) // -1 for time
 
 	if err = p.validate(); err != nil {
 		return nil, err
@@ -119,7 +111,7 @@ func (p *problem) compute(nodes []float64, _ []uint64) []float64 {
 	nc := uint32(len(nodes)) / ic
 
 	if p.config.Verbose {
-		fmt.Printf("%8d nodes to compute\n", nc)
+		fmt.Printf("%d ", nc)
 	}
 
 	values := make([]float64, p.oc*nc)
@@ -137,7 +129,7 @@ func (p *problem) compute(nodes []float64, _ []uint64) []float64 {
 		}
 
 		// FIXME: Bad, bad, bad!
-		C.memset(unsafe.Pointer(&P[0]), 0, C.size_t(8 * cc * sc))
+		C.memset(unsafe.Pointer(&P[0]), 0, C.size_t(8*cc*sc))
 
 		p.power.Compute(p.time.Recompute(p.sched, delay), P, sid+1)
 		p.tempan.ComputeTransient(P, Q, S, sid+1)
@@ -156,7 +148,7 @@ func (p *problem) fetch(nodes []float64, index []uint64) []float64 {
 	nc := uint32(len(nodes)) / ic
 
 	if p.config.Verbose {
-		fmt.Printf("%8d nodes to fetch\n", nc)
+		fmt.Printf("%d ", nc)
 	}
 
 	values := make([]float64, p.oc*nc)
@@ -176,7 +168,7 @@ func (p *problem) fetch(nodes []float64, index []uint64) []float64 {
 			Q := make([]float64, cc*sc)
 
 			// FIXME: Bad, bad, bad!
-			C.memset(unsafe.Pointer(&P[0]), 0, C.size_t(8 * cc * sc))
+			C.memset(unsafe.Pointer(&P[0]), 0, C.size_t(8*cc*sc))
 
 			p.power.Compute(p.time.Recompute(p.sched, delay), P, sc)
 			p.tempan.ComputeTransient(P, Q, S, sc)
@@ -223,15 +215,6 @@ func (p *problem) validate() error {
 	for _, tid := range p.config.TaskIndex {
 		if uint32(tid) >= p.tc {
 			return errors.New("the task index is invalid")
-		}
-	}
-
-	if len(p.config.StepIndex) == 0 {
-		return errors.New("the step index is empty")
-	}
-	for _, sid := range p.config.StepIndex {
-		if sid >= p.sc {
-			return errors.New("the step index is invalid")
 		}
 	}
 

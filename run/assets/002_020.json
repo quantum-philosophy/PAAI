@@ -3,7 +3,6 @@
 	"delayRate": 0.2,
 	"coreIndex": [0],
 	"taskIndex": [0],
-	"stepThinning": 100,
 
 	"analysis": {
 		"floorplan": "assets/002.flp",
