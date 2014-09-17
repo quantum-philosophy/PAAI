@@ -19,6 +19,7 @@ func doConstruct(p *problem, _ *mat.File, f *mat.File) error {
 	})
 
 	fmt.Println(s)
+	fmt.Println(p.cache)
 
 	if f == nil {
 		return nil
@@ -59,7 +60,7 @@ func doAssess(p *problem, fi *mat.File, fo *mat.File) error {
 	})
 
 	track("Evaluating the original model...", true, func() {
-		realValues = p.compute(points)
+		realValues = p.compute(points, nil)
 	})
 
 	fmt.Printf("NRMSE: %e\n", assess.NRMSE(values, realValues))

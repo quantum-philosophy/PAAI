@@ -28,13 +28,15 @@ type problem struct {
 	ic uint32 // inputs
 	oc uint32 // outputs
 
-	time  *time.List
-	sched *time.Schedule
-	power *power.Self
-	delay []float64
-
+	time   *time.List
+	power  *power.Self
 	tempan *expint.Self
 	interp *adhier.Self
+
+	sched *time.Schedule
+	delay []float64
+
+	cache *cache
 }
 
 func (p *problem) String() string {
@@ -74,7 +76,7 @@ func newProblem(config Config) (*problem, error) {
 		}
 	}
 
-	p.sc = uint32(math.Floor(p.sched.Span() / p.config.Analysis.TimeStep))
+	p.sc = uint32(p.sched.Span() / p.config.Analysis.TimeStep)
 	if len(p.config.StepIndex) == 0 {
 		count := p.sc / uint32(p.config.StepThinning)
 		p.config.StepIndex = make([]uint32, count)
@@ -83,8 +85,10 @@ func newProblem(config Config) (*problem, error) {
 		}
 	}
 
-	p.ic = uint32(len(p.config.TaskIndex))
-	p.oc = uint32(len(p.config.StepIndex)) * uint32(len(p.config.CoreIndex))
+	p.ic = 1 + uint32(len(p.config.TaskIndex)) // +1 for time
+	p.oc = uint32(len(p.config.CoreIndex))     // a curve for each core
+
+	p.cache = newCache(p.ic - 1, 1000) // -1 for time
 
 	if err = p.validate(); err != nil {
 		return nil, err
@@ -107,47 +111,82 @@ func newProblem(config Config) (*problem, error) {
 }
 
 func (p *problem) solve() *adhier.Surrogate {
-	return p.interp.Compute(p.compute)
+	return p.interp.Compute(p.fetch)
 }
 
-func (p *problem) compute(nodes []float64) []float64 {
+func (p *problem) compute(nodes []float64, _ []uint64) []float64 {
 	cc, sc, ic := p.cc, p.sc, p.ic
 	nc := uint32(len(nodes)) / ic
 
 	if p.config.Verbose {
-		fmt.Printf("%8d nodes\n", nc)
+		fmt.Printf("%8d nodes to compute\n", nc)
 	}
 
 	values := make([]float64, p.oc*nc)
-
 	delay := make([]float64, p.tc)
 
 	P := make([]float64, cc*sc)
 	Q := make([]float64, cc*sc)
 	S := make([]float64, p.tempan.Nodes*sc)
 
-	addrP := unsafe.Pointer(&P[0])
-	sizeP := C.size_t(8 * cc * sc)
+	for i, k := uint32(0), uint32(0); i < nc; i++ {
+		sid := uint32(nodes[i*ic] * float64(sc-1))
+
+		for j, tid := range p.config.TaskIndex {
+			delay[tid] = nodes[i*ic+1+uint32(j)] * p.delay[tid]
+		}
+
+		// FIXME: Bad, bad, bad!
+		C.memset(unsafe.Pointer(&P[0]), 0, C.size_t(8 * cc * sc))
+
+		p.power.Compute(p.time.Recompute(p.sched, delay), P, sid+1)
+		p.tempan.ComputeTransient(P, Q, S, sid+1)
+
+		for _, cid := range p.config.CoreIndex {
+			values[k] = Q[sid*cc+uint32(cid)]
+			k++
+		}
+	}
+
+	return values
+}
+
+func (p *problem) fetch(nodes []float64, index []uint64) []float64 {
+	cc, sc, ic := p.cc, p.sc, p.ic
+	nc := uint32(len(nodes)) / ic
+
+	if p.config.Verbose {
+		fmt.Printf("%8d nodes to fetch\n", nc)
+	}
+
+	values := make([]float64, p.oc*nc)
+	delay := make([]float64, p.tc)
+
+	P := make([]float64, cc*sc)
+	S := make([]float64, p.tempan.Nodes*sc)
 
 	for i, k := uint32(0), uint32(0); i < nc; i++ {
-		for j, tid := range p.config.TaskIndex {
-			// NOTE: nodes contains values in the interval [0, 1].
-			delay[tid] = nodes[i*ic+uint32(j)] * p.delay[tid]
-		}
+		sid := uint32(nodes[i*ic] * float64(sc-1))
 
-		if i > 0 {
-			// FIXME: This is a job of power.Compute!
-			C.memset(addrP, 0, sizeP)
-		}
-
-		p.power.Compute(p.time.Recompute(p.sched, delay), P, sc)
-		p.tempan.ComputeTransient(P, Q, S, sc)
-
-		for _, sid := range p.config.StepIndex {
-			for _, cid := range p.config.CoreIndex {
-				values[k] = Q[sid*cc+uint32(cid)]
-				k++
+		Q := p.cache.fetch(index[i*ic+1:], func() []float64 {
+			for j, tid := range p.config.TaskIndex {
+				delay[tid] = nodes[i*ic+1+uint32(j)] * p.delay[tid]
 			}
+
+			Q := make([]float64, cc*sc)
+
+			// FIXME: Bad, bad, bad!
+			C.memset(unsafe.Pointer(&P[0]), 0, C.size_t(8 * cc * sc))
+
+			p.power.Compute(p.time.Recompute(p.sched, delay), P, sc)
+			p.tempan.ComputeTransient(P, Q, S, sc)
+
+			return Q
+		})
+
+		for _, cid := range p.config.CoreIndex {
+			values[k] = Q[sid*cc+uint32(cid)]
+			k++
 		}
 	}
 
