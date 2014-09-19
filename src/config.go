@@ -12,6 +12,8 @@ import (
 type Config struct {
 	// The TGFF file of the system to analyze.
 	TGFF string
+	// The correlation strength between data-dependent tasks.
+	CorrLength float64 // > 0
 	// The multiplier used to calculate the maximal delay of a task.
 	DelayRate float64 // >= 0
 
@@ -52,6 +54,10 @@ func loadConfig(path string) (Config, error) {
 }
 
 func (c *Config) validate() error {
+	if c.CorrLength < 0 {
+		return errors.New("the correlation length is invalid")
+	}
+
 	if c.DelayRate < 0 {
 		return errors.New("the delay rate is invalid")
 	}

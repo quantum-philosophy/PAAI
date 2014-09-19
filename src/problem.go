@@ -19,6 +19,10 @@ import (
 	"github.com/go-math/numan/interp/adhier"
 )
 
+const (
+	cacheCapacity = 1000
+)
+
 type problem struct {
 	config Config
 
@@ -33,6 +37,7 @@ type problem struct {
 	tempan *expint.Self
 	interp *adhier.Self
 
+	corr  []float64
 	sched *time.Schedule
 	delay []float64
 
@@ -76,11 +81,11 @@ func newProblem(config Config) (*problem, error) {
 		}
 	}
 
+	p.corr = correlate(app, p.config.CorrLength)
+
 	p.sc = uint32(p.sched.Span / p.config.Analysis.TimeStep)
 	p.ic = 1 + uint32(len(p.config.TaskIndex)) // +1 for time
 	p.oc = uint32(len(p.config.CoreIndex))     // a curve for each core
-
-	p.cache = newCache(p.ic-1, 1000) // -1 for time
 
 	if err = p.validate(); err != nil {
 		return nil, err
@@ -98,6 +103,8 @@ func newProblem(config Config) (*problem, error) {
 
 	p.interp = adhier.New(newcot.New(uint16(p.ic)), linhat.New(uint16(p.ic)),
 		adhier.Config(p.config.Interpolation), uint16(p.oc))
+
+	p.cache = newCache(p.ic-1, cacheCapacity) // -1 for time
 
 	return p, nil
 }

@@ -1,9 +1,10 @@
 {
 	"tgff": "fixtures/002_020.tgff",
 	"delayRate": 0.2,
+	"corrLength": 2,
+
 	"coreIndex": [0],
 	"taskIndex": [0],
-	"stepThinning": 100,
 
 	"analysis": {
 		"floorplan": "fixtures/002.flp",

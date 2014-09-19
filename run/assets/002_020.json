@@ -1,6 +1,8 @@
 {
 	"tgff": "assets/002_020.tgff",
 	"delayRate": 0.2,
+	"corrLength": 2,
+
 	"coreIndex": [0],
 	"taskIndex": [0],
 
