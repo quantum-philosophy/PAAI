@@ -7,7 +7,7 @@ import (
 	"github.com/go-math/format/mat"
 	"github.com/go-math/numan/interp/adhier"
 	"github.com/go-math/prob/sample"
-	"github.com/go-math/stat/assess"
+	"github.com/go-math/stats/assess"
 )
 
 func doConstruct(p *problem, _ *mat.File, f *mat.File) error {

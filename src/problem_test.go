@@ -49,6 +49,8 @@ func TestNewProblemNoCores(t *testing.T) {
 func TestNewProblemNoTasks(t *testing.T) {
 	config, _ := loadConfig("fixtures/002_020.json")
 	config.TaskIndex = []uint16{}
+	config.CorrLength = 10
+	config.VarPreserved = 0.95
 
 	p, err := newProblem(config)
 	assert.Success(err, t)
@@ -57,6 +59,7 @@ func TestNewProblemNoTasks(t *testing.T) {
 		0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
 		11, 12, 13, 14, 15, 16, 17, 18, 19,
 	}, t)
+	assert.Equal(p.ic, uint32(2), t)
 }
 
 func BenchmarkProblemSolve(b *testing.B) {

@@ -12,8 +12,11 @@ import (
 type Config struct {
 	// The TGFF file of the system to analyze.
 	TGFF string
-	// The correlation strength between data-dependent tasks.
+	// The strength of correlations between data-dependent tasks.
 	CorrLength float64 // > 0
+	// The portion of the variance to be preserved when reducing the number of
+	// stochastic dimensions.
+	VarPreserved float64 // ∈ (0, 1]
 	// The multiplier used to calculate the maximal delay of a task.
 	DelayRate float64 // >= 0
 
@@ -57,11 +60,12 @@ func (c *Config) validate() error {
 	if c.CorrLength < 0 {
 		return errors.New("the correlation length is invalid")
 	}
-
+	if c.VarPreserved <= 0 || c.VarPreserved > 1 {
+		return errors.New("the variance-reduction threshold is invalid")
+	}
 	if c.DelayRate < 0 {
 		return errors.New("the delay rate is invalid")
 	}
-
 	if c.Analysis.TimeStep <= 0 {
 		return errors.New("the time step is invalid")
 	}

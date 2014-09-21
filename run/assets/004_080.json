@@ -2,6 +2,7 @@
 	"tgff": "assets/004_080.tgff",
 	"delayRate": 0.2,
 	"corrLength": 2,
+	"varPreserved": 0.95,
 
 	"coreIndex": [0],
 	"taskIndex": [0],

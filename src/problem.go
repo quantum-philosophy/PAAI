@@ -17,6 +17,7 @@ import (
 	"github.com/go-math/numan/basis/linhat"
 	"github.com/go-math/numan/grid/newcot"
 	"github.com/go-math/numan/interp/adhier"
+	"github.com/go-math/stats/corr"
 )
 
 const (
@@ -37,9 +38,9 @@ type problem struct {
 	tempan *expint.Self
 	interp *adhier.Self
 
-	corr  []float64
 	sched *time.Schedule
 	delay []float64
+	M     []float64
 
 	cache *cache
 }
@@ -55,37 +56,44 @@ func newProblem(config Config) (*problem, error) {
 	p := &problem{
 		config: config,
 	}
+	c := &p.config
 
-	plat, app, err := system.Load(p.config.TGFF)
+	plat, app, err := system.Load(c.TGFF)
 	if err != nil {
 		return nil, err
 	}
 
 	p.time = time.NewList(plat, app)
 	p.sched = p.time.Compute(system.NewProfile(plat, app).Mobility)
-	p.power = power.New(plat, app, p.config.Analysis.TimeStep)
+	p.power = power.New(plat, app, c.Analysis.TimeStep)
 
 	p.cc = uint32(len(plat.Cores))
-	if len(p.config.CoreIndex) == 0 {
-		p.config.CoreIndex = make([]uint16, p.cc)
+	if len(c.CoreIndex) == 0 {
+		c.CoreIndex = make([]uint16, p.cc)
 		for i := uint16(0); i < uint16(p.cc); i++ {
-			p.config.CoreIndex[i] = i
+			c.CoreIndex[i] = i
 		}
 	}
 
 	p.tc = uint32(len(app.Tasks))
-	if len(p.config.TaskIndex) == 0 {
-		p.config.TaskIndex = make([]uint16, p.tc)
+	if len(c.TaskIndex) == 0 {
+		c.TaskIndex = make([]uint16, p.tc)
 		for i := uint16(0); i < uint16(p.tc); i++ {
-			p.config.TaskIndex[i] = i
+			c.TaskIndex[i] = i
 		}
 	}
 
-	p.corr = correlate(app, p.config.CorrLength)
+	p.sc = uint32(p.sched.Span / c.Analysis.TimeStep)
+	p.ic = uint32(len(c.TaskIndex)) // not final!
+	p.oc = uint32(len(c.CoreIndex))
 
-	p.sc = uint32(p.sched.Span / p.config.Analysis.TimeStep)
-	p.ic = 1 + uint32(len(p.config.TaskIndex)) // +1 for time
-	p.oc = uint32(len(p.config.CoreIndex))     // a curve for each core
+	Σ := correlate(app, c.TaskIndex, c.CorrLength)
+	p.M, p.ic, err = corr.Decompose(Σ, p.ic, c.VarPreserved)
+	if err != nil {
+		return nil, err
+	}
+
+	p.ic += 1 // +1 for time
 
 	if err = p.validate(); err != nil {
 		return nil, err
@@ -93,16 +101,16 @@ func newProblem(config Config) (*problem, error) {
 
 	p.delay = make([]float64, p.tc)
 	for i := range p.delay {
-		p.delay[i] = p.config.DelayRate * plat.Cores[p.sched.Mapping[i]].Time[app.Tasks[i].Type]
+		p.delay[i] = c.DelayRate * plat.Cores[p.sched.Mapping[i]].Time[app.Tasks[i].Type]
 	}
 
-	p.tempan, err = expint.New(expint.Config(p.config.Analysis))
+	p.tempan, err = expint.New(expint.Config(c.Analysis))
 	if err != nil {
 		return nil, err
 	}
 
 	p.interp = adhier.New(newcot.New(uint16(p.ic)), linhat.New(uint16(p.ic)),
-		adhier.Config(p.config.Interpolation), uint16(p.oc))
+		adhier.Config(c.Interpolation), uint16(p.oc))
 
 	p.cache = newCache(p.ic-1, cacheCapacity) // -1 for time
 
