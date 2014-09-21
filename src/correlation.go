@@ -8,90 +8,73 @@ import (
 
 func correlate(app *system.Application, index []uint16, length float64) []float64 {
 	tc, dc := uint16(len(app.Tasks)), uint16(len(index))
-	steps := explore(app)
 
+	distance := measure(app)
 	corr := make([]float64, dc*dc)
 
 	for i := uint16(0); i < dc; i++ {
 		corr[i*dc+i] = 1
 		for j := i + 1; j < dc; j++ {
-			f, t := index[i], index[j]
-
-			s := steps[t*tc+f]
-			if s == 0 {
-				s = steps[f*tc+t]
-			}
-			if s == 0 {
-				s = ascendDescend(app, f, t, steps)
-			}
-			if s == 0 {
-				panic("should have found a path")
-			}
-
-			ρ := math.Exp(-float64(s) / length)
-
-			corr[j*dc+i] = ρ
-			corr[i*dc+j] = ρ
+			corr[j*dc+i] = math.Exp(-distance[index[i]*tc+index[j]] / length)
+			corr[i*dc+j] = corr[j*dc+i]
 		}
 	}
 
 	return corr
 }
 
-func explore(app *system.Application) []uint16 {
+func measure(app *system.Application) []float64 {
 	tc := uint16(len(app.Tasks))
-	steps := make([]uint16, tc*tc)
+
+	depth := explore(app)
+
+	index := make([]uint16, tc)
+	count := make([]uint16, tc)
+	for i, d := range depth {
+		index[i] = count[d]
+		count[d]++
+	}
+
+	distance := make([]float64, tc*tc)
 
 	for i := uint16(0); i < tc; i++ {
 		for j := i + 1; j < tc; j++ {
-			if s := ascend(app, j, i); s > 0 {
-				steps[j*tc+i] = s
-			} else {
-				steps[i*tc+j] = ascend(app, i, j)
-			}
+			xi := float64(index[i]) - float64(count[depth[i]])/2.0
+			yi := float64(depth[i])
+
+			xj := float64(index[j]) - float64(count[depth[j]])/2.0
+			yj := float64(depth[j])
+
+			distance[j*tc+i] = math.Sqrt((xi-xj)*(xi-xj) + (yi-yj)*(yi-yj))
+			distance[i*tc+j] = distance[j*tc+i]
 		}
 	}
 
-	return steps
+	return distance
 }
 
-// ascend returns the minimal number of steps to climb up from f to t. The
-// function assumes f ≠ t and returns 0 if no path was found.
-func ascend(app *system.Application, f, t uint16) uint16 {
-	min := uint16(0)
+func explore(app *system.Application) []uint16 {
+	tc := uint16(len(app.Tasks))
+	depth := make([]uint16, tc)
 
-	for _, p := range app.Tasks[f].Parents {
-		if t == p {
-			return 1
-		} else if s := ascend(app, p, t); s > 0 && (min == 0 || s < min) {
-			min = s
-		}
+	for _, l := range app.Leafs() {
+		ascend(app, depth, l)
 	}
 
-	if min == 0 {
-		return 0
-	} else {
-		return min + 1
-	}
+	return depth
 }
 
-// ascendDescend returns the minimal number of steps to climb down from the
-// ancestors of f to t. The function assumes f ≠ t and returns 0 if no path was
-// found.
-func ascendDescend(app *system.Application, f, t uint16, steps []uint16) uint16 {
-	tc, min := uint16(len(app.Tasks)), uint16(0)
+func ascend(app *system.Application, depth []uint16, f uint16) {
+	max := uint16(0)
 
 	for _, p := range app.Tasks[f].Parents {
-		if s := steps[t*tc+p]; s > 0 && (min == 0 || s < min) {
-			min = s
-		} else if s := ascendDescend(app, p, t, steps); s > 0 && (min == 0 || s < min) {
-			min = s
+		if depth[p] == 0 {
+			ascend(app, depth, p)
+		}
+		if max < depth[p]+1 {
+			max = depth[p] + 1
 		}
 	}
 
-	if min == 0 {
-		return 0
-	} else {
-		return min + 1
-	}
+	depth[f] = max
 }

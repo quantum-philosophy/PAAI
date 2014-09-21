@@ -1,6 +1,7 @@
 package main
 
 import (
+	"math"
 	"testing"
 
 	"github.com/go-eslab/persim/system"
@@ -15,45 +16,41 @@ func TestCorrelate(t *testing.T) {
 	assert.Success(err, t)
 }
 
-func TestAscend(t *testing.T) {
+func TestMeasure(t *testing.T) {
 	_, app, _ := system.Load("fixtures/002_020.tgff")
+	distance := measure(app)
 
 	cases := []struct {
-		f uint16
-		t uint16
-		s uint16
+		i uint16
+		j uint16
+		d float64
 	}{
-		{1, 0, 1},
-		{2, 0, 2},
-		{13, 0, 4},
-		{18, 9, 2},
-		{19, 0, 2},
-		{0, 19, 0},
+		{0, 1, 1},
+		{0, 7, 3},
+		{0, 18, math.Sqrt(5*5 + 0.5*0.5)},
+		{1, 2, math.Sqrt(1*1 + 1*1)},
+		{1, 3, 1},
+		{2, 3, 1},
+		{3, 9, math.Sqrt(1*1 + 2*2)},
+		{8, 9, 1},
 	}
 
 	for _, c := range cases {
-		assert.Equal(ascend(app, c.f, c.t), c.s, t)
+		assert.Equal(distance[20*c.i+c.j], c.d, t)
 	}
 }
 
-func TestAscendDescend(t *testing.T) {
+func TestExplore(t *testing.T) {
 	_, app, _ := system.Load("fixtures/002_020.tgff")
-	steps := explore(app)
+	depth := explore(app)
 
-	cases := []struct {
-		f uint16
-		t uint16
-		s uint16
-	}{
-		{3, 2, 2},
-		{10, 3, 3},
-		{14, 18, 3},
-		{17, 10, 4},
-	}
-
-	for _, c := range cases {
-		assert.Equal(ascendDescend(app, c.f, c.t, steps), c.s, t)
-	}
+	assert.Equal(depth, []uint16{
+		0,
+		1,
+		2, 2, 2,
+		3, 3, 3, 3, 3,
+		4, 4, 4, 4, 4, 4, 4, 4,
+		5, 5}, t)
 }
 
 func BenchmarkCorrelate(b *testing.B) {
