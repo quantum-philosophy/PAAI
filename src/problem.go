@@ -40,7 +40,7 @@ type problem struct {
 
 	sched *time.Schedule
 	delay []float64
-	M     []float64
+	trans []float64
 
 	cache *cache
 }
@@ -88,7 +88,7 @@ func newProblem(config Config) (*problem, error) {
 	p.oc = uint32(len(c.CoreIndex))
 
 	Σ := correlate(app, c.TaskIndex, c.CorrLength)
-	p.M, p.ic, err = corr.Decompose(Σ, p.ic, c.VarThreshold)
+	p.trans, p.ic, err = corr.Decompose(Σ, p.ic, c.VarThreshold)
 	if err != nil {
 		return nil, err
 	}

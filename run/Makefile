@@ -11,8 +11,8 @@ $(bin): $(gos)
 	mv $(src)/$@ $@
 
 $(cases): $(bin)
-	./run construct -config assets/$@.json -output construct_$@.mat
-	./run assess -config assets/$@.json -input construct_$@.mat -output assess_$@.mat
+	./run solve -config assets/$@.json -output solve_$@.mat
+	./run check -config assets/$@.json -input solve_$@.mat -output check_$@.mat
 
 test:
 	cd $(src) && go test

@@ -10,7 +10,24 @@ import (
 	"github.com/go-math/stats/assess"
 )
 
-func doConstruct(p *problem, _ *mat.File, f *mat.File) error {
+func Show(p *problem, f *mat.File, _ *mat.File) error {
+	fmt.Println(p)
+
+	if f == nil {
+		return nil
+	}
+
+	s := new(adhier.Surrogate)
+	if err := f.Get("surrogate", s); err != nil {
+		return err
+	}
+
+	fmt.Println(s)
+
+	return nil
+}
+
+func Solve(p *problem, _ *mat.File, f *mat.File) error {
 	fmt.Println(p)
 
 	var s *adhier.Surrogate
@@ -32,7 +49,7 @@ func doConstruct(p *problem, _ *mat.File, f *mat.File) error {
 	return nil
 }
 
-func doAssess(p *problem, fi *mat.File, fo *mat.File) error {
+func Check(p *problem, fi *mat.File, fo *mat.File) error {
 	s := new(adhier.Surrogate)
 	if fi == nil {
 		return errors.New("an input file is required")

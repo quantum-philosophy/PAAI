@@ -79,10 +79,12 @@ func main() {
 
 func findCommand(name string) func(*problem, *mat.File, *mat.File) error {
 	switch name {
-	case "construct":
-		return doConstruct
-	case "assess":
-		return doAssess
+	case "show":
+		return Show
+	case "solve":
+		return Solve
+	case "check":
+		return Check
 	default:
 		return nil
 	}
@@ -93,8 +95,9 @@ func printUsage() {
 	fmt.Printf(`
 
 Commands:
-    construct - to construct a surrogate model
-    assess    - to construct a surrogate model
+    show  - to display the configuration of a problem
+    solve - to construct a surrogate model
+    check - to assess a surrogate model
 
 Options:
     config    - a problem specification in JSON (required)
