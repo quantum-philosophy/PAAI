@@ -3,10 +3,11 @@ package main
 import (
 	"errors"
 	"fmt"
+	"math/rand"
 
 	"github.com/go-math/format/mat"
 	"github.com/go-math/numan/interp/adhier"
-	"github.com/go-math/prob/sample"
+	"github.com/go-math/prob/dist/uniform"
 	"github.com/go-math/stats/assess"
 )
 
@@ -67,8 +68,8 @@ func Check(p *problem, fi *mat.File, fo *mat.File) error {
 		return errors.New("the number of samples is zero")
 	}
 
-	sample.Seed(c.Seed)
-	points := sample.Uniform(c.Samples * p.ic)
+	rand.Seed(c.Seed)
+	points := uniform.New(0, 1).Sample(c.Samples * p.ic)
 
 	var values, realValues []float64
 
