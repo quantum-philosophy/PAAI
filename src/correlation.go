@@ -15,7 +15,8 @@ func correlate(app *system.Application, index []uint16, length float64) []float6
 	for i := uint16(0); i < dc; i++ {
 		corr[i*dc+i] = 1
 		for j := i + 1; j < dc; j++ {
-			corr[j*dc+i] = math.Exp(-distance[index[i]*tc+index[j]] / length)
+			d := distance[index[i]*tc+index[j]]
+			corr[j*dc+i] = math.Exp(-d * d / (length * length))
 			corr[i*dc+j] = corr[j*dc+i]
 		}
 	}
