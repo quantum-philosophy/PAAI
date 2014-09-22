@@ -88,7 +88,7 @@ func newProblem(config Config) (*problem, error) {
 	p.oc = uint32(len(c.CoreIndex))
 
 	Σ := correlate(app, c.TaskIndex, c.CorrLength)
-	p.M, p.ic, err = corr.Decompose(Σ, p.ic, c.VarPreserved)
+	p.M, p.ic, err = corr.Decompose(Σ, p.ic, c.VarThreshold)
 	if err != nil {
 		return nil, err
 	}

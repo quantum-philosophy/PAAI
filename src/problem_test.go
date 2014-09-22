@@ -50,7 +50,7 @@ func TestNewProblemAllTasks(t *testing.T) {
 	config, _ := loadConfig("fixtures/002_020.json")
 	config.TaskIndex = []uint16{}
 	config.CorrLength = 5
-	config.VarPreserved = 0.95
+	config.VarThreshold = 0.95
 
 	p, err := newProblem(config)
 	assert.Success(err, t)
