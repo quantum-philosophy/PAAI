@@ -10,18 +10,18 @@ func correlate(app *system.Application, index []uint16, length float64) []float6
 	tc, dc := uint16(len(app.Tasks)), uint16(len(index))
 
 	distance := measure(app)
-	corr := make([]float64, dc*dc)
+	C := make([]float64, dc*dc)
 
 	for i := uint16(0); i < dc; i++ {
-		corr[i*dc+i] = 1
+		C[i*dc+i] = 1
 		for j := i + 1; j < dc; j++ {
 			d := distance[index[i]*tc+index[j]]
-			corr[j*dc+i] = math.Exp(-d * d / (length * length))
-			corr[i*dc+j] = corr[j*dc+i]
+			C[j*dc+i] = math.Exp(-d * d / (length * length))
+			C[i*dc+j] = C[j*dc+i]
 		}
 	}
 
-	return corr
+	return C
 }
 
 func measure(app *system.Application) []float64 {

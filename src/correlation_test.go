@@ -50,7 +50,8 @@ func TestExplore(t *testing.T) {
 		2, 2, 2,
 		3, 3, 3, 3, 3,
 		4, 4, 4, 4, 4, 4, 4, 4,
-		5, 5}, t)
+		5, 5,
+	}, t)
 }
 
 func BenchmarkCorrelate(b *testing.B) {

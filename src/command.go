@@ -7,7 +7,8 @@ import (
 
 	"github.com/go-math/format/mat"
 	"github.com/go-math/numan/interp/adhier"
-	"github.com/go-math/prob/dist/uniform"
+	"github.com/go-math/prob"
+	"github.com/go-math/prob/uniform"
 	"github.com/go-math/stats/assess"
 )
 
@@ -69,7 +70,7 @@ func Check(p *problem, fi *mat.File, fo *mat.File) error {
 	}
 
 	rand.Seed(c.Seed)
-	points := uniform.New(0, 1).Sample(c.Samples * p.ic)
+	points := prob.Sample(uniform.New(0, 1), c.Samples*p.ic)
 
 	var values, realValues []float64
 

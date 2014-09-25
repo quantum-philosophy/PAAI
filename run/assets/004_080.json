@@ -1,11 +1,16 @@
 {
 	"tgff": "assets/004_080.tgff",
-	"delayRate": 0.2,
-	"corrLength": 2,
-	"varThreshold": 0.95,
 
 	"coreIndex": [0],
 	"taskIndex": [0],
+
+	"probModel": {
+		"maxDelay": 0.2,
+		"alpha": 1,
+		"beta": 1,
+		"corrLength": 14,
+		"varThreshold": 0.95
+	},
 
 	"analysis": {
 		"floorplan": "assets/004.flp",

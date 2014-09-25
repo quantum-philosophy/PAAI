@@ -33,7 +33,8 @@ func TestNewProblem(t *testing.T) {
 	}, t)
 	assert.AlmostEqual(p.sched.Span, 0.291, t)
 
-	assert.Equal(p.delay[0], 0.002, t)
+	assert.Equal(p.margins[0].InvCDF(0), 0.0, t)
+	assert.Equal(p.margins[0].InvCDF(1), 0.002, t)
 }
 
 func TestNewProblemAllCores(t *testing.T) {
@@ -49,8 +50,8 @@ func TestNewProblemAllCores(t *testing.T) {
 func TestNewProblemAllTasks(t *testing.T) {
 	config, _ := loadConfig("fixtures/002_020.json")
 	config.TaskIndex = []uint16{}
-	config.CorrLength = 5
-	config.VarThreshold = 0.95
+	config.ProbModel.CorrLength = 5
+	config.ProbModel.VarThreshold = 0.95
 
 	p, err := newProblem(config)
 	assert.Success(err, t)
