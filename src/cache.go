@@ -17,7 +17,7 @@ type cache struct {
 }
 
 func (c *cache) String() string {
-	return fmt.Sprintf("Cache{ hits: %d (%.2f%%), misses: %d (%.2f%%) }",
+	return fmt.Sprintf("Cache{hits: %d (%.2f%%), misses: %d (%.2f%%)}",
 		c.hc, float64(c.hc)/float64(c.hc+c.mc)*100,
 		c.mc, float64(c.mc)/float64(c.hc+c.mc)*100)
 }

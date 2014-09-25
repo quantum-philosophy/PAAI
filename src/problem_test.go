@@ -6,7 +6,7 @@ import (
 	"github.com/go-math/support/assert"
 )
 
-func TestNewProblem(t *testing.T) {
+func TestNewProblemGeneral(t *testing.T) {
 	config, err := loadConfig("fixtures/002_020.json")
 	assert.Success(err, t)
 
@@ -15,9 +15,6 @@ func TestNewProblem(t *testing.T) {
 
 	assert.Equal(p.cc, uint32(2), t)
 	assert.Equal(p.tc, uint32(20), t)
-	assert.Equal(p.sc, uint32(29100), t)
-	assert.Equal(p.ic, uint32(2), t)
-	assert.Equal(p.oc, uint32(1), t)
 
 	assert.Equal(p.sched.Mapping, []uint16{
 		0, 1, 0, 0, 1, 1, 1, 0, 0, 1,
@@ -33,39 +30,44 @@ func TestNewProblem(t *testing.T) {
 	}, t)
 	assert.AlmostEqual(p.sched.Span, 0.291, t)
 
-	assert.Equal(p.margins[0].InvCDF(0), 0.0, t)
-	assert.Equal(p.margins[0].InvCDF(1), 0.002, t)
+	assert.Equal(p.sc, uint32(29100), t)
 }
 
-func TestNewProblemAllCores(t *testing.T) {
+func TestNewProblemNoCores(t *testing.T) {
 	config, _ := loadConfig("fixtures/002_020.json")
 	config.CoreIndex = []uint16{}
 
-	p, err := newProblem(config)
-	assert.Success(err, t)
-
+	p, _ := newProblem(config)
 	assert.Equal(p.config.CoreIndex, index(2), t)
 }
 
-func TestNewProblemAllTasks(t *testing.T) {
+func TestNewProblemNoTasks(t *testing.T) {
 	config, _ := loadConfig("fixtures/002_020.json")
 	config.TaskIndex = []uint16{}
-	config.ProbModel.CorrLength = 5
-	config.ProbModel.VarThreshold = 0.95
 
-	p, err := newProblem(config)
-	assert.Success(err, t)
-
+	p, _ := newProblem(config)
 	assert.Equal(p.config.TaskIndex, index(20), t)
-	assert.Equal(p.ic, uint32(4), t)
 }
 
-func BenchmarkProblemSolve(b *testing.B) {
+func TestNewProblemProbModel(t *testing.T) {
 	config, _ := loadConfig("fixtures/002_020.json")
-	config.Verbose = false
 	p, _ := newProblem(config)
 
-	for i := 0; i < b.N; i++ {
-		p.solve()
+	assert.Equal(p.uc, uint32(20), t)
+	assert.Equal(p.zc, uint32(3), t)
+
+	assert.Equal(len(p.trans), 3*20, t)
+
+	delay := make([]float64, 20)
+	for i := 0; i < 20; i++ {
+		assert.Equal(p.margins[i].InvCDF(0), 0.0, t)
+		delay[i] = p.margins[i].InvCDF(1)
 	}
+	assert.AlmostEqual(delay, []float64{
+		0.0020, 0.0006, 0.0076, 0.0062, 0.0004, 0.0038, 0.0006, 0.0062, 0.0036, 0.0056,
+		0.0038, 0.0010, 0.0068, 0.0070, 0.0078, 0.0044, 0.0004, 0.0058, 0.0056, 0.0040,
+	}, t)
+
+	assert.Equal(p.ic, uint32(3+1), t)
+	assert.Equal(p.oc, uint32(1), t)
 }

@@ -33,7 +33,7 @@ func newWorker(p *problem) *worker {
 	}
 }
 
-func (w *worker) compute(nodes, Q []float64) []float64 {
+func (w *worker) compute(nodes, Q []float64) {
 	p := w.p
 	cc, sc, uc, zc := p.cc, p.sc, p.uc, p.zc
 
@@ -51,10 +51,5 @@ func (w *worker) compute(nodes, Q []float64) []float64 {
 	C.memset(unsafe.Pointer(&w.P[0]), 0, C.size_t(8*cc*sc))
 	p.power.Compute(p.time.Recompute(p.sched, w.d), w.P, sc)
 
-	if Q == nil {
-		Q = make([]float64, cc*sc)
-	}
 	p.tempan.ComputeTransient(w.P, Q, w.S, sc)
-
-	return Q
 }

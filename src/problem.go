@@ -34,7 +34,7 @@ type problem struct {
 
 	sched *time.Schedule
 
-	uc uint32 // uncertain parameters
+	uc uint32 // dependent variables
 	zc uint32 // independent variables
 
 	margins  []*beta.Self
@@ -51,7 +51,7 @@ type problem struct {
 }
 
 func (p *problem) String() string {
-	return fmt.Sprintf("Problem{ cores: %d, tasks: %d, steps: %d, params: %d, vars: %d, inputs: %d, outputs: %d }",
+	return fmt.Sprintf("Problem{cores: %d, tasks: %d, steps: %d, dvars: %d, ivars: %d, inputs: %d, outputs: %d}",
 		p.cc, p.tc, p.sc, p.uc, p.zc, p.ic, p.oc)
 }
 
@@ -133,8 +133,8 @@ func (p *problem) compute(nodes []float64, _ []uint64) []float64 {
 		fmt.Printf("%d ", nc)
 	}
 
-	values := make([]float64, p.oc*nc)
 	Q := make([]float64, cc*sc)
+	values := make([]float64, p.oc*nc)
 
 	for i, k := uint32(0), uint32(0); i < nc; i++ {
 		sid := uint32(nodes[i*ic] * float64(sc-1))
@@ -164,7 +164,9 @@ func (p *problem) fetch(nodes []float64, index []uint64) []float64 {
 		sid := uint32(nodes[i*ic] * float64(sc-1))
 
 		Q := p.cache.fetch(index[i*ic+1:], func() []float64 {
-			return p.worker.compute(nodes[i*ic+1:], nil)
+			Q := make([]float64, cc*sc)
+			p.worker.compute(nodes[i*ic+1:], Q)
+			return Q
 		})
 
 		for _, cid := range p.config.CoreIndex {

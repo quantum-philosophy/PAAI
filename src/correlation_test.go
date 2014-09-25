@@ -11,9 +11,13 @@ import (
 
 func TestCorrelate(t *testing.T) {
 	_, app, _ := system.Load("fixtures/002_020.tgff")
-	_, _, err := decomp.CovPCA(correlate(app, index(20), 2), 20)
 
+	C := correlate(app, index(20), 2)
+	_, _, err := decomp.CovPCA(C, 20)
 	assert.Success(err, t)
+
+	C = correlate(app, index(1), 2)
+	assert.Equal(C, []float64{1}, t)
 }
 
 func TestMeasure(t *testing.T) {

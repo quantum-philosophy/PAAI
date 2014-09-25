@@ -2,7 +2,7 @@
 	"tgff": "fixtures/002_020.tgff",
 
 	"coreIndex": [0],
-	"taskIndex": [0],
+	"taskIndex": [],
 
 	"probModel": {
 		"maxDelay": 0.2,
