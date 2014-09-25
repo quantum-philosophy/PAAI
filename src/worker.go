@@ -37,14 +37,17 @@ func (w *worker) compute(nodes, Q []float64) {
 	p := w.p
 	cc, sc, uc, zc := p.cc, p.sc, p.uc, p.zc
 
+	// Independent uniform to independent Gaussian
 	for i := uint32(0); i < zc; i++ {
 		w.z[i] = p.gaussian.InvCDF(nodes[i])
 	}
 
+	// Independent Gaussian to dependent Gaussian
 	matrix.Multiply(p.trans, w.z, w.u, uc, zc, 1)
 
+	// Dependent Gaussian to dependent uniform to dependent target
 	for i, tid := range p.config.TaskIndex {
-		w.d[tid] = p.margins[i].CDF(w.u[i])
+		w.d[tid] = p.margins[i].InvCDF(p.gaussian.CDF(w.u[i]))
 	}
 
 	// FIXME: Bad, bad, bad!
