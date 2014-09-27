@@ -21,8 +21,8 @@ type worker struct {
 }
 
 type job struct {
-	id   uint32
-	key  string
+	id  uint32
+	key string
 
 	node []float64
 	data []float64

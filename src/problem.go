@@ -164,7 +164,7 @@ func (p *problem) solve() *adhier.Surrogate {
 		}
 
 		for i := uint32(0); i < nc; i++ {
-			result := <- results
+			result := <-results
 			k, Q := result.id, result.data
 
 			sid := uint32(nodes[k*ic] * float64(sc-1))
