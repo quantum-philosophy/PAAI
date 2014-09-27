@@ -117,7 +117,7 @@ func newProblem(config Config) (*problem, error) {
 	p.ic = p.zc + 1 // +1 for time
 	p.oc = uint32(len(c.CoreIndex))
 
-	p.interp = adhier.New(newcot.New(uint16(p.ic)), linhat.New(uint16(p.ic)),
+	p.interp = adhier.New(newcot.NewOpen(uint16(p.ic)), linhat.NewOpen(uint16(p.ic)),
 		adhier.Config(c.Interpolation), uint16(p.oc))
 
 	p.cache = newCache(p.zc, cacheCapacity)
