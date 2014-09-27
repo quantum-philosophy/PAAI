@@ -103,7 +103,7 @@ func newProblem(config Config) (*problem, error) {
 	}
 
 	p.margins = make([]prob.Inverter, p.uc)
-	marginalizer := marginalize(c.ProbModel.Marginals)
+	marginalizer := marginalize(c.ProbModel.Marginal)
 	if marginalizer == nil {
 		return nil, errors.New("invalid marginal distributions")
 	}

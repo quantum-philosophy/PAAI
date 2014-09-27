@@ -22,7 +22,7 @@ type Config struct {
 		// The multiplier used to calculate the maximal delay of a task.
 		MaxDelay float64 // ∈ [0, 1)
 		// The marginal distributions of tasks’ delays.
-		Marginals string
+		Marginal string
 		// The strength of correlations between tasks.
 		CorrLength float64 // > 0
 		// The portion of the variance to be preserved when reducing the number of
