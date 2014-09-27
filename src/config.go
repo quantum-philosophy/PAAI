@@ -21,9 +21,9 @@ type Config struct {
 	ProbModel struct {
 		// The multiplier used to calculate the maximal delay of a task.
 		MaxDelay float64 // ∈ [0, 1)
-		// The parameters of the beta distribution
-		Alpha, Beta float64 // > 0
-		// The strength of correlations between data-dependent tasks.
+		// The marginal distributions of tasks’ delays.
+		Marginals string
+		// The strength of correlations between tasks.
 		CorrLength float64 // > 0
 		// The portion of the variance to be preserved when reducing the number of
 		// stochastic dimensions.
@@ -64,12 +64,6 @@ func loadConfig(path string) (Config, error) {
 func (c *Config) validate() error {
 	if c.ProbModel.MaxDelay < 0 || 1 <= c.ProbModel.MaxDelay {
 		return errors.New("the delay rate is invalid")
-	}
-	if c.ProbModel.Alpha <= 0 {
-		return errors.New("the alpha parameter is invalid")
-	}
-	if c.ProbModel.Beta <= 0 {
-		return errors.New("the beta parameter is invalid")
 	}
 	if c.ProbModel.CorrLength <= 0 {
 		return errors.New("the correlation length is invalid")

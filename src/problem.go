@@ -1,6 +1,7 @@
 package main
 
 import (
+	"errors"
 	"fmt"
 
 	"github.com/go-eslab/persim/power"
@@ -11,7 +12,7 @@ import (
 	"github.com/go-math/numan/basis/linhat"
 	"github.com/go-math/numan/grid/newcot"
 	"github.com/go-math/numan/interp/adhier"
-	"github.com/go-math/prob/beta"
+	"github.com/go-math/prob"
 	"github.com/go-math/prob/gaussian"
 	"github.com/go-math/stats/corr"
 )
@@ -37,8 +38,8 @@ type problem struct {
 	uc uint32 // dependent variables
 	zc uint32 // independent variables
 
-	margins  []*beta.Self
-	gaussian *gaussian.Self
+	margins  []prob.Inverter
+	gaussian prob.Distribution
 	trans    []float64
 
 	ic uint32 // inputs
@@ -101,10 +102,14 @@ func newProblem(config Config) (*problem, error) {
 		return nil, err
 	}
 
-	p.margins = make([]*beta.Self, p.uc)
+	p.margins = make([]prob.Inverter, p.uc)
+	marginalizer := marginalize(c.ProbModel.Marginals)
+	if marginalizer == nil {
+		return nil, errors.New("invalid marginal distributions")
+	}
 	for i, tid := range c.TaskIndex {
 		delay := c.ProbModel.MaxDelay * plat.Cores[p.sched.Mapping[tid]].Time[app.Tasks[tid].Type]
-		p.margins[i] = beta.New(c.ProbModel.Alpha, c.ProbModel.Beta, 0, delay)
+		p.margins[i] = marginalizer(delay)
 	}
 
 	p.gaussian = gaussian.New(0, 1)
