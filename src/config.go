@@ -30,6 +30,8 @@ type Config struct {
 		VarThreshold float64 // ∈ (0, 1]
 	}
 
+	// The number of workers.
+	Workers uint8
 	// The configuration of the algorithm for temperature analysis.
 	Analysis expint.Config
 	// The configuration of the algorithm for interpolation.

@@ -3,6 +3,7 @@ package main
 import (
 	"errors"
 	"fmt"
+	"runtime"
 
 	"github.com/go-eslab/persim/power"
 	"github.com/go-eslab/persim/system"
@@ -47,8 +48,7 @@ type problem struct {
 
 	interp *adhier.Self
 
-	worker *worker
-	cache  *cache
+	cache *cache
 }
 
 func (p *problem) String() string {
@@ -120,42 +120,71 @@ func newProblem(config Config) (*problem, error) {
 	p.interp = adhier.New(newcot.New(uint16(p.ic)), linhat.New(uint16(p.ic)),
 		adhier.Config(c.Interpolation), uint16(p.oc))
 
-	p.worker = newWorker(p)
 	p.cache = newCache(p.zc, cacheCapacity)
 
 	return p, nil
 }
 
 func (p *problem) solve() *adhier.Surrogate {
-	return p.interp.Compute(p.fetch)
-}
+	cc, sc, ic, oc := p.cc, p.sc, p.ic, p.oc
+	cache, coreIndex := p.cache, p.config.CoreIndex
 
-func (p *problem) compute(nodes []float64, _ []uint64) []float64 {
-	cc, sc, ic := p.cc, p.sc, p.ic
-	nc := uint32(len(nodes)) / ic
-
+	wc := int(p.config.Workers)
+	if wc <= 0 {
+		wc = runtime.NumCPU()
+	}
 	if p.config.Verbose {
-		fmt.Printf("%d ", nc)
+		fmt.Printf("Using %d workers...\n", wc)
+	}
+	runtime.GOMAXPROCS(wc)
+
+	jobs := make(chan job)
+	for i := 0; i < wc; i++ {
+		go newWorker(p).serve(jobs)
 	}
 
-	Q := make([]float64, cc*sc)
-	values := make([]float64, p.oc*nc)
+	surrogate := p.interp.Compute(func(nodes []float64, index []uint64) []float64 {
+		nc := uint32(len(nodes)) / ic
 
-	for i, k := uint32(0), uint32(0); i < nc; i++ {
-		sid := uint32(nodes[i*ic] * float64(sc-1))
-
-		p.worker.compute(nodes[i*ic+1:], Q)
-
-		for _, cid := range p.config.CoreIndex {
-			values[k] = Q[sid*cc+uint32(cid)]
-			k++
+		if p.config.Verbose {
+			fmt.Printf("%d ", nc)
 		}
-	}
 
-	return values
+		results := make(chan result, nc)
+		values := make([]float64, oc*nc)
+
+		for i := uint32(0); i < nc; i++ {
+			key := cache.key(index[i*ic+1:])
+
+			if Q := cache.get(key); Q == nil {
+				jobs <- job{i, key, nodes[i*ic+1:], nil, results}
+			} else {
+				results <- result{i, key, Q}
+			}
+		}
+
+		for i := uint32(0); i < nc; i++ {
+			result := <- results
+			k, Q := result.id, result.data
+
+			sid := uint32(nodes[k*ic] * float64(sc-1))
+
+			for j := uint32(0); j < oc; j++ {
+				values[k*oc+j] = Q[sid*cc+uint32(coreIndex[j])]
+			}
+
+			cache.set(result.key, Q)
+		}
+
+		return values
+	})
+
+	close(jobs)
+
+	return surrogate
 }
 
-func (p *problem) fetch(nodes []float64, index []uint64) []float64 {
+func (p *problem) compute(nodes []float64) []float64 {
 	cc, sc, ic := p.cc, p.sc, p.ic
 	nc := uint32(len(nodes)) / ic
 
@@ -163,16 +192,15 @@ func (p *problem) fetch(nodes []float64, index []uint64) []float64 {
 		fmt.Printf("%d ", nc)
 	}
 
+	worker := newWorker(p)
+	Q := make([]float64, cc*sc)
+
 	values := make([]float64, p.oc*nc)
 
 	for i, k := uint32(0), uint32(0); i < nc; i++ {
 		sid := uint32(nodes[i*ic] * float64(sc-1))
 
-		Q := p.cache.fetch(index[i*ic+1:], func() []float64 {
-			Q := make([]float64, cc*sc)
-			p.worker.compute(nodes[i*ic+1:], Q)
-			return Q
-		})
+		worker.compute(nodes[i*ic+1:], Q)
 
 		for _, cid := range p.config.CoreIndex {
 			values[k] = Q[sid*cc+uint32(cid)]

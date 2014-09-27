@@ -11,6 +11,8 @@
 		"varThreshold": 0.95
 	},
 
+	"workers": 0,
+
 	"analysis": {
 		"floorplan": "fixtures/002.flp",
 		"hotspot": {

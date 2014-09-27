@@ -79,7 +79,7 @@ func Check(p *problem, fi *mat.File, fo *mat.File) error {
 	})
 
 	track("Evaluating the original model...", true, func() {
-		realValues = p.compute(points, nil)
+		realValues = p.compute(points)
 	})
 
 	fmt.Printf("NRMSE: %e\n", assess.NRMSE(values, realValues))

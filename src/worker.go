@@ -20,6 +20,23 @@ type worker struct {
 	d []float64
 }
 
+type job struct {
+	id   uint32
+	key  string
+
+	node []float64
+	data []float64
+
+	done chan result
+}
+
+type result struct {
+	id  uint32
+	key string
+
+	data []float64
+}
+
 func newWorker(p *problem) *worker {
 	return &worker{
 		p: p,
@@ -33,13 +50,23 @@ func newWorker(p *problem) *worker {
 	}
 }
 
-func (w *worker) compute(nodes, Q []float64) {
+func (w *worker) serve(jobs chan job) {
+	for job := range jobs {
+		job.done <- result{job.id, job.key, w.compute(job.node, job.data)}
+	}
+}
+
+func (w *worker) compute(node, Q []float64) []float64 {
 	p := w.p
 	cc, sc, uc, zc := p.cc, p.sc, p.uc, p.zc
 
+	if Q == nil {
+		Q = make([]float64, cc*sc)
+	}
+
 	// Independent uniform to independent Gaussian
 	for i := uint32(0); i < zc; i++ {
-		w.z[i] = p.gaussian.InvCDF(nodes[i])
+		w.z[i] = p.gaussian.InvCDF(node[i])
 	}
 
 	// Independent Gaussian to dependent Gaussian
@@ -55,4 +82,6 @@ func (w *worker) compute(nodes, Q []float64) {
 	p.power.Compute(p.time.Recompute(p.sched, w.d), w.P, sc)
 
 	p.tempan.ComputeTransient(w.P, Q, w.S, sc)
+
+	return Q
 }

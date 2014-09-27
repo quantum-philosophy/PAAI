@@ -30,23 +30,29 @@ func newCache(length uint32, space uint32) *cache {
 	}
 }
 
-func (c *cache) fetch(sequence []uint64, compute func() []float64) (value []float64) {
+func (c *cache) key(sequence []uint64) string {
 	for i := uint32(0); i < c.length; i++ {
 		*(*uint64)(unsafe.Pointer(&c.buffer[8*i])) = sequence[i]
 	}
+	return string(c.buffer)
+}
 
-	key := string(c.buffer)
-	value = c.storage[key]
+func (c *cache) get(key string) []float64 {
+	value := c.storage[key]
 
 	if value != nil {
 		c.hc++
-		return
+	} else {
+		c.mc++
 	}
 
-	c.mc++
+	return value
+}
 
-	value = compute()
+func (c *cache) set(key string, value []float64) {
 	c.storage[key] = value
+}
 
-	return
+func (c *cache) flush() {
+	c.storage = make(map[string][]float64, len(c.storage))
 }
