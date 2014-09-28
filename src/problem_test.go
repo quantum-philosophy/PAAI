@@ -71,3 +71,12 @@ func TestNewProblemProbModel(t *testing.T) {
 	assert.Equal(p.ic, uint32(3+1), t)
 	assert.Equal(p.oc, uint32(1), t)
 }
+
+func BenchmarkSolve(b *testing.B) {
+	c, _ := loadConfig("fixtures/002_020.json")
+
+	for i := 0; i < b.N; i++ {
+		p, _ := newProblem(c)
+		p.solve()
+	}
+}
