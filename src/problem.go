@@ -126,12 +126,12 @@ func newProblem(config Config) (*problem, error) {
 }
 
 func (p *problem) solve() *adhier.Surrogate {
-	cc, sc, ic, oc := p.cc, p.sc, p.ic, p.oc
-	cache, coreIndex := p.cache, p.config.CoreIndex
+	ic, oc := p.ic, p.oc
+	cache := p.cache
 
 	jobs := p.spawnWorkers()
 
-	NC, JC := uint32(0), uint32(0)
+	NC, EC := uint32(0), uint32(0)
 
 	if p.config.Verbose {
 		fmt.Printf("%12s %12s (%6s) %12s %12s (%6s)\n",
@@ -139,45 +139,43 @@ func (p *problem) solve() *adhier.Surrogate {
 	}
 
 	surrogate := p.interp.Compute(func(nodes []float64, index []uint64) []float64 {
-		nc, jc := uint32(len(nodes)) / ic, uint32(0)
+		nc, ec := uint32(len(nodes)) / ic, uint32(0)
 
 		NC += nc
 		if p.config.Verbose {
 			fmt.Printf("%12d", nc)
 		}
 
-		results := make(chan result, nc)
+		done := make(chan result, nc)
 		values := make([]float64, oc*nc)
 
 		for i := uint32(0); i < nc; i++ {
 			key := cache.key(index[i*ic+1:])
 
-			if Q := cache.get(key); Q == nil {
-				jobs <- job{i, key, nodes[i*ic+1:], results}
-				jc++
-			} else {
-				results <- result{i, key, Q}
+			data := cache.get(key)
+			if data == nil {
+				ec++
+			}
+
+			jobs <- job{
+				key:   key,
+				data:  data,
+				node:  nodes[i*ic:],
+				value: values[i*oc:],
+				done:  done,
 			}
 		}
 
 		for i := uint32(0); i < nc; i++ {
-			result := <-results
-
-			id, Q := result.id, result.Q
-			sid := uint32(nodes[id*ic] * float64(sc-1))
-
-			for j := uint32(0); j < oc; j++ {
-				values[id*oc+j] = Q[sid*cc+uint32(coreIndex[j])]
-			}
-
-			cache.set(result.key, Q)
+			result := <-done
+			cache.set(result.key, result.data)
 		}
 
-		JC += jc
+		EC += ec
 		if p.config.Verbose {
 			fmt.Printf(" %12d (%6.2f) %12d %12d (%6.2f)\n",
-				jc, float64(jc)/float64(nc)*100,
-				NC, JC, float64(JC)/float64(NC)*100)
+				ec, float64(ec)/float64(nc)*100,
+				NC, EC, float64(EC)/float64(NC)*100)
 		}
 
 		return values
@@ -189,18 +187,21 @@ func (p *problem) solve() *adhier.Surrogate {
 }
 
 func (p *problem) compute(nodes []float64) []float64 {
-	cc, sc, ic, oc := p.cc, p.sc, p.ic, p.oc
-	coreIndex := p.config.CoreIndex
+	ic, oc := p.ic, p.oc
 
 	jobs := p.spawnWorkers()
 
 	nc := uint32(len(nodes)) / ic
 
-	results := make(chan result, nc)
+	done := make(chan result, nc)
 	values := make([]float64, p.oc*nc)
 
 	jc, rc := uint32(0), uint32(0)
-	nextJob := job{id: jc, node: nodes[jc*ic+1:], done: results}
+	nextJob := job{
+		node:  nodes[jc*ic:],
+		value: values[jc*oc:],
+		done:  done,
+	}
 
 	for jc < nc || rc < nc {
 		select {
@@ -213,16 +214,13 @@ func (p *problem) compute(nodes []float64) []float64 {
 				continue
 			}
 
-			nextJob = job{id: jc, node: nodes[jc*ic+1:], done: results}
-		case result := <-results:
-			rc++
-
-			id, Q := result.id, result.Q
-			sid := uint32(nodes[id*ic] * float64(sc-1))
-
-			for j := uint32(0); j < oc; j++ {
-				values[id*oc+j] = Q[sid*cc+uint32(coreIndex[j])]
+			nextJob = job{
+				node:  nodes[jc*ic:],
+				value: values[jc*oc:],
+				done:  done,
 			}
+		case <-done:
+			rc++
 		}
 	}
 
