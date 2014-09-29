@@ -27,7 +27,7 @@ type job struct {
 	node []float64
 	data []float64
 
-	done chan result
+	done chan<- result
 }
 
 type result struct {
@@ -50,7 +50,7 @@ func newWorker(p *problem) *worker {
 	}
 }
 
-func (w *worker) serve(jobs chan job) {
+func (w *worker) serve(jobs <-chan job) {
 	for job := range jobs {
 		job.done <- result{job.id, job.key, w.compute(job.node, job.data)}
 	}
