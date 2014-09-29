@@ -139,7 +139,7 @@ func (p *problem) solve() *adhier.Surrogate {
 	}
 
 	surrogate := p.interp.Compute(func(nodes []float64, index []uint64) []float64 {
-		nc, ec := uint32(len(nodes)) / ic, uint32(0)
+		nc, ec := uint32(len(nodes))/ic, uint32(0)
 
 		NC += nc
 		if p.config.Verbose {
