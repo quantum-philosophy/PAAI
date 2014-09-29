@@ -39,9 +39,9 @@ type problem struct {
 	uc uint32 // dependent variables
 	zc uint32 // independent variables
 
-	margins  []prob.Inverter
-	gaussian prob.Distribution
-	trans    []float64
+	marginals []prob.Inverter
+	gaussian  prob.Distribution
+	trans     []float64
 
 	ic uint32 // inputs
 	oc uint32 // outputs
@@ -102,14 +102,14 @@ func newProblem(config Config) (*problem, error) {
 		return nil, err
 	}
 
-	p.margins = make([]prob.Inverter, p.uc)
+	p.marginals = make([]prob.Inverter, p.uc)
 	marginalizer := marginalize(c.ProbModel.Marginal)
 	if marginalizer == nil {
 		return nil, errors.New("invalid marginal distributions")
 	}
 	for i, tid := range c.TaskIndex {
 		delay := c.ProbModel.MaxDelay * plat.Cores[p.sched.Mapping[tid]].Time[app.Tasks[tid].Type]
-		p.margins[i] = marginalizer(delay)
+		p.marginals[i] = marginalizer(delay)
 	}
 
 	p.gaussian = gaussian.New(0, 1)
@@ -233,7 +233,7 @@ func (p *problem) spawnWorkers() chan job {
 
 	jobs := make(chan job)
 	for i := 0; i < wc; i++ {
-		go newWorker(p).serve(jobs)
+		go serve(p, jobs)
 	}
 
 	return jobs
