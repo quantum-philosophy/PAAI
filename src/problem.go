@@ -131,10 +131,19 @@ func (p *problem) solve() *adhier.Surrogate {
 
 	jobs := p.spawnWorkers()
 
+	NC, JC := uint32(0), uint32(0)
+
+	if p.config.Verbose {
+		fmt.Printf("%12s %12s (%6s) %12s %12s (%6s)\n",
+			"new nodes", "new evals", "%", "total nodes", "total evals", "%")
+	}
+
 	surrogate := p.interp.Compute(func(nodes []float64, index []uint64) []float64 {
-		nc := uint32(len(nodes)) / ic
+		nc, jc := uint32(len(nodes)) / ic, uint32(0)
+
+		NC += nc
 		if p.config.Verbose {
-			fmt.Printf("%d ", nc)
+			fmt.Printf("%12d", nc)
 		}
 
 		results := make(chan result, nc)
@@ -145,6 +154,7 @@ func (p *problem) solve() *adhier.Surrogate {
 
 			if Q := cache.get(key); Q == nil {
 				jobs <- job{i, key, nodes[i*ic+1:], results}
+				jc++
 			} else {
 				results <- result{i, key, Q}
 			}
@@ -153,14 +163,21 @@ func (p *problem) solve() *adhier.Surrogate {
 		for i := uint32(0); i < nc; i++ {
 			result := <-results
 
-			k, Q := result.id, result.Q
-			sid := uint32(nodes[k*ic] * float64(sc-1))
+			id, Q := result.id, result.Q
+			sid := uint32(nodes[id*ic] * float64(sc-1))
 
 			for j := uint32(0); j < oc; j++ {
-				values[k*oc+j] = Q[sid*cc+uint32(coreIndex[j])]
+				values[id*oc+j] = Q[sid*cc+uint32(coreIndex[j])]
 			}
 
 			cache.set(result.key, Q)
+		}
+
+		JC += jc
+		if p.config.Verbose {
+			fmt.Printf(" %12d (%6.2f) %12d %12d (%6.2f)\n",
+				jc, float64(jc)/float64(nc)*100,
+				NC, JC, float64(JC)/float64(NC)*100)
 		}
 
 		return values
@@ -178,9 +195,6 @@ func (p *problem) compute(nodes []float64) []float64 {
 	jobs := p.spawnWorkers()
 
 	nc := uint32(len(nodes)) / ic
-	if p.config.Verbose {
-		fmt.Printf("%d ", nc)
-	}
 
 	results := make(chan result, nc)
 	values := make([]float64, p.oc*nc)
@@ -203,11 +217,11 @@ func (p *problem) compute(nodes []float64) []float64 {
 		case result := <-results:
 			rc++
 
-			k, Q := result.id, result.Q
-			sid := uint32(nodes[k*ic] * float64(sc-1))
+			id, Q := result.id, result.Q
+			sid := uint32(nodes[id*ic] * float64(sc-1))
 
 			for j := uint32(0); j < oc; j++ {
-				values[k*oc+j] = Q[sid*cc+uint32(coreIndex[j])]
+				values[id*oc+j] = Q[sid*cc+uint32(coreIndex[j])]
 			}
 		}
 	}
