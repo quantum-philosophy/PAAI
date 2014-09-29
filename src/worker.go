@@ -21,20 +21,16 @@ type worker struct {
 }
 
 type job struct {
-	id  uint32
-	key string
-
+	id   uint32
+	key  string
 	node []float64
-	data []float64
-
 	done chan<- result
 }
 
 type result struct {
 	id  uint32
 	key string
-
-	data []float64
+	Q   []float64
 }
 
 func newWorker(p *problem) *worker {
@@ -52,7 +48,7 @@ func newWorker(p *problem) *worker {
 
 func (w *worker) serve(jobs <-chan job) {
 	for job := range jobs {
-		job.done <- result{job.id, job.key, w.compute(job.node, job.data)}
+		job.done <- result{job.id, job.key, w.compute(job.node, nil)}
 	}
 }
 

@@ -129,23 +129,10 @@ func (p *problem) solve() *adhier.Surrogate {
 	cc, sc, ic, oc := p.cc, p.sc, p.ic, p.oc
 	cache, coreIndex := p.cache, p.config.CoreIndex
 
-	wc := int(p.config.Workers)
-	if wc <= 0 {
-		wc = runtime.NumCPU()
-	}
-	if p.config.Verbose {
-		fmt.Printf("Using %d workers...\n", wc)
-	}
-	runtime.GOMAXPROCS(wc)
-
-	jobs := make(chan job)
-	for i := 0; i < wc; i++ {
-		go newWorker(p).serve(jobs)
-	}
+	jobs := p.spawnWorkers()
 
 	surrogate := p.interp.Compute(func(nodes []float64, index []uint64) []float64 {
 		nc := uint32(len(nodes)) / ic
-
 		if p.config.Verbose {
 			fmt.Printf("%d ", nc)
 		}
@@ -157,7 +144,7 @@ func (p *problem) solve() *adhier.Surrogate {
 			key := cache.key(index[i*ic+1:])
 
 			if Q := cache.get(key); Q == nil {
-				jobs <- job{i, key, nodes[i*ic+1:], nil, results}
+				jobs <- job{i, key, nodes[i*ic+1:], results}
 			} else {
 				results <- result{i, key, Q}
 			}
@@ -165,8 +152,8 @@ func (p *problem) solve() *adhier.Surrogate {
 
 		for i := uint32(0); i < nc; i++ {
 			result := <-results
-			k, Q := result.id, result.data
 
+			k, Q := result.id, result.Q
 			sid := uint32(nodes[k*ic] * float64(sc-1))
 
 			for j := uint32(0); j < oc; j++ {
@@ -185,26 +172,43 @@ func (p *problem) solve() *adhier.Surrogate {
 }
 
 func (p *problem) compute(nodes []float64) []float64 {
-	cc, sc, ic := p.cc, p.sc, p.ic
-	nc := uint32(len(nodes)) / ic
+	cc, sc, ic, oc := p.cc, p.sc, p.ic, p.oc
+	coreIndex := p.config.CoreIndex
 
+	jobs := p.spawnWorkers()
+
+	nc := uint32(len(nodes)) / ic
 	if p.config.Verbose {
 		fmt.Printf("%d ", nc)
 	}
 
-	worker := newWorker(p)
-	Q := make([]float64, cc*sc)
-
+	results := make(chan result, nc)
 	values := make([]float64, p.oc*nc)
 
-	for i, k := uint32(0), uint32(0); i < nc; i++ {
-		sid := uint32(nodes[i*ic] * float64(sc-1))
+	jc, rc := uint32(0), uint32(0)
+	nextJob := job{id: jc, node: nodes[jc*ic+1:], done: results}
 
-		worker.compute(nodes[i*ic+1:], Q)
+	for jc < nc || rc < nc {
+		select {
+		case jobs <- nextJob:
+			jc++
 
-		for _, cid := range p.config.CoreIndex {
-			values[k] = Q[sid*cc+uint32(cid)]
-			k++
+			if jc >= nc {
+				close(jobs)
+				jobs = nil
+				continue
+			}
+
+			nextJob = job{id: jc, node: nodes[jc*ic+1:], done: results}
+		case result := <-results:
+			rc++
+
+			k, Q := result.id, result.Q
+			sid := uint32(nodes[k*ic] * float64(sc-1))
+
+			for j := uint32(0); j < oc; j++ {
+				values[k*oc+j] = Q[sid*cc+uint32(coreIndex[j])]
+			}
 		}
 	}
 
@@ -213,4 +217,24 @@ func (p *problem) compute(nodes []float64) []float64 {
 
 func (p *problem) evaluate(s *adhier.Surrogate, points []float64) []float64 {
 	return p.interp.Evaluate(s, points)
+}
+
+func (p *problem) spawnWorkers() chan job {
+	wc := int(p.config.Workers)
+	if wc <= 0 {
+		wc = runtime.NumCPU()
+	}
+
+	if p.config.Verbose {
+		fmt.Printf("Using %d workers...\n", wc)
+	}
+
+	runtime.GOMAXPROCS(wc)
+
+	jobs := make(chan job)
+	for i := 0; i < wc; i++ {
+		go newWorker(p).serve(jobs)
+	}
+
+	return jobs
 }
