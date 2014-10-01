@@ -1,51 +1,36 @@
-\documentclass{sig-alternate}
-\input{include/common}
+\documentclass[conference]{IEEEtran}
+\input{include/definitions}
 
-\bibliography{include/references.bib}
-
-\makeatletter
-\renewcommand{\@maketitle}{
-  \newpage
-  \null
-  \begin{center}%
-    {\Huge \@title \par}%
-    \vspace{1.5em}%
-  \end{center}%
-  \par%
+\title{
+  Probabilistic Analysis of Multiprocessor Systems
+  under Workload-induced Variation
 }
-\makeatother
-
-% Remove the copyright
-\usepackage{etoolbox}
-\makeatletter
-\patchcmd{\maketitle}{\@copyrightspace}{}{}{}
-\makeatother
+\author{\input{include/authors}}
 
 \begin{document}
-  \title{Uncertainty Quantification of Workload-Induced Variations for Multiprocessor System Design}
-
   \maketitle
 
   \begin{abstract}
-    \input{include/abstract.tex}
+    \input{include/abstract}
   \end{abstract}
 
+  \section{Introduction}
+  \input{include/introduction}
+
   \section{Preliminaries}
-  \input{include/preliminaries.tex}
+  \input{include/preliminaries}
 
   \section{Problem Formulation}
-  \input{include/problem-formulation.tex}
+  \input{include/problem-formulation}
 
   \section{Proposed Framework}
-  \input{include/proposed-framework.tex}
+  \input{include/proposed-framework}
 
-  \section{Illustrative Example}
-  \input{include/illustrative-example.tex}
+  \section{Experimental Results}
+  \input{include/experimental-results}
 
-  \printbibliography
-
-  \appendix
-  \input{include/appendix.tex}
+  \begingroup
+    \bibliographystyle{IEEEtran}
+    \bibliography{IEEEabrv,include/references}
+  \endgroup
 \end{document}
-
-% vim: ft=tex

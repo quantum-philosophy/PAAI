@@ -1,9 +1,0 @@
-In this work, the stochastic temperature analysis is based on any temperature simulator that is available to the user. The chosen simulator should only be able to model the platform $\platform$ and to produce temperature profiles given dynamic power profiles. Such an approach provides the user of the proposed framework with a great flexibility since the well-established deterministic codes can be readily employed with any modifications. Consequently, the modeling of such phenomena as the leakage current solely relies on the capabilities of the temperature simulator. The stochastic thermal model is written in the following abstract form:
-\begin{equation} \elabel{thermal-model}
-  \frac{d\vT(\t, \o)}{dt} = f(\vT(\t, \o), \vPP(\t, \o))
-\end{equation}
-which is a system of differential equations where $\vT(\t, \o) \in \real^\Npe$ is the temperature vector. Integration of \eref{thermal-model} is performed using the equation-free approach proposed in \cite{xiu2005}, which does not require the knowledge of the functional on the right-hand side. At each integration step, a spectral expansion of \eref{thermal-model} is
-\[
-  \vT(\t, \o) = \sum_{i = 1}^\infty \tempCoeff{\vT}(\t) \tempBasis_i(\vZ(\o))
-\]
-which, in this case, is given in terms of wavelets.
