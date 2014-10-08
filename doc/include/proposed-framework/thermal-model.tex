@@ -1,0 +1,22 @@
+Based on the spacification of the platform at hand, an equivalent thermal
+\abbr{RC} circuit is constructed \cite{skadron2004}. The circuit comprises
+$\nn$ thermal nodes, and its structure depends on the intended level of
+granularity, which impacts the resulting accuracy. For clarity, we assume that
+each processing element is mapped onto one corresponding node, and the thermal
+package is represented as a set of additional nodes.
+
+The thermal dynamics of the system are modeled using the following system of
+differential-algebraic equations \cite{ukhov2012, ukhov2014}:
+\begin{subnumcases}{}
+  \C \frac{\d\S(\t, \U)}{\d\t} + \G \S(\t, \U) = \M \P(\t, \U) \\
+  \Q(\t, \U) = \M^T \S(\t, \U) + \Q_\ambient
+\end{subnumcases}
+$\C \in \real^{\nn \times \nn}$ and $\G \in \real^{\nn \times \nn}$ are a
+diagonal matrix of thermal capacitance and a symmetric, positive-definite
+matrix of thermal conductance, respectively. $\P \in \real^\np$, $\Q \in
+\real^\np$, and $\S \in \real^\nn$ are the power, temperature, and state
+vectors of the system, respectively. $\Q_\ambient \in \real^\np$ is a vector of
+the ambient temperature. $\M \in \real^{\nn \times \np}$ is a matrix that
+distributes the power dissipation of the processing elements across the thermal
+nodes; without loss of generality, $\M$ is a rectangular diagonal matrix whose
+diagonal elements are equal to unity.

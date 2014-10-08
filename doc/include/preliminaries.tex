@@ -1,21 +1,21 @@
-Let $\probabilitySpace$ be a complete probability space where $\outcomes$ is a
-set of outcomes, $\sigmaAlgebra$ is a $\sigma$-algebra of subsets of
-$\outcomes$, and $\probabilityMeasure: \sigmaAlgebra \to [0, 1]$ is a
-probability measure \cite{durrett2010}. A \rv\ on $\probabilitySpace$ is an
-$\sigmaAlgebra$-measurable function $X: \outcomes \to \real$. A \rv\ $X$ is
-uniquely characterized by its distribution function defined by
+Let $\probabilitySpace$ be a probability space where $\outcomes$ is a set of
+outcomes, $\sigmaAlgebra \subseteq 2^\outcomes$ is a $\sigma$-algebra, and
+$\probabilityMeasure: \sigmaAlgebra \to [0, 1]$ is a probability measure
+\cite{durrett2010}. A \rv\ on $\probabilitySpace$ is an
+$\sigmaAlgebra$-measurable function $X: \outcomes \to \real$. $X$ is uniquely
+characterized by its distribution function defined by
 \begin{equation*}
-  \distribution_X(\x) := \probabilityMeasure(X \leq x) := \probabilityMeasure(\{ \o \in \outcomes: X(\o) \leq \x \}).
+  \distribution_X(x) := \probabilityMeasure(X \leq x) := \probabilityMeasure(\{ \o \in \outcomes: X(\o) \leq x \}).
 \end{equation*}
 The expectation and variance of $X$ are given by
 \begin{align*}
   & \expectation{X} := \int_\outcomes X(\o) \, \d\probabilityMeasure(\o) = \int_\real x \, \d \distribution_X(x) \hspace{1em} \text{and} \\
   & \variance{X} := \expectation{(X - \expectation{X})^2},
 \end{align*}
-respectively. A random vector $X = (X_i)$ and matrix $X = (X_{ij})$ are a
-vector and matrix whose elements are \rvs. Denote by $\L{2}\probabilitySpace$
-the Hilbert space of square-integrable \rvs\ defined on $\probabilitySpace$
-with the inner product and norm given by
+respectively. A random vector $X = (X_i)_{i = 1}^n: \outcomes \to \real^n$ is a
+vector whose elements are \rvs. Denote by $\L{2}\probabilitySpace$ the Hilbert
+space of square-integrable \rvs\ (\ie, those that have finite variance) defined
+on $\probabilitySpace$ with the inner product and norm given by
 \begin{equation*}
   \innerProduct{X, Y} := \expectation{X Y} \hspace{1em} \text{and} \hspace{1em} \norm{X} := \innerProduct{X, X}^{1/2},
 \end{equation*}
