@@ -5,8 +5,8 @@ import (
 	"errors"
 	"os"
 
-	"github.com/ready-steady/tempan/expint"
 	"github.com/ready-steady/numan/interp/adhier"
+	"github.com/ready-steady/tempan/expint"
 )
 
 type Config struct {
