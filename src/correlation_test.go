@@ -4,9 +4,9 @@ import (
 	"math"
 	"testing"
 
-	"github.com/go-eslab/persim/system"
-	"github.com/go-math/stats/decomp"
-	"github.com/go-math/support/assert"
+	"github.com/ready-steady/persim/system"
+	"github.com/ready-steady/stats/decomp"
+	"github.com/ready-steady/support/assert"
 )
 
 func TestCorrelate(t *testing.T) {

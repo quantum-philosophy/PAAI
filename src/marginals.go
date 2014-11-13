@@ -5,8 +5,8 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/go-math/prob"
-	"github.com/go-math/prob/beta"
+	"github.com/ready-steady/prob"
+	"github.com/ready-steady/prob/beta"
 )
 
 func marginalize(line string) func(max float64) prob.Inverter {

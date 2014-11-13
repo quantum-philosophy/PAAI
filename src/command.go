@@ -5,11 +5,11 @@ import (
 	"fmt"
 	"math/rand"
 
-	"github.com/go-math/format/mat"
-	"github.com/go-math/numan/interp/adhier"
-	"github.com/go-math/prob"
-	"github.com/go-math/prob/uniform"
-	"github.com/go-math/stats/assess"
+	"github.com/ready-steady/format/mat"
+	"github.com/ready-steady/numan/interp/adhier"
+	"github.com/ready-steady/prob"
+	"github.com/ready-steady/prob/uniform"
+	"github.com/ready-steady/stats/assess"
 )
 
 func Show(p *problem, f *mat.File, _ *mat.File) error {

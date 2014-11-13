@@ -5,8 +5,8 @@ import (
 	"errors"
 	"os"
 
-	"github.com/go-eslab/tempan/expint"
-	"github.com/go-math/numan/interp/adhier"
+	"github.com/ready-steady/tempan/expint"
+	"github.com/ready-steady/numan/interp/adhier"
 )
 
 type Config struct {

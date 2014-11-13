@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/go-math/format/mat"
+	"github.com/ready-steady/format/mat"
 )
 
 var config = flag.String("config", "", "")

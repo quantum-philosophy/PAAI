@@ -5,17 +5,16 @@ import (
 	"fmt"
 	"runtime"
 
-	"github.com/go-eslab/persim/power"
-	"github.com/go-eslab/persim/system"
-	"github.com/go-eslab/persim/time"
-	"github.com/go-eslab/tempan/expint"
-
-	"github.com/go-math/numan/basis/linhat"
-	"github.com/go-math/numan/grid/newcot"
-	"github.com/go-math/numan/interp/adhier"
-	"github.com/go-math/prob"
-	"github.com/go-math/prob/gaussian"
-	"github.com/go-math/stats/corr"
+	"github.com/ready-steady/numan/basis/linhat"
+	"github.com/ready-steady/numan/grid/newcot"
+	"github.com/ready-steady/numan/interp/adhier"
+	"github.com/ready-steady/persim/power"
+	"github.com/ready-steady/persim/system"
+	"github.com/ready-steady/persim/time"
+	"github.com/ready-steady/prob"
+	"github.com/ready-steady/prob/gaussian"
+	"github.com/ready-steady/stats/corr"
+	"github.com/ready-steady/tempan/expint"
 )
 
 const (

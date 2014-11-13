@@ -3,7 +3,7 @@ package main
 import (
 	"math"
 
-	"github.com/go-eslab/persim/system"
+	"github.com/ready-steady/persim/system"
 )
 
 func correlate(app *system.Application, index []uint16, length float64) []float64 {

@@ -6,7 +6,7 @@ import "C"
 import (
 	"unsafe"
 
-	"github.com/go-math/linal/matrix"
+	"github.com/ready-steady/linal/matrix"
 )
 
 type job struct {
