@@ -100,9 +100,9 @@ Commands:
     check - to assess a surrogate model
 
 Options:
-    config    - a problem specification in JSON (required)
-    input     - an input MAT file
-    output    - an output MAT file
+    config - a problem specification in JSON (required)
+    input  - an input MAT file
+    output - an output MAT file
 `)
 }
 
