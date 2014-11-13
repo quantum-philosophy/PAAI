@@ -60,8 +60,8 @@ func TestNewProblemProbModel(t *testing.T) {
 
 	delay := make([]float64, 20)
 	for i := 0; i < 20; i++ {
-		assert.Equal(p.margins[i].InvCDF(0), 0.0, t)
-		delay[i] = p.margins[i].InvCDF(1)
+		assert.Equal(p.marginals[i].InvCDF(0), 0.0, t)
+		delay[i] = p.marginals[i].InvCDF(1)
 	}
 	assert.AlmostEqual(delay, []float64{
 		0.0020, 0.0006, 0.0076, 0.0062, 0.0004, 0.0038, 0.0006, 0.0062, 0.0036, 0.0056,
