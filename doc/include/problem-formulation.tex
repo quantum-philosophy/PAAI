@@ -16,19 +16,19 @@ boundaries of a task have not been specified, and one can perform modeling at
 the level of granularity that makes the most sense for a particular problem.
 
 The system depends on a set of parameters that are uncertain at the design
-stage. We model such parameters as a random vector $\X = (\X_i)_{i = 1}^\nx$.
-The focus of this work is on those parameters that affect the timing
+stage. We model such uncertain parameters as a random vector $\vu = (\u_i)_{i =
+1}^\nu$. The focus of this work is on those parameters that affect the timing
 characteristics of the system, namely, the start and finish time of each of the
 tasks. This variability inevitably implies that the corresponding power and
-temperature profiles of the system are affected as well and, thus, are
-uncertain for the designer.
+temperature profiles of the system are affected as well and, thus, are uncertain
+for the designer.
 
 We pursue the following major objectives:
 \begin{itemize}
 
   \item {\bfseries Objective~1.} Develop a framework for transient temperature
   analysis of the system $(\procs, \app)$ that takes into consideration the
-  uncertainty due the parameters $\X$ affecting the timing characteristics of
+  uncertainty due the parameters $\vu$ affecting the timing characteristics of
   the tasks $\tasks$.
 
 \end{itemize}

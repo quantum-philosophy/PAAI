@@ -2,22 +2,22 @@ Let $\probabilitySpace$ be a probability space where $\outcomes$ is a set of
 outcomes, $\sigmaAlgebra \subseteq 2^\outcomes$ is a $\sigma$-algebra, and
 $\probabilityMeasure: \sigmaAlgebra \to [0, 1]$ is a probability measure
 \cite{durrett2010}. A \rv\ on $\probabilitySpace$ is an
-$\sigmaAlgebra$-measurable function $X: \outcomes \to \real$. $X$ is uniquely
+$\sigmaAlgebra$-measurable function $\h: \outcomes \to \real$. $\h$ is uniquely
 characterized by its distribution function defined by
 \begin{equation*}
-  \distribution_X(x) := \probabilityMeasure(X \leq x) := \probabilityMeasure(\{ \o \in \outcomes: X(\o) \leq x \}).
+  \distribution_\h(z) := \probabilityMeasure(\h \leq z) := \probabilityMeasure(\{ \o \in \outcomes: \h(\o) \leq z \}).
 \end{equation*}
-The expectation and variance of $X$ are given by
+The expectation and variance of $\h$ are given by
 \begin{align*}
-  & \expectation{X} := \int_\outcomes X(\o) \, \d\probabilityMeasure(\o) = \int_\real x \, \d \distribution_X(x) \hspace{1em} \text{and} \\
-  & \variance{X} := \expectation{(X - \expectation{X})^2},
+  & \expectation{\h} := \int_\outcomes \h(\o) \, \d\probabilityMeasure(\o) = \int_\real z \, \d \distribution_\h(z) \hspace{1em} \text{and} \\
+  & \variance{\h} := \expectation{(\h - \expectation{\h})^2},
 \end{align*}
-respectively. A random vector $X = (X_i)_{i = 1}^n: \outcomes \to \real^n$ is a
-vector whose elements are \rvs. Denote by $\L{2}\probabilitySpace$ the Hilbert
+respectively. A random vector $\vh = (\h_i)_{i = 1}^n: \outcomes \to \real^n$ is
+a vector whose elements are \rvs. Denote by $\L{2}\probabilitySpace$ the Hilbert
 space of square-integrable \rvs\ (\ie, those that have finite variance) defined
 on $\probabilitySpace$ with the inner product and norm given by
 \begin{equation*}
-  \innerProduct{X, Y} := \expectation{X Y} \hspace{1em} \text{and} \hspace{1em} \norm{X} := \innerProduct{X, X}^{1/2},
+  \innerProduct{\h_1, \h_2} := \expectation{\h_1 \h_2} \hspace{1em} \text{and} \hspace{1em} \norm{\h} := \innerProduct{\h, \h}^{1/2},
 \end{equation*}
 respectively. In what follows, all \rvs\ that we mention are assumed to be in
 $\L{2}\probabilitySpace$.

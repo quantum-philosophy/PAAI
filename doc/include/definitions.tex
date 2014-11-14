@@ -39,38 +39,33 @@
 
 \renewcommand{\d}{d}
 
-%
 % Real analysis and functional analysis
-%
 \newcommand{\real}{\mathbb{R}}
 \renewcommand{\L}[1]{L^{#1}}
 
 \newcommand{\norm}[2][]{\| #2 \|_{#1}}
 \newcommand{\innerProduct}[1]{\langle #1 \rangle}
 
-%
 % Linear algebra
-%
 \newcommand{\m}[1]{\mathbf{#1}}
 \renewcommand{\v}[1]{\mathbf{#1}}
 
-%
 % Probability theory
-%
 \newcommand{\outcomes}{\Omega}
 \newcommand{\sigmaAlgebra}{\mathcal{F}}
 \newcommand{\probabilityMeasure}{\mathbb{P}}
 \newcommand{\probabilitySpace}{(\outcomes, \sigmaAlgebra, \probabilityMeasure)}
-\newcommand{\squareIntegrable}{\L{2}\probabilitySpace}
 
 \renewcommand{\o}{\omega}
 
 \newcommand{\distribution}{F}
-\newcommand{\dist}{F}
-\newcommand{\copula}{\mathcal{C}}
+\newcommand{\copula}{C}
 
 \newcommand{\expectation}[1]{\mathbb{E} #1}
 \newcommand{\variance}[1]{\mathbb{V}\text{ar} #1}
+
+\newcommand{\h}{\zeta}
+\newcommand{\vh}{\bm{\zeta}}
 
 %
 % Platform
@@ -89,7 +84,8 @@
 \newcommand{\mapping}{m}
 \newcommand{\power}{p}
 
-\newcommand{\E}{E}
+\newcommand{\e}{e}
+\newcommand{\ve}{\v{e}}
 
 %
 % Time
@@ -99,34 +95,31 @@
 %
 % Power
 %
-\renewcommand{\P}{P}
+\newcommand{\vp}{\v{p}}
 
 %
 % Temperature
 %
-\newcommand{\C}{C}
-\newcommand{\G}{G}
+\newcommand{\mC}{\m{C}}
+\newcommand{\mG}{\m{G}}
 
-\renewcommand{\S}{S}
-\newcommand{\Q}{Q}
+\newcommand{\vs}{\v{s}}
+\newcommand{\vq}{\v{q}}
 
-\newcommand{\M}{M}
+\newcommand{\mM}{\m{M}}
 
 \newcommand{\ambient}{\subscript{amb}}
 
 %
 % Uncertain parameters
 %
-\newcommand{\X}{X}
-\newcommand{\x}{x}
-
-\newcommand{\U}{U}
-\renewcommand{\u}{u}
+\renewcommand{\u}{\xi}
+\newcommand{\vu}{\bm{\xi}}
 
 %
-% Counters
+% Numbers
 %
-\newcommand{\nx}{{n_\text{x}}}
+\renewcommand{\nu}{{n_\text{u}}}
 \newcommand{\np}{{n_\pi}}
 \newcommand{\nt}{{n_\tau}}
 \newcommand{\nn}{{n_\text{n}}}
