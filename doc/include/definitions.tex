@@ -10,7 +10,7 @@
 \newcommand{\subscript}[1]{\text{\kern0.1em#1}}
 
 %
-% Test shortcuts
+% Text shortcuts
 %
 \newcommand{\abbr}[1]{#1}
 
@@ -28,27 +28,60 @@
 
 \newcommand{\elab}[1]{\label{equ:#1}}
 \newcommand{\slab}[1]{\label{sec:#1}}
+\newcommand{\alab}[1]{\label{alg:#1}}
+
+%
+% Algorithms
+%
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+
+% To make algorithms float
+\usepackage{float}
+\newfloat{algorithm}{t}{lop}
+
+% To have aligned comments
+\usepackage{eqparbox}
+\renewcommand{\algorithmiccomment}[1]{\hfill\eqparbox{COMMENT}{// #1}}
+
+\newcommand*\Let[2]{\State #1 $\gets$ #2}
+\renewcommand{\algorithmicrequire}{\textbf{Input:}}
+\renewcommand{\algorithmicensure}{\textbf{Output:}}
 
 %
 % Mathematics
 %
-\usepackage{amssymb}
 \usepackage{amsmath}
+\usepackage{amssymb}
 \usepackage{bm}
+\usepackage{dsfont}
 \usepackage{cases}
-
-\renewcommand{\d}{d}
 
 % Real analysis and functional analysis
 \newcommand{\real}{\mathbb{R}}
+\renewcommand{\natural}{\mathbb{N}_0}
+
 \renewcommand{\L}[1]{L^{#1}}
 
 \newcommand{\norm}[2][]{\| #2 \|_{#1}}
 \newcommand{\innerProduct}[1]{\langle #1 \rangle}
 
+\newcommand{\one}{\mathds{1}}
+
+\newcommand{\cardinality}[1]{\# #1}
+
 % Linear algebra
 \newcommand{\m}[1]{\mathbf{#1}}
 \renewcommand{\v}[1]{\mathbf{#1}}
+
+% Interpolation
+\newcommand{\I}[1]{\mathcal{I}^{#1}}
+
+\newcommand{\vi}{\v{i}}
+\newcommand{\vj}{\v{j}}
+\newcommand{\vJ}{\v{J}}
+
+\newcommand{\e}{e}
 
 % Probability theory
 \newcommand{\outcomes}{\Omega}
@@ -76,16 +109,19 @@
 %
 % Application
 %
-\newcommand{\app}{\mathcal{A}}
 \newcommand{\tasks}{\mathcal{T}}
-\newcommand{\deps}{\mathcal{D}}
 \newcommand{\task}{\tau}
 
-\newcommand{\mapping}{m}
-\newcommand{\power}{p}
+\newcommand{\mapping}{\v{m}}
+\newcommand{\power}{\v{p}}
 
-\newcommand{\e}{e}
-\newcommand{\ve}{\v{e}}
+\renewcommand{\b}{b}
+\newcommand{\vb}{\v{\b}}
+
+\renewcommand{\d}{d}
+\newcommand{\vd}{\v{\d}}
+
+\newcommand{\schedule}{\mathcal{S}}
 
 %
 % Time
@@ -119,7 +155,9 @@
 %
 % Numbers
 %
-\renewcommand{\nu}{{n_\text{u}}}
+\renewcommand{\nu}{{n_\u}}
 \newcommand{\np}{{n_\pi}}
 \newcommand{\nt}{{n_\tau}}
 \newcommand{\nn}{{n_\text{n}}}
+\newcommand{\nin}{{n_\text{in}}}
+\newcommand{\nout}{{n_\text{out}}}

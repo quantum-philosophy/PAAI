@@ -1,0 +1,81 @@
+In this section, we present an approach to uncertainty quantification that forms
+the core of the proposed framework. The approach belongs to the class of
+stochastic collocation techniques \cite{xiu2010}. The major distinctive feature
+of stochastic collocation is the usage of interpolation as a means of
+uncertainty quantification, which should be contrasted with other techniques
+such as polynomial chaos expansions relying on regression. The algorithm that we
+use is based on adaptive sparse-grid interpolation, and it was developed in
+\cite{ma2009}.
+
+Let $f$ be an uncertain quantity that we are interested in studying. The
+quantity is viewed as a deterministic function whose input is random. Formally,
+\[
+  f: [0, 1]^\nin \to \real^\nout.
+\]
+The domain of the function is the unit hypercube $[0, 1]^\nin$, and the codomain
+is the Euclidean space $\real^\nout$. The function is assumed to be
+computationally intensive and impractical for extensive evaluation, which is
+needed for Monte Carlo sampling. For example, the concise notation $f$ might
+expand into a full-system simulation, including scheduling and power/temperature
+analysis, which is the case in this work.
+
+In order to make the problem computationally tractable, a light representation
+of $f$ is constructed and studied instead of $f$. The surrogate is based on
+interpolation: $f$ is evaluated at a small number of points or nodes, and any
+other values of $f$ are reconstructed on demand using a set of basis functions
+mediating between the obtained values of $f$.
+
+In what follows, we shall gradually construct an efficient interpolant for $f$.
+Efficiency, in this context, is measured by the number of nodes required to
+achieve certain accuracy.
+
+\subsection{Tensor Product}
+In one dimension ($\nin = 1$), $f$ is approximated by virtue of the following
+interpolating formula:
+\[
+  \I{i}(f) := \sum_{j = 0}^{m_i - 1} f(x^i_j) \, \e^i_j.
+\]
+The index $i \in \natural$ signifies the level of interpolation; $m_i$ denotes
+the number of nodes on the corresponding level; $\{ x^i_j \in [0, 1] \}$ are the
+nodes; and $\{ \e^i_j: [0, 1] \to \real \}$ are the basis functions. The index
+$j$ is referred to as the order of a node. The choice of the grid nodes and
+basis functions is not the primary concern of this section and will be discussed
+later.
+
+In multiple dimensions ($\nin > 1$), $f$ is approximated by the tensor product
+of $\nin$ one-dimensional interpolants:
+\begin{equation} \elab{tensor-product}
+  \I{\vi}(f) := (\I{i_1} \otimes \cdots \otimes \I{i_\nin})(f) = \sum_{\vj \in
+  \v{J}(\vi)} f(\v{x}^\vi_\vj) \, \e^\vi_\vj
+\end{equation}
+where $\vi = (i_k) \in \natural^\nin$ and $\vj = (j_k) \in \natural^\nin$ are
+multi-indices specifying, respectively, the interpolation levels and node orders
+for all dimensions. In the above formula,
+\[
+  \v{x}^\vi_\vj = (x^{i_k}_{j_k}) \in [0, 1]^\nin
+\]
+and
+\[
+  \e^\vi_\vj = \e^{i_1}_{j_1} \otimes \cdots \otimes \e^{i_\nin}_{j_\nin}
+\]
+are the node and basis function corresponding to the level/order tuple $(\vi,
+\vj)$, respectively. The set $\vJ(\vi)$ is a collection of multi-indices
+corresponding to the tensor-product structure; the cardinality of this set is
+\[
+  \cardinality{\vJ(\vi)} := \prod_{k = 0}^{\nin - 1} m_{i_k}.
+\]
+The last equation elucidates the prohibited expense of the tensor-product
+construction, shown in \eref{tensor-product}, for high-dimensional problems: the
+number of nodes grows exponentially as $\nin$ increases. However,
+\eref{tensor-product} serves well as a building block for more efficient
+algorithms, which we discuss next.
+
+\subsection{Smolyak Algorithm}
+The Smolyak algorithm is an approach to the construction of high-dimensional
+grids, which are typically used for the purpose of integration and
+interpolation. Intuitively speaking, the algorithm takes a number of small
+tensor-product structures and composes them in such a way that the resulting
+grid has a drastically reduced number of nodes while having the same
+approximating power as the na\"{i}ve full tensor product.
+
+\input{include/algorithms/interpolation}

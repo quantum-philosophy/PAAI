@@ -7,16 +7,29 @@ package is represented as a set of additional nodes.
 
 The thermal dynamics of the system are modeled using the following system of
 differential-algebraic equations \cite{ukhov2012, ukhov2014}:
-\begin{subnumcases}{}
-  \mC \frac{\d\vs(\t, \vu)}{\d\t} + \mG \vs(\t, \vu) = \mM \vp(\t, \vu) \\
-  \vq(\t, \vu) = \mM^T \vs(\t, \vu) + \vq_\ambient
+\begin{subnumcases}{\elab{thermal-system}}
+  \mC \frac{d\vs(\t)}{d\t} + \mG \vs(\t) = \mM \vp(\t) \elab{thermal-system-ode} \\
+  \vq(\t) = \mM^T \vs(\t) + \vq_\ambient
 \end{subnumcases}
-$\mC \in \real^{\nn \times \nn}$ and $\mG \in \real^{\nn \times \nn}$ are a
-diagonal matrix of thermal capacitance and a symmetric, positive-definite matrix
-of thermal conductance, respectively. $\vp \in \real^\np$, $\vq \in \real^\np$,
-and $\vs \in \real^\nn$ are the power, temperature, and state vectors of the
-system, respectively. $\vq_\ambient \in \real^\np$ is a vector of the ambient
-temperature. $\mM \in \real^{\nn \times \np}$ is a matrix that distributes the
-power dissipation of the processing elements across the thermal nodes; without
-loss of generality, $\mM$ is a rectangular diagonal matrix whose diagonal
-elements are equal to unity.
+The coefficients $\mC \in \real^{\nn \times \nn}$ and $\mG \in \real^{\nn \times
+\nn}$ are a diagonal matrix of thermal capacitance and a symmetric,
+positive-definite matrix of thermal conductance, respectively. The vectors
+$\vp(\t) \in \real^\np$, $\vq(\t) \in \real^\np$, and $\vs(\t) \in \real^\nn$
+are the power consumption, temperature, and internal state of the system at time
+$\t$, respectively; all three are random due to the dependency on $\vu$. The
+vector $\vq_\ambient \in \real^\np$ contains the ambient temperature. The matrix
+$\mM \in \real^{\nn \times \np}$ is a mapping that distributes the power
+dissipation of the processing elements across the thermal nodes; without loss of
+generality, $\mM$ is a rectangular diagonal matrix whose diagonal elements are
+equal to unity.
+
+The vector $\vp(\t) = (p_i(\t))_{i = 1}^{\np}$ in \eref{thermal-system-ode}
+should not be confused with the vector $\vp = (p_i)_{i = 1}^{\nt}$ introduced in
+\sref{problem-formulation}. The two are related as follows:
+\[
+  p_i(\t) = \sum_{j = 1}^{\nt} \delta_{i\,m_j} \: \one_{[\b_j, \b_j + \d_j)}(\t) \: p_j,
+\]
+for $i = 1, 2, \dots, \np$, where $\delta_{ij}$ is the Kronecker delta and
+$\one_A(x)$ is the indicator function of a set $A$. In words, the above equation
+yields the power consumption of the task that is running on the $i$th processing
+element at time $\t$, if any.

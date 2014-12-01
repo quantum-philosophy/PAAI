@@ -1,34 +1,39 @@
 Consider a multiprocessor system composed of two major components: a platform
 and an application. The platform consists of a set of heterogeneous processing
-elements $\procs = \{ \proc_i: i = 1, \dots, \np \}$ and is equipped with a
-thermal package. The application is given as a directed acyclic graph $\app =
-(\tasks, \deps)$ where $\tasks = \{ \task_i: i = 1, \dots, \nt \}$ is a set of
-vertices representing tasks, and $\deps \subset \tasks \times \tasks$ is a set
-of edges representing data dependencies between the tasks.
+elements $\procs = \{ 1, 2, \dots, \np \}$ and is equipped with a thermal
+package. The application is given as a set of tasks $\tasks = \{ 1, 2, \dots,
+\nt \}$. In what follows, the system will be denoted by $(\procs, \tasks)$.
 
 The mapping of the application onto the platform is assumed to be fixed and
-given by a function $\mapping: \tasks \to \procs$. The power consumption of the
-tasks is assumed to be fixed and given by a function $\power: \tasks \to
-\real$. For example, for $\task \in \tasks$, $\mapping(\task)$ is the
-processing element that the task is executed on, and $\power(\task)$ is the
-amount of power that the tasks is estimated to consume. Note that the
-boundaries of a task have not been specified, and one can perform modeling at
-the level of granularity that makes the most sense for a particular problem.
+given by a vector $\mapping = (m_i)_{i = 1}^{\nt}$ such that $m_i$ is the index
+of the processing element that the $i$th task is assigned to. The power
+consumption of the tasks is assumed to be fixed and given by a vector $\power =
+(p_i)_{i = 1}^{\nt}$ such that $p_i$ is the power of the $i$th task. Note that
+the boundaries of a task have not been specified, and one can perform modeling
+at the level of granularity that makes the most sense for a particular problem.
 
 The system depends on a set of parameters that are uncertain at the design
 stage. We model such uncertain parameters as a random vector $\vu = (\u_i)_{i =
 1}^\nu$. The focus of this work is on those parameters that affect the timing
-characteristics of the system, namely, the start and finish time of each of the
-tasks. This variability inevitably implies that the corresponding power and
-temperature profiles of the system are affected as well and, thus, are uncertain
-for the designer.
+characteristics of the system, which will be described shortly. This variability
+inevitably implies that the corresponding power and temperature profiles of the
+system are uncertain for the designer as well.
+
+Each task is ascribed two variables that determine the beginning of the task's
+execution time interval and its duration. For the $i$th task, denote these two
+variables by $\b_i$ and $\d_i$, respectively, and let $\vb = (\b_i)_{i=1}^{\nt}$
+and $\vd = (\d_i)_{i=1}^{\nt}$. Let $\schedule$ be a (deterministic) scheduling
+policy that determines the tuple $(\vb, \vd)$ given $\vu$, which we shall denote
+by $\schedule(\vu) = (\vb, \vd)$.
 
 We pursue the following major objectives:
 \begin{itemize}
 
   \item {\bfseries Objective~1.} Develop a framework for transient temperature
-  analysis of the system $(\procs, \app)$ that takes into consideration the
-  uncertainty due the parameters $\vu$ affecting the timing characteristics of
-  the tasks $\tasks$.
+    analysis of the system $(\procs, \tasks)$ with the given mapping $\mapping$,
+    power consumption $\power$, and scheduling policy $\schedule$ such that the
+    uncertainty due the parameters $\vu$---affecting the timing characteristics
+    of the system comprised in the tuple $(\vb, \vd)$---is taken into
+    consideration.
 
 \end{itemize}
