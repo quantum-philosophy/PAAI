@@ -8,16 +8,18 @@ use is based on adaptive sparse-grid interpolation, and it was developed in
 \cite{ma2009}.
 
 Let $f$ be an uncertain quantity that we are interested in studying. The
-quantity is viewed as a deterministic function whose input is random. Formally,
+quantity is viewed as a vector of $\nout$ deterministic functions each of which
+is parametrized by the same set of $\nin$ random variables. Each function
+belongs to $\continuous([0, 1]^\nin)$, the space of continuous functions defined
+on the unit hypercube $[0, 1]^\nin$. Thus, we have
 \[
-  f: [0, 1]^\nin \to \real^\nout.
+  f: [0, 1]^\nin \to \real^\nout \subset \continuous([0, 1]^\nin).
 \]
-The domain of the function is the unit hypercube $[0, 1]^\nin$, and the codomain
-is the Euclidean space $\real^\nout$. The function is assumed to be
-computationally intensive and impractical for extensive evaluation, which is
-needed for Monte Carlo sampling. For example, the concise notation $f$ might
-expand into a full-system simulation, including scheduling and power/temperature
-analysis, which is the case in this work.
+
+The function is assumed to be computationally intensive and impractical for
+extensive evaluation, which is needed for Monte Carlo sampling. For example, the
+concise notation $f$ might expand into a full-system simulation, including
+scheduling and power-temperature analysis, which is the case in this work.
 
 In order to make the problem computationally tractable, a light representation
 of $f$ is constructed and studied instead of $f$. The surrogate is based on
@@ -26,56 +28,85 @@ other values of $f$ are reconstructed on demand using a set of basis functions
 mediating between the obtained values of $f$.
 
 In what follows, we shall gradually construct an efficient interpolant for $f$.
-Efficiency, in this context, is measured by the number of nodes required to
-achieve certain accuracy.
+\emph{Efficiency}, in this context, refers to the number of nodes required to
+achieve a certain accuracy level.
 
 \subsection{Tensor Product}
 In one dimension ($\nin = 1$), $f$ is approximated by virtue of the following
 interpolating formula:
 \[
-  \I{i}(f) := \sum_{j = 0}^{m_i - 1} f(x^i_j) \, \e^i_j.
+  \tensor{i}(f) := \sum_{j \in \index(i)} f(x^i_j) \, \e^i_j.
 \]
-The index $i \in \natural$ signifies the level of interpolation; $m_i$ denotes
-the number of nodes on the corresponding level; $\{ x^i_j \in [0, 1] \}$ are the
-nodes; and $\{ \e^i_j: [0, 1] \to \real \}$ are the basis functions. The index
-$j$ is referred to as the order of a node. The choice of the grid nodes and
-basis functions is not the primary concern of this section and will be discussed
-later.
+The superscript $i \in \natural$ signifies the level of interpolation;
+$\index(i) = \{ 0, 1, \dots \}$ is a set with cardinality
+$\cardinality{\index(i)}$ that indexes the nodes on the corresponding level;
+$\X^i = \{ x^i_j \} \subset [0, 1]$ are the nodes; and $\{ \e^i_j \} \subset
+\continuous([0, 1])$ are the basis functions. The subscript $j$ is referred to
+as the order of a node. The choice of the grid nodes and basis functions is an
+important concern which will be thoroughly discussed later on.
 
 In multiple dimensions ($\nin > 1$), $f$ is approximated by the tensor product
 of $\nin$ one-dimensional interpolants:
 \begin{equation} \elab{tensor-product}
-  \I{\vi}(f) := (\I{i_1} \otimes \cdots \otimes \I{i_\nin})(f) = \sum_{\vj \in
-  \v{J}(\vi)} f(\v{x}^\vi_\vj) \, \e^\vi_\vj
+  \tensor{\vi}(f) := (\tensor{i_1} \otimes \cdots \otimes \tensor{i_\nin})(f) = \sum_{\vj \in \index(\vi)} f(\v{x}^\vi_\vj) \, \e^\vi_\vj
 \end{equation}
 where $\vi = (i_k) \in \natural^\nin$ and $\vj = (j_k) \in \natural^\nin$ are
 multi-indices specifying, respectively, the interpolation levels and node orders
-for all dimensions. In the above formula,
+for all dimensions, and $\index(\vi)$ is a set of multi-indices corresponding to
+the tensor-product structure. Further,
 \[
-  \v{x}^\vi_\vj = (x^{i_k}_{j_k}) \in [0, 1]^\nin
+  \X^\vi = \left\{ \v{x}^\vi_\vj \right\} = \left\{ (x^{i_k}_{j_k}) \right\} \subset [0, 1]^\nin
 \]
 and
 \[
-  \e^\vi_\vj = \e^{i_1}_{j_1} \otimes \cdots \otimes \e^{i_\nin}_{j_\nin}
+  \left\{ \e^\vi_\vj \right\} = \left\{ \e^{i_1}_{j_1} \otimes \cdots \otimes \e^{i_\nin}_{j_\nin} \right\} \subset \continuous([0, 1]^\nin)
 \]
-are the node and basis function corresponding to the level/order tuple $(\vi,
-\vj)$, respectively. The set $\vJ(\vi)$ is a collection of multi-indices
-corresponding to the tensor-product structure; the cardinality of this set is
+are the node and basis function corresponding to the level-order tuple $(\vi,
+\vj)$, respectively. The cardinality of $\index(\vi)$ is
 \[
-  \cardinality{\vJ(\vi)} := \prod_{k = 0}^{\nin - 1} m_{i_k}.
+  \cardinality{\index(\vi)} = \prod_{k = 0}^{\nin - 1} \cardinality{\index(i_k)}.
 \]
 The last equation elucidates the prohibited expense of the tensor-product
-construction, shown in \eref{tensor-product}, for high-dimensional problems: the
+construction shown in \eref{tensor-product} for high-dimensional problems: the
 number of nodes grows exponentially as $\nin$ increases. However,
 \eref{tensor-product} serves well as a building block for more efficient
 algorithms, which we discuss next.
 
 \subsection{Smolyak Algorithm}
 The Smolyak algorithm is an approach to the construction of high-dimensional
-grids, which are typically used for the purpose of integration and
-interpolation. Intuitively speaking, the algorithm takes a number of small
-tensor-product structures and composes them in such a way that the resulting
-grid has a drastically reduced number of nodes while having the same
-approximating power as the na\"{i}ve full tensor product.
+grids typically used for the purpose of integration and interpolation.
+Intuitively speaking, the algorithm takes a number of small tensor-product
+structures and composes them in such a way that the resulting grid has a
+drastically reduced number of nodes and yet the same approximating power as the
+na\"{i}ve full tensor-product grid.
+
+The Smolyak interpolant for $f$ is as follows:
+\[
+  \smolyak{l}(f) := \sum_{l - \nin + 1 \leq |\vi| \leq l} (-1)^{l - |\vi|} \, {\nin - 1 \choose l - |\vi|} \, \tensor{\vi}(f)
+\]
+where $l \in \natural$ is the level of interpolation, and $|\vi| := i_1 + \dots
++ i_\nin$. We see that the algorithm is indeed just a peculiar composition of
+tensor products. A better intuition about the properties of Smolyak's
+construction can be obtained by rewriting the above formula in an incremental
+form. To this end, let $\Delta \tensor{0}(f) := 0$, $\Delta \tensor{i}(f) :=
+(\tensor{i} - \tensor{i - 1})(f)$ for $i > 0$, and $\Delta \tensor{\vi}(f) :=
+(\Delta \tensor{i_1} \otimes \cdots \otimes \Delta \tensor{i_\nin})(f)$. Then,
+\[
+  \smolyak{l}(f) = \sum_{|\vi| \leq l} \Delta \tensor{\vi}(f) = \smolyak{l - 1}(f) + \sum_{|\vi| = l} \Delta \tensor{\vi}(f).
+\]
+It can be seen that a Smolyak interpolant can be refined without the need of
+starting from scratch: the work done to attain one accuracy level can be
+entirely recycled to go one level up.
+
+The incremental structure of the Smolyak algorithm is a remarkable property
+\perse, but it can be taken even further. The rules used for generating
+successive sets of points $\X^{i_k}$ in each dimension $k$ can be chosen to be
+nested, that is, in such a way that the rule of level $i_k$ contains all the
+nodes of the rule of level $i_k - 1$, for $k = 1, 2, \dots, \nin$.
+
+Let $\Delta \X^0 := \emptyset$ and
+\[
+  \Delta \X^l := \bigcup_{l - \nin + 1 \leq |\vi| \leq l} \X^\vi.
+\]
 
 \input{include/algorithms/interpolation}
