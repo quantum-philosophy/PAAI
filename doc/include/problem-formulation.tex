@@ -4,36 +4,39 @@ elements $\procs = \{ 1, 2, \dots, \np \}$ and is equipped with a thermal
 package. The application is given as a set of tasks $\tasks = \{ 1, 2, \dots,
 \nt \}$. In what follows, the system will be denoted by $(\procs, \tasks)$.
 
-The mapping of the application onto the platform is assumed to be fixed and
-given by a vector $\mapping = (m_i)_{i = 1}^{\nt}$ such that $m_i$ is the index
-of the processing element that the $i$th task is assigned to. The power
-consumption of the tasks is assumed to be fixed and given by a vector $\power =
-(p_i)_{i = 1}^{\nt}$ such that $p_i$ is the power of the $i$th task. Note that
-the boundaries of a task have not been specified, and one can perform modeling
-at the level of granularity that makes the most sense for a particular problem.
+In this work, the mapping of the application onto the platform is assumed to be
+fixed, and it is given by a vector $\mapping = (m_i)_{i = 1}^{\nt}$ wherein $m_i
+\in \procs$ is the index of the processing element that the $i$th task is
+assigned to. Likewise, the power consumption of the tasks is assumed to be
+fixed, and it is given by a vector $\power = (p_i)_{i = 1}^{\nt}$ wherein $p_i$
+is the power of the $i$th task. Note that the boundaries of a task have not been
+specified, and one can perform modeling at the level of granularity that makes
+the most sense for a particular problem.
 
-The system depends on a set of parameters that are uncertain at the design
-stage. We model such uncertain parameters as a random vector $\vu = (\u_i)_{i =
-1}^\nu$. The focus of this work is on those parameters that affect the timing
-characteristics of the system, which will be described shortly. This variability
-inevitably implies that the corresponding power and temperature profiles of the
-system are uncertain for the designer as well.
+Each task is ascribed two variables: one is the beginning of the task's
+execution time interval, and the other is the duration of this interval. For the
+$i$th task, denote the two variables by $\b_i$ and $\d_i$, respectively, and let
+$\vb = (\b_i)_{i=1}^{\nt}$ and $\vd = (\d_i)_{i=1}^{\nt}$.
 
-Each task is ascribed two variables that determine the beginning of the task's
-execution time interval and its duration. For the $i$th task, denote these two
-variables by $\b_i$ and $\d_i$, respectively, and let $\vb = (\b_i)_{i=1}^{\nt}$
-and $\vd = (\d_i)_{i=1}^{\nt}$. Let $\schedule$ be a (deterministic) scheduling
-policy that determines the tuple $(\vb, \vd)$ given $\vu$, which we shall denote
-by $\schedule(\vu) = (\vb, \vd)$.
+The tuple $(\vb, \vd)$ is determined by a scheduling policy denoted by
+$\schedule$. The policy depends on a set of parameters that are uncertain at the
+design stage. We model such uncertain parameters as a random vector $\vu =
+(\u_i)_{i = 1}^\nu$. For a given $\vu$, $\schedule$ is assumed to be purely
+deterministic. We shall denote the relation between $(\vb, \vd)$, $\schedule$,
+and $\vu$ by $\schedule(\vu) = (\vb, \vd)$.
+
+It is important to note that the dependency of the system's schedule on the
+random vector $\vu$ inevitably implies that the quantities dependent on the
+schedule---in particular, the corresponding power and temperature profiles of
+the system---are inevitable uncertain for the designer as well.
 
 We pursue the following major objectives:
 \begin{itemize}
 
-  \item {\bfseries Objective~1.} Develop a framework for transient temperature
-    analysis of the system $(\procs, \tasks)$ with the given mapping $\mapping$,
-    power consumption $\power$, and scheduling policy $\schedule$ such that the
-    uncertainty due the parameters $\vu$---affecting the timing characteristics
-    of the system comprised in the tuple $(\vb, \vd)$---is taken into
-    consideration.
+\item {\bfseries Objective~1.} Develop a framework for performance analysis of
+  the system $(\procs, \tasks)$ with the given mapping $\mapping$, power
+  consumption $\power$, and scheduling policy $\schedule$ such that the
+  uncertainty due the parameters $\vu$---affecting the timing characteristics of
+  the system comprised in the tuple $(\vb, \vd)$---is taken into consideration.
 
 \end{itemize}

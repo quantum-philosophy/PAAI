@@ -22,14 +22,3 @@ $\mM \in \real^{\nn \times \np}$ is a mapping that distributes the power
 dissipation of the processing elements across the thermal nodes; without loss of
 generality, $\mM$ is a rectangular diagonal matrix whose diagonal elements are
 equal to unity.
-
-The vector $\vp(\t) = (p_i(\t))_{i = 1}^{\np}$ in \eref{thermal-system-ode}
-should not be confused with the vector $\vp = (p_i)_{i = 1}^{\nt}$ introduced in
-\sref{problem-formulation}. The two are related as follows:
-\[
-  p_i(\t) = \sum_{j = 1}^{\nt} \delta_{i\,m_j} \: \one_{[\b_j, \b_j + \d_j)}(\t) \: p_j,
-\]
-for $i = 1, 2, \dots, \np$, where $\delta_{ij}$ is the Kronecker delta and
-$\one_A(x)$ is the indicator function of a set $A$. In words, the above equation
-yields the power consumption of the task that is running on the $i$th processing
-element at time $\t$, if any.

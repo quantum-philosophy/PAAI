@@ -1,0 +1,67 @@
+The Smolyak algorithm is an approach to the construction of high-dimensional
+grids typically used for the purpose of integration and interpolation.
+Intuitively speaking, the algorithm takes a number of small tensor-product
+structures and composes them in such a way that the resulting grid has a
+drastically reduced number of nodes and yet the same approximating power as the
+full tensor-product grid \cite{klimke2006}.
+
+The Smolyak interpolant for $f$ is as follows:
+\begin{equation} \elab{smolyak}
+  \smolyak{l}(f) := \sum_{l - \nin + 1 \leq |\vi| \leq l} (-1)^{l - |\vi|} \, {\nin - 1 \choose l - |\vi|} \, \tensor{\vi}(f)
+\end{equation}
+where $l \in \natural$ is the level of interpolation, and $|\vi| := i_1 + \dots
++ i_\nin$. We see that the algorithm is indeed just a peculiar composition of
+cherry-picked tensor products. However, the formula has an implication of
+paramount importance: the quantity of interest needs to be exercised only at the
+nodes of the sparse grid underpinning \eref{smolyak}:
+\begin{equation} \elab{smolyak-grid}
+  \Y^l := \bigcup_{l - \nin + 1 \leq |\vi| \leq l} \X^\vi.
+\end{equation}
+The cardinality of the above set does not have a general closed-form formula;
+however, it can be several orders of magnitude smaller than the one of the full
+tensor product given in \eref{tensor-product-cardinality}, depending on the
+dimensionality of the problem at hand.
+
+A better intuition about the properties of Smolyak's construction can be
+obtained by rewriting \eref{smolyak} in an incremental form. To this end, let
+$\Delta \tensor{0}(f) := \tensor{0}(f)$,
+\[
+  \Delta \tensor{i}(f) := (\tensor{i} - \tensor{i - 1})(f), \qquad \text{for $i > 0$},
+\]
+and
+\[
+  \Delta \tensor{\vi}(f) := (\Delta \tensor{i_1} \otimes \cdots \otimes \Delta \tensor{i_\nin})(f).
+\]
+Then, \eref{smolyak} is identical to
+\begin{equation} \elab{smolyak-incremental}
+  \smolyak{l}(f) = \sum_{|\vi| \leq l} \Delta \tensor{\vi}(f) = \smolyak{l - 1}(f) + \sum_{|\vi| = l} \Delta \tensor{\vi}(f).
+\end{equation}
+It can be seen that a Smolyak interpolant can be refined without the need of
+starting from scratch: the work done to attain one accuracy level can be
+entirely recycled to go one level up.
+
+The sparsity and efficient refinement of Smolyak's approach---shown in
+\eref{smolyak-grid} and \eref{smolyak-incremental}, respectively---are
+remarkable properties \perse\ (taking into consideration the resulting
+accuracy), but they can be taken even further. Let $\Delta \X^0 := \X^0$,
+\[
+  \Delta \X^i := \X^i \setminus \X^{i - 1}, \quad \text{for $i > 0$,}
+\]
+and
+\[
+  \Delta \X^\vi := \Delta \X^{i_1} \otimes \cdots \otimes \Delta \X^{i_\nin}.
+\]
+Then, \eref{smolyak-grid} can be rewritten as
+\begin{equation} \elab{smolyak-grid-incremental}
+  \Y^l = \bigcup_{|\vi| \leq l} \Delta \X^i = \Y^{l - 1} \cup \bigcup_{|\vi| = l} \Delta \X^i,
+\end{equation}
+which is analogous to \eref{smolyak-incremental}. Now, we note that it is
+computationally beneficial to have $\X^{i - 1}$ be partially or entirely
+included in $\X^i$ since, in that case, $\Y^l \setminus \Y^{l - 1}$ in
+\eref{smolyak-grid-incremental} gets smaller. In words, the values of $f$
+evaluated on lower levels can be reused on higher levels if the interpolating
+grid grows without destroying/abandoning its previous structure. With this in
+mind, the rules used for generating successive sets of points $\X^{i_k}$ in each
+dimension $k$ can be chosen to be nested, that is, in such a way that the rule
+of level $i_k$ contains all the nodes of the rule of level $i_k - 1$, for $k =
+2, 3, \dots, \nin$.
