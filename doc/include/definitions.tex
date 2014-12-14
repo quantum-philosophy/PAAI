@@ -78,6 +78,7 @@
 % Linear algebra
 \newcommand{\m}[1]{\mathbf{#1}}
 \renewcommand{\v}[1]{\mathbf{#1}}
+\newcommand{\diag}{\text{diag}}
 
 % Interpolation
 \newcommand{\tensor}[1]{\mathcal{Q}^{#1}}
@@ -103,13 +104,15 @@
 \renewcommand{\o}{\omega}
 
 \newcommand{\distribution}{F}
-\newcommand{\copula}{C}
+\newcommand{\correlation}{\m{R}}
 
 \newcommand{\expectation}[1]{\mathbb{E} \, #1}
 \newcommand{\variance}[1]{\mathbb{V}\text{ar} \, #1}
 
 \newcommand{\h}{\zeta}
 \newcommand{\vh}{\bm{\zeta}}
+
+\newcommand{\transformation}{\mathbb{T}}
 
 %
 % Platform
@@ -160,13 +163,17 @@
 %
 % Uncertain parameters
 %
-\renewcommand{\u}{\xi}
-\newcommand{\vu}{\bm{\xi}}
+\renewcommand{\u}{u}
+\newcommand{\vu}{\v{u}}
+
+\newcommand{\z}{z}
+\newcommand{\vz}{\v{z}}
 
 %
 % Numbers
 %
 \renewcommand{\nu}{{n_\u}}
+\newcommand{\nz}{{n_\z}}
 \newcommand{\np}{{n_\pi}}
 \newcommand{\nt}{{n_\tau}}
 \newcommand{\nn}{{n_\text{n}}}

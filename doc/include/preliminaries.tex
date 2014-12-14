@@ -2,12 +2,13 @@ Let $\probabilitySpace$ be a probability space where $\outcomes$ is a set of
 outcomes, $\sigmaAlgebra \subseteq 2^\outcomes$ is a $\sigma$-algebra, and
 $\probabilityMeasure: \sigmaAlgebra \to [0, 1]$ is a probability measure
 \cite{durrett2010}. A \rv\ on $\probabilitySpace$ is an
-$\sigmaAlgebra$-measurable function $\h: \outcomes \to \real$. $\h$ is uniquely
-characterized by its distribution function defined by
+$\sigmaAlgebra$-measurable function $\h: \outcomes \to \real$. Such a variable
+is uniquely characterized by its distribution function defined by
 \begin{equation*}
-  \distribution_\h(z) := \probabilityMeasure(\h \leq z) := \probabilityMeasure(\{ \o \in \outcomes: \h(\o) \leq z \}).
+  \distribution_\h(z) := \probabilityMeasure(\h \leq z) := \probabilityMeasure(\{ \o \in \outcomes: \h(\o) \leq z \}),
 \end{equation*}
-The expectation and variance of $\h$ are given by
+which is denoted by $\h \sim \distribution_\h$. The expectation and variance of
+$\h$ are given by
 \begin{align*}
   & \expectation{\h} := \int_\outcomes \h(\o) \, d\probabilityMeasure(\o) = \int_\real z \, d \distribution_\h(z) \hspace{1em} \text{and} \\
   & \variance{\h} := \expectation{(\h - \expectation{\h})^2},
