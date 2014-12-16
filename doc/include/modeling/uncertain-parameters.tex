@@ -68,17 +68,16 @@ identify the smallest $\nz$ such that
 \]
 Denote by $\tilde{\m{V}} \in \real^{\nu \times \nz}$ and $\tilde{\m{\Lambda}}
 \in\real^{\nz \times \nz}$ the matrices obtained by truncating $\m{V}$ and
-$\m{\Lambda}$, respectively, according to the strategy delineated earlier in
-this paragraph.
+$\m{\Lambda}$, respectively, according to the strategy delineated above.
 
 Now, the transformation $\transformation$ in \eref{transformation} is
 \[
-  \vu = \tilde{\m{V}} \tilde{\m{\Lambda}}^\frac{1}{2} \, \Phi(\vz)
+  \vu = \tilde{\m{V}} \tilde{\m{\Lambda}}^\frac{1}{2} \, \Phi^{-1}(\vz)
 \]
-where $\Phi$ is the distribution function of the standard Gaussian distribution,
-which is applied to $\vz$ element-wise, and the \rvs\ $(\z_i)$ are independent
-and uniformly distributed on $[0, 1]$. To summarize, we have found such a
-transformation $\transformation$ and identified the corresponding distribution
-$\distribution_\vz$ that $\distribution_\vz$ (a) is defined on $[0, 1]^\nz$, (b)
-has the minimal number of dimensions to preserve $\eta$ portion of the variance,
-and (c) is trivial to draw samples from, as required.
+where $\Phi^{-1}$ is the inverse distribution function of the standard Gaussian
+distribution, which is applied to $\vz$ element-wise, and the \rvs\ $(\z_i)$ are
+independent and uniformly distributed on $[0, 1]$. To summarize, we have found
+such a transformation $\transformation$ along with the corresponding
+distribution $\distribution_\vz$ that $\distribution_\vz$ (a) is defined on $[0,
+1]^\nz$, (b) has the minimal number of dimensions to preserve $\eta$ portion of
+the variance, and (c) is trivial to draw samples from, as it was required.

@@ -15,10 +15,14 @@ The coefficients $\mC \in \real^{\nn \times \nn}$ and $\mG \in \real^{\nn \times
 \nn}$ are a diagonal matrix of thermal capacitance and a symmetric,
 positive-definite matrix of thermal conductance, respectively. The vectors
 $\vp(\t) \in \real^\np$, $\vq(\t) \in \real^\np$, and $\vs(\t) \in \real^\nn$
-are the power consumption, temperature, and internal state of the system at time
-$\t$, respectively; all three are random due to the dependency on $\vu$. The
-vector $\vq_\ambient \in \real^\np$ contains the ambient temperature. The matrix
-$\mM \in \real^{\nn \times \np}$ is a mapping that distributes the power
-dissipation of the processing elements across the thermal nodes; without loss of
-generality, $\mM$ is a rectangular diagonal matrix whose diagonal elements are
-equal to unity.
+are the power consumption (given in \eref{power}), temperature, and internal
+state of the system at time $\t$, respectively; all three are random due to the
+dependency on $\vu$. The vector $\vq_\ambient \in \real^\np$ contains the
+ambient temperature. The matrix $\mM \in \real^{\nn \times \np}$ is a mapping
+that distributes the power dissipation of the processing elements across the
+thermal nodes; without loss of generality, $\mM$ is a rectangular diagonal
+matrix whose diagonal elements are equal to unity.
+
+As it was noted with respect to power profiles, given a set of time instances,
+\eref{thermal-system} can be utilized to construct the corresponding temperature
+profile of the system.

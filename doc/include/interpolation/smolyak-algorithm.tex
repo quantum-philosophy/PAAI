@@ -19,22 +19,22 @@ nodes of the sparse grid underpinning \eref{smolyak}:
 \end{equation}
 The cardinality of the above set does not have a general closed-form formula;
 however, it can be several orders of magnitude smaller than the one of the full
-tensor product given in \eref{tensor-product-cardinality}, depending on the
+tensor product given in \eref{tensor-cardinality}, depending on the
 dimensionality of the problem at hand.
 
 A better intuition about the properties of Smolyak's construction can be
 obtained by rewriting \eref{smolyak} in an incremental form. To this end, let
-$\Delta \tensor{0}(f) := \tensor{0}(f)$,
-\[
-  \Delta \tensor{i}(f) := (\tensor{i} - \tensor{i - 1})(f), \qquad \text{for $i > 0$},
-\]
+$\Delta\tensor{0}(f) := \tensor{0}(f)$,
+\begin{equation} \elab{tensor-delta-1d}
+  \Delta\tensor{i}(f) := (\tensor{i} - \tensor{i - 1})(f), \qquad \text{for $i > 0$},
+\end{equation}
 and
 \[
-  \Delta \tensor{\vi}(f) := (\Delta \tensor{i_1} \otimes \cdots \otimes \Delta \tensor{i_\nin})(f).
+  \Delta\tensor{\vi}(f) := (\Delta\tensor{i_1} \otimes \cdots \otimes \Delta\tensor{i_\nin})(f).
 \]
 Then, \eref{smolyak} is identical to
 \begin{equation} \elab{smolyak-incremental}
-  \smolyak{l}(f) = \sum_{|\vi| \leq l} \Delta \tensor{\vi}(f) = \smolyak{l - 1}(f) + \sum_{|\vi| = l} \Delta \tensor{\vi}(f).
+  \smolyak{l}(f) = \sum_{|\vi| \leq l} \Delta\tensor{\vi}(f) = \smolyak{l - 1}(f) + \sum_{|\vi| = l} \Delta\tensor{\vi}(f).
 \end{equation}
 It can be seen that a Smolyak interpolant can be refined without the need of
 starting from scratch: the work done to attain one accuracy level can be
@@ -43,17 +43,17 @@ entirely recycled to go one level up.
 The sparsity and efficient refinement of Smolyak's approach---shown in
 \eref{smolyak-grid} and \eref{smolyak-incremental}, respectively---are
 remarkable properties \perse\ (taking into consideration the resulting
-accuracy), but they can be taken even further. Let $\Delta \X^0 := \X^0$,
+accuracy), but they can be taken even further. Let $\Delta\X^0 := \X^0$,
 \[
-  \Delta \X^i := \X^i \setminus \X^{i - 1}, \quad \text{for $i > 0$,}
+  \Delta\X^i := \X^i \setminus \X^{i - 1}, \quad \text{for $i > 0$,}
 \]
 and
 \[
-  \Delta \X^\vi := \Delta \X^{i_1} \otimes \cdots \otimes \Delta \X^{i_\nin}.
+  \Delta\X^\vi := \Delta\X^{i_1} \otimes \cdots \otimes \Delta\X^{i_\nin}.
 \]
 Then, \eref{smolyak-grid} can be rewritten as
 \begin{equation} \elab{smolyak-grid-incremental}
-  \Y^l = \bigcup_{|\vi| \leq l} \Delta \X^i = \Y^{l - 1} \cup \bigcup_{|\vi| = l} \Delta \X^i,
+  \Y^l = \bigcup_{|\vi| \leq l} \Delta\X^i = \Y^{l - 1} \cup \bigcup_{|\vi| = l} \Delta\X^i,
 \end{equation}
 which is analogous to \eref{smolyak-incremental}. Now, we note that it is
 computationally beneficial to have $\X^{i - 1}$ be partially or entirely
@@ -65,3 +65,37 @@ mind, the rules used for generating successive sets of points $\X^{i_k}$ in each
 dimension $k$ can be chosen to be nested, that is, in such a way that the rule
 of level $i_k$ contains all the nodes of the rule of level $i_k - 1$, for $k =
 2, 3, \dots, \nin$.
+
+Lastly, we would like to impose one additional property in order to make
+\eref{smolyak-incremental} well suited for practical implementations. Namely,
+interpolants of higher levels are required to represent exactly interpolants
+of lower levels:
+\[
+  \tensor{i - 1}(f) = \tensor{i}(\tensor{i - 1}(f)).
+\]
+This can be achieved by an appropriate choice of collocation nodes and basis
+functions, which will be discussed later. If the above equation holds, using
+\eref{tensor-1d} and \eref{tensor-delta-1d},
+\[
+  \Delta\tensor{i}(f) = \sum_{j \in \index(i)} \left(f(\x^i_j) - \tensor{i - 1}(f)(\x^i_j)\right) \e^i_j.
+\]
+We note that the above sum is over $\X^i = \{ \x^i_j: j \in \index(i) \}$, and
+the difference in the sum, which we denote by
+\begin{equation} \elab{surplus}
+  \surplus(\x^i_j) = f(\x^i_j) - \tensor{i - 1}(f)(\x^i_j),
+\end{equation}
+is zero whenever $\x^i_j \in \X^{i - 1}$. Since $\X^{i - 1} \subset \X^i$, we
+actually need to sum over the nodes in $\Delta\X^i$, which we shall write as
+\[
+  \Delta\tensor{i}(f) = \sum_{\x^i_j \in \Delta\X^i} \surplus(\x^i_j) \, \e^i_j
+\]
+where $\e^i_j$ naturally corresponds to $\x^i_j$. The delta $\surplus(\x^i_j)$
+in \eref{surplus} is referred to as a hierarchical surplus. When going from one
+level of interpolation to the next one, the surplus is nothing more than the
+difference between the actual value of $f$ at a new collocation point and its
+approximation by the interpolant constructed so far.
+
+To summarize, assuming that collocation points and basis functions have been
+carefully chosen according to the criteria mentioned earlier, we have obtained
+an efficient algorithm for incremental or, equivalently, hierarchical
+interpolation.  
