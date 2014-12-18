@@ -4,6 +4,11 @@
 \usepackage[english]{babel}
 
 %
+% Graphics
+%
+\usepackage{graphicx}
+
+%
 % Formatting
 %
 \usepackage[factor=1700]{microtype}
@@ -24,12 +29,15 @@
 %
 % References
 %
+\newcommand{\aref}[1]{Algorithm~\ref{alg:#1}}
 \newcommand{\eref}[1]{(\ref{equ:#1})}
+\newcommand{\fref}[1]{Fig.~\ref{fig:#1}}
 \newcommand{\sref}[1]{Sec.~\ref{sec:#1}}
 
-\newcommand{\elab}[1]{\label{equ:#1}}
-\newcommand{\slab}[1]{\label{sec:#1}}
 \newcommand{\alab}[1]{\label{alg:#1}}
+\newcommand{\elab}[1]{\label{equ:#1}}
+\newcommand{\flab}[1]{\label{fig:#1}}
+\newcommand{\slab}[1]{\label{sec:#1}}
 
 %
 % Algorithms
@@ -81,6 +89,8 @@
 \newcommand{\diag}{\text{diag}}
 
 % Interpolation
+\newcommand{\f}{f}
+
 \newcommand{\tensor}[1]{\mathcal{Q}^{#1}}
 \newcommand{\smolyak}[1]{\mathcal{A}^{#1}}
 
@@ -97,7 +107,7 @@
 
 \newcommand{\Y}{\mathcal{Y}}
 
-\newcommand{\surplus}{\Delta f}
+\newcommand{\surplus}{\Delta\f}
 
 % Probability theory
 \newcommand{\outcomes}{\Omega}

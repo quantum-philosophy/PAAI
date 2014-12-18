@@ -1,7 +1,7 @@
-In one dimension ($\nin = 1$), $f$ is approximated by virtue of the following
+In one dimension ($\nin = 1$), $\f$ is approximated by virtue of the following
 interpolating formula:
 \begin{equation} \elab{tensor-1d}
-  \tensor{i}(f) := \sum_{j \in \index(i)} f(\x^i_j) \, \e^i_j.
+  \tensor{i}(\f) := \sum_{j \in \index(i)} \f(\x^i_j) \, \e^i_j.
 \end{equation}
 The superscript $i \in \natural$ signifies the level of interpolation;
 $\index(i) = \{ 0, 1, \dots \} \subset \natural$ is a set with cardinality
@@ -12,30 +12,30 @@ referred to as the order of a node. The choice of the collocation nodes and
 basis functions is an important concern which will be thoroughly discussed later
 on.
 
-In multiple dimensions ($\nin > 1$), $f$ is approximated by the tensor product
+In multiple dimensions ($\nin > 1$), $\f$ is approximated by the tensor product
 of $\nin$ one-dimensional interpolants:
 \begin{equation} \elab{tensor}
-  \tensor{\vi}(f) := (\tensor{i_1} \otimes \cdots \otimes \tensor{i_\nin})(f) =
-  \sum_{\vj \in \index(\vi)} f(\v{\x}^\vi_\vj) \, \e^\vi_\vj
+  \tensor{\vi}(\f) := (\tensor{i_1} \otimes \cdots \otimes \tensor{i_\nin})(\f) = \sum_{\vj \in \index(\vi)} \f(\v{\x}^\vi_\vj) \, \e^\vi_\vj
 \end{equation}
 where $\vi = (i_k) \in \natural^\nin$ and $\vj = (j_k) \in \natural^\nin$ are
 multi-indices specifying, respectively, the interpolation levels and node orders
-for all dimensions, and $\index(\vi)$ is a set of multi-indices corresponding to
-the tensor-product structure. Further,
+for all dimensions, and $\index(\vi) := \index(i_1) \times \cdots \times
+\index(i_\nin)$ is a set of multi-indices corresponding to the tensor-product
+structure. Further,
 \[
   \X^\vi = \left\{ \v{\x}^\vi_\vj = (\x^{i_k}_{j_k}): \vj \in \index(\vi) \right\} \subset [0, 1]^\nin
 \]
 and
 \[
-  \E^\vi = \left\{ \e^\vi_\vj = \e^{i_1}_{j_1} \cdots \e^{i_\nin}_{j_\nin}: \vj \in \index(\vi) \right\} \subset \continuous([0, 1]^\nin)
+  \E^\vi = \left\{ \e^\vi_\vj = \e^{i_1}_{j_1} \otimes \cdots \otimes \e^{i_\nin}_{j_\nin}: \vj \in \index(\vi) \right\} \subset \continuous([0, 1]^\nin)
 \]
 are the nodes and basis functions corresponding to the multi-index $\vi$,
 respectively.
 \begin{remark}
 Each dimension can have its own rule defining the distribution of collocation
 node with respect to each level. Similarly, the basis functions of one dimension
-can differ from the basis functions of another. For better readability, this
-aspect is not apparent in our notation.
+can differ from the basis functions of another. In order to improve readability,
+this aspect is excluded from our notation.
 \end{remark}
 The cardinality of $\index(\vi)$ is
 \begin{equation} \elab{tensor-cardinality}

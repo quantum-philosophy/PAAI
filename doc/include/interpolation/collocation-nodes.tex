@@ -1,0 +1,40 @@
+A sparse grid that is fully nested and well suited for local adaptivity, which
+we required previous, can be constructed using the (one-dimensional)
+Newton--Cotes rule \cite{klimke2006, ma2009}. For each level, the rule is merely
+a set of nodes evenly distributed on an interval, which is $[0, 1]$ in our case.
+
+\begin{remark}
+Equidistant nodes are known to perform purely when the interpolating functions
+are chosen to be polynomials (Runge's phenomenon). However, it is not a concern
+for us as our basis functions do not have this problem.
+\end{remark}
+
+The rule comes in two flavors: closed and open. The only difference between the
+two is that the former includes the endpoints, that is, 0 and 1, while the
+latter does not. Now, at the end of \sref{smolyak-algorithm}, we postulated that
+the assumption in \eref{tensor-exactness} was needed to proceed. The closed rule
+satisfies this assumption while the open one violates it close to the boundaries
+of the interval. However, according to our numerical experiments and as noted in
+\cite{klimke2006}, the open Newton--Cotes rule is a viable option as it performs
+well in practice.
+
+Despite the minor concern noted above, we have decided to present the open
+Newton--Cotes rule in the paper as it is a better match for the transformation
+in \eref{transformation}. The problem with 0 and 1 is rather technical and is as
+follows. The inverse of the Gaussian distribution function, $\Phi^{-1}$, maps 0
+and 1 to $-\infty$ and $+\infty$, respectively; the resulting vector then gets
+multiplied by a matrix, as shown in \eref{transformation}. Since certain
+algebraic operations with infinite values are undefined---for instance, $0.42
+\times (+\infty) + 0.27 \times (-\infty)$---this particular transformation in
+\eref{transformation} might need to be adjusted, which we would like to avoid by
+choosing a rule without the endpoints.
+
+\input{include/assets/rule}
+The open Newton--Cotes rule of level $i \in \natural$ is
+\[
+  \X^i = \left\{ x^i_j = \frac{j + 1}{\cardinality{\index(i)} + 1}: j \in \index(i) \right\}
+\]
+where $\index(i) = \left\{ 0, 1, \dots, \cardinality{\index(i)} - 1 \right\}$
+with $\cardinality{\index(i)} = 2^{i + 1} - 1$. As it can be seen, the number of
+nodes (in one dimension) grows as 1, 3, 7, 15, 31, and so on. The first three
+levels of the rule are depicted in \fref{rule}.

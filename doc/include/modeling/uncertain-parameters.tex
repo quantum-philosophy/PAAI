@@ -71,13 +71,17 @@ Denote by $\tilde{\m{V}} \in \real^{\nu \times \nz}$ and $\tilde{\m{\Lambda}}
 $\m{\Lambda}$, respectively, according to the strategy delineated above.
 
 Now, the transformation $\transformation$ in \eref{transformation} is
-\[
-  \vu = \tilde{\m{V}} \tilde{\m{\Lambda}}^\frac{1}{2} \, \Phi^{-1}(\vz)
-\]
-where $\Phi^{-1}$ is the inverse distribution function of the standard Gaussian
-distribution, which is applied to $\vz$ element-wise, and the \rvs\ $(\z_i)$ are
-independent and uniformly distributed on $[0, 1]$. To summarize, we have found
-such a transformation $\transformation$ along with the corresponding
-distribution $\distribution_\vz$ that $\distribution_\vz$ (a) is defined on $[0,
-1]^\nz$, (b) has the minimal number of dimensions to preserve $\eta$ portion of
-the variance, and (c) is trivial to draw samples from, as it was required.
+\begin{equation} \elab{transformation}
+  \vu = \distribution_\vu^{-1} \left( \Phi\left( \tilde{\m{V}} \tilde{\m{\Lambda}}^\frac{1}{2} \, \Phi^{-1}(\vz) \right) \right)
+\end{equation}
+where the \rvs\ $\vz = (\z_i)_{i = 1}^\nz$ are independent and uniformly
+distributed on $[0, 1]$; $\Phi$ and $\Phi^{-1}$ are the distribution function of
+the standard Gaussian distribution and its inverse, respectively, which are
+applied element-wise; and $\distribution_\vu^{-1} =
+(\distribution_{\u_i}^{-1})_{i = 1}^\nu$ are the inverse marginal distributions
+of $\vu$, each of which is applied to the corresponding element of the vector
+yielded by $\Phi$. To summarize, we have found such a transformation
+$\transformation$ along with the corresponding distribution $\distribution_\vz$
+that $\distribution_\vz$ (a) is defined on $[0, 1]^\nz$, (b) has the minimal
+number of dimensions to preserve $\eta$ portion of the variance, and (c) is
+trivial to draw samples from, as it was required.

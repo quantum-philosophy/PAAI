@@ -3,45 +3,50 @@ the core of the proposed framework. The approach belongs to the class of
 stochastic collocation techniques \cite{xiu2010}. The major distinctive feature
 of stochastic collocation is the usage of interpolation as a means of
 uncertainty quantification, which should be contrasted with other techniques
-such as polynomial chaos expansions relying on regression. The algorithm that we
-use is based on adaptive sparse-grid interpolation, and it was developed in
-\cite{klimke2006} and \cite{ma2009}.
+such as polynomial chaos expansions relying on regression. The interpolation
+algorithm that we use was developed in \cite{klimke2006} and \cite{ma2009}, and
+it features a sparse-grid structure, hierarchical construction, and local
+adaptivity. The sparse-grid structure is to address the curse of dimensionality
+and, hence, tackle high-dimensional problems; the hierarchical construction is
+to have a gradual refinement of approximation with a natural error control;
+and the local adaptivity is to make the refinement fine-grained and, hence, gain
+further efficiency.
 
-Let $f$ be an uncertain quantity that we are interested in studying. The
+Let $\f$ be an uncertain quantity that we are interested in studying. The
 quantity is viewed as a vector of $\nout$ deterministic functions each of which
 is parametrized by the same set of $\nin$ random variables. Each function
 belongs to $\continuous([0, 1]^\nin)$, the space of continuous functions defined
 on the unit hypercube $[0, 1]^\nin$. Thus, we have
 \[
-  f: [0, 1]^\nin \to \real^\nout \subset \continuous([0, 1]^\nin).
+  \f: [0, 1]^\nin \to \real^\nout \subset \continuous([0, 1]^\nin).
 \]
 Note that the domain $[0, 1]^\nin$ is not a restriction.
 
 The function is assumed to be computationally intensive and impractical for
 extensive evaluation, which is needed for Monte Carlo sampling. For example, the
-concise notation $f$ might expand into a full-system simulation, including
+concise notation $\f$ might expand into a full-system simulation, including
 scheduling and power-temperature analysis, which is the case in this work.
 
 In order to make the problem computationally tractable, a light representation
-of $f$ is constructed and studied instead of $f$. The surrogate is based on
-interpolation: $f$ is evaluated at a small number of points or nodes, and any
-other values of $f$ are reconstructed on demand using a set of basis functions
-mediating between the obtained values of $f$.
+of $\f$ is constructed and studied instead of $\f$. The surrogate is based on
+interpolation: $\f$ is evaluated at a small number of points or nodes, and any
+other values of $\f$ are reconstructed on demand using a set of basis functions
+mediating between the obtained values of $\f$.
 
-In what follows, we shall gradually construct an efficient interpolant for $f$.
+In what follows, we shall gradually construct an efficient interpolant for $\f$.
 \emph{Efficiency}, in this context, refers to the number of nodes required to
 achieve a certain accuracy level.
 
 \subsection{Tensor Product}
 \input{include/interpolation/tensor-product}
 
-\subsection{Smolyak Algorithm}
+\subsection{Smolyak Algorithm} \slab{smolyak-algorithm}
 \input{include/interpolation/smolyak-algorithm}
 
 \subsection{Collocation Nodes}
-We use the open Newton--Cotes interpolation grid \cite{klimke2006}.
+\input{include/interpolation/collocation-nodes}
 
 \subsection{Basis Functions}
-We use the linear hat functions as the basis functions \cite{klimke2006}.
+\input{include/interpolation/basis-functions}
 
 \input{include/algorithms/interpolation}
