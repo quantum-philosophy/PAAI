@@ -1,1 +1,29 @@
-We use the linear hat functions as the basis functions \cite{klimke2006}.
+\input{include/assets/basis}
+The basis functions are formed by the linear hat function and are as follows
+\cite{klimke2006}. For $i = 0$ and $j = 0$,
+\[
+  \e^0_0(\x) = 1.
+\]
+For $i > 0$ and $j = 0$ (close to the left endpoint),
+\[
+  \e^i_0(\x) = \begin{cases}
+    2 - \left( \n_i + 1 \right) \x, & \text{if } \x < \frac{2}{\n_i + 1}, \\
+    0, & \text{otherwise}.
+  \end{cases}
+\]
+For $i > 0$ and $j = \n_i - 1$ (close to the right endpoint),
+\[
+  \e^i_{\n_i - 1}(\x) = \begin{cases}
+    \left( \n_i + 1 \right) \x - \n_i + 1, & \text{if } \x > \frac{\n_i - 1}{\n_i + 1}, \\
+    0, & \text{otherwise}.
+  \end{cases}
+\]
+In other cases,
+\[
+  \e^i_j(\x) = \begin{cases}
+    1 - \left( \n_i + 1 \right)|\x - \x^i_j|, & \text{if } |\x - \x^i_j| < \frac{1}{\n_i + 1}, \\
+    0, & \text{otherwise}.
+  \end{cases}
+\]
+The basis functions corresponding to the first three levels of one-dimensional
+interpolation are depicted in \fref{basis}.
