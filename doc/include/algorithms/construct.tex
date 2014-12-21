@@ -1,0 +1,41 @@
+\begin{algorithm}
+  \caption{Construct}
+  \alab{construct}
+  \begin{algorithmic}[1]
+    \vspace{0.4em}
+
+    \Require{target} \Comment{The function to approximate}
+    \Ensure{surrogate} \Comment{An approximating object}
+
+    \vspace{0.4em}
+
+    \Let{level}{0} \Comment{The current level}
+    \Let{indices}{$\{ (\v{0}, \v{0}) \}$} \Comment{The current level-order pairs}
+    \Let{surrogate}{CreateEmpty()}
+
+    \Loop
+      \Let{nodes}{ComputeNodes(indices)}
+      \Let{values}{Evaluate(target, nodes)}
+      \Let{interpolated\_values}{Interpolate(surrogate, nodes)}
+      \Let{surpluses}{$\text{values} - \text{interpolated\_values}$}
+      \State Append(surrogate, level, indices, surpluses)
+      \If{ResourceLimitReached?(surrogate)}
+        \State break
+      \EndIf
+      \For{k \textbf{in range of} surpluses}
+        \If{AccurateEnough?(surpluses[k])}
+          \State Exclude(indices, k)
+        \EndIf
+      \EndFor
+      \If{Empty?(indices)}
+        \State \textbf{break}
+      \EndIf
+      \Let{indices}{ComputeChildren(indices)}
+      \Let{level}{$\text{level} + 1$}
+    \EndLoop
+
+    \State \textbf{return} surrogate
+
+    \vspace{0.4em}
+  \end{algorithmic}
+\end{algorithm}

@@ -1,0 +1,28 @@
+\begin{algorithm}
+  \caption{Interpolate}
+  \alab{interpolate}
+  \begin{algorithmic}[1]
+    \vspace{0.4em}
+
+    \Require{surrogate} \Comment{The approximation object}
+    \Require{points} \Comment{The points of interest}
+    \Ensure{values} \Comment{The approximated values}
+
+    \vspace{0.4em}
+
+    \Let{indices}{GetIndices(surrogate)}
+    \Let{surpluses}{GetSurpluses(surrogate)}
+    \Let{values}{AllocateZeroed()}
+
+    \For{point \textbf{in} points}
+      \For{k \textbf{in range of} indices}
+        \Let{weight}{ComputeBasis(indices[k], point)}
+        \Let{values[k]}{$\text{values[k]} + \text{weight} \times \text{surpluses[k]}$}
+      \EndFor
+    \EndFor
+
+    \State \textbf{return} values
+
+    \vspace{0.4em}
+  \end{algorithmic}
+\end{algorithm}
