@@ -53,9 +53,13 @@
 \usepackage{eqparbox}
 \renewcommand{\algorithmiccomment}[1]{\hfill\eqparbox{COMMENT}{// #1}}
 
-\newcommand*\Let[2]{\State #1 $\gets$ #2}
+\newcommand*\Let[2]{\State #1 := #2}
 \renewcommand{\algorithmicrequire}{\textbf{Input:}}
 \renewcommand{\algorithmicensure}{\textbf{Output:}}
+
+\renewcommand*\ttdefault{cmtt}
+\usepackage[T1]{fontenc}
+\newcommand{\token}[1]{\texttt{#1}}
 
 %
 % Mathematics

@@ -1,5 +1,5 @@
 \begin{algorithm}
-  \caption{Construct}
+  \caption{\emph{Construct} an interpolant for a function.}
   \alab{construct}
   \begin{algorithmic}[1]
     \vspace{0.4em}
@@ -9,25 +9,25 @@
 
     \vspace{0.4em}
 
-    \Let{level}{0} \Comment{The current level}
-    \Let{indices}{$\{ (\v{0}, \v{0}) \}$} \Comment{The current level-order pairs}
-    \Let{surrogate}{CreateEmpty()}
+    \Let{level}{0}
+    \Let{indices}{ComputeIndices(level)}
+    \Let{surrogate}{InitializeEmpty()}
 
     \Loop
       \Let{nodes}{ComputeNodes(indices)}
-      \Let{values}{Evaluate(target, nodes)}
-      \Let{interpolated\_values}{Interpolate(surrogate, nodes)}
+      \Let{values}{Execute(target, nodes)}
+      \Let{interpolated\_values}{Evaluate(surrogate, nodes)}
       \Let{surpluses}{$\text{values} - \text{interpolated\_values}$}
-      \State Append(surrogate, level, indices, surpluses)
-      \If{ResourceLimitReached?(surrogate)}
-        \State break
+      \State Append(surrogate, indices, surpluses)
+      \If{IsLimitReached(surrogate)}
+        \State \textbf{break}
       \EndIf
       \For{k \textbf{in range of} surpluses}
-        \If{AccurateEnough?(surpluses[k])}
+        \If{IsAccurateEnough(surpluses[k])}
           \State Exclude(indices, k)
         \EndIf
       \EndFor
-      \If{Empty?(indices)}
+      \If{IsEmpty(indices)}
         \State \textbf{break}
       \EndIf
       \Let{indices}{ComputeChildren(indices)}

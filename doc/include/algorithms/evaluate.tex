@@ -1,10 +1,10 @@
 \begin{algorithm}
-  \caption{Interpolate}
-  \alab{interpolate}
+  \caption{\emph{Evaluate} an interpolant at a set of points.}
+  \alab{evaluate}
   \begin{algorithmic}[1]
     \vspace{0.4em}
 
-    \Require{surrogate} \Comment{The approximation object}
+    \Require{surrogate} \Comment{The approximating object}
     \Require{points} \Comment{The points of interest}
     \Ensure{values} \Comment{The approximated values}
 
@@ -12,7 +12,7 @@
 
     \Let{indices}{GetIndices(surrogate)}
     \Let{surpluses}{GetSurpluses(surrogate)}
-    \Let{values}{AllocateZeroed()}
+    \Let{values}{InitializeZeroed()}
 
     \For{point \textbf{in} points}
       \For{k \textbf{in range of} indices}

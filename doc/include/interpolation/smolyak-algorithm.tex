@@ -31,7 +31,7 @@ $\Delta\tensor{0}(\f) := \tensor{0}(\f)$,
   \Delta\tensor{i}(\f) := (\tensor{i} - \tensor{i - 1})(\f), \qquad \text{for $i > 0$},
 \end{equation}
 and
-\begin{equation} \elab{tensor-delta-nd}
+\begin{equation} \elab{tensor-delta}
   \Delta\tensor{\vi}(\f) := (\Delta\tensor{i_1} \otimes \cdots \otimes \Delta\tensor{i_\nin})(\f).
 \end{equation}
 Then, \eref{smolyak} is identical to
@@ -88,7 +88,7 @@ the difference in the sum, which we denote by
 \end{equation}
 is zero whenever $\x^i_j \in \X^{i - 1}$. Since $\X^{i - 1} \subset \X^i$, we
 actually need to sum over the nodes in $\Delta\X^i$, which we shall write as
-\begin{equation} \elab{tensor-surplus}
+\begin{equation} \elab{tensor-surplus-1d}
   \Delta\tensor{i}(\f) = \sum_{\x^i_j \in \Delta\X^i} \surplus(\x^i_j) \, \e^i_j
 \end{equation}
 where $\e^i_j$ naturally corresponds to $\x^i_j$. The delta $\surplus(\x^i_j)$
@@ -96,11 +96,11 @@ in \eref{surplus} is referred to as a hierarchical surplus. When going from one
 level of interpolation to the next one, the surplus is nothing more than the
 difference between the actual value of $\f$ at a new collocation point and its
 approximation by the interpolant constructed so far. Multidimensional surpluses
-of $\f$ are constructed using \eref{tensor-surplus} and \eref{tensor-delta-nd}
-denoted by $\Delta\f(\vx^\vi_\vj)$.
+of $\f$ are constructed using \eref{tensor-surplus-1d} and
+\eref{tensor-delta} denoted by $\Delta\f(\vx^\vi_\vj)$.
 
 To summarize, assuming that collocation points and basis functions have been
 carefully chosen according to the criteria mentioned earlier, we have obtained
 an efficient algorithm for high-dimensional interpolation. The main equations
-are \eref{smolyak-incremental} and \eref{tensor-surplus}, which enable to
+are \eref{smolyak-incremental} and \eref{tensor-surplus-1d}, which enable to
 undertake the approximation in an incremental or hierarchical manner.

@@ -21,15 +21,15 @@ multi-indices specifying, respectively, the interpolation levels and node orders
 for all dimensions, and $\index(\vi) := \index(i_1) \times \cdots \times
 \index(i_\nin)$ is a set of multi-indices corresponding to the tensor-product
 structure. Further,
-\begin{align*}
-  \X^\vi &= \X^{i_1} \times \cdots \times \X^{i_\nin} \\
-         &= \left\{ \vx^\vi_\vj = (\x^{i_k}_{j_k}): \vj \in \index(\vi) \right\} \subset [0, 1]^\nin
-\end{align*}
+\begin{align}
+  \X^\vi &= \X^{i_1} \times \cdots \times \X^{i_\nin} \elab{collocation-nodes} \\
+         &= \left\{ \vx^\vi_\vj = (\x^{i_k}_{j_k}): \vj \in \index(\vi) \right\} \subset [0, 1]^\nin \nonumber
+\end{align}
 and
-\begin{align*}
-  \E^\vi &= \E^{i_1} \otimes \cdots \otimes \E^{i_\nin} \\
-         &= \left\{ \e^\vi_\vj = \e^{i_1}_{j_1} \otimes \cdots \otimes \e^{i_\nin}_{j_\nin}: \vj \in \index(\vi) \right\} \subset \continuous([0, 1]^\nin)
-\end{align*}
+\begin{align}
+  \E^\vi &= \E^{i_1} \otimes \cdots \otimes \E^{i_\nin} \elab{basis-functions} \\
+         &= \left\{ \e^\vi_\vj = \e^{i_1}_{j_1} \otimes \cdots \otimes \e^{i_\nin}_{j_\nin}: \vj \in \index(\vi) \right\} \subset \continuous([0, 1]^\nin) \nonumber
+\end{align}
 are the nodes and basis functions corresponding to the multi-index $\vi$,
 respectively.
 \begin{remark}
