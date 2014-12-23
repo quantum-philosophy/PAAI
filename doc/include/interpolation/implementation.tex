@@ -24,26 +24,70 @@ use of are not described as being self-explanatory.
 
 The input to \token{Construct}, \token{target}, is the function to be
 approximated. The output, \token{surrogate}, is a structure containing the
-artifacts mentioned earlier: indices and surpluses. The outermost loop on line~4
-corresponds to the increasing level of Smolyak's interpolation, which is denoted
-by $l$ in \eref{smolyak} and \eref{smolyak-incremental} and by \token{level} in
-the code. The \token{indices} variable is a working set containing the indexing
-pairs specific to the current level. The set is initially populated on line~2 by
-the indices of the zeroth level. For the open Newton--Cotes rule, it is the zero
-pair $(\v{0}, \v{0})$, which correspond to the root node $(0.5)_{i = 1}^\nin$
-and the basis function $\e^\v{0}_\v{0}(\vx) = 1$. \token{ComputeNodes} on line~5
-takes a set of indexing pairs and returns the corresponding nodes of the sparse
-grid; see \sref{collocation-nodes}. \token{Execute} on line~6 calls the target
-function at each of the given nodes and returns the corresponding values.
-\token{Evaluate} on line~7 uses the surrogate constructed so far in order to
-calculate an approximation to the values of \token{target} obtained on line~6;
-\token{Evaluate} is \aref{evaluate}, and it will be described separately.
-\token{Append} on line~9 ameliorates the surrogate by extending it with the
-indices and surpluses of the current iteration/level. The check on line~10 is to
-stop the algorithm when it reaches a limit on a resources such as the
-construction time, interpolation level, and total number of \token{target}'s
-invocations. The loop on line~14 iterates over the collocation nodes of the
-current level and identifies those nodes that need refinement.
+artifacts mentioned earlier: indices and surpluses. The key steps of
+\token{Construct} are as follows.
+
+\begin{compactlist}
+
+\point{Line~4:} The outermost loop corresponds to the increasing level of
+Smolyak's interpolation, which is denoted by $l$ in \eref{smolyak} and
+\eref{smolyak-incremental} and by \token{level} in the code. The \token{indices}
+variable is a working set containing the indexing pairs specific to the current
+level. The set is initially populated on line~2 by the indices of the zeroth
+level. For the open Newton--Cotes rule, it is the zero pair $(\v{0}, \v{0})$,
+which correspond to the root node $(0.5)_{i = 1}^\nin$ and the basis function
+$\e^\v{0}_\v{0}(\vx) = 1$.
+
+\point{Line~5:} \token{ComputeNodes} takes a set of indexing pairs and returns
+the corresponding (multidimensional) nodes of the underlying sparse grid; see
+\sref{collocation-nodes}.
+
+\point{Line~6:} \token{Execute} calls the target function at each of the given
+nodes and returns the corresponding values.
+
+\point{Line~7:} \token{Evaluate} uses the surrogate constructed so far in order
+to calculate an approximation to the values of \token{target} obtained on
+line~6; \token{Evaluate} is \aref{evaluate}, and it will be described
+separately.
+
+\point{Line~9:} \token{Append} ameliorates the surrogate by extending it with
+the indices and surpluses of the current iteration.
+
+\point{Line~10:} The check is to stop the algorithm when it reaches a limit on a
+resource such as the interpolation level and number of \token{target}'s
+invocations. Note that the latter example might not be precise to check at this
+particular point; a better precision can be achieved by trimming \token{indices}
+before \token{Execute}.
+
+\point{Line~13:} The loop iterates over the surpluses of the current level and
+identifies those indices that need refinement. \token{IsAccurateEnough}
+represents a refinement strategy and might not necessarily be solely based on
+the surpluses; see \sref{adaptivity}.
+
+\point{Line~18:} The check is to stop the algorithm when there is nothing left
+to refine, which is dictated by \token{IsAccurateEnough}.
+
+\point{Line~21:} \token{ComputeChildren} takes the indices selected for
+refinement and returns the corresponding child indices of the next level; see
+\fref{rule} and \sref{adaptivity}.
+
+\end{compactlist}
 
 \input{include/algorithms/evaluate}
-The pseudocode of the interpolating procedure is given in \aref{evaluate}.
+Let us now turn to the usage phase of interpolation. The corresponding
+pseudocode is given in \aref{evaluate} called \token{Evaluate}; this algorithm
+is also involved in the construction phase; see \aref{construct}, line~7. The
+main steps of \token{Evaluate} are given below.
+
+\begin{compactlist}
+
+\point{Line~5:} The loop directly corresponds to \eref{smolyak-incremental} and
+\eref{tensor-surplus-1d} with the only exception that, due to the adaptivity of
+the construction procedure, the loop is likely to contain only a subset of the
+summands in the aforementioned equations.
+
+\point{Line~6:} \token{ComputBasis} takes a pair $(\vi, \vj)$ and a point and
+returns the value of the (multidimensional) basis function corresponding to the
+pair evaluated at the point; see \sref{basis-functions}.
+
+\end{compactlist}
