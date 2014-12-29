@@ -11,11 +11,11 @@ The Smolyak interpolant for $\f$ is as follows:
 \begin{equation} \elab{smolyak}
   \smolyak{l}(\f) := \sum_{l - \nin + 1 \leq |\vi| \leq l} (-1)^{l - |\vi|} \, {\nin - 1 \choose l - |\vi|} \, \tensor{\vi}(\f)
 \end{equation}
-where $l \in \natural$ is the level of interpolation, and $|\vi| := i_1 + \dots
-+ i_\nin$. We see that the algorithm is indeed just a peculiar composition of
-cherry-picked tensor products. However, the formula has an implication of
-paramount importance: the quantity of interest needs to be exercised only at the
-nodes of the sparse grid underpinning \eref{smolyak}:
+where $l \in \natural$ is the level of Smolyak's interpolation, and $|\vi| :=
+i_1 + \dots + i_\nin$. We see that the algorithm is indeed just a peculiar
+composition of cherry-picked tensor products. However, the formula has an
+implication of paramount importance: the quantity of interest needs to be
+exercised only at the nodes of the sparse grid underpinning \eref{smolyak}:
 \begin{equation} \elab{smolyak-grid}
   \Y^l = \bigcup_{l - \nin + 1 \leq |\vi| \leq l} \X^\vi.
 \end{equation}
@@ -55,7 +55,7 @@ and
 \]
 Then, \eref{smolyak-grid} can be rewritten as
 \begin{equation} \elab{smolyak-grid-incremental}
-  \Y^l = \bigcup_{|\vi| \leq l} \Delta\X^i = \Y^{l - 1} \cup \bigcup_{|\vi| = l} \Delta\X^i,
+  \Y^l = \bigcup_{|\vi| \leq l} \Delta\X^\vi = \Y^{l - 1} \cup \bigcup_{|\vi| = l} \Delta\X^\vi,
 \end{equation}
 which is analogous to \eref{smolyak-incremental}. Now, we note that it is
 computationally beneficial to have $\X^{i - 1}$ be partially or entirely
@@ -68,10 +68,10 @@ dimension $k$ can be chosen to be nested, that is, in such a way that the rule
 of level $i_k$ contains all the nodes of the rule of level $i_k - 1$, for $k =
 2, 3, \dots, \nin$.
 
-Lastly, we would like to impose one additional property in order to make
-\eref{smolyak-incremental} well suited for practical implementations. Namely,
-interpolants of higher levels are required to represent exactly interpolants
-of lower levels:
+Lastly, we would like to impose one additional property on $\tensor{i}$ in order
+to enable hierarchical implementations of \eref{smolyak-incremental}. Namely,
+interpolants of higher levels are required to represent exactly interpolants of
+lower levels:
 \begin{equation} \elab{tensor-exactness}
   \tensor{i - 1}(\f) = \tensor{i}(\tensor{i - 1}(\f)).
 \end{equation}
@@ -93,14 +93,8 @@ actually need to sum over the nodes in $\Delta\X^i$, which we shall write as
 \end{equation}
 where $\e^i_j$ naturally corresponds to $\x^i_j$. The delta $\surplus(\x^i_j)$
 in \eref{surplus} is referred to as a hierarchical surplus. When going from one
-level of interpolation to the next one, the surplus is nothing more than the
+level of interpolation to the next one, a surplus is nothing more than the
 difference between the actual value of $\f$ at a new collocation point and its
 approximation by the interpolant constructed so far. Multidimensional surpluses
-of $\f$ are constructed using \eref{tensor-surplus-1d} and
-\eref{tensor-delta} denoted by $\Delta\f(\vx^\vi_\vj)$.
-
-To summarize, assuming that collocation points and basis functions have been
-carefully chosen according to the criteria mentioned earlier, we have obtained
-an efficient algorithm for high-dimensional interpolation. The main equations
-are \eref{smolyak-incremental} and \eref{tensor-surplus-1d}, which enable to
-undertake the approximation in an incremental or hierarchical manner.
+of $\f$ are constructed using \eref{tensor-surplus-1d} and \eref{tensor-delta}
+denoted by $\Delta\f(\vx^\vi_\vj)$.

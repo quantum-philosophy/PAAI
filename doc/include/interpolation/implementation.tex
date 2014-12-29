@@ -74,10 +74,10 @@ refinement and returns the corresponding child indices of the next level; see
 \end{compactlist}
 
 \input{include/algorithms/evaluate}
-Let us now turn to the usage phase of interpolation. The corresponding
-pseudocode is given in \aref{evaluate} called \token{Evaluate}; this algorithm
-is also involved in the construction phase; see \aref{construct}, line~7. The
-main steps of \token{Evaluate} are given below.
+Let us now turn to the usage phase of an interpolant. The corresponding
+pseudocode is given in \aref{evaluate}, which is called \token{Evaluate}. This
+algorithm is also involved in the construction phase; see \aref{construct},
+line~7. The main steps of \token{Evaluate} are given below.
 
 \begin{compactlist}
 
@@ -91,3 +91,6 @@ returns the value of the (multidimensional) basis function corresponding to the
 pair evaluated at the point; see \sref{basis-functions}.
 
 \end{compactlist}
+
+To conclude, \aref{construct} and \aref{evaluate} are ready for practical
+implementations of adaptive hierarchical sparse-grid interpolation.
