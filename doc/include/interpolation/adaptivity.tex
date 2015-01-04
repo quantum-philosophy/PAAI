@@ -8,7 +8,7 @@ first half alone would require much fewer collocation nodes than the other.
 However, if we followed the construction procedure described so far, we would
 not be able to benefit from this anisotropic behavior: we would treat both sides
 equally and would be adding all collocation nodes of each interpolation level we
-would step on, which are $\Y^l \setminus \Y^{l - 1} = \bigcup_{|\vi| = l}
+would step on, which are $\Y^l \setminus \Y^{l - 1} = \bigcup_{|\vi|_1 = l}
 \Delta\X^\vi$ for level $l$ as shown in \eref{smolyak-grid-incremental}.
 
 The answer to the two concerns is to make the construction algorithm adaptive.
@@ -22,12 +22,26 @@ Recall \eref{tensor-surplus-1d}. Hierarchical surpluses are a natural indicator
 of the interpolation error: as noted earlier, they are the difference between
 the true function and its current approximation at the nodes of the underlying
 sparse grid. Consequently, after computing the surpluses corresponding to the
-nodes of the current level, we can recycle their values in order to decide which
-of the nodes of the next level should be considered. Specifically, we shall
-select the neighbors of the nodes wherein the accuracy is still poor. In this
-regard, it is important to have an interpolation grid and basis functions that
-facilitate such a locally adaptive approximation, which will be discussed in the
-following two subsections.
+nodes of the current level, we can recycle the surpluses in order to decide
+which of the nodes are to be refined. The meaning of refinement will be
+discussed in \sref{collocation-nodes}; for the moment, we are only concerned
+with identifying ``problematic'' nodes. In this regards, one can adhere to
+various strategies \cite{ma2009}; in what follows, we shall discuss one of them.
+
+Let $\error_\absolute$ and $\error_\relative$ be the absolute and relative
+errors, respectively, representing the accuracy requirements for the problem at
+hand. Then, the node $\vx^\vi_\vj$ on level $l$ is to be refined if
+\begin{equation} \elab{absolute-error}
+  \left| \surplus_k(\vx^\vi_\vj) \right| > \error_\absolute
+\end{equation}
+or
+\begin{equation} \elab{relative-error}
+  \frac{\left| \surplus_k(\vx^\vi_\vj) \right|}{\max_{\vx \in \Z^l} \f_k(\vx) - \min_{\vx \in \Z^l} \f_k(\vx)} > \error_\relative
+\end{equation}
+for any $k = 1, \dots, \nout$ where $\f_k$ denotes the $k$th output of the
+quantity of interest $\f$. In \eref{relative-error}, the set $\Z^l \subseteq
+\Y^l$ is the nodes selected so far for interpolation, and the denominator is an
+estimation of the spread of $\f$ over the domain $[0, 1]^\nin$.
 
 To summarize, assuming that collocation points and basis functions have been
 carefully chosen, we have obtained an efficient algorithm for high-dimensional

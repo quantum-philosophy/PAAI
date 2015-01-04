@@ -62,7 +62,8 @@ before \token{Execute}.
 \point{Line~13:} The loop iterates over the surpluses of the current level and
 identifies those indices that need refinement. \token{IsAccurateEnough}
 represents a refinement strategy and might not necessarily be solely based on
-the surpluses; see \sref{adaptivity}.
+the surpluses. In our experiments, we use the technique shown in
+\eref{absolute-error} and \eref{relative-error}.
 
 \point{Line~18:} The check is to stop the algorithm when there is nothing left
 to refine, which is dictated by \token{IsAccurateEnough}.
