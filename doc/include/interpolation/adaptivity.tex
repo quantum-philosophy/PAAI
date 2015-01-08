@@ -7,8 +7,8 @@ natural to expect that, in order to achieve the same approximating accuracy, the
 first half alone would require much fewer collocation nodes than the other.
 However, if we followed the construction procedure described so far, we would
 not be able to benefit from this anisotropic behavior: we would treat both sides
-equally and would be adding all collocation nodes of each interpolation level we
-would step on, which are $\Y^l \setminus \Y^{l - 1} = \bigcup_{|\vi|_1 = l}
+equally and would add all collocation nodes of each interpolation level we would
+step on, which are $\Y^l \setminus \Y^{l - 1} = \bigcup_{|\vi|_1 = l}
 \Delta\X^\vi$ for level $l$ as shown in \eref{smolyak-grid-incremental}.
 
 The answer to the two concerns is to make the construction algorithm adaptive.
@@ -40,8 +40,8 @@ or
 \end{equation}
 for any $k = 1, \dots, \nout$ where $\f_k$ denotes the $k$th output of the
 quantity of interest $\f$. In \eref{relative-error}, the set $\Z^l \subseteq
-\Y^l$ is the nodes selected so far for interpolation, and the denominator is an
-estimation of the spread of $\f$ over the domain $[0, 1]^\nin$.
+\Y^l$ is the nodes selected so far for interpolation, and the denominator is a
+running estimate of the spread of $\f$ over $[0, 1]^\nin$.
 
 To summarize, assuming that collocation points and basis functions have been
 carefully chosen, we have obtained an efficient algorithm for high-dimensional

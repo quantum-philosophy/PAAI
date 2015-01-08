@@ -1,0 +1,14 @@
+In \sref{modeling}, we formalized the uncertainty originating from variable
+timing characteristics of multiprocessor systems and introduced a number of
+models of the quantities that the designer is typically interested in knowing.
+In the previous section, \sref{interpolation}, we were concerned with
+constructing an efficient approximant of a hypothetical multi-input multi-output
+function $\f$. In what follows, we shall amalgamate the ideas developed in the
+aforementioned two sections.
+
+Recall that the quantity of interest $\g$ is expensive to evaluate and, hence,
+is not suitable for Monte Carlo (\abbr{MC}) sampling. Recall also that $\g$ is
+parametrized by the random variables $\vz$ via the transformation
+$\transformation$, as discussed in \sref{problem-formulation} and
+\sref{uncertain-parameters}. The only source of randomness is $\vz$; the rest is
+purely deterministic.

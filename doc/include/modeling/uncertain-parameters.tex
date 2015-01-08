@@ -16,9 +16,8 @@ $\vu = \transformation(\vz)$ where
   \transformation: \real^\nu \to [0, 1]^\nz.
 \end{equation}
 The key point here is that, for any point $\vz \in [0, 1]^\nz$, we are able to
-compute the corresponding schedule $(\vb, \vd)$ of the system by $(\vb, \vd) =
-\schedule(\vu) = \schedule(\transformation(\vz))$ (see
-\sref{problem-formulation}).
+compute the corresponding $\vu$ and, consequently, the quantity of interest $\g$
+as $\g(\vu) = \g(\transformation(\vz))$; see \sref{problem-formulation}.
 
 We do not impose any restrictions on $\transformation$; however, we would like
 to be more specific in order to give a better intuition. To this end, we shall
@@ -77,10 +76,10 @@ Now, the transformation $\transformation$ in \eref{transformation} is
 where the \rvs\ $\vz = (\z_i)_{i = 1}^\nz$ are independent and uniformly
 distributed on $[0, 1]$; $\Phi$ and $\Phi^{-1}$ are the distribution function of
 the standard Gaussian distribution and its inverse, respectively, which are
-applied elementwise; and $\distribution_\vu^{-1} =
-(\distribution_{\u_i}^{-1})_{i = 1}^\nu$ are the inverse marginal distributions
-of $\vu$, each of which is applied to the corresponding element of the vector
-yielded by $\Phi$. To summarize, we have found such a transformation
+applied elementwise; and $\distribution_\vu^{-1} := \distribution_{\u_1}^{-1}
+\otimes \cdots \otimes \distribution_{\u_\nz}^{-1}$ are the inverse marginal
+distributions of $\vu$, each of which is applied to the corresponding element of
+the vector yielded by $\Phi$. To summarize, we have found such a transformation
 $\transformation$ along with the corresponding distribution $\distribution_\vz$
 that $\distribution_\vz$ (a) is defined on $[0, 1]^\nz$, (b) has the minimal
 number of dimensions to preserve $\eta$ portion of the variance, and (c) is

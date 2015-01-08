@@ -43,7 +43,9 @@ the corresponding (multidimensional) nodes of the underlying sparse grid; see
 \sref{collocation-nodes}.
 
 \point{Line~6:} \token{Execute} calls the target function at each of the given
-nodes and returns the corresponding values.
+nodes and returns the corresponding values. This is a prominent candidate for
+parallelization since each node can be evaluated independently from the rest and
+the target function is by far the most computationally intensive part.
 
 \point{Line~7:} \token{Evaluate} uses the surrogate constructed so far in order
 to calculate an approximation to the values of \token{target} obtained on
@@ -93,5 +95,10 @@ pair evaluated at the point; see \sref{basis-functions}.
 
 \end{compactlist}
 
-To conclude, \aref{construct} and \aref{evaluate} are ready for practical
-implementations of adaptive hierarchical sparse-grid interpolation.
+To recapitulate, in this section, we have presented the key component of the
+proposed framework for probabilistic analysis of multiprocessor systems: an
+efficient approach to multidimensional interpolation. The interpolation
+technique is based on the Smolyak algorithm, which enables the interpolation to
+be performed in an adaptive hierarchical manner, highly beneficial for practical
+computations. The overall technique has been consolidated in \aref{construct}
+and \aref{evaluate}.

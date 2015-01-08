@@ -1,14 +1,26 @@
-Let the vector $\vp(\t) = (p_i(\t))_{i = 1}^{\np}$ capture the power dissipation
-of the system at time $\t$. This vector should not be confused with the vector
-$\vp = (p_i)_{i = 1}^{\nt}$ introduced in \sref{problem-formulation}. The two
-are related as follows:
+The power consumption of the tasks is assumed to be fixed, and it is given by a
+vector $\vp = (\p_i)_{i = 1}^{\nt}$ wherein $\p_i$ is the power of the $i$th
+task. Note that the boundaries of a task have not been specified, and one can
+perform modeling at the level of granularity that makes the most sense for a
+particular problem.
+
+Let the vector $\vp(\t) = (\p_i(\t))_{i = 1}^{\np}$ capture the power
+dissipation of the system at time $\t$. This vector should not be confused with
+the vector $\vp$ introduced in the previous paragraph. The two are related as
+follows:
 \begin{equation} \elab{power}
-  p_i(\t) = \sum_{j = 1}^{\nt} \delta_{i\,m_j} \: \one_{[\b_j, \b_j + \d_j)}(\t) \: p_j,
+  \p_i(\t) = \sum_{j = 1}^{\nt} \delta_{i\,m_j} \: \one_{[\b_j, \b_j +
+    \d_j)}(\t) \: \p_j,
 \end{equation}
 for $i = 1, \dots, \np$, where $\delta_{ij}$ is the Kronecker delta and
 $\one_A(x)$ is the indicator function of a set $A$. In words, the above equation
 yields the power consumption of the task that is running on the $i$th processing
-element at time $\t$, if any.
+element at time $\t$, if any. Given a set of time instances, we can now use
+\eref{power} to construct the corresponding power profile of the system.
 
-Given a set of time instances, \eref{power} readily yields the corresponding
-power profile of the system.
+Having obtained time and power, it is straightforward to calculate energy. One
+can integrate \eref{power}; however, an easier approach is use $\vp$ and $\vd$
+directly:
+\[
+  \text{Total energy} = \vp^T \vd = \sum_{j = 1}^\nt \p_j \d_j.
+\]

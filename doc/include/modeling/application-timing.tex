@@ -1,6 +1,19 @@
-All timing characteristics can be found or derived from the tuple $(\vb, \vd)$.
-Examples include the completion times of the tasks and the end-to-end delay of
-the entire application. The latter, for instance, is
+The mapping of the application $\tasks$ onto the platform $\procs$ is assumed to
+be fixed, and it is given by a vector $\mapping = (m_i)_{i = 1}^{\nt}$ wherein
+$m_i \in \procs$ is the index of the processing element that the $i$th task is
+assigned to.
+
+Each task is ascribed two variables: one is the beginning of the task's
+execution time interval, and the other is the duration of this interval. For the
+$i$th task, denote the two variables by $\b_i$ and $\d_i$, respectively, and let
+$\vb = (\b_i)_{i=1}^{\nt}$ and $\vd = (\d_i)_{i=1}^{\nt}$. The tuple $(\vb,
+\vd)$ becomes completely known after the application has been scheduled and
+executed. We shall refer to the overall procedure as a scheduling procedure and
+denote it by $\schedule$.
+
+All timing characteristics of the system can be found or derived from the tuple
+$(\vb, \vd)$. Examples include the completion times of the tasks and the
+end-to-end delay of the entire application. The latter, for instance, is
 \[
-  \t_\text{end-to-end} = \max_{i = 1}^\nt \, (\b_i + \d_i).
+  \text{End-to-end delay} = \max_{i = 1}^\nt \, (\b_i + \d_i).
 \]
