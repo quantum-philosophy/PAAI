@@ -1,0 +1,19 @@
+Monte Carlo (\abbr{MC}) sampling is a simple yet powerful approach to
+uncertainty quantification. We would readily apply \abbr{MC} sampling to our
+quantity of interest $\g$ if only $\g$ had a negligible computational cost. Now,
+recall that $\g$ is parametrized by the uncertain parameters $\vu$, and these
+variables are the only source of randomness. Then, our solution to the
+aforementioned quandary is to (a) reparametrize $\g$ in terms of an auxiliary
+random vector $\vz$ extracted from $\vu$ (the necessary will become clear later
+on); (b) construct a light interpolant of $\g$, considering $\g$ as a
+deterministic function of $\vz$, by evaluating $\g$ only at a few strategically
+chosen nodes; and (c) use the constructed interpolant instead of $\g$ to perform
+\abbr{MC} sampling.
+
+Interpolation of high-dimensional functions is a challenging task \perse, and it
+should be approached with a great care. However, before doing so, one should
+also have a lucid understand of what the final goal of the subsequent analysis
+is and choose the subject function accordingly. The quantity of interest should
+be generally preprocessed in order to make interpolation efficient and easy to
+undertake. In this regard, domain-specific knowledge is invaluable. All these
+aspects will be discussed in detail in the rest of the paper.
