@@ -1,17 +1,17 @@
 The foremost step of our framework is to change the parametrization of the
 problem from the random vector $\vu = (\u_i)_{i = 1}^\nu \sim \distribution_\vu$
 to an auxiliary random vector $\vz = (\z_i)_{i = 1}^\nz \sim \distribution_\vz$
-such that (a) the domain of $\distribution_\vz$ is the unit hypercube $[0,
-1]^\nz$; (b) $\nz \leq \nu$ is minimal and yet sufficient to retain the desired
-level of accuracy; and (c) $\distribution_\vz$ is convenient for sampling. Goal
-(a) is normalization, which is done for clarity of the forthcoming discussions.
-Goal (b) is model-order reduction, which improves the computational efficiency
-of the mathematical tools that the proposed framework makes use of. The
-reduction is possible whenever there are dependencies between $(\u_i)$, in which
-case one can find such $(\z_i)_{i = 1}^\nz$, $\nz < \nu$, that each $\u_i$ is
-approximated by a function of $(\z_i)$. Goal (c) primarily asserts that the
-distribution of $\vz$ is known. We shall denote the overall transformation by
-$\vu = \transformation(\vz)$ where
+such that (i) the domain of $\distribution_\vz$ is the unit hypercube $[0,
+1]^\nz$; (ii) $\nz \leq \nu$ is minimal and yet sufficient to retain the desired
+level of accuracy; and (iii) $\distribution_\vz$ is convenient for sampling.
+Goal (i) is normalization, which is done for clarity of the forthcoming
+discussions. Goal (ii) is model-order reduction, which improves the
+computational efficiency of the mathematical tools that the proposed framework
+makes use of. The reduction is possible whenever there are dependencies between
+$(\u_i)$, in which case one can find such $(\z_i)_{i = 1}^\nz$, $\nz < \nu$,
+that each $\u_i$ is approximated by a function of $(\z_i)$. Goal (iii) primarily
+asserts that the distribution of $\vz$ is known. We shall denote the overall
+transformation by $\vu = \transformation(\vz)$ where
 \begin{equation} \elab{transformation}
   \transformation: \real^\nu \to [0, 1]^\nz.
 \end{equation}
@@ -81,6 +81,6 @@ applied elementwise; and $\distribution_\vu^{-1} := \distribution_{\u_1}^{-1}
 distributions of $\vu$, each of which is applied to the corresponding element of
 the vector yielded by $\Phi$. To summarize, we have found such a transformation
 $\transformation$ along with the corresponding distribution $\distribution_\vz$
-that $\distribution_\vz$ (a) is defined on $[0, 1]^\nz$, (b) has the minimal
-number of dimensions to preserve $\eta$ portion of the variance, and (c) is
+that $\distribution_\vz$ (i) is defined on $[0, 1]^\nz$, (ii) has the minimal
+number of dimensions to preserve $\eta$ portion of the variance, and (iii) is
 trivial to draw samples from, as it was required.
