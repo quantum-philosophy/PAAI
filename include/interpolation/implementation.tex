@@ -47,10 +47,10 @@ nodes and returns the corresponding values. This is a prominent candidate for
 parallelization since each node can be evaluated independently from the rest and
 the target function is by far the most computationally intensive part.
 
-\point{Line~7:} \token{Evaluate} uses the surrogate constructed so far in order
-to calculate an approximation to the values of \token{target} obtained on
-line~6; \token{Evaluate} is \aref{evaluate}, and it will be described
-separately.
+\point{Line~7:} \token{Evaluate} utilizes the surrogate constructed so far in
+order to calculate an approximation to the values of the target function
+obtained on line~6; \token{Evaluate} is \aref{evaluate}, and it will be
+described separately.
 
 \point{Line~9:} \token{Append} ameliorates the surrogate by extending it with
 the indices and surpluses of the current iteration.
