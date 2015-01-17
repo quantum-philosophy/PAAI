@@ -1,5 +1,5 @@
-Monte Carlo (\abbr{MC}) sampling is a simple yet powerful approach to
-uncertainty quantification. We would readily apply an \abbr{MC} method to our
+Computer experiments \cite{santner2003} are a powerful approach to uncertainty
+quantification. We would readily conduct a computer experiment to study our
 quantity of interest $\g$ if only $\g$ had a negligible computational cost. Now,
 recall that $\g$ is parametrized by the uncertain parameters $\vu$, and these
 variables are the only source of randomness. Then, our solution to the
@@ -8,7 +8,7 @@ random vector $\vz$ extracted from $\vu$ (the necessary will become clear later
 on); (ii) construct a light interpolant of $\g$, considering $\g$ as a
 deterministic function of $\vz$, by evaluating $\g$ only at a few strategically
 chosen nodes; and (iii) use the constructed interpolant instead of $\g$ to
-perform \abbr{MC} sampling.
+perform a computer experiment.
 
 Interpolation of high-dimensional functions is a challenging task \perse, and it
 should be approached with a great care. However, before doing so, one should

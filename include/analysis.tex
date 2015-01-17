@@ -7,16 +7,15 @@ shall amalgamate the ideas developed in the aforementioned two sections.
 
 Our solution has already been delineated in \sref{solution}. Given a quantity of
 interest $\g$ dependent on the uncertain parameters $\vu \in \real^\nu$, we
-reparametrize it in terms of $\vz \in [0, 1]^\nz$ and treat the resulting
-composition as a deterministic function $\f$ defined on the unit hypercube (see
-\sref{uncertain-parameters}). In other words, we let $\g \circ \transformation$
-in \sref{modeling} be $\f$ in \sref{interpolation}. Next, we construct a light
-interpolant for $\f = \g \circ \transformation$. Finally, we proceed in the
-usual \abbr{MC} fashion by picking one of MC methods, sampling the interpolant
-accordingly, and estimating the desired statistics about $\g$. For instance,
-having collected a sufficiently large number of samples, one can perform kernel
-density estimation in order to estimate the probability density function of the
-quantity of interest. Furthermore, probabilistic moments and probabilities of
+reparametrize it in terms of the \rvs\ $\vz \in [0, 1]^\nz$ via the
+transformation $\transformation$ and construct an interpolant for the resulting
+composition $\g \circ \transformation$, treating it a deterministic function
+$\f$ defined on the unit hypercube (see \sref{uncertain-parameters}). We then
+proceed to designing and undertaking a computer experiment, which boils down to
+sampling the interpolant and estimating the desired statistics about $\g$. For
+instance, having collected a sufficiently large number of samples, one can
+perform kernel density estimation in order to estimate the probability density
+function of $\g$. Furthermore, probabilistic moments and probabilities of
 certain events can be estimated in a straightforward manner by algebraic
 averaging.
 

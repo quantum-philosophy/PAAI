@@ -1,3 +1,28 @@
+Computer experiments \cite{santner2003} are a powerful approach to uncertainty
+quantification. The most popular strategies include Monte Carlo (\abbr{MC})
+sampling, quasi-\abbr{MC} sampling, and Latin hypercube sampling. Compared to
+other techniques for probabilistic analysis, computer experiments are
+straightforward to undertake. The system at hand is treated as completely
+opaque, and one only has to simulate it a sufficient number of times in order to
+draw cogent conclusions about the system's behavior.
+
+Consider, for instance, the classical \abbr{MC} sampling. \abbr{MC} sampling is
+arguably the most famous and versatile approach to the analysis of stochastic
+systems. The technique was introduced in the middle of the twentieth century and
+since then has expanded into a broad family of methods that have had a
+tremendous impact both in academia and in terms of industrial breakthroughs. The
+success of \abbr{MC} sampling is due to the ease of implementation, independence
+of the stochastic dimensionality, and asymptotic behavior of the quantities
+estimated using this approach (the law of large numbers).
+
+The major problem with sampling techniques, however, is in sampling: one should
+be able to collect a sufficiently large number of realizations of the quantity
+of interest in order to draw sound conclusions with respect to this quantity.
+The main concern here is: How many samples can we afford drawing? How long does
+it take to obtain one sample? How much does it cost? When the subject under
+analysis is expensive---in any sense that matters to the problem at
+hand---computer experiments are rendered as slow and often infeasible.
+
 The work is based on work in \cite{klimke2006} and \cite{ma2009}.
 
 The approach belongs to the class of stochastic collocation techniques
@@ -7,4 +32,11 @@ contrasted with other techniques such as polynomial chaos expansions relying on
 regression. The application of popular polynomial expansions is limited in this
 case due to the non-smoothness of the response surface.
 
-The remainder of the paper is organized as follows.
+The remainder of the paper is organized as follows. Section~\ref{sec:prior-work}
+provides an overview of the prior work. In \sref{present-work}, we summarize the
+contribution of the present paper. The preliminaries are given in
+\sref{preliminaries}. The objective of our study is formulated in
+\sref{problem-formulation}. The proposed framework is presented in
+\sref{modeling}, \sref{interpolation}, and \sref{analysis}. The experimental
+results are reported and discussed in \sref{experimental-results}, and
+\sref{conclusion} concludes the paper.
