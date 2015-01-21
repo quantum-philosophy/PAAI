@@ -2,7 +2,7 @@ In \sref{modeling}, we formalized the uncertainty affecting the timing
 characteristics of multiprocessor systems and introduced a number of quantities
 $\g$ that the designer is typically interested in knowing. In the previous
 section, \sref{interpolation}, we were concerned with constructing efficient
-approximations of hypothetical multi-input multi-output functions $\f$. Now, we
+approximations of hypothetical multi-input multi-output functions $\f$. Now we
 shall amalgamate the ideas developed in the aforementioned two sections.
 
 Our solution has already been delineated in \sref{solution}. Given a quantity of
@@ -11,19 +11,49 @@ reparametrize it in terms of the \rvs\ $\vz \in [0, 1]^\nz$ via the
 transformation $\transformation$ and construct an interpolant for the resulting
 composition $\g \circ \transformation$, treating it a deterministic function
 $\f$ defined on the unit hypercube (see \sref{uncertain-parameters}). We then
-proceed to designing and undertaking a computer experiment, which boils down to
-sampling the interpolant and estimating the desired statistics about $\g$. For
-instance, having collected a sufficiently large number of samples, one can
-perform kernel density estimation in order to estimate the probability density
-function of $\g$. Furthermore, probabilistic moments and probabilities of
-certain events can be estimated in a straightforward manner by algebraic
-averaging.
+design and undertake a computer experiment, which boils down to sampling the
+interpolant and estimating the desired statistics about $\g$. For instance,
+having collected a sufficiently large number of samples, one can perform kernel
+density estimation in order to estimate the probability density function of
+$\g$. Furthermore, probabilistic moments and probabilities of certain events can
+be straightforwardly estimated by algebraic averaging.
+
+\begin{remark}
+Many important statistics about $\g$ are integrals with respect to some $h(\g)$
+weighted by the probability density function of $\g$ and computed over a certain
+portion of the domain of $\g$. For instance, by letting $h(\g) = \g$ and
+integrating over the whole domain, we obtain the expected value of $\g$, which
+can be seen in \eref{expectation}. Now, recall the following two facts. First,
+as shown in \sref{uncertain-parameters}, $\g$ can be reparametrized in terms of
+independent variables uniformly distributed on $[0, 1]^\nz$. Second, the
+interpolation presented in this paper yields a piecewise linear function. Since
+the two facts make mathematics very convenient, it is possible to obtain
+analytical formulae for certain statistics such as expectation and variance; see
+\cite{ma2009}.
+\end{remark}
 
 There is, however, one class of quantities that deserves separate attention.
-This class comprises dynamic characteristics of multiprocessor systems. Imagine,
-for instance, a temperature profile $\mQ \in \real^{\np \times \ns}$, which is a
-matrix wherein each row tracks the evolution of temperature of a processing
-element over time with a certain sample rate. With $\np$ processing elements and
-$\ns$ time moments, the total (output) dimensionality of the quantity of
+This class comprises time series, which capture dynamics of multiprocessor
+systems. Imagine, for instance, a temperature profile $\mQ \in \real^{\np \times
+\ns}$, which is a matrix wherein each row tracks the evolution of temperature of
+a processing element over time with a certain sample rate. With $\np$ processing
+elements and $\ns$ time moments, the output dimensionality of the quantity of
 interest is $\np\ns$, which is also the dimensionality of the surpluses that
-\aref{construct} and \aref{evaluate} operate with.
+\aref{construct} and \aref{evaluate} operate with. The most prominent
+shortcoming is a high memory usage. At the same time, one can note that the
+interpolation algorithm treats each output of the quantity of interest as being
+independent from the rest. However, treating a data point of a time series as
+being completely unrelated to its neighbor points is a clear loss of
+information.
+
+In order to eliminate the above-mentioned shortcoming, for dynamic quantities of
+interest, we propose considering time as an additional input dimension for
+interpolation. As a result, the output dimensionality drops substantially: from
+$\np\ns$ to $\np$. For this to happen, the time interval of interest should be
+scaled up or down to $[0, 1]$, just as any other input parameter. It is worth
+noting, however, that the length of this interval should be known/fixed in order
+to undertake the scaling. Consequently, such uncertain intervals as the total
+duration of the application cannot be considered directly as they are unknown
+beforehand (see \sref{application-timing}), and one should decide on sensible
+estimates. This aspect, however, is a minor concern in practice as only the very
+tails of the time series might get affected.
