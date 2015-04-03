@@ -1,37 +1,42 @@
-Denote the mapping of the application $\tasks$ onto the platform $\procs$ by the
+Denote the mapping of the application $\tasks$ onto the platform $\procs$ by a
 vector $\mapping = (m_i)_{i = 1}^{\nt}$ wherein $m_i \in \procs$ is the index of
-the processing element that the $i$th task is assigned to. Let the power
-consumption of the tasks be fixed during their execution and given by the vector
-$\vp = (\p_i)_{i = 1}^{\nt}$ wherein $\p_i$ is the power of the $i$th task. Note
-that the boundaries of a task have not been specified, and one can perform
-modeling at the level of granularity that makes the most sense for a particular
-problem.
+the processing element that the $i$th task is assigned to. Let the dynamic power
+consumption of the tasks be fixed during their execution and given by a vector
+$\vp^\dynamic = (\p^\dynamic_i)_{i = 1}^{\nt}$ wherein $\p^\dynamic_i$ is the
+dynamic power of the $i$th task.
 
-Let the time-dependent vector $\vp(\t) = (\p_i(\t))_{i = 1}^{\np}$ represent the
-power dissipation of the system at time $\t$. This vector should not be confused
-with the vector $\vp$ introduced in the previous paragraph. The two are related
-as follows:
+\begin{remark}
+The boundaries of a task have not been specified, and one can perform modeling
+at the level of granularity that makes the most sense for a particular problem.
+\end{remark}
+
+Let a time-dependent vector $\vp(\t) = (\p_i(\t))_{i = 1}^{\np}$ capture the
+total power consumption of the system at time $\t$. This vector should not be
+confused with the vector $\vp^\dynamic$ introduced in the previous paragraph.
+The two are related as follows:
 \begin{equation} \elab{power}
-  \p_i(\t) = \sum_{j = 1}^{\nt} \delta_{i\,m_j} \: \one_{[\b_j, \b_j +
-    \d_j)}(\t) \: \p_j,
+  \p_i(\t) = \sum_{j = 1}^\nt \p^\dynamic_j \: \delta_{i\,m_j} \: \one_{[\b_j, \b_j + \d_j)}(\t) + \p^\static_i(\t, \q_i(\t)),
 \end{equation}
-for $i = 1, \dots, \np$, where $\delta_{ij}$ is the Kronecker delta and
-$\one_A(x)$ is the indicator function of a set $A$. In words, the above equation
-yields the power consumption of the task that is running on the $i$th processing
-element at time $\t$, if any.
+for $i = 1, \dots, \np$, where $\delta_{ij}$ is the Kronecker delta, $\one_A(x)$
+is the indicator function of a set $A$, and $\p^\static_i$ is the static power
+consumption of the $i$th processing element, which depends \cite{liu2007} on the
+instant temperature of that processing element denoted by $\q_i$ (see the next
+subsection). In words, the above equation yields the dynamic power of the task
+running on the $i$th processing element at time $\t$, if any, plus the static
+power.
 
-Given a time span to analysis and having chosen a sampling interval, we can now
-use \eref{power} to construct the corresponding power profile $\mP \in
-\real^{\np \times \ns}$ of the system, which is essentially a matrix whose $i$th
-row captures the evolution of the power consumption of the $i$th processing
-element at $\ns$ time instances.
+Given a set of time moments of interest, \eref{power} can be used to construct
+the corresponding power profile $\mP \in \real^{\np \times \ns}$ of the system,
+which is essentially a matrix whose $i$th row captures the evolution of the
+power consumption of the $i$th processing element over $\ns$ time moments.
 
-Another highly valuable quantity, which can be straightforwardly calculated at
-this point, is energy. One can integrate \eref{power}; however, an easier
-approach is use $\vp$ and $\vd$ directly:
-\begin{equation} \elab{total-energy}
-  \text{Total energy} = \vp^T \vd = \sum_{j = 1}^\nt \p_j \d_j.
-\end{equation}
+Another highly valuable quantity, which can be calculated at this point, is the
+total energy consumption. To this end, \eref{power} has to be integrated over
+the time span of the application:
+\begin{align}
+  \text{Total energy} &= \sum_{i = 1}^\np \int \p_i(\t) \, d\t \elab{total-energy} \\
+                      &= \vd^T \vp^\dynamic + \sum_{i = 1}^\np \int \p^\static_i(\t, \q_i(\t)) \, d\t. \nonumber
+\end{align}
 
-The above quantity as well as the whole power profile $\mP$ are candidates for
-$\g$. In the latter case, $\g$ has $\np \ns$ outputs.
+A power profile $\mP$ as well as the above quantity are candidates for $\g$. In
+the former case, $\g$ has $\np \ns$ outputs.
