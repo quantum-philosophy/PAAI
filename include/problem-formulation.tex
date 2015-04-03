@@ -6,31 +6,30 @@ what follows, the system will be denoted by $(\procs, \tasks)$.
 
 The designer is assumed to be interested in studying a quantity $\g$ that
 characterizes the system described above. The examples include the end-to-end
-delay, average power, total energy, maximal temperature, and power and
-temperature profiles (data matrices representing discrete snapshots of the
-system's dynamics). The quantity $\g$, referred to as the quantity of interest,
-depends on a set of parameters that are uncertain at the design stage. In this
-work, we focus on those parameters that affect the timing characteristics of the
-system such as the execution times of the tasks. The uncertain parameters are
-modeled as a random vector $\vu = (\u_i)_{i = 1}^\nu$ with distribution
-$\distribution_\vu$. It is important to note that the dependency of $\g$ on
-$\vu$, written as $\g(\vu)$, inevitably implies that $\g$ is random for the
-designer; however, for a given $\vu$, $\g$ is assumed to be purely
-deterministic. Then, the characterization of $\g$ refers to the estimation of
-the probability distribution of $\g$, which implicitly delivers all other
-quantities such as probabilities, expectations, and variances.
+delay, total energy, maximal temperature, and power and temperature profiles.
+The quantity $\g$, referred to as the quantity of interest, depends on a set of
+parameters that are uncertain at the design stage. In this work, we focus on
+system-level parameters such as the execution times of the tasks. The uncertain
+parameters are modeled as a random vector $\vu = (\u_i)_{i = 1}^\nu$ with
+distribution $\distribution_\vu$. It is important to note that the dependency of
+$\g$ on $\vu$, written as $\g(\vu)$, inevitably implies that $\g$ is random to
+the designer; however, for a given $\vu$, $\g$ is purely deterministic. Then,
+the characterization of $\g$ refers to the estimation of the probability
+distribution of $\g$, which implies the availability of such quantities as the
+expected value, variance, and probabilities of arbitrary events.
 
 Lastly, for a given $\vu$, the evaluation of $\g$ is assumed to be doable but
-expensive (computationally or otherwise). If it was cheap, one could collect
-thousands of independent samples of $\g$ and compute all the needed statistics
-about $\g$ without involving any framework like the one presented in this paper.
+computationally or otherwise expensive. If the cost of $\g$ was negligible, one
+could collect thousands of independent samples of $\g$ and compute the required
+statistics about $\g$ without involving any framework like the one presented in
+this paper.
 
 We pursue the following major objectives:
 \begin{itemize}
 
-\item \textbf{Objective~1.} Develop a framework for probabilistic analysis of
-  the quantity of interest $\g$ characterizing the system $(\procs, \tasks)$
-  such that the uncertainty originating from the parameters $\vu$ is taken into
-  consideration.
+\item \textbf{Objective~1.} Develop an efficient framework for probabilistic
+  analysis of the quantity of interest $\g$ characterizing the system $(\procs,
+  \tasks)$ such that the uncertainty originating from the parameters $\vu$ is
+  taken into consideration.
 
 \end{itemize}
