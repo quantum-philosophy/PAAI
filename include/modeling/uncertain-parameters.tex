@@ -1,34 +1,32 @@
-The foremost step of our framework is to change the parametrization of the
+The foremost step of our framework is to change the parameterization of the
 problem from the random vector $\vu = (\u_i)_{i = 1}^\nu \sim \distribution_\vu$
 to an auxiliary random vector $\vz = (\z_i)_{i = 1}^\nz \sim \distribution_\vz$
-such that (i) the domain of $\distribution_\vz$ is the unit hypercube $[0,
-1]^\nz$; (ii) $\nz \leq \nu$ is minimal and yet sufficient to retain the desired
-level of accuracy; and (iii) $\distribution_\vz$ is convenient for sampling.
-Goal (i) is normalization, which is done for clarity of the forthcoming
-discussions. Goal (ii) is model-order reduction, which improves the
-computational efficiency of the mathematical tools that the proposed framework
-makes use of. The reduction is possible whenever there are dependencies between
-$(\u_i)$, in which case one can find such $(\z_i)_{i = 1}^\nz$, $\nz < \nu$,
-that each $\u_i$ is approximated by a function of $(\z_i)$. Goal (iii) primarily
-asserts that the distribution of $\vz$ is known. We shall denote the overall
-transformation by $\vu = \transformation(\vz)$ where
+such that (i) the support of $\distribution_\vz$ is the unit hypercube $[0,
+1]^\nz$, and (ii) $\nz \leq \nu$ has the smallest value needed to retain the
+desired level of accuracy. Goal (i) is standardization, which is done primarily
+for convenience. Goal (ii) is model-order reduction, which identifies and
+eliminates excessive complexity and, hence, speeds up the proposed framework.
+The reduction is possible whenever there are dependencies between $(\u_i)$, in
+which case one can find such $(\z_i)_{i = 1}^\nz$, $\nz < \nu$, that each $\u_i$
+can be recovered from $(\z_i)$. We shall denote the overall transformation by
+$\vu = \transformation(\vz)$ where
 \begin{equation} \elab{transformation}
   \transformation: \real^\nu \to [0, 1]^\nz.
 \end{equation}
-The key point here is that, for any point $\vz \in [0, 1]^\nz$, we are able to
-compute the corresponding $\vu$ and, consequently, the quantity of interest $\g$
-as $\g(\vu) = \g(\transformation(\vz))$; see \sref{problem-formulation}.
+Now, for any point $\vz \in [0, 1]^\nz$, we are able to compute the
+corresponding $\vu$ and, consequently, the quantity of interest $\g$ as $\g(\vu)
+= \g(\transformation(\vz))$; see \sref{problem-formulation}.
 
 We do not impose any restrictions on $\transformation$; however, we would like
-to be more specific in order to give a better intuition. To this end, we shall
-assume that the distribution of $\vu = (\u_i)_{i = 1}^\nu$, $\distribution_\vu$,
-is given as a set of marginal distribution functions
+to make it specific in order to give a better intuition. To this end, we begin
+by assuming that the distribution of $\vu = (\u_i)_{i = 1}^\nu$,
+$\distribution_\vu$, is given as a set of marginal distribution functions
 \[
   \{ \distribution_{\u_i}: i = 1, \dots, \nu \}
 \]
 and a copula \cite{nelsen2006}. The copula is a uniform distribution function on
 $[0, 1]^\nu$ that captures the dependencies between $(\u_i)$. Furthermore, the
-copula is assumed to be a Gaussian copula whose correlation matrix is
+copula is assumed to be a Gaussian copula whose correlation matrix is denote by
 $\correlation \in \real^{\nu \times \nu}$.
 
 \begin{remark}
@@ -41,7 +39,7 @@ of $\vu$, although they are not sufficient to recover the joint of $\vu$ in
 general. One prominent solution is to approximate the joint by accompanying the
 available marginals by a Gaussian copula constructed based on the available
 correlation matrix (see, \eg, \cite{ukhov2014}). This common scenario motivates
-our choice of marginals and a Gaussian copula as an input to the framework.
+our choice of marginals and a Gaussian copula for illustration.
 \end{remark}
 
 The number of variables, which is so far $\nu$, has a significant impact on the
@@ -54,14 +52,14 @@ and symmetric, $\correlation$ admits the eigendecomposition:
   \correlation = \m{V} \m{\Lambda} \m{V}^T
 \]
 where $\m{V} \in \real^{\nu \times \nu}$ is an orthogonal matrix of the
-eigenvectors of $\correlation$ and $\m{\Lambda} = \diag(\lambda_i)_{i = 1}^\nu$
+eigenvectors of $\correlation$, and $\m{\Lambda} = \diag(\lambda_i)_{i = 1}^\nu$
 is a diagonal matrix of the eigenvalues of $\correlation$. The eigenvalues
 $(\lambda_i)$ correspond to the variances of the corresponding components
-revealed by the decomposition. Then, model-order reduction boils down to
-selecting those components whose cumulative contributions to the total variance
-is above a predefined threshold. Formally, assuming that $(\lambda_i)$ are
-sorted in the descending order and given a threshold $\eta \in (0, 1]$, we
-identify the smallest $\nz$ such that
+revealed by the decomposition. The model-order reduction boils down to selecting
+those components whose cumulative contributions to the total variance is above a
+certain threshold. Formally, assuming that $(\lambda_i)$ are sorted in the
+descending order and given a threshold parameter $\eta \in (0, 1]$, we identify
+the smallest $\nz$ such that
 \[
   \frac{\sum_{i = 1}^\nz \lambda_i}{\sum_{i = 1}^\nu \lambda_i} \geq \eta.
 \]
@@ -80,10 +78,10 @@ applied elementwise; and $\distribution_\vu^{-1} := \distribution_{\u_1}^{-1}
 \otimes \cdots \otimes \distribution_{\u_\nz}^{-1}$ are the inverse marginal
 distributions of $\vu$, each of which is applied to the corresponding element of
 the vector yielded by $\Phi$. To summarize, we have found such a transformation
-$\transformation$ along with the corresponding distribution $\distribution_\vz$
-that $\distribution_\vz$ (i) is defined on $[0, 1]^\nz$, (ii) has the minimal
-number of dimensions to preserve $\eta$ portion of the variance, and (iii) is
-trivial to draw samples from, as it was required.
+$\transformation$ and the corresponding distribution $\distribution_\vz$ such
+that $\distribution_\vz$ (i) is defined on $[0, 1]^\nz$ and (ii) has the minimal
+number of dimensions to preserve $\eta$ portion of the variance. Besides,
+$\distribution_\vz$ is trivial to draw samples from.
 
 \begin{remark}
   In the absence of correlations, \eref{transformation} is simply $\vu =
