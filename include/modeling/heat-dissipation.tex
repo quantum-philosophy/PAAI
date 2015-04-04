@@ -6,34 +6,33 @@ processing element is mapped onto one corresponding node, and the thermal
 package is represented as a set of additional nodes.
 
 The thermal dynamics of the system are modeled using the following system of
-differential-algebraic equations \cite{ukhov2012, ukhov2014}:
+differential-algebraic equations \cite{ukhov2014, ukhov2012}:
 \begin{subnumcases}{\elab{thermal-system}}
   \mC \frac{d\vs(\t)}{d\t} + \mG \vs(\t) = \mM \vp(\t) \elab{thermal-system-ode} \\
   \vq(\t) = \mM^T \vs(\t) + \vq_\ambient
 \end{subnumcases}
 The coefficients $\mC \in \real^{\nn \times \nn}$ and $\mG \in \real^{\nn \times
 \nn}$ are a diagonal matrix of thermal capacitance and a symmetric,
-positive-definite matrix of thermal conductance, respectively. The vectors
-$\vp(\t) \in \real^\np$, $\vq(\t) \in \real^\np$, and $\vs(\t) \in \real^\nn$
-are the power consumption (given in \eref{power}), temperature, and internal
-state of the system at time $\t$, respectively; all three are random due to the
-dependency on $\vu$. The vector $\vq_\ambient \in \real^\np$ contains the
-ambient temperature. The matrix $\mM \in \real^{\nn \times \np}$ is a mapping
-that distributes the power dissipation of the processing elements across the
-thermal nodes; without loss of generality, $\mM$ is a rectangular diagonal
-matrix whose diagonal elements are equal to unity.
+positive-definite matrix of thermal conductance, respectively. The vector
+$\vq(\t) \in \real^\np$ represents the temperature of the system at time $\t$
+while $\vs(\t) \in \real^\nn$ is the system's internal state at that moment. The
+vector $\vq_\ambient \in \real^\np$ contains the ambient temperature. The matrix
+$\mM \in \real^{\nn \times \np}$ is a mapping that distributes the power
+consumption of the processing elements across the thermal nodes; without loss of
+generality, $\mM$ is a rectangular diagonal matrix whose diagonal elements are
+equal to unity.
 
-As noted with respect to power, given a time span and a sampling interval,
-\eref{thermal-system} can be utilized to compute the temperature profile $\mQ
-\in \real^{\np \times \ns}$ of the system, which might serve as an $\np
-\ns$-dimensional quantity of interest $\g$.
-
-Given a temperature profile $\mQ = (\q_{ij})$, the maximal temperature of the
-system can be estimated as follows:
+As noted with respect to power, given a set of time instances $\{ \t_i \}_{i =
+1}^\ns$, \eref{thermal-system} can be utilized to compute a temperature profile
+$\mQ \in \real^{\np \times \ns}$ of the system. Another example is the maximal
+temperature, which can be estimated as follows:
 \[
-  \text{Maximal temperature} = \max_{i, j} \q_{ij},
+  \text{Maximal temperature} = \max_{i, \t} \q_i(\t).
 \]
-which is yet another potential quantity of interest $\g$.
+
+Assuming that temperature depends on $\vu$---which is the case whenever, for
+instance, the power consumption depends on $\vu$---a temperature profile as well
+as the maximal temperature can be considered as quantities of interest $\g$.
 
 \begin{remark}
 We do not cover dynamic steady-state temperature analysis \cite{ukhov2012} in

@@ -15,28 +15,29 @@ total power consumption of the system at time $\t$. This vector should not be
 confused with the vector $\vp^\dynamic$ introduced in the previous paragraph.
 The two are related as follows:
 \begin{equation} \elab{power}
-  \p_i(\t) = \sum_{j = 1}^\nt \p^\dynamic_j \: \delta_{i\,m_j} \: \one_{[\b_j, \b_j + \d_j)}(\t) + \p^\static_i(\t, \q_i(\t)),
+  \p_i(\t) = \sum_{j = 1}^\nt \p^\dynamic_j \: \delta_{i\,m_j} \: \one_{[\b_j, \b_j + \d_j)}(\t) + \p^\static_i(\t),
 \end{equation}
 for $i = 1, \dots, \np$, where $\delta_{ij}$ is the Kronecker delta, $\one_A(x)$
-is the indicator function of a set $A$, and $\p^\static_i$ is the static power
-consumption of the $i$th processing element, which depends \cite{liu2007} on the
-instant temperature of that processing element denoted by $\q_i$ (see the next
-subsection). In words, the above equation yields the dynamic power of the task
-running on the $i$th processing element at time $\t$, if any, plus the static
-power.
+is the indicator function of a set $A$, and $\p^\static_i(\t)$ is the static
+power consumed at time $\t$. The last one varies over time due to the
+interdependence between the leakage power and temperature \cite{liu2007}. In
+words, the above equation yields the dynamic power of the task running on the
+$i$th processing element at time $\t$ (if any) plus the static power at that
+moment.
 
-Given a set of time moments of interest, \eref{power} can be used to construct
-the corresponding power profile $\mP \in \real^{\np \times \ns}$ of the system,
-which is essentially a matrix whose $i$th row captures the evolution of the
-power consumption of the $i$th processing element over $\ns$ time moments.
-
-Another highly valuable quantity, which can be calculated at this point, is the
-total energy consumption. To this end, \eref{power} has to be integrated over
-the time span of the application:
+Given a set of points $\{ \t_i \}_{i = 1}^\ns$ on the timeline, \eref{power} can
+be used to construct a power profile $\mP \in \real^{\np \times \ns}$ of the
+system, which is essentially a matrix whose $i$th row captures the evolution of
+the power consumption of the $i$th processing element over the $\ns$ time
+moments. Another valuable quantity, which can be calculated at this point, is
+the total energy consumed by the system. To this end, \eref{power} has to be
+integrated over the time span of the application:
 \begin{align}
   \text{Total energy} &= \sum_{i = 1}^\np \int \p_i(\t) \, d\t \elab{total-energy} \\
-                      &= \vd^T \vp^\dynamic + \sum_{i = 1}^\np \int \p^\static_i(\t, \q_i(\t)) \, d\t. \nonumber
+                      &= \vd^T \vp^\dynamic + \sum_{i = 1}^\np \int \p^\static_i(\t) \, d\t. \nonumber
 \end{align}
 
-A power profile $\mP$ as well as the above quantity are candidates for $\g$. In
-the former case, $\g$ has $\np \ns$ outputs.
+Assuming that the power consumption depends on $\vu$---which is the case when,
+for instance, the tuple $(\vb, \vd)$ depends on $\vu$---a power profile as well
+as the total energy are candidates for $\g$. In the former case, $\g$ has $\np
+\ns$ dimensions.
