@@ -15,22 +15,22 @@
 
     \Loop
       \Let{nodes}{ComputeNodes(indices)}
-      \Let{values}{Execute(target, nodes)}
-      \Let{interpolated\_values}{Evaluate(surrogate, nodes)}
-      \Let{surpluses}{$\text{values} - \text{interpolated\_values}$}
+      \Let{values}{Invoke(target, nodes)}
+      \Let{approximations}{Evaluate(surrogate, nodes)}
+      \Let{surpluses}{$\text{values} - \text{approximations}$}
       \State Append(surrogate, indices, surpluses)
-      \If{IsLimitReached(surrogate)}
+      \If{IsEnough(surrogate)}
         \State \textbf{break}
       \EndIf
       \For{k \textbf{in range of} indices}
-        \If{IsAccurateEnough(surpluses[k])}
+        \If{IsAccurate(surpluses[k])}
           \State Exclude(indices, k)
         \EndIf
       \EndFor
       \If{IsEmpty(indices)}
         \State \textbf{break}
       \EndIf
-      \Let{indices}{ComputeChildren(indices)}
+      \Let{indices}{Refine(indices)}
       \Let{level}{$\text{level} + 1$}
     \EndLoop
 

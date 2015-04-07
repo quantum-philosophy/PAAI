@@ -42,7 +42,7 @@ $\e^\v{0}_\v{0}(\vx) = 1$.
 the corresponding (multidimensional) nodes of the underlying sparse grid; see
 \sref{collocation-nodes}.
 
-\point{Line~6:} \token{Execute} calls the target function at each of the given
+\point{Line~6:} \token{Invoke} calls the target function at each of the given
 nodes and returns the corresponding values. This is a prominent candidate for
 parallelization since each node can be evaluated independently from the rest and
 the target function is by far the most computationally intensive part.
@@ -59,7 +59,7 @@ the indices and surpluses of the current iteration.
 resource such as the interpolation level and number of \token{target}'s
 invocations. Note that the latter example might not be precise to check at this
 particular point; a better precision can be achieved by trimming \token{indices}
-before \token{Execute}.
+before \token{Invoke}.
 
 \point{Line~13:} The loop iterates over the surpluses of the current level and
 identifies those indices that need refinement. \token{IsAccurate} represents a
@@ -67,11 +67,11 @@ refinement strategy and might not necessarily be solely based on the surpluses.
 In our experiments, we use the technique shown in \eref{error}.
 
 \point{Line~18:} The check is to stop the algorithm when there is nothing left
-to refine, which is dictated by \token{IsAccurateEnough}.
+to refine, which is dictated by \token{IsAccurate}.
 
-\point{Line~21:} \token{ComputeChildren} takes the indices selected for
-refinement and returns the corresponding child indices of the next level; see
-\fref{rule} and \sref{adaptivity}.
+\point{Line~21:} \token{Refine} takes the indices selected for refinement and
+returns the corresponding child indices of the next level; see \fref{rule} and
+\sref{adaptivity}.
 
 \end{compactlist}
 
