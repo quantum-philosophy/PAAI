@@ -3,13 +3,14 @@ interpolating formula:
 \begin{equation} \elab{tensor-1d}
   \tensor{i}(\f) := \sum_{j \in \index(i)} \f(\x^i_j) \, \e^i_j.
 \end{equation}
-The superscript $i \in \natural$ is the level of interpolation; $\index(i) = \{
-0, \dots, \n_i - 1 \} \subset \natural$ is a set with cardinality $\n_i$ that
-indexes the nodes on the corresponding level; $\X^i = \{ \x^i_j \} \subset [0,
-1]$ are the nodes; and $\E^i = \{ \e^i_j \} \subset \continuous([0, 1])$ are the
-basis functions. The subscript $j$ is referred to as the order of a node. The
-choice of the collocation nodes and basis functions is an important concern
-which will be thoroughly discussed later on.
+The superscript $i \in \natural$ signifies the level of interpolation; $\X^i =
+\{ \x^i_j \} \subset [0, 1]$ are the nodes; $\E^i = \{ \e^i_j \} \subset
+\continuous([0, 1])$ are the basis functions; and $\index(i) = \{ 0, \dots, \n_i
+- 1 \}$ is a set with cardinality $\n_i$ that indexes the nodes and basis
+functions on the corresponding level. We shall refer to the subscript $j \in
+\index(i)$ as the order of a node or basis function. The choice of the
+collocation nodes and basis functions is an important concern which will be
+thoroughly discussed later on.
 
 In multiple dimensions ($\nin > 1$), $\f$ is approximated by the tensor product
 of $\nin$ one-dimensional interpolants:
