@@ -28,20 +28,12 @@ discussed in \sref{collocation-nodes}; for the moment, we are only concerned
 with identifying ``problematic'' nodes. In this regards, one can adhere to
 various strategies \cite{ma2009}; in what follows, we shall discuss one of them.
 
-Let $\error_\absolute$ and $\error_\relative$ be the absolute and relative
-errors, respectively, representing the accuracy requirements for the problem at
-hand. Then, the node $\vx^\vi_\vj$ on level $l$ is to be refined if
-\begin{equation} \elab{absolute-error}
-  \left| \surplus_k(\vx^\vi_\vj) \right| > \error_\absolute
+Let $\error$ be the absolute error threshold representing the accuracy
+requirements for the problem at hand. Then, the node $\vx^\vi_\vj$ on level $l$
+is to be refined if
+\begin{equation} \elab{error}
+  \left| \surplus(\vx^\vi_\vj) \right| > \error.
 \end{equation}
-or
-\begin{equation} \elab{relative-error}
-  \frac{\left| \surplus_k(\vx^\vi_\vj) \right|}{\max_{\vx \in \Z^l} \f_k(\vx) - \min_{\vx \in \Z^l} \f_k(\vx)} > \error_\relative
-\end{equation}
-for any $k = 1, \dots, \nout$ where $\f_k$ denotes the $k$th output of the
-quantity of interest $\f$. In \eref{relative-error}, the set $\Z^l \subseteq
-\Y^l$ is the nodes selected so far for interpolation, and the denominator is a
-running estimate of the spread of $\f$ over $[0, 1]^\nin$.
 
 To summarize, assuming that collocation points and basis functions have been
 carefully chosen, we have obtained an efficient algorithm for high-dimensional

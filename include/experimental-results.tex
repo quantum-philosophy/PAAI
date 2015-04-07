@@ -49,10 +49,9 @@ of power and temperature profiles, discussed in \sref{power-consumption} and
 should be set to a value that is reasonable for the problem at hand.
 
 Regarding interpolation, we rely on the open Newton--Cotes rule, as motivated in
-\sref{collocation-nodes}. The \token{IsLimitReached} subroutine in
-\aref{construct} terminates the algorithm when it reaches a certain
-interpolation level. The decision taken in \token{IsAccurateEnough} is based on
-\eref{absolute-error} and \eref{relative-error}.
+\sref{collocation-nodes}. The \token{IsEnough} subroutine in \aref{construct}
+terminates the algorithm when it reaches a certain interpolation level. The
+decision taken in \token{IsAccurate} is based on \eref{error}.
 
 Lastly, let us remind that our experimental setup is publicly available
 \cite{sources}. The configuration aspects that have not been explicitly
