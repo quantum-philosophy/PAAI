@@ -1,3 +1,13 @@
+Probabilistic analysis of multiprocessor systems is an extensive and diverse
+area, which is expanding with an accelerating pace. The rapid growth is due to
+the fact that, as multiprocessor systems become more sophisticated and refined,
+the deteriorating impact of uncertainty becomes substantially more prominent,
+necessitating an adequate treatment. The consequences of uncertainty range from
+a mild performance degradation to severe faults and burnt silicon. In order to
+facilitate the development of efficient and reliable products, much research
+effort has been devoted to uncertainty-aware modeling of various aspects of
+multiprocessor systems.
+
 Computer experiments \cite{santner2003} are a powerful approach to uncertainty
 quantification. The most popular strategies include Monte Carlo (\abbr{MC})
 sampling, quasi-\abbr{MC} sampling, and Latin hypercube sampling. Compared to
@@ -17,21 +27,21 @@ using this approach (the law of large numbers).
 
 The major problem with sampling techniques, however, is in sampling: one should
 be able to collect a sufficiently large number of realizations of the quantity
-of interest in order to draw sound conclusions with respect to this quantity.
-The main concerns in this regard are: How many samples can one afford to
-collect? How long does it take to obtain one sample? How much does one sample
+of interest in order to draw sound conclusions with respect to that quantity.
+Then the main concerns are: How many samples do we need? How many samples can we
+afford? How long does it take to obtain one sample? How much does one sample
 cost? When the subject under analysis is expensive---as measured by any metric
 that makes the most sense to the problem at hand---computer experiments are
 rendered as slow and often infeasible.
 
-The work is based on the work in \cite{klimke2006} and \cite{ma2009}.
-
-The approach belongs to the class of stochastic collocation techniques
-\cite{xiu2010}. The major distinctive feature of stochastic collocation is the
-usage of interpolation as a means of uncertainty quantification, which should be
-contrasted with other techniques such as polynomial chaos expansions relying on
-regression. The application of popular polynomial expansions is limited in this
-case due to the non-smoothness of the response surface.
+The approach that we take belongs to the class of stochastic collocation
+techniques \cite{xiu2010}. The major distinctive feature of stochastic
+collocation is the usage of interpolation as a means of uncertainty
+quantification, which should be contrasted with other techniques such as
+polynomial-chaos expansions relying on regression. The application of popular
+polynomial expansions is limited in this case due to the non-smoothness of the
+response surface. More concretely, our framework is based on adaptive
+hierarchical interpolation on sparse grids \cite{klimke2006, ma2009}.
 
 The remainder of the paper is organized as follows. Section~\ref{sec:prior-work}
 provides an overview of the prior work. In \sref{present-work}, we summarize the
