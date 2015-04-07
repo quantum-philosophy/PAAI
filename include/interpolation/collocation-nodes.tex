@@ -14,20 +14,10 @@ two is that the former includes the endpoints, that is, 0 and 1, while the
 latter does not. Now, at the end of \sref{smolyak-algorithm}, we postulated that
 the assumption in \eref{tensor-exactness} was needed to proceed. The closed rule
 satisfies this assumption while the open one violates it close to the boundaries
-of the interval. However, according to our numerical experiments and as noted in
-\cite{klimke2006}, the open Newton--Cotes rule is a viable option as it performs
-well in practice.
-
-Despite the minor concern noted above, we have opted to present the open
-Newton--Cotes rule in the paper as it is a better match for the transformation
-in \eref{transformation}. The problem with 0 and 1 is rather technical and is as
-follows. The inverse of the Gaussian distribution function, $\Phi^{-1}$, maps 0
-and 1 to $-\infty$ and $+\infty$, respectively; as shown in
-\eref{transformation}, the resulting vector then gets multiplied by a matrix.
-Since certain algebraic operations with infinite values are undefined---for
-instance, $0.42 \times (+\infty) + 0.27 \times (-\infty)$---this particular
-transformation in \eref{transformation} might pose implementation difficulties,
-which we would like to avoid by choosing a rule without the endpoints.
+of the interval. However, as noted in \cite{klimke2006}, the open Newton--Cotes
+rule is a viable option since it performs well in practice. In fact, we were
+able to achieve better results using the open rule, and, therefore, we have
+decided to present it in the paper.
 
 \input{include/assets/figures/rule}
 The open Newton--Cotes rule of level $i \in \natural$ is
