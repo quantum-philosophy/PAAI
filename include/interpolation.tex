@@ -1,27 +1,22 @@
 In this section, we present an interpolation algorithm that forms the core of
 the proposed framework for probabilistic analysis of multiprocessor systems. The
-algorithm was developed in \cite{klimke2006} and \cite{ma2009}, and it features
-a sparse-grid structure, hierarchical construction, and local adaptivity. The
-sparse-grid structure is to address the curse of dimensionality and, thereby,
-tackle high-dimensional problems; the hierarchical construction is to have a
-gradual refinement of approximation with a natural error control; and the local
-adaptivity is to make the refinement fine-grained and, hence, gain further
-efficiency.
+algorithm is based on the work in \cite{klimke2006} and \cite{ma2009}, and it
+features a sparse-grid structure, hierarchical construction, and local
+adaptivity. The sparse-grid structure is to address the curse of dimensionality
+and, thereby, tackle high-dimensional problems; the hierarchical construction is
+to have a gradual refinement of approximation with a natural error control; and
+the local adaptivity is to make the refinement fine-grained and, hence, gain
+further efficiency.
 
-Let $\f$ be a quantity that we would like to approximate. The quantity is viewed
-as a vector of $\nout$ (deterministic) functions each of which is parameterized
-by the same set of $\nin$ variables. Each function belongs to $\continuous([0,
-1]^\nin)$, the space of continuous functions defined on the unit hypercube $[0,
-1]^\nin$. Thus,
-\[
-  \f: [0, 1]^\nin \to \real^\nout \subset \continuous([0, 1]^\nin).
-\]
-Note that the domain $[0, 1]^\nin$ is not a restriction as a continuous function
-can be reparameterized to be defined on $[0, 1]$. The function is assumed to be
-computationally intensive and impractical for extensive evaluation, which is
-needed for Monte Carlo sampling. For example, the concise notation $\f$ might
-expand into a full-system simulation, including scheduling and power-temperature
-analysis, which is the case in this work.
+Let $\f \in \continuous([0, 1]^\nin)$ be a function that we would like to
+approximate; hereafter, $\continuous([0, 1]^\nin)$ denotes the space of
+continuous functions in the unit hypercube $[0, 1]^\nin$. As noted earlier, the
+domain $[0, 1]^\nin$ is merely standardization rather than a restriction. The
+function is assumed to be computationally intensive and impractical for
+extensive evaluation, which might be required for an accurate probabilistic
+analysis of $\f$. The concise notation $\f$ might be hiding, for instance, a
+full-system simulation, including scheduling and power-temperature analysis,
+which is the case in our settings.
 
 In order to make the problem computationally tractable, a light representation
 of $\f$ is constructed and studied instead of $\f$. The surrogate is based on
