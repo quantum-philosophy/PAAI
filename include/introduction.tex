@@ -5,20 +5,18 @@ multiprocessor systems become more sophisticated and refined, the deteriorating
 impact of uncertainty becomes substantially more prominent, necessitating an
 adequate treatment. The consequences of uncertainty range from a mild
 performance degradation to severe faults and burnt silicon. In order to
-facilitate the development of efficient and reliable products, much research
-effort has been devoted to uncertainty-aware design of various components of
+facilitate the development of efficient and reliable designs, much research
+effort has been devoted to uncertainty-aware modeling of various aspects of
 multiprocessor systems.
 
-Computer experiments \cite{santner2003} are a powerful approach to uncertainty
-quantification. The most popular strategies include Monte Carlo (\abbr{MC})
-sampling, quasi-\abbr{MC} sampling, and Latin hypercube sampling. Compared to
-other techniques for probabilistic analysis, computer experiments are
-straightforward to undertake. The system at hand is treated as completely
-opaque, and one only has to simulate it a sufficient number of times in order to
-draw cogent conclusions about the system's behavior.
-
-Consider, for instance, the classical \abbr{MC} sampling, which is arguably the
-most famous and versatile approach to the analysis of stochastic systems. The
+Computer experiments \cite{santner2003} are of great use when uncertainty
+quantification is concerned. Compared to other techniques for probabilistic
+analysis, computer experiments are straightforward to undertake. The system at
+hand is treated as completely opaque, and it only needs to be simulated a number
+of times, following an adequate sampling strategy, in order to draw
+well-grounded conclusions about the system's behavior. Consider, for instance,
+the classical Monte Carlo (\abbr{MC}) sampling, which is arguably the most
+famous and versatile approach to the analysis of stochastic systems. The
 technique was introduced in the middle of the twentieth century and since then
 has expanded into a broad family of methods that have had a tremendous impact
 both in academia and in terms of industrial breakthroughs. The success of
@@ -26,21 +24,17 @@ both in academia and in terms of industrial breakthroughs. The success of
 stochastic dimensionality, and asymptotic behavior of the quantities estimated
 using this approach (the law of large numbers).
 
-The major problem with sampling techniques, however, is in sampling: one should
-be able to collect a sufficiently large number of realizations of the quantity
-of interest in order to draw sound conclusions with respect to that quantity.
-Then the main concerns are: How many samples do we need? How many samples can we
-afford? How long does it take to obtain one sample? How much does one sample
-cost? When the subject under analysis is expensive---as measured by any metric
-that makes the most sense to the problem at hand---computer experiments are
-rendered as slow and often infeasible.
+Note that designing for the worst case is often a poor solution as the system at
+hand might easily end up being too conservative, over-designed
+\cite{quinton2012}. Therefore, it is highly valuable to have access to a
+probability distribution rather than corner cases.
 
 The approach that we take belongs to the class of stochastic collocation
 techniques \cite{xiu2010}. The major distinctive feature of stochastic
 collocation is the usage of interpolation as a means of uncertainty
 quantification, which should be contrasted with other techniques such as
-polynomial-chaos expansions relying on regression. The application of popular
-polynomial expansions is limited in this case due to the non-smoothness of the
+polynomial-chaos (\abbr{PC}) expansions relying on regression. The application
+of \abbr{PC} expansions is limited in this case due to the non-smoothness of the
 response surface. More concretely, our framework is based on adaptive
 hierarchical interpolation on sparse grids \cite{klimke2006, ma2009}.
 

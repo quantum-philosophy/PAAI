@@ -1,34 +1,52 @@
-The techniques developed for probabilistic analysis of multiprocessor systems
-are diverse as the area itself and can be classified in many ways. Two natural
-classifications originate from the inputs and outputs of the systems that the
+The major problem with sampling techniques is in sampling: one should be able to
+collect a sufficiently large number of realizations of the quantity of interest
+in order to draw sound conclusions with respect to that quantity
+\cite{diaz-emparanza2002}. Then the main concerns are: How many samples do we
+need? How many samples can we afford? How long does it take to obtain one
+sample? How much does one sample cost? When the subject under analysis is
+expensive---as measured by any metric that makes the most sense to the problem
+at hand---computer experiments are rendered as slow and often infeasible.
+
+In order to eliminate or reduce the costs associated with compute experiments in
+the context of probabilistic analysis of multiprocessor systems, a number of
+techniques have been introduced. The techniques are diverse as the area itself
+and can be classified in many ways. Two natural features, distinguishing the
+techniques, originate from the inputs and outputs of the systems that the
 techniques have been tailored for. An input, in this context, refers to a source
 of uncertainty, and an output refers to a quantity of interest. A technique
 tries to give a probabilistic characterization of the latter while taking into
 account the effect of the former. The solution that the technique proposes to
-solve the problem gives birth to another classification. A solution can be
+solve the problem is another feature to pay attention to. A solution can be
 powered by, for instance, a mathematical framework, statistical method, or
 computational algorithm. Let us give an overview of some of the available
-techniques from the perspective of the aforementioned classifications.
+techniques by focusing on the aforementioned traits.
 
-One of the concerns of an electronic system's designer is process variation
-\cite{srivastava2005}. The work in \cite{juan2012} models static steady-state
-temperature and accounts for process variation by leveraging the linearity of
-Gaussian distributions and time-invariant systems. A stochastic collocation
-approach \cite{xiu2010} to static steady-state temperature analysis powered by
-Newton polynomials is given in \cite{lee2013}. In \cite{ukhov2014}, transient
-temperature analysis is considered, and process variation is address by means of
-polynomial-chaos (\abbr{PC}) expansions \cite{xiu2010}. \abbr{PC} expansions
-have also been utilized in \cite{ukhov2015} to analyze dynamic steady-state
-temperature and parameters of reliability models under process variation.
+Sources of uncertainty can be divided into analog and digital. The major
+representative of the former is process variation \cite{srivastava2005}, which
+has been central for many research projects as we discuss next. The work in
+\cite{juan2012} models static steady-state temperature and accounts for process
+variation by leveraging the linearity of Gaussian distributions and
+time-invariant systems. A stochastic collocation approach \cite{xiu2010} to
+static steady-state temperature analysis powered by Newton polynomials is given
+in \cite{lee2013}. In \cite{ukhov2014}, transient temperature analysis is
+considered, and process variation is address by means of polynomial-chaos
+(\abbr{PC}) expansions \cite{xiu2010}. \abbr{PC} expansions are also utilized in
+\cite{ukhov2015} to model dynamic steady-state temperature and to enhance
+reliability models. Circuit-level timing and power analysis under process
+variation is undertaken in \cite{bhardwaj2008} via \abbr{PC} expansions.
 
-In order to eliminate or reduce the costs associated with compute experiments in
-the context of multiprocessor system design, a number of techniques have been
-introduced.
+Sources of uncertainty labeled as ``digital'' are phenomena of the digital world
+rather than physical. Many applications running on modern devices exhibit
+non-stationary behaviors: their characteristics change from one phase or
+invocation to another, which might be due to the runtime environment or input
+data. Such behaviors are essentially random, and accounting for them is highly
+beneficial if not essential; consider, for instance, energy efficiency and
+safety. In this context, timing analysis has drawn a lot of attention
+\cite{quinton2012}. The technique in \cite{tanasa2015} is targeted at computing
+probability distributions of response times of periodic tasks given that their
+execution times are random.
 
-Let us begin with probabilistic timing analysis.
-
-Regarding probabilistic power analysis, the analysis under process variation is
-considered in \cite{ukhov2014}.
-
-Let us turn to probabilistic temperature analysis. The analysis under process
-variation is considered in \cite{ukhov2014} and \cite{ukhov2015}.
+The framework that we propose in this paper is mainly oriented towards digital
+sources of uncertainty, and our experimental setup has been tailored
+accordingly. However, the framework is expected to perform well when modeling
+other uncertainties such as those due to process variation.
