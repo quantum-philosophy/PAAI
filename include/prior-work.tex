@@ -37,16 +37,15 @@ variation is undertaken in \cite{bhardwaj2008} via \abbr{PC} expansions.
 
 Sources of uncertainty labeled as ``digital'' are phenomena of the digital world
 rather than physical. Many applications running on modern devices exhibit
-non-stationary behaviors: their characteristics change from one phase or
-invocation to another, which might be due to the runtime environment or input
-data. Such behaviors are essentially random, and accounting for them is highly
-beneficial if not essential; consider, for instance, energy efficiency and
-safety. In this context, timing analysis has drawn a lot of attention
+nondeterministic behaviors: their characteristics change from one phase or
+invocation to another, which can be due to, for example, the runtime environment
+or input data. Such behaviors are essentially random, and accounting for them is
+highly beneficial if not essential; consider, for instance, energy efficiency
+and safety. In this context, timing analysis has drawn a lot of attention
 \cite{quinton2012}. A seminal work on response time analysis of periodic tasks
-whose execution times are uncertain is reported in \cite{diaz2002}. The recent
-work given in \cite{tanasa2015} presents a novel analytical approach to the same
-analysis, which makes milder assumptions and allows for addressing large,
-previously infeasible problems.
+with random execution times is reported in \cite{diaz2002}. A novel analytical
+solution to this problem is given in \cite{tanasa2015}, which makes milder
+assumptions and allows for addressing larger, previously infeasible problems.
 
 The framework that we propose in this paper is mainly oriented towards digital
 sources of uncertainty, and our experimental setup has been tailored
