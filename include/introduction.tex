@@ -23,36 +23,34 @@ uncertainty render the behavior of the system at hand as essentially random, and
 accounting for them is highly beneficial if not essential.
 
 In order to account for uncertainty, one has to quantify it first. Uncertainty
-quantification is a broad term, and the techniques under this generous umbrella
-can deliver radically different pieces of information about the quantity of
-interest. In this paper, we are interested in probability distributions rather
-than, for instance, corner cases. Designing for the worst case is often a poor
-solution as the system at hand might easily end up being too conservative,
-over-designed \cite{quinton2012}. The value of probability distributions is well
-understood, and it is especially high in the context of soft real-time systems
-and control systems.
+quantification is a wide umbrella, and the corresponding techniques can deliver
+radically different pieces of information about the quantity of interest. In
+this paper, we are interested in probability distributions rather than, for
+instance, corner cases. Designing for the worst case is often a poor solution as
+the system at hand might easily end up being too conservative, over-designed
+\cite{quinton2012}. The value of probability distributions is well understood,
+and it is especially high in the context of soft real-time systems and control
+systems.
 
 When it comes to uncertainty quantification and estimation of probability
 distributions, computer experiments \cite{santner2003} are of great use.
 Compared to other techniques for probabilistic analysis, computer experiments
 are straightforward to undertake. The system at hand is treated as being
-completely opaque, and it only needs to be simulated a number of
-times---following an adequate sampling strategy---in order to draw well-grounded
-conclusions about the system. Consider, for instance, the classical Monte Carlo
-(\abbr{MC}) sampling, which is arguably the most famous and versatile approach
-to the analysis of stochastic systems. The technique was introduced in the
-middle of the twentieth century and since then has expanded into a rich family
-of methods that have had a tremendous impact both in academia and in terms of
-industrial breakthroughs. The success of \abbr{MC} sampling is due to the ease
-of implementation, independence of the stochastic dimensionality, and asymptotic
-behavior of the quantities estimated using this approach.
+completely opaque, and it only needs to be simulated a number of times,
+following an adequate strategy, in order to start drawing conclusions about the
+system's behavior. Consider, for instance, the classical Monte Carlo (\abbr{MC})
+sampling, which is arguably the most famous and versatile approach to the
+analysis of stochastic systems. The technique was introduced in the middle of
+the twentieth century and since then has expanded into a rich family of methods
+that have had a tremendous impact both in academia and in terms of industrial
+breakthroughs.
 
 The major problem with sampling techniques, however, is in sampling: one should
 be able to obtain sufficient many realizations of the quantity of interest in
 order to be able to draw sound conclusions with respect to that quantity
 \cite{diaz-emparanza2002}. The main concerns here are: How many samples do we
 need? How many samples can we afford? How long does it take to obtain one
-sample? How much does one sample cost? When the subject of analysis is
+sample? How much does one sample cost? When the subject of the analysis is
 expensive---as measured by the metric that makes the most sense to the problem
 at hand---computer experiments are rendered as slow and often infeasible.
 
@@ -75,18 +73,65 @@ depends on the problem, and it can be substantial when the problem is well
 disposed to adaptation. Furthermore, the output of the proposed framework is
 generative: we construct a light representation of the quantity of interest that
 can be used to generate realizations of this quantity without touching the
-original expensive ``black box.'' Consequently, given the representation, all
-the computer-experiments machinery applies and costs practically nothing.
+original expensive ``black box.'' Hence, given such a representation, all the
+computer-experiments machinery applies and has a practically negligible cost.
 
-\input{include/assets/figures/motivation.tex}
 The approach that we take belongs to the class of stochastic collocation
 techniques \cite{xiu2010}. The major distinctive feature of stochastic
 collocation is the usage of interpolation as a means of uncertainty
 quantification, which should be contrasted with other techniques such as
-polynomial-chaos (\abbr{PC}) expansions relying on regression. The application
-of \abbr{PC} expansions is limited in this case due to the non-smoothness of the
-response surface. More concretely, our framework is based on adaptive
-hierarchical interpolation on sparse grids \cite{klimke2006, ma2009}.
+polynomial-chaos (\abbr{PC}) expansions relying on regression. More concretely,
+our framework is based on adaptive hierarchical interpolation on sparse grids
+\cite{klimke2006, ma2009}. In addition to the cost reduction mentioned earlier,
+the adaptivity means that our technique is well suited for non-smooth response
+surfaces. Non-smoothness is a serious problem for global approximation; the
+convergence of \abbr{PC} expansions, for instance, deteriorates substantially in
+such cases, requiring partitioning of the stochastic space in order to alleviate
+the problem. The adaptivity that our framework leverages is purely local, as
+opposed to the dimension-wise adaptivity \cite{klimke2006}, which means that the
+framework can benefit even further from the particularities of the stochastic
+space that are not necessarily aligned with the stochastic dimensions.
+
+\input{include/assets/figures/motivation.tex}
+The ability to tackle non-smooth problems is important for the designer of
+multiprocess systems. It is especially urgent in the context of digital sources
+of uncertainty since the variability due to such sources often lacks smoothness
+and might even have discontinuities. Analog sources of uncertainty are forgiving
+in this regards due to their physical nature, and polynomial-based
+approximations generally work well for them, as in \cite{bhardwaj2008, lee2013,
+ukhov2014, ukhov2015}. In order to explore this aspect better, let us consider a
+toy example. Suppose that our ``multiprocessor'' system has only one processing
+element, and it is running an application with only one task. Suppose further
+that the task has two branches and takes either of them depending on the input
+data. Assume that one branch takes 0.1~s and has probability 0.6, and the other
+branch takes 1~s and has probability 0.4. Our goal is to find the distribution
+of the end-to-end delay of the application. In this example, the end-to-end
+delay coincides with the execution time of the task; hence, we already know the
+answer. Let us pretend that we do not and try to apply several techniques in
+order to find it.
+
+Suppose the above scenario is modeled by a random variable $\u$ uniformly
+distributed in $[0, 1]$: the execution time of the task is 0.1~s if $\u \in [0,
+0.6]$, and it is 1~s if $\u \in (0.6, 1]$. The response in this case is a step
+function, which is illustrated by the yellow line in \fref{motivation}. First,
+we try to approximate the end-to-end delay by constructing a \abbr{PC} expansion
+founded on the Legendre polynomial basis \cite{xiu2010}. The orange line in
+\fref{motivation} shows a ninth-order \abbr{PC} expansion, which uses 10 points.
+It can be seen that the approximation is poor, not to mention negative
+end-to-end delays. The observed oscillating behavior is the well-known Gibbs
+phenomenon, stemming from the steepness of the response. Now we let our
+framework make use of the same number of points as the \abbr{PC} expansion did.
+The result is the blue curve in \fref{motivation}, and the adaptively chosen
+points are plotted on the horizontal axis. It can be seen that the approximation
+is good, and, in fact, it would be indistinguishable from the true response with
+a few additional points. One can also note that the adaptive procedure started
+to concentrate points at the jump and left the insipid regions on both sides of
+the jump with no particular attention. Having constructed such an accurate
+representation, one can proceed to the calculation of the probability
+distribution of the quantity of interest, which, in general, is done via
+sampling followed by such techniques as kernel density estimation. The crucial
+point to note here that this follow-up sampling does not involve the analyzed
+multiprocessor system itself and, thus, costs nothing.
 
 The remainder of the paper is organized as follows. Section~\ref{sec:prior-work}
 provides an overview of the prior work. In \sref{present-work}, we summarize the
