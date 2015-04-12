@@ -3,7 +3,7 @@ multiprocessor systems is an extensive and diverse area, which is expanding with
 an accelerating pace. The reason for the rapid growth is that multiprocessor
 systems become more sophisticated and refined, and that they penetrate deeper
 into everyday life. Therefore, the impact of uncertainty inevitably becomes more
-prominent and obtains more severe consequences, necessitating an adequate
+prominent and engender more severe consequences, necessitating an adequate
 treatment. In order to develop efficient and reliable products, the designer has
 to be equipped with tools capable of accounting for sources of uncertainty
 present in multiprocessor systems.
@@ -48,33 +48,37 @@ of implementation, independence of the stochastic dimensionality, and asymptotic
 behavior of the quantities estimated using this approach.
 
 The major problem with sampling techniques, however, is in sampling: one should
-be able to collect a sufficient number of realizations of the quantity of
-interest in order to draw sound conclusions with respect to that quantity
-\cite{diaz-emparanza2002}. Then the main concerns are: How many samples do we
+be able to obtain sufficient many realizations of the quantity of interest in
+order to be able to draw sound conclusions with respect to that quantity
+\cite{diaz-emparanza2002}. The main concerns here are: How many samples do we
 need? How many samples can we afford? How long does it take to obtain one
 sample? How much does one sample cost? When the subject of analysis is
 expensive---as measured by the metric that makes the most sense to the problem
 at hand---computer experiments are rendered as slow and often infeasible.
 
-In this paper, we propose a system-level framework for the analysis of
-multiprocessor systems dependent on uncertain parameters. Our focal point is
-digital sources of uncertainty introduced earlier, which should not be perceived
-as a restriction but rather as a prominent application. Similar to \abbr{MC}
-methods, the framework treats the system at hand as a ``black box'' and, hence,
-is straightforward to apply since no handcrafting is required and existing codes
-need no change. Consequently, the quantities that the framework is able to
-analyze are diverse; the examples include the end-to-end delay, energy
-consumption, and thermal dynamics. In contract to \abbr{MC} methods, our
+In this paper, we propose a system-level design-time framework for the analysis
+of multiprocessor systems that are dependent on uncertain parameters. The
+framework can be applied in scenarios with a limited knowledge about the joint
+probability distribution of the parameters, which are common in practice. Our
+focal point is digital sources of uncertainty introduced earlier, which should
+not be perceived as a restriction but rather as a prominent application. Similar
+to \abbr{MC} methods, the framework treats the system at hand as a ``black box''
+and, hence, is straightforward to apply since no handcrafting is required and
+existing codes need no change. Consequently, the quantities that the framework
+is able to analyze are diverse; the examples include the end-to-end delay,
+energy consumption, and thermal dynamics. In contract to \abbr{MC} methods, our
 technique explores the structure of the problem---that is, the dependence of the
 quantity of interest on the uncertain parameters---by exercising the ``black
 box'' at a set of adaptively chosen points. The adaptivity allows for reduction
 of the costs associated with the system's evaluation. The magnitude of reduction
 depends on the problem, and it can be substantial when the problem is well
 disposed to adaptation. Furthermore, the output of the proposed framework is
-generative. Moreover, the framework can be applied in scenarios with a limited
-knowledge about the joint probability distribution of the parameters, which are
-common in practice.
+generative: we construct a light representation of the quantity of interest that
+can be used to generate realizations of this quantity without touching the
+original expensive ``black box.'' Consequently, given the representation, all
+the computer-experiments machinery applies and costs practically nothing.
 
+\input{include/assets/figures/motivation.tex}
 The approach that we take belongs to the class of stochastic collocation
 techniques \cite{xiu2010}. The major distinctive feature of stochastic
 collocation is the usage of interpolation as a means of uncertainty
