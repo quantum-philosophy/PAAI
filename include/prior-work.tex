@@ -1,51 +1,57 @@
-The major problem with sampling techniques is in sampling: one should be able to
-collect a sufficiently large number of realizations of the quantity of interest
-in order to draw sound conclusions with respect to that quantity
-\cite{diaz-emparanza2002}. Then the main concerns are: How many samples do we
-need? How many samples can we afford? How long does it take to obtain one
-sample? How much does one sample cost? When the subject under analysis is
-expensive---as measured by any metric that makes the most sense to the problem
-at hand---computer experiments are rendered as slow and often infeasible.
+Computer experiments together with Monte Carlo (\abbr{MC}) methods would be a
+reasonable solution to probabilistic analysis of multiprocessor systems if
+multiprocessor systems were inexpensive to simulate (in terms of time, money, or
+other resources). In order to eliminate or reduce the costs associated with
+direct sampling, a number of techniques have been introduced. The techniques are
+diverse as the area itself and can be classified in many ways. Two natural
+characteristics, distinguishing the techniques, originate from the sources of
+uncertainty and quantities of interests that the techniques have been tailored
+for. A technique tries to give a probabilistic characterization of the latter
+while taking into account the deteriorating effect of the former. The solution
+that a technique proposes to tackle the corresponding problem is another
+characteristic to pay attention to. A solution can be based on, for instance, a
+mathematical framework, statistical method, or computational algorithm. In what
+follows, we shall focus on the three aforementioned characteristics.
 
-In order to eliminate or reduce the costs associated with compute experiments in
-the context of probabilistic analysis of multiprocessor systems, a number of
-techniques have been introduced. The techniques are diverse as the area itself
-and can be classified in many ways. Two natural features, distinguishing the
-techniques, originate from the inputs and outputs of the systems that the
-techniques have been tailored for. An input, in this context, refers to a source
-of uncertainty, and an output refers to a quantity of interest. A technique
-tries to give a probabilistic characterization of the latter while taking into
-account the effect of the former. The solution that the technique proposes to
-solve the problem is another feature to pay attention to. A solution can be
-powered by, for instance, a mathematical framework, statistical method, or
-computational algorithm. Let us give an overview of some of the available
-techniques by focusing on the aforementioned traits.
+Let us first discuss analog sources of uncertainty and, more concretely, process
+variation as it by far dominates. Circuit-level timing and power analyses under
+process variation are undertaken in \cite{bhardwaj2008} by means of polynomial
+chaos (\abbr{PC}) expansions \cite{xiu2010}. The work in \cite{juan2012} models
+static steady-state temperature and accounts for process variation by leveraging
+the linearity of Gaussian distributions and time-invariant systems. A stochastic
+collocation \cite{xiu2010} approach to static steady-state temperature analysis
+is given in \cite{lee2013}, which relies on global interpolation using Newton
+polynomials. In \cite{ukhov2014}, transient temperature analysis is considered,
+and process variation is address via \abbr{PC} expansions. The machinery of
+\abbr{PC} expansions is also utilized in \cite{ukhov2015} in order to model
+dynamic steady-state temperature and to enhance reliability models.
 
-Sources of uncertainty can be divided into analog and digital. The major
-representative of the former is process variation \cite{srivastava2005}, which
-has been central for many research projects as we discuss next. The work in
-\cite{juan2012} models static steady-state temperature and accounts for process
-variation by leveraging the linearity of Gaussian distributions and
-time-invariant systems. A stochastic collocation approach \cite{xiu2010} to
-static steady-state temperature analysis powered by Newton polynomials is given
-in \cite{lee2013}. In \cite{ukhov2014}, transient temperature analysis is
-considered, and process variation is address by means of polynomial-chaos
-(\abbr{PC}) expansions \cite{xiu2010}. \abbr{PC} expansions are also utilized in
-\cite{ukhov2015} to model dynamic steady-state temperature and to enhance
-reliability models. Circuit-level timing and power analysis under process
-variation is undertaken in \cite{bhardwaj2008} via \abbr{PC} expansions.
+Let us now turn to digital sources of uncertainty. In this context, timing
+analysis has drawn the major attention \cite{quinton2012}. A seminal work on
+response time analysis of periodic tasks with random execution times on
+uniprocessors is reported in \cite{diaz2002}. A novel analytical solution to
+this problem is given in \cite{tanasa2015}, which makes milder assumptions and
+allows for addressing larger, previously infeasible problems. The framework
+proposed in \cite{santinelli2011} facilitates task scheduling by providing
+probabilistic bounds on the resource given to a task flow and the resource
+needed by that task flow; the approach is based on real-time calculus and is
+applicable to multiprocessor systems. Temperature variations due to
+uncertainties in timing have also been extensively studied, and the accent has
+been primarily on the worst case. An example is the work presented in
+\cite{yang2013}, which builds on real-time calculus and studies the maximal
+temperature.
 
-Sources of uncertainty labeled as ``digital'' are phenomena of the digital world
-rather than physical. Many applications running on modern devices exhibit
-nondeterministic behaviors: their characteristics change from one phase or
-invocation to another, which can be due to, for example, the runtime environment
-or input data. Such behaviors are essentially random, and accounting for them is
-highly beneficial if not essential; consider, for instance, energy efficiency
-and safety. In this context, timing analysis has drawn a lot of attention
-\cite{quinton2012}. A seminal work on response time analysis of periodic tasks
-with random execution times is reported in \cite{diaz2002}. A novel analytical
-solution to this problem is given in \cite{tanasa2015}, which makes milder
-assumptions and allows for addressing larger, previously infeasible problems.
+Studying the literature on probabilistic analysis of multiprocessor systems, one
+can note a pronounced trend: the generality and straightforwardness of \abbr{MC}
+methods tend to be lost. First of all, a technique usually requires restrictive
+conditions to be fulfilled, such as the absence of dependencies or the usage of
+a certain scheduling policy, and is applicable to one particular quantity, such
+the response time or maximal temperature. Second, the designer typically has to
+invest much effort into applying a chosen technique; the battle-tested
+simulators that have been developed over the years for the ideal deterministic
+case have to be substantially modified or abandoned all together. This trend is,
+of course, reasonable: the techniques try to excel by narrowing down the scope
+and asking for more.
 
 The framework that we propose in this paper is mainly oriented towards digital
 sources of uncertainty, and our experimental setup has been tailored
