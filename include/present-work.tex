@@ -1,8 +1,18 @@
-Our work brings the following major contributions:
-\begin{itemize}
+Our work brings the following major contribution. We develop a framework for
+probabilistic analysis of electronic systems that is easy to use and is
+applicable to diverse uncertainty-quantification problems. The framework can be
+utilized in scenarios with a limited knowledge about the joint probability
+distribution of the uncertain parameters, which are common in practice. The
+approach that we take belongs to the class of stochastic collocation techniques
+\cite{xiu2010}. The major distinctive feature of stochastic collocation is the
+usage of interpolation as a means of uncertainty quantification, which should be
+contrasted with other techniques such as polynomial chaos expansions relying on
+regression. More concretely, our framework make use of adaptive hierarchical
+interpolation on sparse grids \cite{klimke2006, ma2009}, which enables the
+framework to preserve the virtue of Monte Carlo methods while substantially
+reducing the costs associated with the sampling process.
 
-\item \textbf{Contribution~1.} We develop a flexible framework for probabilistic
-  analysis of multiprocessor systems that takes into account the designer's lack
-  of knowledge about certain parameters of such systems.
-
-\end{itemize}
+Our framework is mainly oriented towards digital sources of uncertainty
+introduced earlier, and our examples and experimental setup has been tailored
+accordingly. However, the framework is expected to perform well when modeling
+other uncertainties such as those due to process variation.

@@ -1,34 +1,19 @@
 \lettrine[findent=0.4em, nindent=0em]{\textbf{P}}{robabilistic analysis} of
-multiprocessor systems is an extensive and diverse area, which is expanding with
-an accelerating pace. The reason for the rapid growth is that multiprocessor
-systems become more sophisticated and refined, and that they penetrate deeper
-into everyday life. Therefore, the impact of uncertainty inevitably becomes more
-prominent and engender more severe consequences, necessitating an adequate
-treatment. In order to develop efficient and reliable products, the designer has
-to be equipped with tools capable of accounting for sources of uncertainty
-present in multiprocessor systems.
-
-Sources of uncertainty can be divided into analog and digital. The major
-representative of the former is process variation \cite{srivastava2005}, which
-has been central for many lines of research \cite{bhardwaj2008, juan2012,
-lee2013, ukhov2014, ukhov2015}. Process variation is a side effect of the
-fabrication process. In contrast, the sources of uncertainty labeled as
-``digital'' are phenomena of the digital world rather than physical. To
-elaborate, many applications running on modern devices exhibit nondeterministic
-behavior: their characteristics change from one activation to another, depending
-on such aspects as the runtime environment and input data. The digital class has
-not been deprived of attention either, especially in the real-time community
-\cite{diaz2002, santinelli2011, quinton2012, yang2013, tanasa2015}. Both analog
-and digital sources of uncertainty render the behavior of the multiprocessor
-system at hand as essentially random, and accounting for them can be highly
-beneficial if not essential.
+electronic systems is an extensive and diverse area, which is expanding with an
+accelerating pace. The rapid growth is instigated by the fact that electronic
+systems naturally become more sophisticated and refined, and that they penetrate
+deeper into everyday life. Consequently, the impact of uncertainty inevitably
+becomes more prominent and engender more severe consequences, necessitating an
+adequate treatment. Therefore, the designer of electronic systems has to account
+for the presence of uncertainty in order to develop efficient and reliable
+products.
 
 In order to account for uncertainty, one has to quantify it first. Uncertainty
 quantification is a wide umbrella, and the corresponding techniques can deliver
 radically different pieces of information about the quantity of interest. In
 this paper, we are interested in probability distributions rather than, for
 instance, corner cases. Designing for the worst case is often a poor solution as
-the system at hand might easily end up being too conservative, over-designed
+the system at hand might easily end up being too conservative, overdesigned
 \cite{quinton2012}. The value of probability distributions is well understood,
 and it is especially high in the context of soft real-time systems and control
 systems.
@@ -55,68 +40,74 @@ sample? How much does one sample cost? When the subject of the analysis is
 expensive---as measured by the metric that makes the most sense to the problem
 at hand---computer experiments are rendered as slow and often infeasible.
 
-In this paper, we propose a system-level framework for the analysis of
-multiprocessor systems that are dependent on uncertain parameters. The framework
-can be applied in scenarios with a limited knowledge about the joint probability
-distribution of the parameters, which are common in practice. Our focal point is
-digital sources of uncertainty introduced earlier, which should not be perceived
-as a restriction but rather as a prominent application. Similar to \abbr{MC}
-methods, the framework treats the system at hand as a ``black box'' and, hence,
-is straightforward to apply since no handcrafting is required and existing codes
+We propose a system-level framework for the analysis of electronic systems that
+are dependent on uncertain parameters. Similar to \abbr{MC} methods, our
+technique treats the system at hand as a ``black box'' and, hence, is
+straightforward to apply since no handcrafting is required and existing codes
 need no change. Consequently, the quantities that the framework is able to
 analyze are diverse; examples include the end-to-end delay, energy consumption,
-and thermal dynamics. In contract to \abbr{MC} methods, our technique explores
-the structure of the problem---that is, the dependence of the quantity of
-interest on the uncertain parameters---by exercising the ``black box'' at a set
-of points chosen adaptively. The adaptivity allows for reduction of the costs
-associated with the system's evaluation. The magnitude of reduction depends on
-the problem, and it can be substantial when the problem is well disposed to
-adaptation. Furthermore, the output of our framework is generative: we construct
-a light representation of the quantity of interest that can be used to generate
-realizations of this quantity without touching the expensive ``black box.''
-Hence, given such a representation, the computer-experiments machinery applies
-and has a practically negligible cost.
+and thermal dynamics of an application running on a multiprocessor system. In
+contract to \abbr{MC} methods, our technique explores the structure of the
+problem---that is, the dependence of the quantity of interest on the uncertain
+parameters---by exercising the ``black box'' at a set of points chosen
+adaptively. The adaptivity allows for reduction of the costs associated with the
+system's evaluation. The magnitude of reduction depends on the problem, and it
+can be substantial when the problem is well disposed to adaptation. Furthermore,
+the adaptivity that our framework leverages is purely local, as opposed to the
+dimension-wise adaptivity \cite{klimke2006}, which means that the framework can
+benefit even further from the particularities of the stochastic space that are
+not necessarily aligned with the stochastic dimensions. Lastly, the output of
+our framework is generative: we construct a light representation of the quantity
+of interest that can be used to generate realizations of this quantity without
+touching the expensive ``black box.'' Therefore, given such a light
+representation, the computer-experiments machinery applies and has a practically
+negligible cost.
 
-The approach that we take belongs to the class of stochastic collocation
-techniques \cite{xiu2010}. The major distinctive feature of stochastic
-collocation is the usage of interpolation as a means of uncertainty
-quantification, which should be contrasted with other techniques such as
-polynomial-chaos (\abbr{PC}) expansions relying on regression. More concretely,
-our framework is based on adaptive hierarchical interpolation on sparse grids
-\cite{klimke2006, ma2009}. In addition to the cost reduction mentioned earlier,
-the adaptivity means that our technique is well suited for nonsmooth response
-surfaces. Nonsmoothness is a serious problem for global approximation; the
-convergence of \abbr{PC} expansions, for instance, deteriorates substantially in
-such cases, requiring partitioning of the stochastic space in order to alleviate
-the problem. Furthermore, the adaptivity that our framework leverages is purely
-local, as opposed to the dimension-wise adaptivity \cite{klimke2006}, which
-means that the framework can benefit even further from the particularities of
-the stochastic space that are not necessarily aligned with the stochastic
-dimensions.
+In addition to the cost reduction mentioned earlier, the adaptivity featured by
+the proposed framework means that our technique is well suited for nonsmooth
+response surfaces. The ability to tackle nonsmooth problems is important for the
+designer of electronic systems, and we would like to unpack this aspect now. To
+this end, we first need to give a classification of sources of uncertainty
+present in electronic systems.
+
+Sources of uncertainty can be divided into analog and digital. The major
+representative of the former is process variation \cite{srivastava2005}, which
+has been central for many lines of research \cite{bhardwaj2008, juan2012,
+lee2013, ukhov2014, ukhov2015}. Process variation is a side effect of the
+fabrication process. In contrast, the sources of uncertainty labeled as
+``digital'' are phenomena of the digital world rather than physical. To
+elaborate, many applications running on modern devices exhibit nondeterministic
+behavior: their characteristics change from one activation to another, depending
+on such aspects as the runtime environment and input data. The digital class has
+not been deprived of attention either, especially in the real-time community
+\cite{quinton2012, diaz2002, santinelli2011, yang2013, tanasa2015}. Both analog
+and digital sources of uncertainty render the behavior of electronic systems as
+essentially random for the designer, and accounting for them can be highly
+beneficial if not essential.
 
 \input{include/assets/figures/motivation.tex}
-The ability to tackle nonsmooth problems is important for the designer of
-multiprocess systems. It is especially urgent in the context of digital sources
-of uncertainty since the variability due to such sources often lacks smoothness
-and might even have discontinuities. Analog sources of uncertainty are forgiving
-in this regards due to their physical nature, and polynomial-based
-approximations generally work well for them, as in \cite{bhardwaj2008, lee2013,
-ukhov2014, ukhov2015}. In order to explore the above concern better, let us
-consider a toy example. Suppose that our ``multiprocessor'' system has only one
-processing element, and it is running an application with only one task. Suppose
-further that the task has two branches and takes either of them depending on the
-input data. Assume that one branch takes 0.1~s to execute and has probability
-0.6, and the other branch takes 1~s and has probability 0.4. Our goal is to find
-the distribution of the end-to-end delay of the application. In this example,
-the end-to-end delay coincides with the execution time of the task; hence, we
-already know the answer. Let us pretend that we do not and try to apply several
-techniques in order to find it.
+Due to the physical nature, the variability induced by analog sources of
+uncertainty is typically smooth. In such cases, uncertainty quantification based
+polynomial chaos (\abbr{PC}) expansions \cite{xiu2010} and other global
+approximations relying on polynomials generally works well, as in
+\cite{bhardwaj2008, lee2013, ukhov2014, ukhov2015}. On the other hand, the
+variability induced by digital sources of uncertainty often lacks smoothness and
+might even have discontinuities. In such cases, \abbr{PC} expansions and similar
+techniques fail. In order to explore this concern, let us consider a toy
+example. Suppose that our electronic system has only one processing element, and
+it is running an application with only one task. Suppose further that the task
+has two branches and takes either of them depending on the input data. Assume
+that one branch takes 0.1~s to execute and has probability 0.6, and the other
+branch takes 1~s and has probability 0.4. Our goal is to find the distribution
+of the end-to-end delay of the application. In this example, the end-to-end
+delay coincides with the execution time of the task; hence, we already know the
+answer. Let us pretend we do not and try to find it.
 
 Suppose the above scenario is modeled by a random variable $\u$ uniformly
 distributed in $[0, 1]$: the execution time of the task is 0.1~s if $\u \in [0,
 0.6]$, and it is 1~s if $\u \in (0.6, 1]$. The response in this case is a step
 function, which is illustrated by the yellow line in \fref{motivation}. First,
-we try to approximate the end-to-end delay by constructing a \abbr{PC} expansion
+we try to quantify the end-to-end delay by constructing a \abbr{PC} expansion
 founded on the Legendre polynomial basis \cite{xiu2010}. The orange line in
 \fref{motivation} shows a ninth-order \abbr{PC} expansion, which uses 10 points.
 It can be seen that the approximation is poor, not to mention negative
@@ -133,7 +124,7 @@ representation, one can proceed to the calculation of the probability
 distribution of the quantity of interest, which, in general, is done via
 sampling followed by such techniques as kernel density estimation. The crucial
 point to note here is that this follow-up sampling does not involve the analyzed
-multiprocessor system itself and, thus, costs nothing.
+electronic system itself and, thus, costs nothing.
 
 The remainder of the paper is organized as follows. Section~\ref{sec:prior-work}
 provides an overview of the prior work. In \sref{present-work}, we summarize the

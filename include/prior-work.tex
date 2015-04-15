@@ -1,6 +1,6 @@
 Computer experiments together with Monte Carlo (\abbr{MC}) methods would be a
-reasonable solution to probabilistic analysis of multiprocessor systems if
-multiprocessor systems were inexpensive to simulate (in terms of time, money, or
+reasonable solution to probabilistic analysis of electronic systems if
+electronic systems were inexpensive to simulate (in terms of time, money, or
 other resources). In order to eliminate or reduce the costs associated with
 direct sampling, a number of techniques have been introduced. The techniques are
 diverse as the area itself and can be classified in many ways. Two natural
@@ -35,27 +35,26 @@ allows for addressing larger, previously infeasible problems. The framework
 proposed in \cite{santinelli2011} facilitates task scheduling by providing
 probabilistic bounds on the resource given to a task flow and the resource
 needed by that task flow; the approach is based on real-time calculus and is
-applicable to multiprocessor systems. Temperature variations due to
-uncertainties in timing have also been extensively studied, and the accent has
-been primarily on the worst case. An example is the work presented in
-\cite{yang2013}, which builds on real-time calculus and studies the maximal
-temperature.
+applicable to electronic systems. Temperature variations due to uncertainties in
+timing have also been extensively studied, and the accent has been primarily on
+the worst case. An example is the work in \cite{yang2013}, which builds on
+real-time calculus and targets the maximal temperature.
 
-Studying the literature on probabilistic analysis of multiprocessor systems, one
-can note a pronounced trend: the generality and straightforwardness of \abbr{MC}
-methods tend to be lost. To elaborate, a technique typically (i) requires
+Studying the literature on probabilistic analysis of electronic systems, one can
+note a pronounced trend: the generality and straightforwardness of \abbr{MC}
+methods tend to be lost. To elaborate, a technique typically: 1) requires
 restrictive conditions to be fulfilled such as the absence of dependencies or
-the usage of a certain scheduling policy, (ii) is tailored to one concrete
-quantity such as the response time or maximal temperature, and (iii) requires
+the usage of a certain scheduling policy; 2) is tailored to one concrete
+quantity such as the response time or maximal temperature; and 3) requires
 substantial effort in order to be deployed. This trend is, of course,
 reasonable: the techniques try to excel by narrowing down the scope and asking
-for more. However, it is also important to keep in mind what is practical. (i)
+for more. However, it is also important to keep in mind what is practical. 1)
 Despite making mathematics beautiful, some of the assumptions often do not hold,
-and the independence assumption is one of them. (ii) Having one tool for one job
+and the independence assumption is one of them. 2) Having one tool for one job
 might lead to a longer adoption time and to more experts involved. It is a
 sustainable strategy, though, as long as tools are composable, compatible with
 each other, which might be difficult to achieve when techniques have drastically
-different foundations. (iii) It is often the case that there has already been
+different foundations. 3) It is often the case that there has already been
 developed a robust simulator of the quantity under consideration for the ideal
 deterministic case. Switching gears to probabilistic analysis might mean
 discarding this battle-tested code all together and implementing something else
@@ -63,10 +62,17 @@ from scratch, which is wasteful and not desirable.
 
 Some of the techniques listed earlier in this section, in fact, preserve the
 generality and straightforwardness of \abbr{MC} methods. An example is the
-uncertainty analysis given in \cite{ukhov2015}. The reason is that the \abbr{PC}
-expansions in \cite{ukhov2015} are constructed using so-called nonintrusive
-spectral projections \cite{xiu2010}, which do not need to look inside the
-``black box,'' similar to sampling methods. However, as motivated in
-\sref{introduction}, global approximation based on polynomials suffer from
-nonsmoothness, which is a trait of the variability induced by digital sources of
-uncertainty.
+uncertainty analysis presented in \cite{ukhov2015}. The reason is that the
+construction of \abbr{PC} expansions in \cite{ukhov2015} is undertaken by means
+of so-called nonintrusive spectral projections \cite{xiu2010}, which do not need
+to look inside the ``black box,'' similar to \abbr{MC} methods. However, as
+motivated in \sref{introduction}, nonsmoothness is a serious problem for global
+approximation based on polynomials. The convergence of \abbr{PC} expansions, for
+instance, deteriorates substantially in such cases, requiring partitioning of
+the stochastic space in order to alleviate the problem. Therefore, it is not
+straightforward to apply such techniques as the one given in \cite{ukhov2015} in
+the context of digital sources of uncertainty exhibiting nonsmoothness.
+
+To conclude, the available techniques for probabilistic analysis of electronic
+systems are restricted in use. Flexible, capable, and easy-to-deploy frameworks
+are needed.
