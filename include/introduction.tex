@@ -19,17 +19,16 @@ and it is especially high in the context of soft real-time systems and control
 systems.
 
 When it comes to uncertainty quantification and estimation of probability
-distributions, computer experiments \cite{santner2003} are of great use.
-Compared to other techniques for probabilistic analysis, computer experiments
-are straightforward to undertake. The system at hand is treated as being
-completely opaque, and it only needs to be simulated a number of times,
-following an adequate strategy, in order to start drawing conclusions about the
-system's behavior. Consider, for instance, the classical Monte Carlo (\abbr{MC})
-sampling, which is arguably the most famous and versatile approach to the
-analysis of stochastic systems. The technique was introduced in the middle of
-the twentieth century and since then has expanded into a rich family of methods
-that have had a tremendous impact both in academia and in terms of industrial
-breakthroughs.
+distributions, Monte Carlo (\abbr{MC}) methods are of great use. Compared to
+other techniques for probabilistic analysis, such methods are straightforward to
+apply. The system at hand is treated as being completely opaque, and it only
+needs to be simulated a number of times, following an adequate strategy, in
+order to start drawing conclusions about the system's behavior. Consider, for
+instance, the classical \abbr{MC} sampling, which is arguably the most famous
+and versatile approach to the analysis of stochastic systems. The technique was
+introduced in the middle of the twentieth century and since then has expanded
+into a rich family of methods that have had a tremendous impact both in academia
+and in terms of industrial breakthroughs.
 
 The major problem with sampling techniques, however, is in sampling: one should
 be able to obtain sufficient many realizations of the quantity of interest in
@@ -59,9 +58,9 @@ benefit even further from the particularities of the stochastic space that are
 not necessarily aligned with the stochastic dimensions. Lastly, the output of
 our framework is generative: we construct a light representation of the quantity
 of interest that can be used to generate realizations of this quantity without
-touching the expensive ``black box.'' Therefore, given such a light
-representation, the computer-experiments machinery applies and has a practically
-negligible cost.
+touching the expensive ``black box.'' Therefore, having constructed such a light
+representation, the \abbr{MC} machinery applies and has a practically negligible
+cost.
 
 In addition to the cost reduction mentioned earlier, the adaptivity featured by
 the proposed framework means that our technique is well suited for nonsmooth

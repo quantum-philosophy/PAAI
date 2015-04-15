@@ -1,6 +1,6 @@
-As noted earlier, performing computer experiments \cite{santner2003} is a
-compelling approach to uncertainty quantification. We would readily conduct such
-experiments to study our quantity of interest $\g$ if only $\g$ had a negligible
+As noted earlier, performing Monte Carlo (\abbr{MC}) simulations is a compelling
+approach to uncertainty quantification. We would readily apply an \abbr{MC}
+method to study our quantity of interest $\g$ if only $\g$ had a negligible
 cost, which it does not.
 
 Recall that $\g$ is parameterized by the uncertain parameters $\vu$, and these
@@ -10,10 +10,10 @@ an auxiliary random vector $\vz$ extracted from $\vu$; the necessity of this
 stage will become clear later on. Second, we construct a light interpolant of
 $\g$ by considering $\g$ as a deterministic function of $\vz$ and evaluating
 $\g$ at a small number of strategically chosen points. Finally, we use the
-constructed interpolant instead of $\g$ to perform computer experiments. The
-benefit of this approach is in the number of invocations of $\g$: only a few
-evaluations of $\g$ are needed, and the rest of the analysis is powered by the
-interpolant, which does have a negligible cost as opposed to $\g$.
+constructed interpolant instead of $\g$ to perform sampling. The benefit of this
+approach is in the number of invocations of $\g$: only a few evaluations of $\g$
+are needed, and the rest of the analysis is powered by the interpolant, which
+does have a negligible cost as opposed to $\g$.
 
 Interpolation of high-dimensional functions, however, is a challenging task, and
 it should be approached with a great care. One should first have a lucid
