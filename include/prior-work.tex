@@ -43,17 +43,30 @@ temperature.
 
 Studying the literature on probabilistic analysis of multiprocessor systems, one
 can note a pronounced trend: the generality and straightforwardness of \abbr{MC}
-methods tend to be lost. First of all, a technique usually requires restrictive
-conditions to be fulfilled, such as the absence of dependencies or the usage of
-a certain scheduling policy, and is applicable to one particular quantity, such
-the response time or maximal temperature. Second, the designer typically has to
-invest much effort into applying a chosen technique; the battle-tested
-simulators that have been developed over the years for the ideal deterministic
-case have to be substantially modified or abandoned all together. This trend is,
-of course, reasonable: the techniques try to excel by narrowing down the scope
-and asking for more.
+methods tend to be lost. To elaborate, a technique typically (i) requires
+restrictive conditions to be fulfilled such as the absence of dependencies or
+the usage of a certain scheduling policy, (ii) is tailored to one concrete
+quantity such as the response time or maximal temperature, and (iii) requires
+substantial effort in order to be deployed. This trend is, of course,
+reasonable: the techniques try to excel by narrowing down the scope and asking
+for more. However, it is also important to keep in mind what is practical. (i)
+Despite making mathematics beautiful, some of the assumptions often do not hold,
+and the independence assumption is one of them. (ii) Having one tool for one job
+might lead to a longer adoption time and to more experts involved. It is a
+sustainable strategy, though, as long as tools are composable, compatible with
+each other, which might be difficult to achieve when techniques have drastically
+different foundations. (iii) It is often the case that there has already been
+developed a robust simulator of the quantity under consideration for the ideal
+deterministic case. Switching gears to probabilistic analysis might mean
+discarding this battle-tested code all together and implementing something else
+from scratch, which is wasteful and not desirable.
 
-The framework that we propose in this paper is mainly oriented towards digital
-sources of uncertainty, and our experimental setup has been tailored
-accordingly. However, the framework is expected to perform well when modeling
-other uncertainties such as those due to process variation.
+Some of the techniques listed earlier in this section, in fact, preserve the
+generality and straightforwardness of \abbr{MC} methods. An example is the
+uncertainty analysis given in \cite{ukhov2015}. The reason is that the \abbr{PC}
+expansions in \cite{ukhov2015} are constructed using so-called nonintrusive
+spectral projections \cite{xiu2010}, which do not need to look inside the
+``black box,'' similar to sampling methods. However, as motivated in
+\sref{introduction}, global approximation based on polynomials suffer from
+nonsmoothness, which is a trait of the variability induced by digital sources of
+uncertainty.

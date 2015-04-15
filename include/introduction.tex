@@ -17,11 +17,11 @@ fabrication process. In contrast, the sources of uncertainty labeled as
 elaborate, many applications running on modern devices exhibit nondeterministic
 behavior: their characteristics change from one activation to another, depending
 on such aspects as the runtime environment and input data. The digital class has
-not been deprived of attention either \cite{diaz2002, santinelli2011,
-quinton2012, yang2013, tanasa2015}, especially in the real-time community. Both
-analog and digital sources of uncertainty render the behavior of the
-multiprocessor system at hand as essentially random, and accounting for them can
-be highly beneficial if not essential.
+not been deprived of attention either, especially in the real-time community
+\cite{diaz2002, santinelli2011, quinton2012, yang2013, tanasa2015}. Both analog
+and digital sources of uncertainty render the behavior of the multiprocessor
+system at hand as essentially random, and accounting for them can be highly
+beneficial if not essential.
 
 In order to account for uncertainty, one has to quantify it first. Uncertainty
 quantification is a wide umbrella, and the corresponding techniques can deliver
@@ -84,8 +84,8 @@ quantification, which should be contrasted with other techniques such as
 polynomial-chaos (\abbr{PC}) expansions relying on regression. More concretely,
 our framework is based on adaptive hierarchical interpolation on sparse grids
 \cite{klimke2006, ma2009}. In addition to the cost reduction mentioned earlier,
-the adaptivity means that our technique is well suited for non-smooth response
-surfaces. Non-smoothness is a serious problem for global approximation; the
+the adaptivity means that our technique is well suited for nonsmooth response
+surfaces. Nonsmoothness is a serious problem for global approximation; the
 convergence of \abbr{PC} expansions, for instance, deteriorates substantially in
 such cases, requiring partitioning of the stochastic space in order to alleviate
 the problem. Furthermore, the adaptivity that our framework leverages is purely
@@ -95,7 +95,7 @@ the stochastic space that are not necessarily aligned with the stochastic
 dimensions.
 
 \input{include/assets/figures/motivation.tex}
-The ability to tackle non-smooth problems is important for the designer of
+The ability to tackle nonsmooth problems is important for the designer of
 multiprocess systems. It is especially urgent in the context of digital sources
 of uncertainty since the variability due to such sources often lacks smoothness
 and might even have discontinuities. Analog sources of uncertainty are forgiving
