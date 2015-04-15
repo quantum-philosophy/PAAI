@@ -4,7 +4,7 @@ to an auxiliary random vector $\vz = (\z_i)_{i = 1}^\nz \sim \distribution_\vz$
 such that 1) the support of $\distribution_\vz$ is the unit hypercube $[0,
 1]^\nz$, and 2) $\nz \leq \nu$ has the smallest value needed to retain the
 desired level of accuracy. The first is standardization, which is done primarily
-for convenience. The second is model-order reduction, which identifies and
+for convenience. The second is model order reduction, which identifies and
 eliminates excessive complexity and, hence, speeds up the proposed framework.
 The reduction is possible whenever there are dependencies between $(\u_i)$, in
 which case one can find such $(\z_i)_{i = 1}^\nz$, $\nz < \nu$, that each $\u_i$
@@ -15,7 +15,7 @@ $\vu = \transformation(\vz)$ where
 \end{equation}
 Now, for any point $\vz \in [0, 1]^\nz$, we are able to compute the
 corresponding $\vu$ and, consequently, the quantity of interest $\g$ as $\g(\vu)
-= (\q \circ \transformation)(\vz) := \g(\transformation(\vz))$; recall
+= (\g \circ \transformation)(\vz) := \g(\transformation(\vz))$; recall
 \sref{problem-formulation}.
 
 Let us consider a concrete example in order to get a better intuition about
@@ -45,7 +45,7 @@ a typical input to probabilistic analysis.
 
 The number of variables, which is so far $\nu$, has a significant impact on the
 complexity of the problem at hand. Therefore, an important component of our
-framework is model-order reduction, which we shall base on the discrete
+framework is model order reduction, which we shall base on the discrete
 Karhunen--Lo\`{e}ve decomposition, also known as the principal component
 analysis. We proceed as follows. Since any correlation matrix is real and
 symmetric, $\correlation$ admits the eigendecomposition:
@@ -56,7 +56,7 @@ where $\m{V} \in \real^{\nu \times \nu}$ is an orthogonal matrix whose columns
 are the eigenvectors of $\correlation$, and $\m{\Lambda} = \diag(\lambda_i)_{i =
 1}^\nu$ is a diagonal matrix whose diagonal elements are the eigenvalues of
 $\correlation$. The eigenvalues $(\lambda_i)$ correspond to the variances of the
-corresponding components revealed by the decomposition. The model-order
+corresponding components revealed by the decomposition. The model order
 reduction boils down to selecting those components whose cumulative
 contributions to the total variance is above a certain threshold. Formally,
 assuming that $(\lambda_i)$ are sorted in the descending order and given a
@@ -87,5 +87,5 @@ Note also that $\distribution_\vz$ is trivial to draw samples from.
 
 \begin{remark}
 In the absence of correlations, \eref{transformation} is simply $\vu =
-\distribution_\vu^{-1}(\vz)$, and no model-order reduction is possible.
+\distribution_\vu^{-1}(\vz)$, and no model order reduction is possible.
 \end{remark}

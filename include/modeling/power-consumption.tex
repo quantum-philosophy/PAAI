@@ -1,9 +1,7 @@
-Denote the mapping of the application $\tasks$ onto the platform $\procs$ by a
-vector $\mapping = (m_i)_{i = 1}^{\nt}$ wherein $m_i \in \procs$ is the index of
-the processing element that the $i$th task is assigned to. Let the dynamic power
-consumption of the tasks be fixed during their execution and given by a vector
-$\vp^\dynamic = (\p^\dynamic_i)_{i = 1}^{\nt}$ wherein $\p^\dynamic_i$ is the
-dynamic power of the $i$th task.
+Let the dynamic power consumed by the $j$th task when running on the $i$th
+processing element be fixed during the execution of the task and given by
+$\p^\dynamic_{ij}$. Set also $\vp_i^\dynamic = (\p^\dynamic_{ij})_{j =
+1}^{\nt}$.
 
 \begin{remark}
 The boundaries of a task have not been specified, and one can perform modeling
@@ -11,31 +9,27 @@ at the level of granularity that makes the most sense for a particular problem.
 \end{remark}
 
 Let a time-dependent vector $\vp(\t) = (\p_i(\t))_{i = 1}^{\np}$ capture the
-total power consumption of the system at time $\t$. This vector should not be
-confused with the vector $\vp^\dynamic$ introduced in the previous paragraph.
-The two are related as follows:
+total power consumption of the system at time $\t$. This vector is related to
+the vector $\vp^\dynamic$ introduced above as follows:
 \begin{equation} \elab{power}
-  \p_i(\t) = \sum_{j = 1}^\nt \p^\dynamic_j \: \delta_{i\,m_j} \: \one_{[\b_j, \b_j + \d_j)}(\t) + \p^\static_i(\t),
+  \p_i(\t) = \sum_{j \in \tasks}^\nt \p^\dynamic_j \: \delta_{ij} (\t) + \p^\static_i(\t),
 \end{equation}
-for $i = 1, \dots, \np$, where $\delta_{ij}$ is the Kronecker delta, $\one_A(x)$
-is the indicator function of a set $A$, and $\p^\static_i(\t)$ is the static
-power consumed at time $\t$. The last one varies over time due to the
-interdependence between the leakage power and temperature \cite{liu2007}. In
-words, the above equation yields the dynamic power of the task running on the
-$i$th processing element at time $\t$ (if any) plus the static power at that
-moment.
+for $i \in \procs$, where $\delta_{ij}(\t)$ is the indicator that the $i$th
+processing element executes the $j$th task at time $\t$, and $\p^\static_i(\t)$
+is the static power consumed by the $i$th processing element at time $\t$. The
+last component varies over time due to the interdependence between the leakage
+power and temperature \cite{liu2007}.
 
 Given a set of points $\{ \t_i \}_{i = 1}^\ns$ on the timeline, \eref{power} can
 be used to construct a power profile $\mP \in \real^{\np \times \ns}$ of the
 system, which is essentially a matrix whose $i$th row captures the evolution of
 the power consumption of the $i$th processing element over the $\ns$ time
 moments. Another valuable quantity, which can be calculated at this point, is
-the total energy consumed by the system. To this end, \eref{power} has to be
-integrated over the time span of the application:
-\begin{align}
-  \text{Total energy} &= \sum_{i = 1}^\np \int \p_i(\t) \, d\t \elab{total-energy} \\
-                      &= \vd^T \vp^\dynamic + \sum_{i = 1}^\np \int \p^\static_i(\t) \, d\t. \nonumber
-\end{align}
+the total energy consumed by the system during one application run. To this end,
+\eref{power} has to be integrated over the time span of the application:
+\begin{equation} \elab{total-energy}
+  \text{Total energy} = \sum_{i \in \procs} \int \p_i(\t) \, d\t
+\end{equation}
 
 Assuming that the power consumption depends on $\vu$---which is the case when,
 for instance, $(\vb, \vd)$ depends on $\vu$---a power profile as well as the

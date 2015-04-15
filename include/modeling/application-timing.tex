@@ -1,11 +1,12 @@
-Each task occupies a certain interval on the timeline. Denote by $\b_i$ and
-$\d_i$ the beginning and duration of the execution interval of the $i$th task,
-respectively, and let $\vb = (\b_i)_{i=1}^{\nt}$ and $\vd = (\d_i)_{i=1}^{\nt}$.
-All other timing characteristics of the system can be derived from the tuple
-$(\vb, \vd)$. The examples include the completion times of the tasks and the
-end-to-end delay of the application. The latter, for instance, is
+Each task in $\tasks$ has a start time and a finish time. Denote these two time
+moments of the $i$th task by $\b_i$ and $\d_i$, respectively, and let $\vb =
+(\b_i)_{i=1}^{\nt}$ and $\vd = (\d_i)_{i=1}^{\nt}$. All other timing
+characteristics of the system can be derived from the tuple $(\vb, \vd)$. An
+example is the end-to-end delay of the application, which is defined as the
+difference between the finish time of the last task and the start time of the
+first task:
 \begin{equation} \elab{end-to-end-delay}
-  \text{End-to-end delay} = \max_{i = 1}^\nt \, (\b_i + \d_i).
+  \text{End-to-end delay} = \max_{i \in \tasks} \, \d_i - \min_{i \in \tasks} \, \b_i.
 \end{equation}
 
 Assuming that the timing of the tasks depends on $\vu$, the quantities mentioned
