@@ -1,9 +1,10 @@
 One of the central algorithms in the field of high-dimensional integration and
-interpolation is the Smolyak algorithm. Intuitively speaking, the algorithm
-takes a number of small tensor-product structures and composes them in such a
-way that the resulting grid has a drastically reduced number of evaluation or
-collocation nodes, compared to the full tensor-product construction, while the
-approximating power of such a sparse grid stays the same for a class of
+interpolation is the Smolyak algorithm \cite{smolyak1963}. The technique was
+developed in the 1960s by Sergey Smolyak, and its impact is comparable to the
+one of Monte Carlo sampling. Intuitively speaking, the algorithm takes a number
+of small tensor-product structures and composes them in such a way that the
+resulting grid has a drastically reduced number of nodes while preserving the
+approximating power of the full tensor-product construction for the classes of
 functions that one is typically interested in integrating or interpolating
 \cite{klimke2006}.
 
@@ -15,44 +16,39 @@ where $l \in \natural$ is the level of Smolyak's interpolation, and $|\vi|_1 :=
 i_1 + \dots + i_\nin$. We see that the algorithm is indeed just a peculiar
 composition of cherry-picked tensor products. However, the formula has an
 implication of paramount importance: the quantity of interest needs to be
-exercised only at the nodes of the sparse grid underpinning \eref{smolyak}:
+evaluated only at the nodes of the sparse grid underpinning \eref{smolyak}:
 \begin{equation} \elab{smolyak-grid}
   \Y^l = \bigcup_{l - \nin + 1 \leq |\vi|_1 \leq l} \X^\vi.
 \end{equation}
 The cardinality of the above set does not have a general closed-form formula;
 however, it can be several orders of magnitude smaller than the one of the full
-tensor product given in \eref{tensor-cardinality}, depending on the
-dimensionality of the problem at hand.
+tensor product given in \eref{tensor-cardinality}, which depends on the
+dimensionality of the problem at hand and the one-dimensional rules utilized.
 
 A better intuition about the properties of Smolyak's construction can be
 obtained by rewriting \eref{smolyak} in an incremental form. To this end, let
-$\Delta\tensor{0}(\f) := \tensor{0}(\f)$,
-\begin{equation} \elab{tensor-delta-1d}
-  \Delta\tensor{i}(\f) := (\tensor{i} - \tensor{i - 1})(\f), \qquad \text{for $i > 0$},
-\end{equation}
-and
-\begin{equation} \elab{tensor-delta}
-  \Delta\tensor{\vi}(\f) := (\Delta\tensor{i_1} \otimes \cdots \otimes \Delta\tensor{i_\nin})(\f).
-\end{equation}
+$\Delta\tensor{-1}(\f) := 0$,
+\begin{align}
+  & \Delta\tensor{i}(\f) := (\tensor{i} - \tensor{i - 1})(\f), \text{ and} \elab{tensor-delta-1d} \\
+  & \Delta\tensor{\vi}(\f) := (\Delta\tensor{i_1} \otimes \cdots \otimes
+  \Delta\tensor{i_\nin})(\f). \nonumber
+\end{align}
 Then, \eref{smolyak} is identical to
 \begin{equation} \elab{smolyak-incremental}
-  \smolyak{l}(\f) = \sum_{|\vi|_1 \leq l} \Delta\tensor{\vi}(\f) = \smolyak{l - 1}(\f) + \sum_{|\vi|_1 = l} \Delta\tensor{\vi}(\f).
+  \smolyak{l}(\f) = \sum_{|\vi|_1 \leq l} \Delta\tensor{\vi}(\f) = \smolyak{l - 1}(\f) + \sum_{|\vi|_1 = l} \Delta\tensor{\vi}(\f)
 \end{equation}
-It can be seen that a Smolyak interpolant can be refined without the need of
-starting from scratch: the work done to attain one accuracy level can be
-entirely recycled to go one level up.
+where $\smolyak{-1}(\f) := 0$. It can be seen that a Smolyak interpolant can be
+refined efficiently: the work done to attain one accuracy level can be entirely
+recycled to go one level up.
 
 The sparsity and gradual refinement of Smolyak's approach---shown in
 \eref{smolyak-grid} and \eref{smolyak-incremental}, respectively---are
 remarkable properties \perse\ (taking into consideration the resulting
-accuracy), but they can be taken even further. Let $\Delta\X^0 := \X^0$,
-\[
-  \Delta\X^i := \X^i \setminus \X^{i - 1}, \quad \text{for $i > 0$,}
-\]
-and
-\[
-  \Delta\X^\vi := \Delta\X^{i_1} \times \cdots \times \Delta\X^{i_\nin}.
-\]
+accuracy), but they can be taken even further. Let $\Delta\X^{-1} := \emptyset$,
+\begin{align*}
+  & \Delta\X^i := \X^i \setminus \X^{i - 1}, \text{ and} \\
+  & \Delta\X^\vi := \Delta\X^{i_1} \times \cdots \times \Delta\X^{i_\nin}.
+\end{align*}
 Then, \eref{smolyak-grid} can be rewritten as
 \begin{equation} \elab{smolyak-grid-incremental}
   \Y^l = \bigcup_{|\vi|_1 \leq l} \Delta\X^\vi = \Y^{l - 1} \cup \bigcup_{|\vi|_1 = l} \Delta\X^\vi,
@@ -61,40 +57,46 @@ which is analogous to \eref{smolyak-incremental}. Now, we note that it is
 computationally beneficial for refinement to have $\X^{i - 1}$ be entirely
 included in $\X^i$ since, in that case, $\Y^l \setminus \Y^{l - 1} =
 \bigcup_{|\vi|_1 = l} \Delta\X^\vi$ in \eref{smolyak-grid-incremental} gets
-smaller. In essence, the values of $\f$ evaluated on lower levels can be reused
-to attain higher levels if the interpolating grid grows without abandoning its
-previous structure. With this in mind, the rules used for generating successive
-sets of points $\X^{i_k}$ in each dimension $k$ can be chosen to be nested, that
-is, in such a way that the rule of level $i_k$ contains all the nodes of the
-rule of level $i_k - 1$, for $k = 2, \dots, \nin$.
+smaller. In words, the values of $\f$ evaluated on lower levels can be reused to
+attain higher levels if the grid grows without abandoning its previous
+structure. With this in mind, the rule used for generating successive sets of
+points $\X^i$ should be chosen to be nested, that is, in such a way that the set
+$\X^i$ contains all the nodes of the set $\X^{i - 1}$.
 
-Lastly, we would like to impose one additional property on $\tensor{i}$ in order
-to enable hierarchical implementations of \eref{smolyak-incremental}. Namely,
-interpolants of higher levels are required to represent exactly interpolants of
-lower levels:
+Lastly, we need to impose one additional property in order to obtain a
+hierarchical version of \eref{smolyak-incremental}. Namely, we require the
+interpolants of higher levels to represent exactly the interpolants of lower
+levels. In one dimension, it means that
 \begin{equation} \elab{tensor-exactness}
   \tensor{i - 1}(\f) = \tensor{i}(\tensor{i - 1}(\f)).
 \end{equation}
-This can be achieved by an appropriate choice of collocation nodes and basis
-functions, which will be discussed later. If the above equation holds, using
-\eref{tensor-1d} and \eref{tensor-delta-1d},
+The condition in \eref{tensor-exactness} can be achieved by an appropriate
+choice of collocation nodes and basis functions, which will be discussed later.
+If \eref{tensor-exactness} holds, using \eref{tensor-1d} and
+\eref{tensor-delta-1d},
 \[
-  \Delta\tensor{i}(\f) = \sum_{j \in \index(i)} \left(\f(\x^i_j) - \tensor{i - 1}(\f)(\x^i_j)\right) \e^i_j.
+  \Delta\tensor{i}(\f) = \sum_{j \in \Delta\index(i)} \left( \f(\x^i_j) - \tensor{i - 1}(\f)(\x^i_j) \right) \, \e^i_j
 \]
-We note that the above sum is over $\X^i = \{ \x^i_j: j \in \index(i) \}$, and
-the difference in the sum, which we denote by
+where $\Delta\index(i) := \{ j \in \index(i): \x^i_j \in \Delta\X^i \}$. The
+above sum is over $\Delta\X^i$ due to the fact that the difference in the
+parentheses is zero whenever $\x^i_j \in \X^{i - 1}$ since $\X^{i - 1} \subset
+\X^i$. In multiple dimensions, using the Smolyak formula, we have
+\begin{equation} \elab{tensor-delta}
+  \Delta\tensor{\vi}(\f) = \sum_{\vj \in \Delta\index(\vi)} \left( \f(\vx^\vi_\vj) - \smolyak{l - 1}(\f)(\vx^\vi_\vj) \right) \, \e^\vi_\vj
+\end{equation}
+where $\Delta\index(\vi) := \{ \vj \in \index(\vi): \vx^\vi_\vj \in \Delta\X^\vi
+\}$. The delta
 \begin{equation} \elab{surplus}
-  \surplus(\x^i_j) = \f(\x^i_j) - \tensor{i - 1}(\f)(\x^i_j),
+  \surplus(\vx^\vi_\vj) := \f(\vx^\vi_\vj) - \smolyak{l - 1}(\f)(\vx^\vi_\vj)
 \end{equation}
-is zero whenever $\x^i_j \in \X^{i - 1}$. Since $\X^{i - 1} \subset \X^i$, we
-actually need to sum over the nodes in $\Delta\X^i$, which we shall write as
-\begin{equation} \elab{tensor-surplus-1d}
-  \Delta\tensor{i}(\f) = \sum_{\x^i_j \in \Delta\X^i} \surplus(\x^i_j) \, \e^i_j
+is called a hierarchical surplus. When increasing the interpolation level, this
+surplus is nothing but the difference between the actual value of $\f$ at a new
+node and an approximation of this value computed by the interpolant constructed
+so far.
+
+The final formula for nonadaptive hierarchical interpolation is obtained by
+substituting \eref{tensor-delta} into \eref{smolyak-incremental}:
+\begin{equation} \elab{smolyak-hierarchical}
+  \smolyak{l}(\f) = \smolyak{l-1}(\f) + \sum_{|\vi|_1 = l} \, \sum_{\vj \in \Delta\index(\vi)} \surplus(\vx^\vi_\vj) \, \e^\vi_\vj
 \end{equation}
-where $\e^i_j$ naturally corresponds to $\x^i_j$. The delta $\surplus(\x^i_j)$
-in \eref{surplus} is referred to as a hierarchical surplus. When going from one
-level of interpolation to the next one, a surplus is nothing more than the
-difference between the actual value of $\f$ at a new collocation point and its
-approximation by the interpolant constructed so far. Multidimensional surpluses
-of $\f$ are constructed using \eref{tensor-surplus-1d} and \eref{tensor-delta}
-denoted by $\Delta\f(\vx^\vi_\vj)$.
+where $\surplus(\vx^\vi_\vj)$ is computed according to \eref{surplus}.

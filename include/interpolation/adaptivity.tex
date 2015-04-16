@@ -1,42 +1,44 @@
 We would like to draw attention to the following two concerns. First of all,
-looking at \eref{smolyak-incremental}, it is not clear what the interpolation
-level $l$ should be in order to achieve a certain accuracy level. When should
-one stop? Secondly, imagine a function that is nearly flat on the first half of
-$[0, 1]$ and rather irregular on the other. Under these circumstances, it is
-natural to expect that, in order to achieve the same approximating accuracy, the
-first half alone would require much fewer collocation nodes than the other.
-However, if we followed the construction procedure described so far, we would
-not be able to benefit from this anisotropic behavior: we would treat both sides
-equally and would add all collocation nodes of each interpolation level we would
-step on, which are $\Y^l \setminus \Y^{l - 1} = \bigcup_{|\vi|_1 = l}
-\Delta\X^\vi$ for level $l$ as shown in \eref{smolyak-grid-incremental}.
+looking at \eref{smolyak-hierarchical}, it is not clear what the interpolation
+level $l$ should be in order to achieve a certain accuracy level. When should we
+stop? Second, imagine a function that is nearly flat on the first half of $[0,
+1]$ and rather irregular on the other. Under these circumstances, it is natural
+to expect that, in order to achieve the same accuracy, the first half would
+require much fewer collocation nodes than the other; recall the example given in
+\fref{motivation}. However, if we followed the construction procedure described
+so far, we would not be able to benefit from this behavior: we would treat both
+sides equally and would add all nodes of each level.
 
 The answer to the two concerns is to make the construction algorithm adaptive.
 First, we need to find a way to measure how good our approximation is at any
-point in the domain of $\f$. Then, instead of bombarding $\f$ with all the nodes
-of each level, we can exclude those nodes that are located in the regions where
-the desired level of accuracy has already been reached according to our
-accuracy/error metric.
+point in the domain of $\f$. Then, when going from level $l - 1$ to level $l$,
+instead of bombarding $\f$ with all the nodes in $\Y^l \setminus \Y^{l - 1}$
+(see \eref{smolyak-grid-incremental}), we can exclude those new nodes that are
+located in the regions where the desired level of accuracy has already been
+reached according to our accuracy or error metric. This practically means that
+some entries of $\Delta\index(\vi)$ in \eref{smolyak-hierarchical} will be
+dropped.
 
-Recall \eref{tensor-surplus-1d}. Hierarchical surpluses are a natural indicator
-of the interpolation error: as noted earlier, they are the difference between
-the true function and its current approximation at the nodes of the underlying
-sparse grid. Consequently, after computing the surpluses corresponding to the
-nodes of the current level, we can recycle the surpluses in order to decide
-which of the nodes are to be refined. The meaning of refinement will be
-discussed in \sref{collocation-nodes}; for the moment, we are only concerned
-with identifying ``problematic'' nodes. In this regards, one can adhere to
-various strategies \cite{ma2009}; in what follows, we shall discuss one of them.
+Recall \eref{surplus}. Hierarchical surpluses are a natural indicator of the
+interpolation error: as noted earlier, they are the difference between the true
+function and its current approximation at the nodes of the underlying sparse
+grid. Consequently, after computing the surpluses corresponding to the nodes of
+the current level, we can recycle their values in order to decide which of the
+nodes are to be refined. The meaning of refinement will be discussed in
+\sref{collocation-nodes}; for the moment, we are only concerned with identifying
+``problematic'' nodes.
 
-Let $\error$ be the absolute error threshold representing the accuracy
-requirements for the problem at hand. Then, the node $\vx^\vi_\vj$ on level $l$
-is to be refined if
+In this regards, one can adhere to various strategies \cite{ma2009}. One of them
+is as follows. Let $\error$ be the absolute error threshold representing the
+accuracy requirement for the problem at hand. Then, the node $\vx^\vi_\vj$ on
+level $l$ is to be refined if
 \begin{equation} \elab{error}
-  \left| \surplus(\vx^\vi_\vj) \right| > \error.
+  \left| \surplus(\vx^\vi_\vj) \right| > \error
 \end{equation}
+where $\surplus(\vx^\vi_\vj)$ is given by \eref{surplus}. We shall use this
+criterion in the experiment results reported in \sref{experimental-results}.
 
 To summarize, assuming that collocation points and basis functions have been
 carefully chosen, we have obtained an efficient algorithm for high-dimensional
-interpolation. The main equations are \eref{smolyak-incremental} and
-\eref{tensor-surplus-1d}, which enable to undertake the approximation in an
-incremental or hierarchical manner.
+interpolation. The main equation is \eref{smolyak-hierarchical}, which allows
+one to undertake the interpolation in a hierarchical manner.
