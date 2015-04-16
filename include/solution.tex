@@ -3,19 +3,27 @@ approach to uncertainty quantification. We would readily apply an \abbr{MC}
 method to study our quantity of interest $\g$ if only $\g$ had a negligible
 cost, which it does not.
 
-Recall that $\g$ is parameterized by the uncertain parameters $\vu$, and these
-variables are the only source of randomness. Then, our solution to the
-aforementioned quandary is as follows. First, we reparameterize $\g$ in terms of
-an auxiliary random vector $\vz$ extracted from $\vu$; the necessity of this
-stage will become clear later on. Second, we construct a light interpolant of
-$\g$ by considering $\g$ as a deterministic function of $\vz$ and evaluating
-$\g$ at a small number of strategically chosen points. Finally, we use the
-constructed interpolant instead of $\g$ to perform sampling. The benefit of this
-approach is in the number of invocations of $\g$: only a few evaluations of $\g$
-are needed, and the rest of the analysis is powered by the interpolant, which
-does have a negligible cost as opposed to $\g$.
+Our solution to the above quandary is to efficiently construct a light
+representation of $\g$ and study this representation instead of $\g$. The
+surrogate that we build is based on interpolation: $\g$ is evaluated at a number
+of points or nodes, and any other values of $\g$ are reconstructed on demand
+using a set of basis functions mediating between the obtained values of $\g$.
+The benefit of this approach is in the number of invocations of the quantity of
+interest $\g$: only a few evaluations of $\g$ are needed, and the rest of our
+probabilistic analysis is powered by the interpolant, which has a negligible
+cost as opposed to $\g$.
+
+Let us delineate the steps involved in the solution process. Recall that $\g$ is
+parameterized by the uncertain parameters $\vu$, and these variables are the
+only source of randomness. First, we reparameterize $\g$ in terms of an
+auxiliary random vector $\vz$ extracted from $\vu$; the necessity of this stage
+will become clear later on. Second, we construct the interpolant of $\g$
+mentioned above by considering $\g$ as a deterministic function of $\vz$ and
+evaluating $\g$ at a small number of strategically chosen points. Finally, we
+estimate the probability distribution of $\g$ by applying an arbitrary \abbr{MC}
+method to the constructed interpolant.
 
 Interpolation of high-dimensional functions is a challenging task, which should
 be approached with a great care. This aspect will be discussed in detail in
-\sref{interpolation}. Before we proceed to interpolation, however, we need flesh
-out further our uncertain parameters and quantities of interest.
+\sref{interpolation}. However, before we proceed to interpolation, we need to
+flesh out further the uncertain parameters and quantities of interest.

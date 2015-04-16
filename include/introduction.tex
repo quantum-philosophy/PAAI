@@ -90,9 +90,9 @@ uncertainty is typically smooth. In such cases, uncertainty quantification based
 polynomial chaos (\abbr{PC}) expansions \cite{xiu2010} and other global
 approximations relying on polynomials generally works well, as in
 \cite{bhardwaj2008, lee2013, ukhov2014, ukhov2015}. On the other hand, the
-variability induced by digital sources of uncertainty often lacks smoothness and
-might even have discontinuities. In such cases, \abbr{PC} expansions and similar
-techniques fail. In order to explore this concern, let us consider a toy
+variability induced by digital sources of uncertainty often have steep gradients
+and might even have discontinuities. In such cases, \abbr{PC} expansions and
+similar techniques fail. In order to explore this concern, let us consider a toy
 example. Suppose that our electronic system has only one processing element, and
 it is running an application with only one task. Suppose further that the task
 has two branches and takes either of them depending on the input data. Assume
@@ -111,7 +111,7 @@ founded on the Legendre polynomial basis \cite{xiu2010}. The orange line in
 \fref{motivation} shows a ninth-order \abbr{PC} expansion, which uses 10 points.
 It can be seen that the approximation is poor, not to mention negative
 end-to-end delays. The observed oscillating behavior is the well-known Gibbs
-phenomenon, stemming from the steepness of the response. Now we let our
+phenomenon, stemming from the discontinuity of the response. Now we let our
 framework make use of the same number of points as the \abbr{PC} expansion did.
 The result is the blue curve in \fref{motivation}, and the adaptively chosen
 points are plotted on the horizontal axis. It can be seen that the approximation
