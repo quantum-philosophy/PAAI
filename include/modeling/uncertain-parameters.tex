@@ -79,13 +79,12 @@ the standard Gaussian distribution and its inverse, respectively, which are
 applied elementwise; and $\distribution_\vu^{-1} := \distribution_{\u_1}^{-1}
 \otimes \cdots \otimes \distribution_{\u_\nz}^{-1}$ are the inverse marginal
 distributions of $\vu$, each of which is applied to the corresponding element of
-the vector yielded by $\Phi$. To summarize, we have found such a transformation
-$\transformation$ and a random vector $\vz \sim \distribution_\vz$ that 1)
+the vector yielded by $\Phi$. In the absence of correlations,
+\eref{transformation} is simply $\vu = \distribution_\vu^{-1}(\vz)$, and no
+model order reduction is possible.
+
+To summarize, we have found such a transformation $\transformation$ and the
+corresponding random vector $\vz \sim \distribution_\vz$ that 1)
 $\distribution_\vz$ is supported by $[0, 1]^\nz$, and 2) $\vz$ has the smallest
 number of dimensions $\nz$ needed to preserve $\eta$ portion of the variance.
 Note also that $\distribution_\vz$ is trivial to draw samples from.
-
-\begin{remark}
-In the absence of correlations, \eref{transformation} is simply $\vu =
-\distribution_\vu^{-1}(\vz)$, and no model order reduction is possible.
-\end{remark}
