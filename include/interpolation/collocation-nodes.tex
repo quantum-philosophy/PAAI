@@ -1,12 +1,12 @@
 A sparse grid that is fully nested and well suited for local adaptivity, which
-we required previous, can be constructed using the (one-dimensional)
+we requested previous, can be constructed using the (one-dimensional)
 Newton--Cotes rule \cite{klimke2006, ma2009}. For each level, the rule is merely
 a set of equidistant nodes on an interval, which is $[0, 1]$ in our case.
 
 \begin{remark}
-Equidistant nodes are known to perform purely when the interpolating functions
-are chosen to be polynomials (Runge's phenomenon). However, it is not a concern
-for us as our basis functions are not exposed to this problem.
+Equidistant nodes are known to perform poorly when the interpolating functions
+are polynomials (Runge's phenomenon). However, it is not a concern for us as our
+basis functions are not exposed to this problem.
 \end{remark}
 
 The rule comes in two flavors: closed and open. The only difference between the
@@ -15,9 +15,9 @@ latter does not. Now, at the end of \sref{smolyak-algorithm}, we postulated that
 the assumption in \eref{tensor-exactness} was needed to proceed. The closed rule
 satisfies this assumption while the open one violates it close to the boundaries
 of the interval. However, as noted in \cite{klimke2006}, the open Newton--Cotes
-rule is a viable option since it performs well in practice. In fact, we were
-able to achieve better results using the open rule, and, therefore, we have
-decided to present it in the paper.
+rule is a viable option since it performs well in practice. We were able to
+achieve better results using the open rule, and, therefore, we have decided to
+present it in the paper.
 
 \input{include/assets/figures/rule}
 The open Newton--Cotes rule of level $i \in \natural$ is
@@ -30,14 +30,23 @@ seen that the number of nodes (in one dimension) grows as 1, 3, 7, 15, 31, and
 so on, and the rule is fully nested. In multiple dimensions, the nodes are
 formed as shown in \eref{collocation-nodes}.
 
-\fref{rule} also illustrates the refinement strategies suitable for this grid.
-The arrows emerging from a node connect the node with its next-level neighbors.
-The number of such neighbors is two in one dimension and $2 \nin$ in general.
-Formally, for a pair $(\vi, \vj)$, the neighbor pairs are
+Figure~\ref{fig:rule} also illustrates a refinement procedure suitable for this
+grid. The arrows emerging from a node connect the node with its next-level
+neighbors. The number of such neighbors is two in one dimension and $2 \nin$ in
+general. Formally, for a pair $(\vi, \vj)$, the neighbor pairs are
 \[
   \left\{ \Big( (i_1, \dots, i_k + 1, \dots, i_\nin), (j_1, \dots, 2 j_k + c, \dots j_\nin) \Big) \right\}_{k, c}
 \]
-for $k = 1, \dots, \nin$ and $c \in \{ 0, 2 \}$. Whenever a node is to be
-refined, some or all of its neighbors can be chosen for function evaluation. The
-simplest strategy is to include all $2 \nin$ neighbors, which is what we shall
+for $k = 1, \dots, \nin$ and $c \in \{ 0, 2 \}$. Whenever a node is chosen for
+refinement, some or all of its neighbors can be added to the interpolant. One
+possible strategy is to include all $2 \nin$ neighbors, which is what we shall
 do.
+
+\begin{remark}
+It is important to note that an arbitrary set of nodes identified by some pairs
+$\{ (\vi_k, \vj_k) \}_k$ does not necessarily correspond to a valid
+construction. In order to have a valid construction, the multi-indices $\{ \vi_k
+\}_k$ should satisfy a so-called admissibility condition \cite{klimke2006}. The
+condition is diligently satisfied when the refinement is undertaken level by
+level following neighbor connections, which is what we do.
+\end{remark}

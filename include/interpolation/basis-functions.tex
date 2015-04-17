@@ -1,6 +1,7 @@
 \input{include/assets/figures/basis}
-The basis functions are formed by the linear hat function and are as follows
-\cite{klimke2006}. For $i = 0$ and $j = 0$,
+The basis functions that go hand in hand with the open Netwon--Cotes rule are
+formed by the linear hat function and are as follows \cite{klimke2006}. For $i =
+0$ and $j = 0$,
 \[
   \e^0_0(\x) = 1.
 \]
@@ -30,3 +31,8 @@ interpolation are depicted in \fref{basis}. Note that $\e^1_1$, $\e^2_1$,
 $\e^2_3$, and $\e^2_5$ are not depicted as they are not involved in the
 hierarchical construction. In multiple dimensions, the basis functions are
 formed as shown in \eref{basis-functions}.
+
+To conclude, all the pieces of the interpolation technique that our framework
+makes use of have been introduced. In the next subsection, we would like to give
+an algorithmic structure of the technique in order to streamline its
+implementation.
