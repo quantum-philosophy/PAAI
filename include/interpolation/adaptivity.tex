@@ -9,29 +9,30 @@ require much fewer collocation nodes than the other; recall the example given in
 so far, we would not be able to benefit from this behavior: we would treat both
 sides equally and would add all nodes of each level.
 
-The answer to the two concerns is to make the construction algorithm adaptive.
-First, we need to find a way to measure how good our approximation is at any
-point in the domain of $\f$. Then, when going from level $l - 1$ to level $l$,
-instead of bombarding $\f$ with all the nodes in $\Y^l \setminus \Y^{l - 1}$
-(see \eref{smolyak-grid-incremental}), we can exclude those new nodes that are
-located in the regions where the desired level of accuracy has already been
-reached according to our accuracy or error metric. This practically means that
-some entries of $\Delta\index(\vi)$ in \eref{smolyak-hierarchical} will be
-dropped.
+The answer to the two concerns is to make the construction algorithm locally
+adaptive. First, we need to find a way to measure how good our approximation is
+at any point in the domain of $\f$. Then, when going from level $l - 1$ to level
+$l$, instead of bombarding $\f$ with all the nodes in $\Y^l \setminus \Y^{l -
+1}$ (see \eref{smolyak-grid-incremental}), we can focus on those new nodes that
+are located in the regions where the accuracy is still poor according to the
+yet-to-be-found accuracy metric. This practically means that the inner sum in
+\eref{smolyak-hierarchical} will iterate over a subset of $\Delta\index(\vi)$.
 
-Recall \eref{surplus}. Hierarchical surpluses are a natural indicator of the
-interpolation error: as noted earlier, they are the difference between the true
-function and its current approximation at the nodes of the underlying sparse
-grid. Consequently, after computing the surpluses corresponding to the nodes of
-the current level, we can recycle their values in order to decide which of the
-nodes are to be refined. The meaning of refinement will be discussed in
-\sref{collocation-nodes}; for the moment, we are only concerned with identifying
-``problematic'' nodes.
+Thanks to the hierarchical form obtained in the previous subsection, we already
+have a good candidate for the accuracy metric. Recall \eref{surplus}.
+Hierarchical surpluses are a natural indicator of the interpolation error: as
+noted earlier, they are the difference between the true function and its
+approximation at the nodes of the underlying sparse grid. Thus, after computing
+the surpluses corresponding to the nodes of one level, we can recycle their
+values in order to decide which of the nodes are to be refined, that is, which
+of the nodes of the next level are to be included in the interpolant. The
+meaning of refinement will be discussed further in \sref{collocation-nodes}; for
+the moment, we are only concerned with identifying ``problematic'' nodes.
 
 In this regards, one can adhere to various strategies \cite{ma2009}. One of them
-is as follows. Let $\error$ be the absolute error threshold representing the
-accuracy requirement for the problem at hand. Then, the node $\vx^\vi_\vj$ on
-level $l$ is to be refined if
+is as follows. Let $\error$ be the threshold of the absolute error that
+represents the accuracy requirement of the problem at hand. Then, a collocation
+node $\vx^\vi_\vj$ is to be refined if
 \begin{equation} \elab{error}
   \left| \surplus(\vx^\vi_\vj) \right| > \error
 \end{equation}
@@ -39,6 +40,8 @@ where $\surplus(\vx^\vi_\vj)$ is given by \eref{surplus}. We shall use this
 criterion in the experiment results reported in \sref{experimental-results}.
 
 To summarize, assuming that collocation points and basis functions have been
-carefully chosen, we have obtained an efficient algorithm for high-dimensional
-interpolation. The main equation is \eref{smolyak-hierarchical}, which allows
-one to undertake the interpolation in a hierarchical manner.
+carefully chosen, we have obtained an efficient algorithm for adaptive
+hierarchical interpolation in multiple dimensions. The main equations are
+\eref{surplus} and \eref{smolyak-hierarchical} where $\Delta\index(\vi)$ is
+generally replaced by its subset according to a local adaptation strategy such
+as the one in \eref{error}.
