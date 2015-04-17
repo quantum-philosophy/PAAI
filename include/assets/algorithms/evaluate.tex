@@ -4,21 +4,23 @@
   \begin{algorithmic}[1]
     \vspace{0.4em}
 
-    \Require{surrogate} \Comment{An approximating object}
+    \Require{surrogate} \Comment{Artifacts of approximation}
     \Require{points} \Comment{Points of interest}
-    \Ensure{values} \Comment{The approximated values}
+    \Ensure{values} \Comment{Approximated values}
 
     \vspace{0.4em}
 
-    \Let{indices}{GetIndices(surrogate)}
-    \Let{surpluses}{GetSurpluses(surrogate)}
-    \Let{values}{InitializeZeroed()}
+    \Let{indices}{surrogate.Indices}
+    \Let{surpluses}{surrogate.Surpluses}
+    \Let{values}{NewArray()}
 
-    \For{point \textbf{in} points}
-      \For{k \textbf{in range of} indices}
-        \Let{weight}{ComputeBasis(indices[k], point)}
-        \Let{values[k]}{$\text{values[k]} + \text{weight} \times \text{surpluses[k]}$}
+    \For{i \textbf{in range of} points}
+      \Let{value}{0}
+      \For{j \textbf{in range of} indices}
+        \Let{weight}{basis.Compute(indices[j], points[i])}
+        \Let{value}{$\text{value} + \text{weight} \times \text{surpluses[j]}$}
       \EndFor
+      \State Append(values, value)
     \EndFor
 
     \State \textbf{return} values

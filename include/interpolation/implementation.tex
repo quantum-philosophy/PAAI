@@ -1,101 +1,97 @@
 The life cycle of interpolation has roughly two phases: construction and usage.
-The construction phase involves sampling the target function $\f$ at collocation
-points and produces a set of artifacts needed for the actual interpolation at
-the usage phase. Regarding the aforementioned artifacts, it can be seen in
-\eref{tensor-surplus-1d} that an approximant is entirely characterized by a set
-of indexing pairs $\{ (\vi, \vj) \}$ and the corresponding surpluses $\{
-\surplus(\vx^\vi_\vj) \}$. Recall that the multi-index $\vi$ captures the levels
-of interpolation with respect to each dimension, and $\vj$ captures the
-corresponding orders (see \sref{tensor-product}). Each pair $(\vi, \vj)$
-unambiguously maps to a collocation point and a basis function, which, together
-with the corresponding surplus, allow one to evaluate the interpolant at any
-point of interest.
+The construction phase involves evaluating the target function $\f$ at
+collocation points and produces a set of artifacts needed for the actual
+interpolation at the usage phase. Regarding the aforementioned artifacts, it can
+be seen in \eref{smolyak-hierarchical} that an approximant is entirely
+characterized by a set of indexing pairs $\{ (\vi_k, \vj_k) \}_k$ and the
+corresponding surpluses $\{ \surplus(\vx^{\vi_k}_{\vj_k}) \}_k$. Recall that the
+multi-index $\vi$ captures the levels of interpolation with respect to each
+dimension, and $\vj$ captures the corresponding orders (see
+\sref{tensor-product}). Each pair $(\vi, \vj)$ unambiguously identifies a
+collocation point and a basis function, which, together with the corresponding
+surplus, allow one to evaluate the interpolant at any point of interest.
 
 \input{include/assets/algorithms/construct}
 The conceptual code corresponding to the construction phase is given in
 \aref{construct} called \token{Construct}.
 
 \begin{remark}
-In the pseudocodes presented in this paper, many implementation details---such
-as memory management---have been purposely omitted in order to distill the core
+In the pseudocodes presented in this paper, many implementation details such as
+memory management have been purposely omitted in order to distill the core
 ideas. In addition, some of the auxiliary subroutines that the algorithms make
 use of are not described as being self-explanatory.
 \end{remark}
 
-The input to \token{Construct}, \token{target}, is the function to be
-approximated. The output, \token{surrogate}, is a structure containing the
-artifacts mentioned earlier: indices and surpluses. The key steps of
-\token{Construct} are as follows.
+The input \token{target} is a function $\f$ to be approximated. The output
+\token{surrogate} is a structure containing the artifacts mentioned earlier:
+indexing pairs and surpluses; hereafter, the former are referred to as just
+indices. The key steps of the \token{Construct} algorithm are as follows.
 
 \begin{compactlist}
 
-\point{Line~4:} The outermost loop corresponds to the increasing level of
-Smolyak's interpolation, which is denoted by $l$ in \eref{smolyak} and
-\eref{smolyak-incremental} and by \token{level} in the code. The \token{indices}
-variable is a working set containing the indexing pairs specific to the current
-level. The set is initially populated on line~2 by the indices of the zeroth
-level. For the open Newton--Cotes rule, it is the zero pair $(\v{0}, \v{0})$,
-which correspond to the root node $(0.5)_{i = 1}^\nin$ and the basis function
-$\e^\v{0}_\v{0}(\vx) = 1$.
+\point{Line~4:} Each iteration of the outermost loop corresponds to a level of
+Smolyak's interpolation, which is denoted by $l$ in \eref{smolyak-hierarchical}
+and by \token{level} in the code. The \token{indices} variable is a working set
+containing the indices of the current (in progress) level. The set is initially
+populated on line~2 by the indices of level~0, which is just $\{ (\v{0}, \v{0})
+\}$ for the Newton--Cotes grid.
 
-\point{Line~5:} \token{ComputeNodes} takes a set of indexing pairs and returns
-the corresponding (multidimensional) nodes of the underlying sparse grid; see
+\point{Line~5:} \token{grid.ComputeNodes} takes a set of indices and returns the
+corresponding (multidimensional) nodes of the underlying sparse grid; see
 \sref{collocation-nodes}.
 
-\point{Line~6:} \token{Invoke} calls the target function at each of the given
-nodes and returns the corresponding values. This is a prominent candidate for
-parallelization since each node can be evaluated independently from the rest and
-the target function is by far the most computationally intensive part.
+\point{Line~6:} \token{Invoke} exercises the target function at each of the
+given nodes and returns the corresponding values. This is a prominent candidate
+for parallelization since each collocation node can be evaluated independently
+from the rest.
 
-\point{Line~7:} \token{Evaluate} utilizes the surrogate constructed so far in
-order to calculate an approximation to the values of the target function
-obtained on line~6; \token{Evaluate} is \aref{evaluate}, and it will be
-described separately.
+\point{Line~7:} \token{Evaluate} utilizes the interpolant constructed so far in
+order to calculate approximations to the true values of the target function
+obtained on line~6. The \token{Evaluate} function is \aref{evaluate}, and it
+will be discussed separately.
 
-\point{Line~9:} \token{Append} ameliorates the surrogate by extending it with
-the indices and surpluses of the current iteration.
+\point{Line~9--10:} \token{Append} ameliorates the surrogate by extending it
+with the indices and surpluses of the current iteration.
 
-\point{Line~10:} The check is to stop the algorithm when it reaches a limit on a
-resource such as the interpolation level and number of \token{target}'s
-invocations. Note that the latter example might not be precise to check at this
-particular point; a better precision can be achieved by trimming \token{indices}
-before \token{Invoke}.
+\point{Line~11:} The check is to stop the algorithm when it reaches a
+user-defined limit such as the maximal level of interpolation, number of
+\token{target}'s invocations, or time spent on interpolation.
 
-\point{Line~13:} The loop iterates over the surpluses of the current level and
-identifies those indices that need refinement. \token{IsAccurate} represents a
-refinement strategy and might not necessarily be solely based on the surpluses.
-In our experiments, we use the technique shown in \eref{error}.
+\point{Line~14:} The loop iterates over the surpluses of the current level and
+identifies those indices that need refinement. The \token{IsAccurate} function
+represents a refinement strategy and might not necessarily be solely based on
+the surpluses. In our experiments, we use the formula given in \eref{error}.
 
 \point{Line~18:} The check is to stop the algorithm when there is nothing left
 to refine, which is dictated by \token{IsAccurate}.
 
-\point{Line~21:} \token{Refine} takes the indices selected for refinement and
-returns the corresponding child indices of the next level; see \fref{rule} and
-\sref{adaptivity}.
+\point{Line~21:} \token{grid.ComputeNeighbors} takes the indices selected for
+refinement and returns the corresponding child indices of the next level; see
+\fref{rule} and \sref{adaptivity}.
 
 \end{compactlist}
 
 \input{include/assets/algorithms/evaluate}
-Let us now turn to the usage phase of an interpolant. The corresponding
-pseudocode is given in \aref{evaluate}, which is called \token{Evaluate}. This
-algorithm is also involved in the construction phase; see \aref{construct},
-line~7. The main steps of \token{Evaluate} are given below.
+Let us now turn to the usage phase of interpolant. The corresponding pseudocode
+is given in \aref{evaluate}, which is called \token{Evaluate}. This algorithm is
+also involved in the construction phase; see \aref{construct}, line~7. The main
+steps of the \token{Evaluate} algorithm are given below.
 
 \begin{compactlist}
 
-\point{Line~5:} The loop directly corresponds to \eref{smolyak-incremental} and
-\eref{tensor-surplus-1d} with the only exception that, due to the adaptivity of
-the construction procedure, the loop is likely to contain only a subset of the
-summands in the aforementioned equations.
+\point{Line~6:} The inner loop directly corresponds to
+\eref{smolyak-hierarchical} with the exception that, due to adaptivity, the loop
+generally iterates over a subset of the summands in the aforementioned equation,
+which we discussed in \sref{adaptivity}.
 
-\point{Line~6:} \token{ComputBasis} takes a pair $(\vi, \vj)$ and a point and
+\point{Line~6:} \token{basis.Compute} takes a pair $(\vi, \vj)$ and a point and
 returns the value of the (multidimensional) basis function corresponding to the
 pair evaluated at the point; see \sref{basis-functions}.
 
 \end{compactlist}
 
 To recapitulate, in this section, we have presented the key component of the
-proposed framework for probabilistic analysis of multiprocessor systems: an
+proposed framework for probabilistic analysis of electronic systems: an
 efficient approach to multidimensional interpolation. The interpolation
 technique is based on the Smolyak algorithm, which enables the interpolation to
 be performed in an adaptive hierarchical manner, highly beneficial for practical

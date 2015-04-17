@@ -97,7 +97,8 @@ so far.
 
 The final formula for nonadaptive hierarchical interpolation is obtained by
 substituting \eref{tensor-delta} into \eref{smolyak-incremental}:
-\begin{equation} \elab{smolyak-hierarchical}
-  \smolyak{l}(\f) = \smolyak{l-1}(\f) + \sum_{|\vi|_1 = l} \, \sum_{\vj \in \Delta\index(\vi)} \surplus(\vx^\vi_\vj) \, \e^\vi_\vj
-\end{equation}
+\begin{align} 
+  \smolyak{l}(\f) &= \sum_{|\vi|_1 \leq l} \, \sum_{\vj \in \Delta\index(\vi)} \surplus(\vx^\vi_\vj) \, \e^\vi_\vj \elab{smolyak-hierarchical} \\
+                  &= \smolyak{l-1}(\f) + \sum_{|\vi|_1 = l} \, \sum_{\vj \in \Delta\index(\vi)} \surplus(\vx^\vi_\vj) \, \e^\vi_\vj \nonumber
+\end{align}
 where $\surplus(\vx^\vi_\vj)$ is computed according to \eref{surplus}.

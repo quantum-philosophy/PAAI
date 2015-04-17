@@ -1,36 +1,37 @@
 \begin{algorithm}
-  \caption{\emph{Construct} an interpolant for a function.}
+  \caption{\emph{Construct} an interpolant of a function.}
   \alab{construct}
   \begin{algorithmic}[1]
     \vspace{0.4em}
 
     \Require{target} \Comment{A function to approximate}
-    \Ensure{surrogate} \Comment{The approximating object}
+    \Ensure{surrogate} \Comment{Artifacts of approximation}
 
     \vspace{0.4em}
 
     \Let{level}{0}
-    \Let{indices}{ComputeIndices(level)}
-    \Let{surrogate}{InitializeEmpty()}
+    \Let{indices}{grid.ComputeIndices(level)}
+    \Let{surrogate}{NewSurrogate()}
 
     \Loop
-      \Let{nodes}{ComputeNodes(indices)}
+      \Let{nodes}{grid.ComputeNodes(indices)}
       \Let{values}{Invoke(target, nodes)}
       \Let{approximations}{Evaluate(surrogate, nodes)}
       \Let{surpluses}{$\text{values} - \text{approximations}$}
-      \State Append(surrogate, indices, surpluses)
+      \State Append(surrogate.Indices, indices)
+      \State Append(surrogate.Surpluses, surpluses)
       \If{IsEnough(surrogate)}
         \State \textbf{break}
       \EndIf
-      \For{k \textbf{in range of} indices}
-        \If{IsAccurate(surpluses[k])}
-          \State Exclude(indices, k)
+      \For{i \textbf{in range of} indices}
+        \If{IsAccurate(surpluses[i])}
+          \State Exclude(indices, i)
         \EndIf
       \EndFor
       \If{IsEmpty(indices)}
         \State \textbf{break}
       \EndIf
-      \Let{indices}{Refine(indices)}
+      \Let{indices}{grid.ComputeNeighbors(indices)}
       \Let{level}{$\text{level} + 1$}
     \EndLoop
 
