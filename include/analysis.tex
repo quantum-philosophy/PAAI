@@ -1,59 +1,84 @@
-In \sref{modeling}, we formalized the uncertainty affecting the timing
-characteristics of multiprocessor systems and introduced a number of quantities
-$\g$ that the designer is typically interested in knowing. In the previous
-section, \sref{interpolation}, we were concerned with constructing efficient
-approximations of hypothetical multi-input multi-output functions $\f$. Now we
-shall amalgamate the ideas developed in the aforementioned two sections.
+In \sref{modeling}, we formalized the uncertainty affecting electronic systems
+and introduced a number of models along with a number of quantities $\g$ that
+the designer is typically interested in studying. In the previous section,
+\sref{interpolation}, we obtained an efficient interpolation algorithm for
+approximating hypothetical multidimensional functions $\f$. Now we shall
+amalgamate the ideas developed in the aforementioned two sections.
 
 Our solution has already been delineated in \sref{solution}. Given a quantity of
-interest $\g$ dependent on the uncertain parameters $\vu \in \real^\nu$, we
-reparameterize it in terms of the \rvs\ $\vz \in [0, 1]^\nz$ via the
-transformation $\transformation$ and construct an interpolant for the resulting
-composition $\g \circ \transformation$, treating it a deterministic function
-$\f$ defined on the unit hypercube (see \sref{uncertain-parameters}). We then
-design and undertake a computer experiment, which boils down to sampling the
-interpolant and estimating the desired statistics about $\g$. For instance,
-having collected a sufficiently large number of samples, one can perform kernel
-density estimation in order to estimate the probability density function of
-$\g$. Furthermore, probabilistic moments and probabilities of certain events can
-be straightforwardly estimated by algebraic averaging.
+interest $\g$ dependent on uncertain parameters $\vu: \outcomes \to \real^\nu$,
+we reparameterize it in terms of \rvs\ $\vz: \outcomes \to [0, 1]^\nz$ via a
+suitable transformation $\transformation$ and construct an interpolant of the
+resulting composition $\g \circ \transformation$, treating it as a deterministic
+function $\f$ of $\vz$ (see \sref{uncertain-parameters}). Then we proceed to the
+estimation of the probability distribution of $\g$ in the usual sampling-based
+manner; however, from now on, we no longer touch $\g$ and rely solely on the
+constructed interpolant. Needless to say that, having collected samples of $\g$,
+other statistics about $\g$, such as probabilistic moments and probabilities of
+events, can be straightforwardly estimated.
 
-\begin{remark}
-Many important statistics about $\g$ are integrals with respect to some $h(\g)$
-weighted by the probability density function of $\g$ and computed over a certain
-portion of the domain of $\g$. For instance, by letting $h(\g) = \g$ and
-integrating over the whole domain, we obtain the expected value of $\g$, which
-can be seen in \eref{expectation}. Now, recall the following two facts. First,
-as shown in \sref{uncertain-parameters}, $\g$ can be reparameterized in terms of
-independent variables uniformly distributed on $[0, 1]^\nz$. Second, the
-interpolation presented in this paper yields a piecewise linear function. Since
-the two facts make mathematics very convenient, it is possible to obtain
-analytical formulae for certain statistics such as expectation and variance; see
-\cite{ma2009}.
-\end{remark}
+We do not discuss in this paper the estimation stage mentioned above as it is
+standard. However, there are two other aspects concerning the usage of the
+proposed framework that we would like to cover in what follows.
 
-There is, however, one class of quantities that deserves separate attention.
-This class comprises time series, which capture dynamics of multiprocessor
-systems. Imagine, for instance, a temperature profile $\mQ \in \real^{\np \times
-\ns}$, which is a matrix wherein each row tracks the evolution of temperature of
-a processing element over time with a certain sample rate. With $\np$ processing
-elements and $\ns$ time moments, the output dimensionality of the quantity of
-interest is $\np\ns$, which is also the dimensionality of the surpluses that
-\aref{construct} and \aref{evaluate} operate with. The most prominent
-shortcoming is a high memory usage. At the same time, one can note that the
-interpolation algorithm treats each output of the quantity of interest as being
-independent from the rest. However, treating a data point of a time series as
-being completely unrelated to its neighbor points is a clear loss of
-information.
+\subsection{Quantities with Multiple Outputs}
+The careful reader might have noted that some of the quantities of interest $\g$
+mentioned in \sref{modeling} take values in multidimensional spaces; for
+instance, power and temperature profiles are in $\real^{\np \times \ns}$, as
+shown in \sref{power-consumption} and \sref{heat-dissipation}, respectively.
+However, the function $\f$ has been depicted so far as having a one-dimensional
+codomain. Then the question is: How to apply the interpolation algorithm when
+$\f$ has multiple outputs? The answer is that the mathematics presented in
+\sref{interpolation} for scalar-valued functions stays the same for
+vector-valued functions. The only except is that, since the surpluses
+$\surplus(\vx^\vi_\vj)$ naturally inherit the dimensionality of $\f$, the
+operations that involve $\surplus(\vx^\vi_\vj)$ should be understood
+elementwise. For example, in \eref{smolyak-hierarchical}, each entry of
+$\surplus(\vx^\vi_\vj)$ is multiplied by the same basis function $\e^\vi_\vj$,
+which is always scalar valued. The flow of \aref{construct} and \aref{evaluate}
+stays the same as well.
 
-In order to eliminate the above-mentioned shortcoming, for dynamic quantities of
-interest, we propose considering time as an additional input dimension for
-interpolation. As a result, the output dimensionality drops substantially: from
-$\np\ns$ to $\np$. For this to happen, the time interval of interest should be
-scaled up or down to $[0, 1]$, just as any other input parameter. It is worth
-noting, however, that the length of this interval should be known/fixed in order
-to undertake the scaling. Consequently, such uncertain intervals as the total
-duration of the application cannot be considered directly as they are unknown
-beforehand (see \sref{application-timing}), and one should decide on sensible
-estimates. This aspect, however, is a minor concern in practice as only the very
-tails of the time series might get affected.
+\subsection{Expectation and Variance}
+Since the expected value and variance, defined in \eref{expectation} and
+\eref{variance}, respectively, usually draw particular attention, we would like
+to elaborate on them separately; the interpolants that we construct have
+something special to offer in this regard.
+
+As shown in \sref{uncertain-parameters}, $\g$ can be reparameterized in terms of
+independent variables that are uniformly distributed on $[0, 1]^\nz$. This means
+that the probability density function of $\vz$ simply equals to one. Hence,
+using \eref{expectation} and \eref{smolyak-hierarchical}, we have
+\begin{align*}
+  \expectation{\f} \approx \expectation{\smolyak{l}(\f)} &= \int_{[0, 1]^\nz} \smolyak{l}(\f)(\vz) d\vz \\
+  &= \sum_{|\vi|_1 \leq l} \, \sum_{\vj \in \Delta\index(\vi)} \surplus(\vx^\vi_\vj) \, \w^\vi_\vj
+\end{align*}
+where
+\[
+  \w^\vi_\vj = \int_{[0, 1]^\nz} \e^\vi_\vj(\vz) d\vz = \prod_{k = 1}^{\nz} \int_0^1 \e^{i_k}_{j_k}(\z_k) d\z_k = \prod_{k = 1}^{\nz} \w^{i_k}_{j_k}.
+\]
+The one-dimensional integrals $\{ \w^{i_k}_{j_k} \}_k$ of the basis functions
+$\{ \e^{i_k}_{j_k} \}_k$ are trivial to compute analytically. For the basis
+functions given in \sref{basis-functions}, $\w^0_0 = 1$ and, for $i > 0$,
+\[
+  \w^i_j = \begin{cases}
+    \frac{2}{\n_i + 1}, & \text{if } j \in \{ 0, \n_i - 1 \}, \\
+    \frac{1}{\n_i + 1}, & \text{otherwise},
+  \end{cases}
+\]
+where $\n_i = 2^{i + 1} - 1$ is the cardinality of the open Newton--Cotes rule
+of level $i$ as discussed in \eref{newton-cotes-grid}. Consequently, we have
+obtained an analytical formula for the expected value of $\f$, which does not
+require any sampling.
+
+Regarding the variance of $\f$, it can be seen in \eref{variance} that the
+variance can be assembled from two components: the expected value of $\f$, which
+we already have, and the expected value of $\f^2$, which we are missing. The
+solution is to let $h = (\f, \f^2)$ be the quantity of interest instead of $\f$.
+Then the expected values of both $\f$ and $\f^2$ will be available in analytical
+forms, and the variance of $\f$ can be computed using \eref{variance}. This
+approach can be generalized to probabilistic moments of higher orders.
+
+To sum up, the proposed framework for probabilistic analysis of electronic
+systems enables the versatile sampling methods to be applied in an efficient
+manner. The framework extends naturally to multi-output quantities of interest,
+and it provides analytical formulae for expected values and variances.

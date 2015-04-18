@@ -11,7 +11,7 @@ which is denoted by $\h \sim \distribution_\h$. The expected value and variance
 of $\h$ are given by
 \begin{align}
   & \expectation{\h} := \int_\outcomes \h(\o) \, d\probabilityMeasure(\o) = \int_\real z \, d \distribution_\h(z) \hspace{1em} \text{and} \elab{expectation} \\
-  & \variance{\h} := \expectation{(\h - \expectation{\h})^2}, \nonumber
+  & \variance{\h} := \expectation{\h^2} - (\expectation{\h})^2, \elab{variance}
 \end{align}
 respectively. A random vector $\vh = (\h_i)_{i = 1}^n: \outcomes \to \real^n$ is
 a vector whose elements are \rvs.
