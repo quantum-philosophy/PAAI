@@ -19,16 +19,18 @@ and it is especially high in the context of soft real-time systems and control
 systems.
 
 When it comes to uncertainty quantification and estimation of probability
-distributions, Monte Carlo (\abbr{MC}) methods are of great use. Compared to
-other techniques for probabilistic analysis, such methods are straightforward to
-apply. The system at hand is treated as being completely opaque, and it only
-needs to be simulated a number of times, following an adequate strategy, in
-order to start drawing conclusions about the system's behavior. Consider, for
-instance, the classical \abbr{MC} sampling, which is arguably the most famous
-and versatile approach to the analysis of stochastic systems. The technique was
-introduced in the middle of the twentieth century and since then has expanded
-into a rich family of methods that have had a tremendous impact both in academia
-and in terms of industrial breakthroughs.
+distributions, sampling methods are of great use. Monte Carlo (\abbr{MC})
+sampling, quasi-\abbr{MC} sampling, and Latin hypercube sampling are examples of
+such methods. Compared to other techniques for probabilistic analysis, these
+methods are straightforward to apply. The system at hand is treated as being
+completely opaque, and it only needs to be simulated a number of times,
+following an adequate strategy, in order to start drawing conclusions about the
+behavior of the system. Consider, for instance, the classical \abbr{MC}
+sampling, which is arguably the most famous and versatile approach to
+probabilistic analysis of stochastic systems. The technique was introduced in
+the middle of the twentieth century and since then has expanded into a rich
+family of methods that have had a tremendous impact both in academia and in
+terms of industrial breakthroughs.
 
 The major problem with sampling techniques, however, is in sampling: one should
 be able to obtain sufficient many realizations of the quantity of interest in
@@ -40,13 +42,13 @@ expensive---as measured by the metric that makes the most sense to the problem
 at hand---computer experiments are rendered as slow and often infeasible.
 
 We propose a system-level framework for the analysis of electronic systems that
-are dependent on uncertain parameters. Similar to \abbr{MC} methods, our
+are dependent on uncertain parameters. Similar to sampling methods, our
 technique treats the system at hand as a ``black box'' and, hence, is
 straightforward to apply since no handcrafting is required and existing codes
 need no change. Consequently, the quantities that the framework is able to
 analyze are diverse; examples include the end-to-end delay, energy consumption,
 and thermal dynamics of an application running on a multiprocessor system. In
-contract to \abbr{MC} methods, our technique explores the structure of the
+contract to sampling methods, our technique explores the structure of the
 problem---that is, the dependence of the quantity of interest on the uncertain
 parameters---by exercising the ``black box'' at a set of points chosen
 adaptively. The adaptivity allows for reduction of the costs associated with the
@@ -58,9 +60,8 @@ benefit even further from the particularities of the stochastic space that are
 not necessarily aligned with the stochastic dimensions. Lastly, the output of
 our framework is generative: we construct a light representation of the quantity
 of interest that can be used to generate realizations of this quantity without
-touching the expensive ``black box.'' Therefore, having constructed such a light
-representation, the \abbr{MC} machinery applies and has a practically negligible
-cost.
+touching the expensive ``black box.'' Therefore, having constructed such a
+representation, sampling methods can be applied and have a negligible cost.
 
 In addition to the cost reduction mentioned earlier, the adaptivity featured by
 the proposed framework means that our technique is well suited for nonsmooth
@@ -102,12 +103,12 @@ of the end-to-end delay of the application. In this example, the end-to-end
 delay coincides with the execution time of the task; hence, we already know the
 answer. Let us pretend we do not and try to find it.
 
-Suppose the above scenario is modeled by a random variable $\u$ uniformly
-distributed on $[0, 1]$: the execution time of the task is 0.1~s if $\u \in [0,
-0.6]$, and it is 1~s if $\u \in (0.6, 1]$. The response in this case is a step
-function, which is illustrated by the yellow line in \fref{motivation}. First,
-we try to quantify the end-to-end delay by constructing a \abbr{PC} expansion
-founded on the Legendre polynomial basis \cite{xiu2010}. The orange line in
+Suppose the above scenario is modeled by a \rv\ $\u$ uniformly distributed on
+$[0, 1]$: the execution time of the task is 0.1~s if $\u \in [0, 0.6]$, and it
+is 1~s if $\u \in (0.6, 1]$. The response in this case is a step function, which
+is illustrated by the yellow line in \fref{motivation}. First, we try to
+quantify the end-to-end delay by constructing a \abbr{PC} expansion founded on
+the Legendre polynomial basis \cite{xiu2010}. The orange line in
 \fref{motivation} shows a ninth-order \abbr{PC} expansion, which uses 10 points.
 It can be seen that the approximation is poor, not to mention negative
 end-to-end delays. The observed oscillating behavior is the well-known Gibbs

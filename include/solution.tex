@@ -1,7 +1,7 @@
-As noted earlier, performing Monte Carlo (\abbr{MC}) simulations is a compelling
-approach to uncertainty quantification. We would readily apply an \abbr{MC}
-method to study our quantity of interest $\g$ if only $\g$ had a negligible
-cost, which it does not.
+As noted earlier, making use of an adequate sampling method is a compelling
+approach to uncertainty quantification. We would readily apply such a method to
+study our quantity of interest $\g$ if only $\g$ had a negligible cost, which it
+does not.
 
 Our solution to the above quandary is to efficiently construct a light
 representation of $\g$ and study this representation instead of $\g$. The
@@ -20,7 +20,7 @@ auxiliary random vector $\vz$ extracted from $\vu$; the necessity of this stage
 will become clear later on. Second, we construct the interpolant of $\g$
 mentioned above by considering $\g$ as a deterministic function of $\vz$ and
 evaluating $\g$ at a small number of strategically chosen points. Finally, we
-estimate the probability distribution of $\g$ by applying an arbitrary \abbr{MC}
+estimate the probability distribution of $\g$ by applying an arbitrary sampling
 method to the constructed interpolant.
 
 Interpolation of high-dimensional functions is a challenging task, which should
