@@ -29,14 +29,18 @@ shown in \sref{power-consumption} and \sref{heat-dissipation}, respectively.
 However, the function $\f$ has been depicted so far as having a one-dimensional
 codomain. Then the question is: How to apply the interpolation algorithm when
 $\f$ has multiple outputs? The answer is that the mathematics presented in
-\sref{interpolation} for scalar-valued functions stays the same for
-vector-valued functions. The only except is that, since the surpluses
-$\surplus(\vx^\vi_\vj)$ naturally inherit the dimensionality of $\f$, the
-operations that involve $\surplus(\vx^\vi_\vj)$ should be understood
-elementwise. For example, in \eref{smolyak-hierarchical}, each entry of
-$\surplus(\vx^\vi_\vj)$ is multiplied by the same basis function $\e^\vi_\vj$,
-which is always scalar valued. The flow of \aref{construct} and \aref{evaluate}
-stays the same as well.
+\sref{interpolation} along with the pseudocodes given in \aref{construct} and
+\aref{evaluate} stay the same for vector-valued functions. The only except is
+that, since the surpluses $\surplus(\vx^\vi_\vj)$ naturally inherit the
+dimensionality of $\f$, the operations that involve $\surplus(\vx^\vi_\vj)$
+should be understood elementwise. For example, in \eref{smolyak-hierarchical},
+each entry of $\surplus(\vx^\vi_\vj)$ is multiplied by the same basis function
+$\e^\vi_\vj$, which is always scalar valued. Another example is the refinement
+criterion given in \eref{error}. Here the absolute value $|\cdot|$ should be
+essentially replaced by the uniform norm $\norm{\cdot}_\infty$. In this last
+example, a more preferable alternative is to reside to the $L^2$ norm
+$\norm{\cdot}_2$ as the uniform norm might be too harsh when the number of
+outputs of $\f$ is large.
 
 \subsection{Expectation and Variance}
 Since the expected value and variance, defined in \eref{expectation} and
@@ -50,7 +54,7 @@ that the probability density function of $\vz$ simply equals to one. Hence,
 using \eref{expectation} and \eref{smolyak-hierarchical}, we have
 \begin{align*}
   \expectation{\f} \approx \expectation{\smolyak{l}(\f)} &= \int_{[0, 1]^\nz} \smolyak{l}(\f)(\vz) d\vz \\
-  &= \sum_{|\vi|_1 \leq l} \, \sum_{\vj \in \Delta\index(\vi)} \surplus(\vx^\vi_\vj) \, \w^\vi_\vj
+  &= \sum_{|\vi| \leq l} \, \sum_{\vj \in \Delta\index(\vi)} \surplus(\vx^\vi_\vj) \, \w^\vi_\vj
 \end{align*}
 where
 \[

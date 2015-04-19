@@ -10,15 +10,15 @@ functions that one is typically interested in integrating or interpolating
 
 The Smolyak interpolant for $\f$ is as follows:
 \begin{equation} \elab{smolyak}
-  \smolyak{l}(\f) := \sum_{l - \nin + 1 \leq |\vi|_1 \leq l} (-1)^{l - |\vi|_1} \, {\nin - 1 \choose l - |\vi|_1} \, \tensor{\vi}(\f)
+  \smolyak{l}(\f) := \sum_{l - \nin + 1 \leq |\vi| \leq l} (-1)^{l - |\vi|} \, {\nin - 1 \choose l - |\vi|} \, \tensor{\vi}(\f)
 \end{equation}
-where $l \in \natural$ is the level of Smolyak's interpolation, and $|\vi|_1 :=
+where $l \in \natural$ is the level of Smolyak's interpolation, and $|\vi| :=
 i_1 + \dots + i_\nin$. We see that the algorithm is indeed just a peculiar
 composition of cherry-picked tensor products. However, the formula has an
 implication of paramount importance: the quantity of interest needs to be
 evaluated only at the nodes of the sparse grid underpinning \eref{smolyak}:
 \begin{equation} \elab{smolyak-grid}
-  \Y^l = \bigcup_{l - \nin + 1 \leq |\vi|_1 \leq l} \X^\vi.
+  \Y^l = \bigcup_{l - \nin + 1 \leq |\vi| \leq l} \X^\vi.
 \end{equation}
 The cardinality of the above set does not have a general closed-form formula;
 however, it can be several orders of magnitude smaller than the one of the full
@@ -35,7 +35,7 @@ $\Delta\tensor{-1}(\f) := 0$,
 \end{align}
 Then, \eref{smolyak} is identical to
 \begin{equation} \elab{smolyak-incremental}
-  \smolyak{l}(\f) = \sum_{|\vi|_1 \leq l} \Delta\tensor{\vi}(\f) = \smolyak{l - 1}(\f) + \sum_{|\vi|_1 = l} \Delta\tensor{\vi}(\f)
+  \smolyak{l}(\f) = \sum_{|\vi| \leq l} \Delta\tensor{\vi}(\f) = \smolyak{l - 1}(\f) + \sum_{|\vi| = l} \Delta\tensor{\vi}(\f)
 \end{equation}
 where $\smolyak{-1}(\f) := 0$. It can be seen that a Smolyak interpolant can be
 refined efficiently: the work done to attain one accuracy level can be entirely
@@ -51,12 +51,12 @@ let $\Delta\X^{-1} := \emptyset$,
 \end{align*}
 Then, \eref{smolyak-grid} can be rewritten as
 \begin{equation} \elab{smolyak-grid-incremental}
-  \Y^l = \bigcup_{|\vi|_1 \leq l} \Delta\X^\vi = \Y^{l - 1} \cup \bigcup_{|\vi|_1 = l} \Delta\X^\vi,
+  \Y^l = \bigcup_{|\vi| \leq l} \Delta\X^\vi = \Y^{l - 1} \cup \bigcup_{|\vi| = l} \Delta\X^\vi,
 \end{equation}
 which is analogous to \eref{smolyak-incremental}. It can be seen now that it is
 beneficial for refinement to have $\X^{i - 1}$ be entirely included in $\X^i$
 since, in that case, the cardinality of $\Y^l \setminus \Y^{l - 1} =
-\bigcup_{|\vi|_1 = l} \Delta\X^\vi$ derived from \eref{smolyak-grid-incremental}
+\bigcup_{|\vi| = l} \Delta\X^\vi$ derived from \eref{smolyak-grid-incremental}
 decreases. In words, the values of $\f$ obtained on lower levels can be reused
 to attain higher levels if the grid grows without abandoning its previous
 structure. With this in mind, the rule used for generating successive sets of
@@ -83,12 +83,12 @@ above sum is over $\Delta\X^i$ due to the fact that the difference in the
 parentheses is zero whenever $\x^i_j \in \X^{i - 1}$ since $\X^{i - 1} \subset
 \X^i$. In multiple dimensions, using the Smolyak formula, we have
 \begin{equation} \elab{tensor-delta}
-  \Delta\tensor{\vi}(\f) = \sum_{\vj \in \Delta\index(\vi)} \left( \f(\vx^\vi_\vj) - \smolyak{|\vi|_1 - 1}(\f)(\vx^\vi_\vj) \right) \, \e^\vi_\vj
+  \Delta\tensor{\vi}(\f) = \sum_{\vj \in \Delta\index(\vi)} \left( \f(\vx^\vi_\vj) - \smolyak{|\vi| - 1}(\f)(\vx^\vi_\vj) \right) \, \e^\vi_\vj
 \end{equation}
 where $\Delta\index(\vi) := \{ \vj \in \index(\vi): \vx^\vi_\vj \in \Delta\X^\vi
 \}$. The delta
 \begin{equation} \elab{surplus}
-  \surplus(\vx^\vi_\vj) := \f(\vx^\vi_\vj) - \smolyak{|\vi|_1 - 1}(\f)(\vx^\vi_\vj)
+  \surplus(\vx^\vi_\vj) := \f(\vx^\vi_\vj) - \smolyak{|\vi| - 1}(\f)(\vx^\vi_\vj)
 \end{equation}
 is called a hierarchical surplus. When increasing the interpolation level, this
 surplus is nothing but the difference between the actual value of $\f$ at a new
@@ -98,7 +98,7 @@ so far.
 The final formula for nonadaptive hierarchical interpolation is obtained by
 substituting \eref{tensor-delta} into \eref{smolyak-incremental}:
 \begin{align} 
-  \smolyak{l}(\f) &= \sum_{|\vi|_1 \leq l} \, \sum_{\vj \in \Delta\index(\vi)} \surplus(\vx^\vi_\vj) \, \e^\vi_\vj \elab{smolyak-hierarchical} \\
-                  &= \smolyak{l-1}(\f) + \sum_{|\vi|_1 = l} \, \sum_{\vj \in \Delta\index(\vi)} \surplus(\vx^\vi_\vj) \, \e^\vi_\vj \nonumber
+  \smolyak{l}(\f) &= \sum_{|\vi| \leq l} \, \sum_{\vj \in \Delta\index(\vi)} \surplus(\vx^\vi_\vj) \, \e^\vi_\vj \elab{smolyak-hierarchical} \\
+                  &= \smolyak{l-1}(\f) + \sum_{|\vi| = l} \, \sum_{\vj \in \Delta\index(\vi)} \surplus(\vx^\vi_\vj) \, \e^\vi_\vj \nonumber
 \end{align}
 where $\surplus(\vx^\vi_\vj)$ is computed according to \eref{surplus}.
