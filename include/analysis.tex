@@ -5,21 +5,27 @@ the designer is typically interested in studying. In the previous section,
 approximating hypothetical multidimensional functions $\f$. Now we shall
 amalgamate the ideas developed in the aforementioned two sections.
 
-Our solution has already been delineated in \sref{solution}. Given a quantity of
-interest $\g$ dependent on uncertain parameters $\vu: \outcomes \to \real^\nu$,
-we reparameterize it in terms of \rvs\ $\vz: \outcomes \to [0, 1]^\nz$ via a
-suitable transformation $\transformation$ and construct an interpolant of the
-resulting composition $\g \circ \transformation$, treating it as a deterministic
-function $\f$ of $\vz$ (see \sref{uncertain-parameters}). Then we proceed to the
-estimation of the probability distribution of $\g$ in the usual sampling-based
-manner; however, from now on, we no longer touch $\g$ and rely solely on the
-constructed interpolant. Needless to say that, having collected samples of $\g$,
-other statistics about $\g$, such as probabilistic moments and probabilities of
-events, can be straightforwardly estimated.
-
-We do not discuss in this paper the estimation stage mentioned above as it is
-standard. However, there are two other aspects concerning the usage of the
-proposed framework that we would like to cover in what follows.
+Given an electronic system $(\procs, \tasks)$ dependent on a number of uncertain
+parameters $\vu: \outcomes \to \real^\nu$, the goal is to analyze a quantity of
+interest $\g$ representing a certain aspect of the system. For instance, $\vu$
+can correspond to the execution times of the tasks $\tasks$ that the processing
+elements $\procs$ are to execute, and $\g$ can correspond the total energy
+consumed by the processing elements. The goal is attained as follows. First, the
+parametrization of $\g$ is changed from $\vu$ to \rvs\ $\vz: \outcomes \to [0,
+1]^\nz$ via a suitable transformation $\transformation$; this stage is described
+in \sref{uncertain-parameters}. Second, an interpolant of the resulting
+composition $\g \circ \transformation$ is constructed by treating the
+composition as a deterministic function $\f$ of $\vz$; this stage is detailed in
+\sref{interpolation}. Third, an estimation of the probability distribution of
+$\g$ is undertaken in the usual sampling-based manner but relying solely on the
+constructed interpolant; $\g$ is no longer involved. This last stage boils down
+to drawing samples from $\distribution_\vz$ and evaluating the interpolant
+$\smolyak{l}(\f) \equiv \smolyak{l}(\g \circ \transformation)$ at those points.
+Needless to say that, having collected samples of $\g$, other statistics about
+$\g$, such as probabilities of particular events, can be straightforwardly
+estimated. We do not discuss the estimation stage any further as it is standard.
+However, there are two other aspects concerning the usage of the proposed
+framework that we would like to cover in what follows.
 
 \subsection{Quantities with Multiple Outputs}
 The careful reader might have noted that some of the quantities of interest $\g$
@@ -50,10 +56,11 @@ something special to offer in this regard.
 
 As shown in \sref{uncertain-parameters}, $\g$ can be reparameterized in terms of
 independent variables that are uniformly distributed on $[0, 1]^\nz$. This means
-that the probability density function of $\vz$ simply equals to one. Hence,
-using \eref{expectation} and \eref{smolyak-hierarchical}, we have
+that the probability density function of $\vz$ simply equals to one. Therefore,
+by the law of the unconscious statistician, using \eref{expectation} and
+\eref{smolyak-hierarchical}, we have
 \begin{align*}
-  \expectation{\f} \approx \expectation{\smolyak{l}(\f)} &= \int_{[0, 1]^\nz} \smolyak{l}(\f)(\vz) d\vz \\
+  \expectation{\g} \approx \expectation{\smolyak{l}(\f)} &= \int_{[0, 1]^\nz} \smolyak{l}(\f)(\vz) d\vz \\
   &= \sum_{|\vi| \leq l} \, \sum_{\vj \in \Delta\index(\vi)} \surplus(\vx^\vi_\vj) \, \w^\vi_\vj
 \end{align*}
 where
@@ -71,18 +78,18 @@ functions given in \sref{basis-functions}, $\w^0_0 = 1$ and, for $i > 0$,
 \]
 where $\n_i = 2^{i + 1} - 1$ is the cardinality of the open Newton--Cotes rule
 of level $i$ as discussed in \eref{newton-cotes-grid}. Consequently, we have
-obtained an analytical formula for the expected value of $\f$, which does not
+obtained an analytical formula for the expected value of $\g$, which does not
 require any sampling.
 
-Regarding the variance of $\f$, it can be seen in \eref{variance} that the
-variance can be assembled from two components: the expected value of $\f$, which
-we already have, and the expected value of $\f^2$, which we are missing. The
-solution is to let $h = (\f, \f^2)$ be the quantity of interest instead of $\f$.
-Then the expected values of both $\f$ and $\f^2$ will be available in analytical
-forms, and the variance of $\f$ can be computed using \eref{variance}. This
+Regarding the variance of $\g$, it can be seen in \eref{variance} that the
+variance can be assembled from two components: the expected value of $\g$, which
+we already have, and the expected value of $\g^2$, which we are missing. The
+solution is to let $h = (\g, \g^2)$ be the quantity of interest instead of $\g$.
+Then the expected values of both $\g$ and $\g^2$ will be available in analytical
+forms, and the variance of $\g$ can be computed using \eref{variance}. This
 approach can be generalized to probabilistic moments of higher orders.
 
-To sum up, the proposed framework for probabilistic analysis of electronic
-systems enables the versatile sampling methods to be applied in an efficient
-manner. The framework extends naturally to multi-output quantities of interest,
-and it provides analytical formulae for expected values and variances.
+To sum up, once an interpolant of $\g$ has been constructed, the probability
+distribution of $\g$ is estimated using versatile sampling methods applied to
+the interpolant. The framework extends naturally to multi-output quantities of
+interest, and it provides analytical formulae for expectations and variances.

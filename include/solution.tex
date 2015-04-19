@@ -3,15 +3,14 @@ approach to uncertainty quantification. We would readily apply such a method to
 study our quantity of interest $\g$ if only $\g$ had a negligible cost, which it
 does not.
 
-Our solution to the above quandary is to efficiently construct a light
-representation of $\g$ and study this representation instead of $\g$. The
-surrogate that we build is based on interpolation: $\g$ is evaluated at a number
-of points or nodes, and any other values of $\g$ are reconstructed on demand
-using a set of basis functions mediating between the obtained values of $\g$.
-The benefit of this approach is in the number of invocations of the quantity of
-interest $\g$: only a few evaluations of $\g$ are needed, and the rest of our
-probabilistic analysis is powered by the interpolant, which has a negligible
-cost as opposed to $\g$.
+Our solution to the above quandary is to construct a light representation of
+$\g$ and study this representation instead of $\g$. The surrogate that we build
+is based on interpolation: $\g$ is evaluated at a number of collocation nodes,
+and any other values of $\g$ are reconstructed on demand using a set of basis
+functions mediating between the obtained values of $\g$. The benefit of this
+approach is in the number of invocations of the quantity of interest $\g$: only
+a few evaluations of $\g$ are needed, and the rest of our probabilistic analysis
+is powered by the interpolant, which has a negligible cost as opposed to $\g$.
 
 Let us delineate the steps involved in the solution process. Recall that $\g$ is
 parameterized by the uncertain parameters $\vu$, and these variables are the
@@ -25,5 +24,5 @@ method to the constructed interpolant.
 
 Interpolation of high-dimensional functions is a challenging task, which should
 be approached with a great care. This aspect will be discussed in detail in
-\sref{interpolation}. However, before we proceed to interpolation, we need to
-flesh out further the uncertain parameters and quantities of interest.
+\sref{interpolation}. However, before we proceed to interpolation, we first need
+to flesh out further the uncertain parameters and quantities of interest.
