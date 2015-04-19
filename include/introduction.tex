@@ -18,28 +18,29 @@ the system at hand might easily end up being too conservative, overdesigned
 and it is especially high in the context of soft real-time systems and control
 systems.
 
-When it comes to uncertainty quantification and estimation of probability
-distributions, sampling methods are of great use. Monte Carlo (\abbr{MC})
-sampling, quasi-\abbr{MC} sampling, and Latin hypercube sampling are examples of
-such methods. Compared to other techniques for probabilistic analysis, these
-methods are straightforward to apply. The system at hand is treated as being
-completely opaque, and it only needs to be simulated a number of times,
-following an adequate strategy, in order to start drawing conclusions about the
-behavior of the system. Consider, for instance, the classical \abbr{MC}
+When it comes to the estimation of probability distributions and to uncertainty
+quantification in general, sampling methods are of great use. The classical
+Monte Carlo (\abbr{MC}) sampling, quasi-\abbr{MC} sampling, and Latin hypercube
+sampling are examples of such methods. Compared to other techniques for
+probabilistic analysis, these methods are straightforward to apply. The system
+at hand is treated as being completely opaque, and it only needs to be simulated
+a number of times, following an adequate strategy, in order to start drawing
+conclusions about the system's behavior. Consider, for instance, \abbr{MC}
 sampling, which is arguably the most famous and versatile approach to
-probabilistic analysis of stochastic systems. The technique was introduced in
-the middle of the twentieth century and since then has expanded into a rich
-family of methods that have had a tremendous impact both in academia and in
-terms of industrial breakthroughs.
+uncertainty quantification. The technique was introduced in the middle of the
+twentieth century and since then has expanded into a rich family of methods that
+have had a tremendous impact both in academia and in terms of industrial
+breakthroughs.
 
 The major problem with sampling techniques, however, is in sampling: one should
 be able to obtain sufficient many realizations of the quantity of interest in
-order to be able to draw sound conclusions with respect to that quantity
-\cite{diaz-emparanza2002}. The main concerns here are: How many samples do we
-need? How many samples can we afford? How long does it take to obtain one
-sample? How much does one sample cost? When the subject of the analysis is
-expensive---as measured by the metric that makes the most sense to the problem
-at hand---computer experiments are rendered as slow and often infeasible.
+order to estimate the needed statistics of that quantity accurately
+\cite{diaz-emparanza2002}. The main concerns in this context are: How many
+samples do we need? How many samples can we afford? How long does it take to
+obtain one sample? How much does one sample cost? When the subject under
+analysis is expensive---as measured by the metric that makes the most sense to
+the problem at hand---computer experiments are rendered as slow and often
+infeasible.
 
 We propose a system-level framework for the analysis of electronic systems that
 are dependent on uncertain parameters. Similar to sampling methods, our
@@ -55,7 +56,7 @@ adaptively. The adaptivity allows for reduction of the costs associated with the
 system's evaluation. The magnitude of reduction depends on the problem, and it
 can be substantial when the problem is well disposed to adaptation. Furthermore,
 the adaptivity that our framework leverages is purely local, as opposed to the
-dimension-wise adaptivity \cite{klimke2006}, which means that the framework can
+dimensionwise adaptivity \cite{klimke2006}, which means that the framework can
 benefit even further from the particularities of the stochastic space that are
 not necessarily aligned with the stochastic dimensions. Lastly, the output of
 our framework is generative: we construct a light representation of the quantity
@@ -82,8 +83,8 @@ on such aspects as the runtime environment and input data. The digital class has
 not been deprived of attention either, especially in the real-time community
 \cite{quinton2012, diaz2002, santinelli2011, yang2013, tanasa2015}. Both analog
 and digital sources of uncertainty render the behavior of electronic systems as
-essentially random for the designer, and accounting for them can be highly
-beneficial if not essential.
+essentially random to the designer of such systems, and accounting for them is
+highly beneficial if not essential.
 
 \input{include/assets/figures/motivation.tex}
 Due to the physical nature, the variability induced by analog sources of
