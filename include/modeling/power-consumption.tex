@@ -19,12 +19,15 @@ is the static power consumed by the $i$th processing element at time $\t$. The
 last component varies over time due to the interdependence between the leakage
 power and temperature \cite{liu2007}.
 
-Given a set of points $\{ \t_i \}_{i = 1}^\ns$ on the timeline, \eref{power} can
-be used to construct a power profile $\mP \in \real^{\np \times \ns}$ of the
-system, which is essentially a matrix whose $i$th row captures the evolution of
-the power consumption of the $i$th processing element over the $\ns$ time
-moments. Another valuable quantity, which can be calculated at this point, is
-the total energy consumed by the system during one application run. To this end,
+Given a set of points $\{ \t_j \}_{j = 1}^\ns$ on the timeline, \eref{power} can
+be used to construct a power profile of the system
+\[
+  \mP = (\p_i(\t_j))_{i = 1, j = 1}^{i = \np, j = \ns} \in \real^{\np \times \ns},
+\]
+which is essentially a matrix whose $i$th row captures the evolution of the
+power consumption of the $i$th processing element over the $\ns$ time moments.
+Another valuable quantity, which can be calculated at this point, is the total
+energy consumed by the system during one application run. To this end,
 \eref{power} has to be integrated over the time span of the application:
 \begin{equation} \elab{total-energy}
   \text{Total energy} = \sum_{i \in \procs} \int \p_i(\t) \, d\t
