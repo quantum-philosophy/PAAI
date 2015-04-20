@@ -1,10 +1,11 @@
 In this section, we evaluate the performance of the proposed framework. Our
-prototype of the framework is implemented in the Go programming language, and
-the corresponding source code is available online \cite{sources}. The framework
-is divided into multiple libraries, each of which can be used independently. The
-source code of the experimental setup below along with the input data are also
-available at \cite{sources}. The experiments are conducted on a GNU/Linux
-machine equipped with 16 processors Intel Xeon E5520 2.27~GHz and 24~GB of RAM.
+prototype of the framework had been implemented in the Go programming language
+\cite{go}. The prototype is divided into multiple independent packages, and the
+corresponding source codes are available online \cite{sources}. The source code
+of the experimental setup below along with the input data are also available at
+\cite{sources}. The experiments are conducted on a \abbr{GNU}/Linux machine
+equipped with 16 processors Intel Xeon E5520 2.27~\abbr{GH}z and 24~\abbr{GB} of
+\abbr{RAM}.
 
 Each problem that we consider is structured as follow. A platform $\procs$ with
 $\np$ processing elements and an application $\tasks$ with $\nt$ tasks are
@@ -24,9 +25,9 @@ The construction of thermal \abbr{RC} circuits needed for temperature analysis
 is delegated to the HotSpot tool \cite{skadron2004}. The floorplan of each
 platform is a regular grid wherein each processing element occupies $2 \times
 2~\text{mm}^2$ on the die. The output of the tool is essentially a pair of a
-thermal capacitance matrix $\mC$ and a thermal conductance $\mG$ matrix needed
-in \eref{thermal-system}. The leakage modeling is based on a linear
-approximation \cite{yang2013, ukhov2012, liu2007}.
+thermal capacitance matrix $\mC$ and a thermal conductance $\mG$ matrix used in
+\eref{thermal-system}. The leakage modeling is based on a linear approximation
+\cite{yang2013, ukhov2012, liu2007}.
 
 \input{include/assets/figures/beta}
 The uncertain parameters $\vu$ are the execution times of the tasks; all other
@@ -41,13 +42,15 @@ earlier, and the right endpoint $b_i$ is set to be 20\% larger than $a_i$. The
 parameters $\alpha_i$ and $\beta_i$ are set to two and five, respectively, for
 all tasks, skewing their uncertain execution times towards the reference
 execution times. The probability density function of such a distribution is
-depicted in \fref{beta}. The correlations between the tasks are computed based
-on the structure of the graph produced by the \abbr{TGFF} tool: the closer two
-tasks are in the graph, the stronger their execution times are correlated.
+depicted in \fref{beta}. The execution times of the tasks are correlated based
+on the structure of the graph produced by the \abbr{TGFF} tool: the closer the
+$i$th and $j$th tasks are in the graph as measured by the number of edges
+between the $i$th and $j$th nodes, the stronger $\u_i$ and $\u_j$ are
+correlated.
 
-The quantities of interest $\g$ that we shall consider are the end-to-end delay
-of the application, the total energy consumed by the processing elements, and a
-temperature profile of the system given by \eref{end-to-end-delay},
+The quantities of interest $\g$ that we shall consider are: 1) the end-to-end
+delay of the application, 2) the total energy consumed by the system, and 3) a
+temperature profile of the system, which are given by \eref{end-to-end-delay},
 \eref{total-energy}, and \eref{temperature-profile}, respectively.
 
 Regarding the interpolation algorithm, we rely on the open Newton--Cotes rule as

@@ -1,7 +1,7 @@
 The foremost step of our framework is to change the parameterization of the
 problem from the random vector $\vu = (\u_i)_{i = 1}^\nu \sim \distribution_\vu$
 to an auxiliary random vector $\vz = (\z_i)_{i = 1}^\nz \sim \distribution_\vz$
-such that 1) the support of $\distribution_\vz$ is the unit hypercube $[0,
+such that: 1) the support of $\distribution_\vz$ is the unit hypercube $[0,
 1]^\nz$, and 2) $\nz \leq \nu$ has the smallest value needed to retain the
 desired level of accuracy. The first is standardization, which is done primarily
 for convenience. The second is model order reduction, which identifies and
@@ -70,7 +70,7 @@ $\m{\Lambda}$, respectively, to preserve only the $\nz$ major components
 identified as shown above.
 
 Now, the transformation $\transformation$ in \eref{transformation} is
-\begin{equation} \elab{transformation}
+\begin{equation} \elab{transformation-concrete}
   \vu = \distribution_\vu^{-1} \left( \Phi\left( \tilde{\m{V}} \tilde{\m{\Lambda}}^\frac{1}{2} \, \Phi^{-1}(\vz) \right) \right)
 \end{equation}
 where the \rvs\ $\vz = (\z_i)_{i = 1}^\nz$ are independent and uniformly
@@ -80,11 +80,11 @@ applied elementwise; and $\distribution_\vu^{-1} := \distribution_{\u_1}^{-1}
 \times \cdots \times \distribution_{\u_\nz}^{-1}$ is the Cartesian product of
 the inverse marginal distributions of $\vu$, which are applied to the
 corresponding element of the vector yielded by $\Phi$. In the absence of
-correlations, \eref{transformation} is simply $\vu =
+correlations, \eref{transformation-concrete} is simply $\vu =
 \distribution_\vu^{-1}(\vz)$, and no model order reduction is possible ($\nu =
 \nz$).
 
 To summarize, we have found such a transformation $\transformation$ and the
-corresponding random vector $\vz \sim \distribution_\vz$ that 1)
+corresponding random vector $\vz \sim \distribution_\vz$ that: 1)
 $\distribution_\vz$ is supported by $[0, 1]^\nz$, and 2) $\vz$ has the smallest
 number of dimensions $\nz$ needed to preserve $\eta$ portion of the variance.
