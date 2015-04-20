@@ -42,27 +42,21 @@ function motivation
   fontFamily = 'Times';
   fontSize = 30;
 
-  setappdata(0, 'DefaultAxesFontSize', fontSize);
-  setappdata(0, 'DefaultAxesXLabelFontSize', fontSize);
-  setappdata(0, 'DefaultAxesYLabelFontSize', fontSize);
-  setappdata(0, 'DefaultLegendFontSize', fontSize);
-
-  c1 = [237, 177, 32] / 255;
-  c2 = [217, 83, 25] / 255;
-  c3 = [0, 114, 189] / 255;
+  set(0,'DefaultAxesFontSize', fontSize);
 
   h = Plot.figure(800, 400);
   set(gca(h), 'FontName', fontFamily);
 
-  line(x, y0, 'LineWidth', 3, 'Color', c1);
-  line(x, y1, 'LineWidth', 3, 'Color', c2);
-  line(x, y2, 'LineWidth', 3, 'Color', c3);
+  line(x, y0, 'LineWidth', 3, 'Color', Color.pick(1));
+  line(x, y1, 'LineWidth', 3, 'Color', Color.pick(2));
+  line(x, y2, 'LineWidth', 3, 'Color', Color.pick(3));
 
   basis = Basis.Hierarchical.Local.('NewtonCotesHat')(options);
   nodes = basis.computeNodes(output.levels, output.orders);
 
   line(nodes, 0 * ones(size(nodes)), 'LineStyle', 'None', ...
-    'Marker', 'o', 'MarkerSize', 10, 'Color', c3, 'MarkerFaceColor', c3);
+    'Marker', 'o', 'MarkerSize', 10, 'Color', Color.pick(3), ...
+    'MarkerFaceColor', Color.pick(3));
 
   legend('True response', 'Polynomial chaos', ...
     'Adaptive interpolation', 'Adaptive nodes');
