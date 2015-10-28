@@ -19,13 +19,13 @@ composition as a deterministic function $\f$ of $\vz$; this stage is detailed in
 \sref{interpolation}. Third, an estimation of the probability distribution of
 $\g$ is undertaken in the usual sampling-based manner but relying solely on the
 constructed interpolant; $\g$ is no longer involved. This last stage boils down
-to drawing samples from $\distribution_\vz$ and evaluating the interpolant
-$\smolyak{l}(\f) \equiv \smolyak{l}(\g \circ \transformation)$ at those points.
-Needless to say that, having collected samples of $\g$, other statistics about
-$\g$, such as probabilities of particular events, can be straightforwardly
-estimated. We do not discuss the estimation stage any further as it is standard.
-However, there are two other aspects concerning the usage of the proposed
-framework that we would like to cover in what follows.
+to drawing independent samples from $\distribution_\vz$ and evaluating the
+interpolant $\smolyak{l}(\f) \equiv \smolyak{l}(\g \circ \transformation)$ at
+those points. Needless to say that, having collected samples of $\g$, other
+statistics about $\g$, such as probabilities of particular events, can be
+straightforwardly estimated. We do not discuss the estimation stage any further
+as it is standard. However, there are two other aspects concerning the usage of
+the proposed framework that we would like to cover in what follows.
 
 \subsection{Quantities with Multiple Outputs}
 The careful reader might have noted that some of the quantities of interest $\g$
@@ -48,7 +48,7 @@ example, a more preferable alternative is to reside to the $L^2$ norm
 $\norm{\cdot}_2$ as the uniform norm might be too harsh when the number of
 outputs of $\f$ is large.
 
-\subsection{Expectation and Variance}
+\subsection{Expectation and Variance} \slab{probabilistic-moments}
 Since the expected value and variance, defined in \eref{expectation} and
 \eref{variance}, respectively, usually draw particular attention, we would like
 to elaborate on them separately; the interpolants that we construct have
@@ -60,12 +60,12 @@ that the probability density function of $\vz$ simply equals to one. Therefore,
 by the law of the unconscious statistician, using \eref{expectation} and
 \eref{smolyak-hierarchical}, we have
 \begin{align*}
-  \expectation{\g} \approx \expectation{\smolyak{l}(\f)} &= \int_{[0, 1]^\nz} \smolyak{l}(\f)(\vz) d\vz \\
+  \expectation{\g} \approx \expectation{\smolyak{l}(\f)} &= \int_{[0, 1]^\nz} \smolyak{l}(\f)(\vz) \, d\vz \\
   &= \sum_{|\vi| \leq l} \, \sum_{\vj \in \Delta\index(\vi)} \surplus(\vx^\vi_\vj) \, \w^\vi_\vj
 \end{align*}
 where
 \[
-  \w^\vi_\vj = \int_{[0, 1]^\nz} \e^\vi_\vj(\vz) d\vz = \prod_{k = 1}^{\nz} \int_0^1 \e^{i_k}_{j_k}(\z_k) d\z_k = \prod_{k = 1}^{\nz} \w^{i_k}_{j_k}.
+  \w^\vi_\vj = \int_{[0, 1]^\nz} \e^\vi_\vj(\vz) \, d\vz = \prod_{k = 1}^{\nz} \int_0^1 \e^{i_k}_{j_k}(\z_k) \, d\z_k = \prod_{k = 1}^{\nz} \w^{i_k}_{j_k}.
 \]
 The one-dimensional integrals $\{ \w^{i_k}_{j_k} \}_k$ of the basis functions
 $\{ \e^{i_k}_{j_k} \}_k$ are trivial to compute analytically. For the basis

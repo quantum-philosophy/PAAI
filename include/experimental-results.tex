@@ -55,28 +55,53 @@ motivated in \sref{collocation-nodes}. The \token{IsEnough} subroutine of
 interpolation level. The decision taken in \token{IsAccurate} is based on the
 formula given in \eref{error}.
 
+We shall consider five electronic systems. The number of processing element
+$\np$ is 1, 4, 9, 16, and 25, respectively. The number of tasks $\nt$ is 10, 40,
+90, 160, and 250, respectively. For each system, three quantities of interest
+$\g$ are analyzed: 1) the end-to-end delay of the application, 2) the total
+energy consumed by the processing elements, and 3) a temperature profile of the
+system, which are given by \eref{end-to-end-delay}, \eref{total-energy}, and
+\eref{temperature-profile}, respectively. In total, 15 problems are addressed.
+
+In order to assess the performance of our framework, we shall compare the
+results deliver by the framework with those delivered by a method based on
+applying Monte Carlo (\abbr{MC}) sampling directly. The \abbr{MC} method
+evaluates the quantity of interest $\g$ at a set of points drawn independently
+from $\distribution_\vu$, the distribution of the uncertain parameter $\vu$. No
+model order reduction is perform inside the \abbr{MC} method so that the
+accuracy is not compromised by this reduction. The number of \abbr{MC}
+simulations is set to $10^4$ for all experiments.
+
+The main indicator of the efficiency of the proposed framework is the number of
+evaluations of the quantity of interest needed to achieve a certain accuracy
+level. We shall report three accuracy metrics. To this end, we first compute
+three statistics about $\g$: the expected value, variance, and probability
+density function. The probabilistic moments are based on the analytical formulae
+given in \sref{probabilistic-moments}, and the density is based on sampling the
+constructed interpolant. Then the first and second accuracy metrics are the
+relative errors of the expected value and variance, respectively, with respect
+to those estimated by the \abbr{MC} method described above. The third accuracy
+metric is the Kolmogorov--Smirnov statistic \cite{rao2009}, which is the
+supremum over the distance between two empirical distribution functions. The
+three accuracy metrics are denoted by $\eerror$, $\verror$, and $\perror$,
+respectively.
+
 Lastly, we would like to remind that our setup is publicly available
 \cite{sources}. The configuration aspects that have not been explicitly
 mentioned here, such as the configuration files of the \abbr{TGFF} and HotSpot
 tools, can be found online.
 
-The quantities of interest $\g$ that we shall consider are: 1) the end-to-end
-delay of the application, 2) the total energy consumed by the system, and 3) a
-temperature profile of the system, which are given by \eref{end-to-end-delay},
-\eref{total-energy}, and \eref{temperature-profile}, respectively.
-
 \subsection{End-to-End Delay}
 \input{include/assets/tables/end-to-end-delay}
 The quantity of interest $\g$ considered in this subsection is the end-to-end
-delay given in \eref{end-to-end-delay}, which is a scalar.
+delay given by \eref{end-to-end-delay}.
 
 \subsection{Total Energy}
 \input{include/assets/tables/total-energy}
-Let the quantity of interest $\g$ be the total energy given in
-\eref{total-energy}, which is a scalar.
+Let the quantity of interest $\g$ be the total energy given by
+\eref{total-energy}.
 
 \subsection{Temperature Profile}
 \input{include/assets/tables/temperature-profile}
-In this subsection, the quantity of interest $\g$ is the temperature profile
-$\mQ$ of the system calculated using \eref{thermal-system}. The profile is an
-$\np \times \ns$ matrix, and, therefore, $\g$ is $\np \ns$-dimensional.
+In this subsection, the quantity of interest $\g$ is a temperature profile given
+by \eref{temperature-profile}.
