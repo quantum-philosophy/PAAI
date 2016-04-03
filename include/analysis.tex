@@ -37,11 +37,11 @@ codomain. Then the question is: How to apply the interpolation algorithm when
 $\f$ has multiple outputs? The answer is that the mathematics presented in
 \sref{interpolation} along with the pseudocodes given in \aref{construct} and
 \aref{evaluate} stay the same for vector-valued functions. The only except is
-that, since the surpluses $\surplus(\vx^\vi_\vj)$ naturally inherit the
-dimensionality of $\f$, the operations that involve $\surplus(\vx^\vi_\vj)$
+that, since the surpluses $\surplus(\vx_{\vi\vj})$ naturally inherit the
+dimensionality of $\f$, the operations that involve $\surplus(\vx_{\vi\vj})$
 should be understood elementwise. For example, in \eref{smolyak-hierarchical},
-each entry of $\surplus(\vx^\vi_\vj)$ is multiplied by the same basis function
-$\e^\vi_\vj$, which is always scalar valued. Another example is the refinement
+each entry of $\surplus(\vx_{\vi\vj})$ is multiplied by the same basis function
+$\e_{\vi\vj}$, which is always scalar valued. Another example is the refinement
 criterion given in \eref{error}. Here the absolute value $|\cdot|$ should be
 essentially replaced by the uniform norm $\norm{\cdot}_\infty$. In this last
 example, a more preferable alternative is to reside to the $L^2$ norm
@@ -61,17 +61,17 @@ by the law of the unconscious statistician, using \eref{expectation} and
 \eref{smolyak-hierarchical}, we have
 \begin{align*}
   \expectation{\g} \approx \expectation{\smolyak{l}(\f)} &= \int_{[0, 1]^\nz} \smolyak{l}(\f)(\vz) \, d\vz \\
-  &= \sum_{|\vi| \leq l} \, \sum_{\vj \in \Delta\index(\vi)} \surplus(\vx^\vi_\vj) \, \w^\vi_\vj
+  &= \sum_{|\vi| \leq l} \, \sum_{\vj \in \Delta\index_\vi} \surplus(\vx_{\vi\vj}) \, \w_{\vi\vj}
 \end{align*}
 where
 \[
-  \w^\vi_\vj = \int_{[0, 1]^\nz} \e^\vi_\vj(\vz) \, d\vz = \prod_{k = 1}^{\nz} \int_0^1 \e^{i_k}_{j_k}(\z_k) \, d\z_k = \prod_{k = 1}^{\nz} \w^{i_k}_{j_k}.
+  \w_{\vi\vj} = \int_{[0, 1]^\nz} \e_{\vi\vj}(\vz) \, d\vz = \prod_{k = 1}^{\nz} \int_0^1 \e_{i_k j_k}(\z_k) \, d\z_k = \prod_{k = 1}^{\nz} \w_{i_k j_k}.
 \]
-The one-dimensional integrals $\{ \w^{i_k}_{j_k} \}_k$ of the basis functions
-$\{ \e^{i_k}_{j_k} \}_k$ are trivial to compute analytically. For the basis
-functions given in \sref{basis-functions}, $\w^0_0 = 1$ and, for $i > 0$,
+The one-dimensional integrals $\{ \w_{i_k j_k} \}_k$ of the basis functions $\{
+  \e_{i_k j_k} \}_k$ are trivial to compute analytically. For the basis
+functions given in \sref{basis-functions}, $\w_{00} = 1$ and, for $i > 0$,
 \[
-  \w^i_j = \begin{cases}
+  \w_{ij} = \begin{cases}
     \frac{2}{\n_i + 1}, & \text{if } j \in \{ 0, \n_i - 1 \}, \\
     \frac{1}{\n_i + 1}, & \text{otherwise},
   \end{cases}
