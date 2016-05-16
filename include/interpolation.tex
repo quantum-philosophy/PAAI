@@ -1,12 +1,13 @@
 In this section, we present the interpolation algorithm that forms the core of
 the proposed framework for probabilistic analysis of electronic systems. The
-algorithm is based on the work in \cite{klimke2006} and \cite{ma2009}, and it
-features a sparse-grid structure, hierarchical construction, and local
-adaptivity. The benefits of these three features are interconnected and can be
-summarized as follows: the ability to mitigate the curse of dimensionality and,
-thereby, tackle high-dimensional problems; the ability to perform gradual
-refinement of the approximation with a natural error control; and the ability to
-make the refinement fine-grained and, hence, gain further efficiency.
+algorithm is based on the work in \cite{klimke2006}, \cite{ma2009}, and
+\cite{jakeman2012}, and it features a sparse-grid structure, hierarchical
+construction, and local adaptivity. The benefits of these three features are
+interconnected and can be summarized as follows: the ability to mitigate the
+curse of dimensionality and, thereby, tackle high-dimensional problems; the
+ability to perform gradual refinement of the approximation with a natural error
+control; and the ability to make the refinement fine-grained and, hence, gain
+further efficiency.
 
 Let $\f$ be a function that we would like to approximate. The function is
 assumed to be in $\continuous([0, 1]^\nin)$, the space of continuous functions
