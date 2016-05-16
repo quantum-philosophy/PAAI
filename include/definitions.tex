@@ -113,6 +113,8 @@
 \usepackage{amsthm}
 \newtheorem{remark}{Remark}
 
+\newcommand{\indexSet}[1]{{\mathcal{I}_{#1}}}
+
 % Real analysis and functional analysis
 \newcommand{\real}{\mathbb{R}}
 \renewcommand{\natural}{\mathbb{N}_0}
@@ -175,13 +177,13 @@
 %
 % Platform
 %
-\newcommand{\procs}{\Pi}
+\newcommand{\procs}{\indexSet{\pi}}
 \newcommand{\proc}{\pi}
 
 %
 % Application
 %
-\newcommand{\tasks}{\mathcal{T}}
+\newcommand{\tasks}{\indexSet{\tau}}
 \newcommand{\task}{\tau}
 
 \renewcommand{\b}{b}
@@ -193,6 +195,7 @@
 %
 % Time
 %
+\newcommand{\ts}{\indexSet{t}}
 \renewcommand{\t}{t}
 
 %

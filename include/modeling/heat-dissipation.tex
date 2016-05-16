@@ -22,13 +22,17 @@ consumption of the processing elements across the thermal nodes; without loss of
 generality, $\mM$ is a rectangular diagonal matrix whose diagonal elements are
 equal to one.
 
-Given a set of time instances $\{ \t_j \}_{j = 1}^\ns$, \eref{thermal-system}
-can be utilized to compute a temperature profile of the system.
-\begin{equation} \elab{temperature-profile}
-  \mQ = (\q_i(\t_j))_{i = 1, j = 1}^{i = \np, j = \ns} \in \real^{\np \times \ns}.
-\end{equation}
-Another example is the maximal temperature, which can be estimated as follows:
-$\max_{i \in \procs} \, \sup_{\t} \, \q_i(\t)$.
+Given a set of time instances $\{ \t_j: j \in \ts \}$ with an index set $\ts =
+\{ i \}_{j = 1}^\ns$, \eref{thermal-system} can be utilized to compute a
+temperature profile of the system:
+\begin{equation*}
+  \mQ = (\q_i(\t_j))_{i \in \procs, j \in \ts} \in \real^{\np \times \ns}.
+\end{equation*}
+Then the maximal temperature can be estimated as follows:
+\begin{align}
+  \text{Maximal temperature} &= \max_{i \in \procs} \, \sup_{\t} \, \q_i(\t) \nonumber \\
+                             &\approx \max_{i \in \procs, j \in \ts} \, \q_i(\t_j). \elab{maximal-temperature}
+\end{align}
 
 Assuming that temperature depends on $\vu$---which is the case whenever, for
 instance, the power consumption depends on $\vu$---a temperature profile as well
