@@ -2,21 +2,28 @@
 electronic systems is an extensive and diverse area, which is expanding with an
 accelerating pace. The rapid growth is instigated by the fact that electronic
 systems naturally become more sophisticated and refined, and that they penetrate
-deeper into everyday life. Consequently, the impact of uncertainty inevitably
-becomes more prominent and engender more severe consequences, necessitating an
-adequate treatment. Therefore, the designer of electronic systems has to account
-for the presence of uncertainty in order to develop efficient and reliable
-products.
+deeper into everyday life. Therefore, the impact of uncertainty inevitably
+becomes more prominent and entails more severe consequences, necessitating an
+adequate treatment. Consequently, the designer of electronic systems is obliged
+to account for the presence of uncertainty in order to produce efficient and
+reliable products.
 
-In order to account for uncertainty, one has to quantify it first. Uncertainty
-quantification is a wide umbrella, and the corresponding techniques can deliver
-radically different pieces of information about the quantity of interest. In
-this paper, we are interested in probability distributions rather than, for
-instance, corner cases. Designing for the worst case is often a poor solution as
-the system at hand might easily end up being too conservative, overdesigned
-\cite{quinton2012}. The value of probability distributions is well understood,
-and it is especially high in the context of soft real-time systems and control
-systems.
+In order to account for uncertainty, one has to quantify it first. In this
+setting, one is usually interested in a quantity---referred to as the quantity
+of interest---whose complete knowledge would be highly profitable for the design
+at hand but cannot be attained as the quantity depends on a number of parameters
+which are inherently uncertain at design time. Consider, for instance, the
+maximal temperature of a system running a number of tasks whose execution times
+are random.
+
+Uncertainty quantification is a broad umbrella, and the corresponding techniques
+can deliver radically different pieces of information about the quantity of
+interest. In this paper, we are interested in probability distributions rather
+than, for instance, corner cases. Designing for the worst case is often a poor
+solution as the system at hand might easily end up being too conservative,
+overdesigned \cite{quinton2012}. The value of probability distributions is well
+understood, and it is especially high in the context of soft real-time systems
+and control systems.
 
 When it comes to the estimation of probability distributions and to uncertainty
 quantification in general, sampling methods are of great use. The classical
@@ -35,52 +42,42 @@ breakthroughs.
 The major problem with sampling techniques, however, is in sampling: one should
 be able to obtain sufficient many realizations of the quantity of interest in
 order to estimate the needed statistics of that quantity accurately
-\cite{diaz-emparanza2002}. The main concerns in this context are: How many
-samples do we need? How many samples can we afford? How long does it take to
-obtain one sample? How much does one sample cost? When the subject under
-analysis is expensive---as measured by the metric that makes the most sense to
-the problem at hand---computer experiments are rendered as slow and often
-infeasible.
+\cite{diaz-emparanza2002}. The main concerns in this context are: How much does
+it cost in terms of time and other resources to obtain one sample? How many
+samples do we need? How many can we afford? When the subject under analysis is
+expensive---as measured by the metric that makes the most sense to the problem
+at hand---computer experiments are rendered slow and often unfeasible.
 
 We propose a system-level framework for the analysis of electronic systems that
 are dependent on uncertain parameters. Similar to sampling methods, our
-technique treats the system at hand as a ``black box'' and, hence, is
-straightforward to apply since no handcrafting is required and existing codes
-need no change. Consequently, the quantities that the framework is able to
-analyze are diverse; examples include the end-to-end delay, energy consumption,
-and thermal dynamics of an application running on a multiprocessor system. In
-contract to sampling methods, our technique explores the structure of the
-problem---that is, the dependence of the quantity of interest on the uncertain
-parameters---by exercising the ``black box'' at a set of points chosen
-adaptively. The adaptivity allows for reduction of the costs associated with the
-system's evaluation. The magnitude of reduction depends on the problem, and it
-can be substantial when the problem is well disposed to adaptation. Furthermore,
-the adaptivity that our framework leverages is purely local, as opposed to the
-dimensionwise adaptivity \cite{klimke2006}, which means that the framework can
-benefit even further from the particularities of the stochastic space that are
-not necessarily aligned with the stochastic dimensions. Lastly, the output of
-our framework is generative: we construct a light representation of the quantity
-of interest that can be used to generate realizations of this quantity without
-touching the expensive ``black box.'' Therefore, having constructed such a
-representation, sampling methods can be applied and have a negligible cost.
+technique treats the system at hand as a ``black box'' and, therefore, is
+straightforward to apply since no handcrafting is required, and existing codes
+need no change. Consequently, the quantities of interest that the framework is
+able to tackle are diverse. Examples include those quantities concerned with
+timing-, power-, and temperature-related characteristics of sophisticated
+applications running on heterogeneous multiprocessor platforms.
 
-In addition to the cost reduction mentioned earlier, the adaptivity featured by
-the proposed framework means that our technique is well suited for nonsmooth
-response surfaces. The ability to tackle nonsmooth problems is important for the
-designer of electronic systems, and we would like to unpack this aspect now. To
-this end, we first need to give a classification of sources of uncertainty
-present in electronic systems.
+In contract to sampling methods, our technique explores and, thereby, exploits
+the structure of the problem---that is, the way the quantity of interest depends
+on the uncertain parameters---by exercising the ``black box'' at a set of points
+chosen adaptively. The adaptivity that our framework leverages is not only
+dimensional \cite{klimke2006} but also regional, which means that the framework
+is able to benefit from any particularities that might be present in the
+stochastic space, that is, the space of the uncertain parameters. Adaptivity is
+the capital feature of our technique, and, therefore, we would like to elaborate
+on it now. To this end, we first need to give one classification of sources of
+uncertainty present in electronic systems.
 
 Sources of uncertainty can be divided into analog and digital. The major
 representative of the former is process variation \cite{srivastava2005}, which
 has been central for many lines of research \cite{bhardwaj2008, juan2012,
-lee2013, ukhov2014, ukhov2015}. Process variation is a side effect of the
-fabrication process. In contrast, the sources of uncertainty labeled as
-``digital'' are phenomena of the digital world rather than physical. To
-elaborate, many applications running on modern devices exhibit nondeterministic
+lee2013, ukhov2014, ukhov2015}. Process variation is a side effect of
+contemporary fabrication processes. In contrast, the sources labeled as
+``digital'' are phenomena of the computer world rather than physical. To
+elaborate, applications running on modern devices often exhibit nondeterministic
 behavior: their characteristics change from one activation to another, depending
-on such aspects as the runtime environment and input data. The digital class has
-not been deprived of attention either, especially in the real-time community
+on such aspects as the runtime environment and input data. The digital category
+has not been deprived of attention either, especially in the real-time community
 \cite{quinton2012, diaz2002, santinelli2011, yang2013, tanasa2015}. Both analog
 and digital sources of uncertainty render the behavior of electronic systems as
 essentially random to the designer of such systems, and accounting for them is
@@ -92,40 +89,65 @@ uncertainty is typically smooth. In such cases, uncertainty quantification based
 polynomial chaos (\abbr{PC}) expansions \cite{xiu2010} and other global
 approximations relying on polynomials generally works well, as in
 \cite{bhardwaj2008, lee2013, ukhov2014, ukhov2015}. On the other hand, the
-variability induced by digital sources of uncertainty often have steep gradients
-and might even have discontinuities. In such cases, \abbr{PC} expansions and
-similar techniques fail. In order to explore this concern, let us consider a toy
-example. Suppose that our electronic system has only one processing element, and
-it is running an application with only one task. Suppose further that the task
-has two branches and takes either of them depending on the input data. Assume
-that one branch takes 0.1~s to execute and has probability 0.6, and the other
-branch takes 1~s and has probability 0.4. Our goal is to find the distribution
-of the end-to-end delay of the application. In this example, the end-to-end
-delay coincides with the execution time of the task; hence, we already know the
-answer. Let us pretend we do not and try to find it.
+variability induced by digital sources of uncertainty often has steep gradients
+and favors nondifferentiability and even discontinuity. In such cases, \abbr{PC}
+expansions and similar techniques fail: they require extremely many evaluations
+of the quantity of interest in order to deliver an acceptable level of accuracy
+and, hence, are not worth it.
+
+In order to explore this concern, let us consider a toy example. Suppose that
+our electronic system has only one processing element, and it is running an
+application with only one task. Suppose further that the task has two branches
+and takes either of them depending on the input data. Assume that one branch
+takes 0.1~s to execute and has probability 0.6, and the other branch takes 1~s
+and has probability 0.4. Our goal is to find the distribution of the end-to-end
+delay of the application. In this example, the end-to-end delay coincides with
+the execution time of the task; hence, we already know the answer. Let us
+pretend we do not and try to figure it out by other means.
 
 Suppose the above scenario is modeled by a \rv\ $\u$ uniformly distributed on
-$[0, 1]$: the execution time of the task is 0.1~s if $\u \in [0, 0.6]$, and it
-is 1~s if $\u \in (0.6, 1]$. The response in this case is a step function, which
-is illustrated by the yellow line in \fref{motivation}. First, we try to
-quantify the end-to-end delay by constructing a \abbr{PC} expansion founded on
-the Legendre polynomial basis \cite{xiu2010}. The orange line in
-\fref{motivation} shows a ninth-order \abbr{PC} expansion, which uses 10 points.
-It can be seen that the approximation is poor, not to mention negative
-end-to-end delays. The observed oscillating behavior is the well-known Gibbs
-phenomenon, stemming from the discontinuity of the response. Now we let our
-framework make use of the same number of points as the \abbr{PC} expansion did.
-The result is the blue curve in \fref{motivation}, and the adaptively chosen
-points are plotted on the horizontal axis. It can be seen that the approximation
-is good, and, in fact, it would be indistinguishable from the true response with
-a few additional points. One can also note that the adaptive procedure started
-to concentrate points at the jump and left the insipid regions on both sides of
-the jump with no particular attention. Having constructed such an accurate
-representation, one can proceed to the calculation of the probability
-distribution of the quantity of interest, which, in general, is done via
-sampling followed by such techniques as kernel density estimation. The crucial
-point to note here is that this follow-up sampling does not involve the analyzed
-electronic system itself and, thus, costs nothing.
+$[0, 1]$: the execution time of the task (the end-to-end delay of the
+application) is 0.1~s if $\u \in [0, 0.6]$, and it is 1~s if $\u \in (0.6, 1]$.
+The response in this case is a step function, which is illustrated by the yellow
+line in \fref{motivation}.
+
+First, we try to quantify the end-to-end delay by constructing a \abbr{PC}
+expansion founded on the Legendre polynomial basis \cite{xiu2010}. The orange
+line in \fref{motivation} shows a ninth-order \abbr{PC} expansion, which uses 10
+points. It can be seen that the approximation is poor, let alone negative
+execution times. The observed oscillating behavior is the well-known Gibbs
+phenomenon stemming from the discontinuity of the response. No matter how many
+points are wasted in the construction of a polynomial, the oscillations will
+never go away completely.
+
+Let us now turn to our framework and its adaptive interpolation kernel. For the
+purpose of the experiment, the technique is constrained to make use of as many
+points as the \abbr{PC} expansion did. The result is the blue curve in
+\fref{motivation}, and the adaptively chosen points are plotted on the
+horizontal axis. It can be seen that the approximation is good, and, in fact, it
+would be indistinguishable from the true response with a few additional points.
+One can note that the adaptive procedure started to concentrate points at the
+jump and left the insipid regions on both sides of the jump with no particular
+attention. Having constructed such an accurate representation, one can proceed
+to the calculation of the probability distribution of the quantity of interest,
+which, in general, is done via sampling followed by such techniques as kernel
+density estimation. The crucial point to note is that this follow-up sampling
+does not involve the original system at all and, thus, costs practically
+nothing.
+
+To summarize, the adaptivity featured by the proposed framework implies that our
+technique is well suited for nonsmooth response surfaces. As motivated
+previously, the ability to tackle such problems is important for the design of
+electronic systems. More generally, the adaptivity that we perform allows for
+reduction of the costs associated with the evaluation of the quantity being
+studied. The magnitude of reduction depends on the problem, and it can be
+substantial when the problem is well disposed to adaptation.
+
+Lastly, we would like to reiterate that the output of our framework is
+generative: we construct a light representation of the quantity of interest that
+can be used to generate realizations of this quantity without touching the
+expensive ``black box.'' Therefore, having constructed such a representation,
+sampling methods can be applied and have a negligible cost.
 
 The remainder of the paper is organized as follows. Section~\ref{sec:prior-work}
 provides an overview of the prior work. In \sref{present-work}, we summarize the
