@@ -1,17 +1,17 @@
 Sampling methods would be a reasonable solution to probabilistic analysis of
 electronic systems if electronic systems were inexpensive to simulate (in terms
-of time, money, or other resources). In order to eliminate or reduce the costs
+of time and other resources). In order to eliminate or reduce the costs
 associated with direct sampling, a number of techniques have been introduced.
+
 The techniques are diverse as the area itself and can be classified in many
-ways. Two natural characteristics, distinguishing the techniques, originate from
-the sources of uncertainty and quantities of interests that the techniques have
-been tailored for. A technique tries to give a probabilistic characterization of
-the latter while taking into account the deteriorating effect of the former. The
-solution that a technique proposes to tackle the corresponding problem is
-another characteristic to pay attention to. A solution can be based on, for
-instance, a mathematical framework, statistical method, or computational
-algorithm. In what follows, we shall focus on the three aforementioned
-characteristics.
+ways. Two natural distinguishing characteristics originate from the sources of
+uncertainty and quantities of interests that the techniques are tailored for. A
+technique tries to give a probabilistic characterization of the latter while
+taking into account the deteriorating effect of the former. The solution that a
+technique proposes in order to tackle the corresponding problem is another
+characteristic to pay attention to. A solution can be based on, for instance, a
+mathematical framework, statistical method, or computational algorithm. In what
+follows, we shall focus on the three aforementioned characteristics.
 
 Let us first discuss analog sources of uncertainty and, more concretely, process
 variation as it by far dominates. Circuit-level timing and power analyses under
@@ -32,7 +32,7 @@ analysis has drawn the major attention \cite{quinton2012}. A seminal work on
 response time analysis of periodic tasks with random execution times on
 uniprocessors is reported in \cite{diaz2002}. A novel analytical solution to
 this problem is given in \cite{tanasa2015}, which makes milder assumptions and
-allows for addressing larger, previously infeasible problems. The framework
+allows for addressing larger, previously unfeasible problems. The framework
 proposed in \cite{santinelli2011} facilitates task scheduling by providing
 probabilistic bounds on the resource given to a task flow and the resource
 needed by that task flow; the approach is based on real-time calculus and is
@@ -47,19 +47,21 @@ methods tend to be lost. To elaborate, a technique typically: 1) requires
 restrictive conditions to be fulfilled such as the absence of dependencies or
 the usage of a certain scheduling policy; 2) is tailored to one concrete
 quantity such as the response time or maximal temperature; and 3) requires
-substantial effort to be deployed. This trend is, of course, reasonable: the
-techniques try to excel by narrowing down the scope and asking for more.
-However, it is also important to keep in mind what is practical. 1) Despite
-making mathematics beautiful, some of the assumptions often do not hold, and the
-independence assumption is one of them. 2) Having one tool for one job might
-lead to a longer adoption time and to more experts involved. It is a sustainable
-strategy, though, as long as tools are composable, compatible with each other,
-which might be difficult to achieve when techniques have drastically different
-foundations. 3) It is often the case that there has already been developed a
-robust simulator of the quantity under consideration for the ideal deterministic
-case. Switching gears to probabilistic analysis might mean discarding this
-battle-tested code all together and implementing something else from scratch,
-which is wasteful and not desirable.
+substantial effort to be deployed.
+
+This trend is understandable: the techniques try to excel by narrowing down the
+scope and asking for more. However, one should also keep in mind what is
+practical. 1) Despite making mathematics beautiful and analytically solvable,
+some of the assumptions often do not hold; the independence assumption is one of
+those frequently frowned upon. 2) Having one specific tool for one specific job
+might lead to longer adoption times and to the need for more experts. Separation
+of concerns is a sustainable strategy as long as tools are composable,
+compatible with each other, which, however, is difficult to achieve when
+techniques have drastically different foundations. 3) It is often the case that
+there has been developed a robust simulator of the quantity of interest for the
+utopian deterministic scenario. Switching gears to probabilistic analysis might
+mean discarding this battle-tested code all together and implementing something
+else from scratch, which is wasteful and not desirable.
 
 Some of the techniques listed earlier in this section, in fact, preserve the
 generality and straightforwardness of sampling methods. An example is the
