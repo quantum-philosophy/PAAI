@@ -1,27 +1,28 @@
 Consider an electronic system composed of two major components: a platform and
-an application. The platform is given a set of heterogeneous processing elements
-$\procs = \{ i \}_{i = 1}^\np$, and the application is given as a set of tasks
-$\tasks = \{ i \}_{i = 1}^\nt$. In what follows, the system will be denoted by
-$(\procs, \tasks)$.
+an application. The platform is given as a set of processing elements, and the
+application is given as a set of dependent tasks. In what follows, the two sets
+will be denoted by $\procs = \{ i \}_{i = 1}^\np$ and $\tasks = \{ i \}_{i =
+1}^\nt$, respectively, and the whole system by the tuple $(\procs, \tasks)$.
 
 The designer is assumed to be interested in studying a quantity $\g$ that
-characterizes the system described above. Examples of $\g$ include the
-end-to-end delay, total energy, maximal temperature, and power and temperature
-profiles. The quantity $\g$, referred to as the quantity of interest, depends on
-a set of parameters that are uncertain at the design stage. The uncertain
-parameters are modeled by a random vector $\vu = (\u_i)_{i = 1}^\nu: \outcomes
-\to \real^\nu$ with distribution $\distribution_\vu$. Examples of $\vu$ include
-the execution times of the tasks. The dependency of $\g$ on $\vu$, written as
-$\g(\vu)$, inevitably implies that $\g$ is random to the designer. For a given
-$\vu$, however, $\g$ is assumed to be purely deterministic. Furthermore, the
-evaluation of $\g$ given $\vu$ is assumed to be doable but computationally or
-otherwise expensive. If the cost of $\g$ was low, one could proceed to sampling
-methods directly without any auxiliary framework.
+characterizes $(\procs, \tasks)$ from a certain perspective. Examples of $\g$
+include the end-to-end delay, total energy, and maximal temperature. The
+quantity $\g$, referred to as the quantity of interest, depends on a set of
+parameters that are uncertain at the design stage. The uncertain parameters are
+modeled by a random vector $\vu = (\u_i)_{i = 1}^\nu: \outcomes \to \real^\nu$
+with distribution $\distribution_\vu$. Examples of $\vu$ include the execution
+times of the tasks.
 
-Our objective in this paper is to develop an efficient framework for
-probabilistic analysis of the quantity of interest $\g$ characterizing the
-system $(\procs, \tasks)$ such that the uncertainty originating from the
-parameters $\vu$ is taken into consideration. Probabilistic analysis of $\g$
-refers to the estimation of the probability distribution of $\g$, which
-naturally implies the availability of such quantities as the expected value and
-variance of $\g$ and probabilities of arbitrary events associated with $\g$.
+The dependency of $\g$ on $\vu$, written as $\g(\vu)$, implies that $\g$ is
+random to the designer. For a given $\vu$, however, $\g$ is assumed to be purely
+deterministic. Furthermore, the evaluation of $\g$ given $\vu$ is assumed to be
+doable but computationally or otherwise expensive. (If the cost of $\g$ was low,
+one could proceed to sampling methods directly without any auxiliary framework.)
+
+Our objective in this paper is to develop an efficient framework for analyzing
+the quantity of interest $\g$ characterizing the system $(\procs, \tasks)$ such
+that the uncertainty originating from the parameters $\vu$ is taken into
+consideration. In this context, the analysis of $\g$ refers to the estimation of
+the probability distribution of $\g$, which naturally implies the availability
+of such quantities as the expected value and variance of $\g$ and probabilities
+of arbitrary events associated with $\g$.
