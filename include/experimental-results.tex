@@ -1,33 +1,32 @@
 In this section, we evaluate the performance of the proposed framework. Our
-prototype of the framework had been implemented in the Go programming language
-\cite{go}. The prototype is divided into multiple independent packages, and the
-corresponding source codes are available online \cite{sources}. The source code
-of the experimental setup below along with the input data are also available at
-\cite{sources}. The experiments are conducted on a \abbr{GNU}/Linux machine
-equipped with 16 processors Intel Xeon E5520 2.27~\abbr{GH}z and 24~\abbr{GB} of
-\abbr{RAM}.
+prototype of the framework has been implemented in the Go programming language
+\cite{go}. The implementation comprises multiple independent libraries, and the
+corresponding source code is available online \cite{sources}. The source code of
+the experimental setup below along with all the configuration files and input
+data is available at \cite{sources} as well. The experiments are conducted on a
+laptop equipped with four processors Intel Core i7 2.5~\abbr{GH}z and
+16~\abbr{GB} of \abbr{RAM}.
 
-Each problem that we consider is structured as follow. A platform $\procs$ with
-$\np$ processing elements and an application $\tasks$ with $\nt$ tasks are
-generated randomly by the \abbr{TGFF} tool \cite{dick1998}. The tool generates
-$\np$ tables and a directed acyclic graph with $\nt$ nodes. Each table
-corresponds to a processing element, and it describes certain properties of the
-tasks when they are mapped to that particular processing element. Namely, each
-table assigns two numbers to each task: a reference execution time, chosen
-uniformly between 10 and 50~ms, and a power consumption, chosen uniformly
-between 5 and 15~W. The graph captures data dependencies between the tasks. The
-application is scheduled using a list scheduler \cite{adam1974}. The mapping of
-the application is fixed and obtained by scheduling the tasks based on their
-reference execution times and assigning them to the earliest available
-processing elements (a shared ready list).
+Each problem that we consider is structured as follow. A platform with $\np$
+processing elements and an application with $\nt$ tasks are generated randomly
+by the \abbr{TGFF} tool \cite{dick1998}. The tool generates $\np$ tables and a
+directed acyclic graph with $\nt$ nodes. Each table corresponds to a processing
+element, and it describes certain properties of the tasks when they are mapped
+to that particular processing element. Namely, each table assigns two numbers to
+each task: a reference execution time, chosen uniformly between 10 and 50~ms,
+and a power consumption, chosen uniformly between 5 and 25~W. The graph captures
+data dependencies between the tasks. The application is scheduled using a list
+scheduler \cite{adam1974}. The mapping of the application is fixed and obtained
+by scheduling the tasks based on their reference execution times and assigning
+them to the earliest available processing elements (a shared ready list).
 
 The construction of thermal \abbr{RC} circuits needed for temperature analysis
 is delegated to the HotSpot tool \cite{skadron2004}. The floorplan of each
 platform is a regular grid wherein each processing element occupies $2 \times
 2~\text{mm}^2$ on the die. The output of the tool is essentially a pair of a
 thermal capacitance matrix $\mC$ and a thermal conductance $\mG$ matrix used in
-\eref{thermal-system}. The leakage modeling is based on a linear approximation
-\cite{yang2013, ukhov2012, liu2007}.
+\eref{thermal-system}. The leakage power is not considered in these experiments,
+which is solely for the sake of simplicity and is not required by our framework.
 
 \input{include/assets/figures/distribution}
 The uncertain parameters $\vu$ are the execution times of the tasks; all other
@@ -55,13 +54,12 @@ motivated in \sref{collocation-nodes}. The \token{IsEnough} subroutine of
 interpolation level. The decision taken in \token{IsAccurate} is based on the
 formula given in \eref{error}.
 
-We shall consider five electronic systems. The number of processing element
-$\np$ is 1, 4, 9, 16, and 25, respectively. The number of tasks $\nt$ is 10, 40,
-90, 160, and 250, respectively. For each system, three quantities of interest
-$\g$ are analyzed: 1) the end-to-end delay of the application, 2) the total
-energy consumed by the processing elements, and 3) a temperature profile of the
-system, which are given by \eref{end-to-end-delay}, \eref{total-energy}, and
-\eref{maximal-temperature}, respectively. In total, 15 problems are addressed.
+We shall consider $3 \times 2 \times 3 = 18$ uncertainty-quantification
+problems. There are three platform sizes $\np$: 2, 4, and 8 processing elements;
+there are two application sizes $\nt$: 10 and 20 tasks; and there are three
+quantities of interest $\g$: the end-to-end delay, total energy, and maximum
+temperature, which are given by \eref{end-to-end-delay}, \eref{total-energy},
+and \eref{maximal-temperature}, respectively.
 
 In order to assess the performance of our framework, we shall compare the
 results deliver by the framework with those delivered by a method based on
@@ -74,17 +72,17 @@ simulations is set to $10^4$ for all experiments.
 
 The main indicator of the efficiency of the proposed framework is the number of
 evaluations of the quantity of interest needed to achieve a certain accuracy
-level. We shall report three accuracy metrics. To this end, we first compute
-three statistics about $\g$: the expected value, variance, and probability
-density function. The probabilistic moments are based on the analytical formulae
-given in \sref{probabilistic-moments}, and the density is based on sampling the
-constructed interpolant. Then the first and second accuracy metrics are the
-relative errors of the expected value and variance, respectively, with respect
-to those estimated by the \abbr{MC} method described above. The third accuracy
-metric is the Kolmogorov--Smirnov statistic \cite{rao2009}, which is the
-supremum over the distance between two empirical distribution functions. The
-three accuracy metrics are denoted by $\eerror$, $\verror$, and $\perror$,
-respectively.
+level. Apropos accuracy, as noted \sref{introduction}, we are interested in
+probability distributions and, therefore, shall report our accuracy of
+estimating the distribution function of $\g$, $\distribution_\g$. (Other
+quantities such as probabilistic moments are subordinate, and their accuracy can
+be reasoned about using the accuracy of the distribution function as a proxy.)
+The estimation of $\distribution_\g$ by sampling the constructed interpolant.
+
+For comparing the proximity between two distribution, we shall use the
+well-known Kolmogorov--Smirnov statistic \cite{rao2009}, which is the supremum
+over the distance between two empirical distribution functions. The accuracy
+metric is denoted by $\error$.
 
 Lastly, we would like to remind that our setup is publicly available
 \cite{sources}. The configuration aspects that have not been explicitly

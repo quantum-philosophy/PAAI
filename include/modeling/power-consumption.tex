@@ -11,13 +11,13 @@ Let a time-dependent vector $\vp(\t) = (\p_i(\t))_{i = 1}^{\np}$ capture the
 total power consumption of the system at time $\t$. This vector is related to
 the dynamic power introduced above as follows:
 \begin{equation} \elab{power}
-  \p_i(\t) = \sum_{j \in \tasks} \p^\dynamic_{ij} \: \delta_{ij} (\t) + \p^\static_i(\t),
+  \p_i(\t) = \sum_{j \in \tasks} \p^\dynamic_{ij} \: \delta_{ij} (\t) + \p^\static_i(\t), \hspace{1em} \text{for $i \in \procs$},
 \end{equation}
-for $i \in \procs$, where $\delta_{ij}(\t)$ is the indicator that the $i$th
-processing element executes the $j$th task at time $\t$, and $\p^\static_i(\t)$
-is the static power consumed by the $i$th processing element at time $\t$. The
-last component varies over time due to the interdependence between the leakage
-power and temperature \cite{liu2007}.
+where $\delta_{ij}(\t)$ is the indicator that the $i$th processing element
+executes the $j$th task at time $\t$, and $\p^\static_i(\t)$ is the static power
+consumed by the $i$th processing element at time $\t$. In general, the last
+component varies over time due to the interdependence between the leakage power
+and temperature \cite{liu2007}.
 
 Given a set of points $\{ \t_j \}_{j = 1}^\ns$ on the timeline, \eref{power} can
 be used to construct a power profile of the system

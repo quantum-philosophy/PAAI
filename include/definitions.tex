@@ -113,7 +113,7 @@
 \usepackage{amsthm}
 \newtheorem{remark}{Remark}
 
-\newcommand{\indexSet}[1]{{\mathcal{I}_{#1}}}
+\newcommand{\error}{\epsilon}
 
 % Real analysis and functional analysis
 \newcommand{\real}{\mathbb{R}}
@@ -131,7 +131,7 @@
 \newcommand{\f}{f}
 
 \newcommand{\tensor}[1]{\mathcal{Q}_{#1}}
-\newcommand{\smolyak}[1]{\mathcal{A}_{#1}}
+\newcommand{\smolyak}[1]{\mathcal{S}_{#1}}
 
 \renewcommand{\index}{\mathcal{J}}
 
@@ -152,8 +152,6 @@
 \newcommand{\Z}{\mathcal{Z}}
 
 \newcommand{\surplus}{\Delta\f}
-
-\newcommand{\error}{\epsilon}
 
 % Probability theory
 \newcommand{\outcomes}{\Omega}
@@ -177,14 +175,14 @@
 %
 % Platform
 %
-\newcommand{\procs}{\indexSet{\pi}}
+\newcommand{\procs}{\Pi}
 \newcommand{\proc}{\pi}
 
 %
 % Application
 %
-\newcommand{\tasks}{\indexSet{\tau}}
-\newcommand{\task}{\tau}
+\newcommand{\tasks}{\mathrm{A}}
+\newcommand{\task}{a}
 
 \renewcommand{\b}{b}
 \newcommand{\vb}{\v{\b}}
@@ -195,7 +193,7 @@
 %
 % Time
 %
-\newcommand{\ts}{\indexSet{t}}
+\newcommand{\ts}{{I_t}}
 \renewcommand{\t}{t}
 
 %
@@ -236,21 +234,14 @@
 \newcommand{\g}{g}
 
 %
-% Experimental results
-%
-\newcommand{\eerror}{\epsilon_\mathbb{E}}
-\newcommand{\verror}{\epsilon_\mathbb{V}}
-\newcommand{\perror}{\epsilon_\mathbb{P}}
-
-%
 % Numbers
 %
 \newcommand{\n}{n}
 
 \renewcommand{\nu}{{\n_\u}}
 \newcommand{\nz}{{\n_\z}}
-\newcommand{\np}{{\n_\pi}}
-\newcommand{\nt}{{\n_\tau}}
+\newcommand{\np}{{\n_\proc}}
+\newcommand{\nt}{{\n_\task}}
 \newcommand{\ns}{{\n_\t}}
 \newcommand{\nn}{{\n_\text{n}}}
 \newcommand{\nin}{{\n_\text{d}}}
