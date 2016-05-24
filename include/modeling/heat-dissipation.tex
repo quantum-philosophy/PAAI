@@ -28,15 +28,15 @@ temperature profile of the system:
 \begin{equation*}
   \mQ = (\q_i(\t_j))_{i \in \procs, j \in \ts} \in \real^{\np \times \ns}.
 \end{equation*}
-Then the maximal temperature can be estimated as follows:
+Then the maximum temperature can be estimated as follows:
 \begin{align}
-  \text{Maximal temperature} &= \max_{i \in \procs} \, \sup_{\t} \, \q_i(\t) \nonumber \\
-                             &\approx \max_{i \in \procs, j \in \ts} \, \q_i(\t_j). \elab{maximal-temperature}
+  \text{Maximum temperature} &= \max_{i \in \procs} \, \sup_{\t} \, \q_i(\t) \nonumber \\
+                             &\approx \max_{i \in \procs, j \in \ts} \, \q_i(\t_j). \elab{maximum-temperature}
 \end{align}
 
 Assuming that temperature depends on $\vu$---which is the case whenever, for
 instance, the power consumption depends on $\vu$---a temperature profile as well
-as the maximal temperature can be considered as quantities of interest $\g$.
+as the maximum temperature can be considered as quantities of interest $\g$.
 Dynamic steady-state temperature analysis \cite{ukhov2012} can also be
 considered in this regards, which is particularly useful for reliability
 analysis \cite{ukhov2015}.

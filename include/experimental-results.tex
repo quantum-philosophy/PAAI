@@ -7,18 +7,25 @@ data is available at \cite{sources} as well. The experiments are conducted on a
 laptop equipped with four processors Intel Core i7 2.5~\abbr{GH}z and
 16~\abbr{GB} of \abbr{RAM}.
 
-Each problem that we consider is structured as follow. A platform with $\np$
-processing elements and an application with $\nt$ tasks are generated randomly
-by the \abbr{TGFF} tool \cite{dick1998}. The tool generates $\np$ tables and a
-directed acyclic graph with $\nt$ nodes. Each table corresponds to a processing
-element, and it describes certain properties of the tasks when they are mapped
-to that particular processing element. Namely, each table assigns two numbers to
-each task: a reference execution time, chosen uniformly between 10 and 50~ms,
-and a power consumption, chosen uniformly between 5 and 25~W. The graph captures
-data dependencies between the tasks. The application is scheduled using a list
-scheduler \cite{adam1974}. The mapping of the application is fixed and obtained
-by scheduling the tasks based on their reference execution times and assigning
-them to the earliest available processing elements (a shared ready list).
+We shall consider $3 \times 2 \times 3 = 18$ uncertainty-quantification
+problems. There are three platform sizes $\np$: 2, 4, and 8 processing elements;
+there are two application sizes $\nt$: 10 and 20 tasks; and there are three
+quantities of interest $\g$: the end-to-end delay, total energy, and maximum
+temperature, which are given by \eref{end-to-end-delay}, \eref{total-energy},
+and \eref{maximum-temperature}, respectively.
+
+A platform with $\np$ processing elements and an application with $\nt$ tasks
+are generated randomly by the \abbr{TGFF} tool \cite{dick1998}. The tool
+generates $\np$ tables and a directed acyclic graph with $\nt$ nodes. Each table
+corresponds to a processing element, and it describes certain properties of the
+tasks when they are mapped to that particular processing element. Namely, each
+table assigns two numbers to each task: a reference execution time, chosen
+uniformly between 10 and 50~ms, and a power consumption, chosen uniformly
+between 5 and 25~W. The graph captures data dependencies between the tasks. The
+application is scheduled using a list scheduler \cite{adam1974}. The mapping of
+the application is fixed and obtained by scheduling the tasks based on their
+reference execution times and assigning them to the earliest available
+processing elements (a shared ready list).
 
 The construction of thermal \abbr{RC} circuits needed for temperature analysis
 is delegated to the HotSpot tool \cite{skadron2004}. The floorplan of each
@@ -53,13 +60,6 @@ motivated in \sref{collocation-nodes}. The \token{IsEnough} subroutine of
 \aref{construct} terminates the algorithm when it reaches a certain
 interpolation level. The decision taken in \token{IsAccurate} is based on the
 formula given in \eref{error}.
-
-We shall consider $3 \times 2 \times 3 = 18$ uncertainty-quantification
-problems. There are three platform sizes $\np$: 2, 4, and 8 processing elements;
-there are two application sizes $\nt$: 10 and 20 tasks; and there are three
-quantities of interest $\g$: the end-to-end delay, total energy, and maximum
-temperature, which are given by \eref{end-to-end-delay}, \eref{total-energy},
-and \eref{maximal-temperature}, respectively.
 
 In order to assess the performance of our framework, we shall compare the
 results deliver by the framework with those delivered by a method based on
@@ -98,6 +98,6 @@ delay given by \eref{end-to-end-delay}.
 Let the quantity of interest $\g$ be the total energy given by
 \eref{total-energy}.
 
-\subsection{Maximal Temperature}
-In this subsection, the quantity of interest $\g$ is the maximal temperature
-given by \eref{maximal-temperature}.
+\subsection{Maximum Temperature}
+In this subsection, the quantity of interest $\g$ is the maximum temperature
+given by \eref{maximum-temperature}.
