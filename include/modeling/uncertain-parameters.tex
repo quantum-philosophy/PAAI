@@ -4,18 +4,18 @@ to an auxiliary random vector $\vz = (\z_i)_{i = 1}^\nz \sim \distribution_\vz$
 such that: 1) the support of $\distribution_\vz$ is the unit hypercube $[0,
 1]^\nz$, and 2) $\nz \leq \nu$ has the smallest value needed to retain the
 desired level of accuracy. The first is standardization, which is done primarily
-for convenience. The second is model order reduction, which identifies and
-eliminates excessive complexity and, hence, speeds up the proposed framework.
-The reduction is possible whenever there are dependencies between $(\u_i)$, in
-which case one can find such $(\z_i)_{i = 1}^\nz$, $\nz < \nu$, that each $\u_i$
-can be recovered from $(\z_i)$. We shall denote the overall transformation by
-$\vu = \transformation(\vz)$ where
+for convenience. The second is model-order reduction, which identifies and
+eliminates excessive complexity and, hence, speeds up the solution process. The
+reduction is possible whenever there are dependencies between $(\u_i)_{i =
+1}^\nu$, in which case one can find such $(\z_i)_{i = 1}^\nz$, $\nz < \nu$, that
+each $\u_i$ can be recovered from $(\z_i)_{i = 1}^\nz$. We shall denote the
+overall transformation by $\vu = \transformation(\vz)$ where
 \begin{equation} \elab{transformation}
   \transformation: \real^\nu \to [0, 1]^\nz.
 \end{equation}
 Now, for any point $\vz \in [0, 1]^\nz$, we are able to compute the
-corresponding $\vu$ and, consequently, the quantity of interest $\g$ as $\g(\vu)
-= (\g \circ \transformation)(\vz) := \g(\transformation(\vz))$; recall
+corresponding $\vu$ and, consequently, the quantity of interest $\g$ as $(\g
+\circ \transformation)(\vz) := \g(\transformation(\vz)) = \g(\vu)$; recall also
 \sref{problem-formulation}.
 
 Let us consider a concrete example in order to get a better intuition about
@@ -36,12 +36,12 @@ two pieces are not sufficient to recover the joint of $\vu$; however, the joint
 can be approximated well by accompanying the available marginals by a Gaussian
 copula constructed based on the available correlation matrix; see \cite{liu1986}
 and also \cite{ukhov2014}. Hence, a set of marginals and a Gaussian copula are
-a typical input to probabilistic analysis.
+a practical input to probabilistic analysis.
 \end{remark}
 
 The number of variables, which is so far $\nu$, has a significant impact on the
 complexity of the problem at hand. Therefore, an important component of our
-framework is model order reduction, which we shall base on the discrete
+framework is model-order reduction, which we shall base on the discrete
 Karhunen--Lo\`{e}ve decomposition, also known as the principal component
 analysis. We proceed as follows. Since any correlation matrix is real and
 symmetric, $\correlation$ admits the eigendecomposition:
@@ -51,33 +51,34 @@ symmetric, $\correlation$ admits the eigendecomposition:
 where $\m{V} \in \real^{\nu \times \nu}$ is an orthogonal matrix whose columns
 are the eigenvectors of $\correlation$, and $\m{\Lambda} = \diag(\lambda_i)_{i =
 1}^\nu$ is a diagonal matrix whose diagonal elements are the eigenvalues of
-$\correlation$. The eigenvalues $(\lambda_i)$ correspond to the variances of the
-corresponding components revealed by the decomposition. The model order
-reduction boils down to selecting those components whose cumulative
+$\correlation$. The eigenvalues $(\lambda_i)_{i = 1}^\nu$ correspond to the
+variances of the corresponding components revealed by the decomposition. The
+model-order reduction boils down to selecting those components whose cumulative
 contributions to the total variance is above a certain threshold. Formally,
-assuming that $(\lambda_i)$ are sorted in the descending order and given a
-threshold parameter $\eta \in (0, 1]$, we identify the smallest $\nz$ such that
+assuming that $(\lambda_i)_{i = 1}^\nu$ are sorted in the descending order and
+given a threshold parameter $\eta \in (0, 1]$, we identify the smallest $\nz$
+such that
 \[
   \frac{\sum_{i = 1}^\nz \lambda_i}{\sum_{i = 1}^\nu \lambda_i} \geq \eta.
 \]
 Denote by $\tilde{\m{V}} \in \real^{\nu \times \nz}$ and $\tilde{\m{\Lambda}}
 \in\real^{\nz \times \nz}$ the matrices obtained by truncating $\m{V}$ and
-$\m{\Lambda}$, respectively, to preserve only the $\nz$ major components
-identified as shown above.
+$\m{\Lambda}$, respectively, to preserve only the first $\nz$ components where
+$\nz$ is as shown above.
 
 Now, the transformation $\transformation$ in \eref{transformation} is
 \begin{equation} \elab{transformation-concrete}
   \vu = \distribution_\vu^{-1} \left( \Phi\left( \tilde{\m{V}} \tilde{\m{\Lambda}}^\frac{1}{2} \, \Phi^{-1}(\vz) \right) \right)
 \end{equation}
 where the \rvs\ $\vz = (\z_i)_{i = 1}^\nz$ are independent and uniformly
-distributed on $[0, 1]$; $\Phi$ and $\Phi^{-1}$ are the distribution function of
-the standard Gaussian distribution and its inverse, respectively, which are
-applied elementwise; and $\distribution_\vu^{-1} := \distribution_{\u_1}^{-1}
-\times \cdots \times \distribution_{\u_\nz}^{-1}$ is the Cartesian product of
-the inverse marginal distributions of $\vu$, which are applied to the
-corresponding element of the vector yielded by $\Phi$. In the absence of
-correlations, \eref{transformation-concrete} is simply $\vu =
-\distribution_\vu^{-1}(\vz)$, and no model order reduction is possible ($\nu =
+distributed on $[0, 1]^\nz$; $\Phi$ and $\Phi^{-1}$ are the distribution
+function of the standard Gaussian distribution and its inverse, respectively,
+which are applied elementwise; and $\distribution_\vu^{-1} :=
+\distribution_{\u_1}^{-1} \times \cdots \times \distribution_{\u_\nz}^{-1}$ is
+the Cartesian product of the inverse marginal distributions of $\vu$, which are
+applied to the corresponding element of the vector yielded by $\Phi$. In the
+absence of correlations, \eref{transformation-concrete} is simply $\vu =
+\distribution_\vu^{-1}(\vz)$, and no model-order reduction is possible ($\nu =
 \nz$).
 
 To summarize, we have found such a transformation $\transformation$ and the
