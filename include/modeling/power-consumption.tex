@@ -11,7 +11,7 @@ Let the vector $\vp(\t) = (\p_i(\t))_{i = 1}^{\np}$ capture the total power
 consumption of the system at time $\t$. This vector is related to the dynamic
 power introduced above as follows:
 \begin{equation} \elab{power}
-  \p_i(\t) = \sum_{j \in \tasks} \p^\dynamic_{ij} \: \delta_{ij} (\t) + \p^\static_i(\t), \hspace{1em} \text{for $i \in \procs$},
+  \p_i(\t) = \sum_{j = 1}^\nt \p^\dynamic_{ij} \: \delta_{ij} (\t) + \p^\static_i(\t), \hspace{1em} \text{for $i = 1, \cdots, \np$},
 \end{equation}
 where $\delta_{ij}(\t)$ is the indicator of the event that processing element
 $i$ executes task $j$ at time $\t$, and $\p^\static_i(\t)$ is the static power
@@ -19,22 +19,21 @@ consumed by processing element $j$ at time $\t$. In general, the last component
 varies with time due to the interdependence between the leakage power and
 temperature \cite{liu2007}.
 
-Given a set of points on the timeline $\{ \t_i \}_{i \in \ts}$ where we
-introduce $\ts = \{ i \}_{i = 1}^\ns$ for convenience, \eref{power} can be used
-to construct a power profile of the system as follows:
+Given a set of $\ns$ points on the timeline $\{ \t_i \}_{i = 1}^\ns$,
+\eref{power} can be used to construct a power profile of the system as follows:
 \[
-  \mP = (\p_i(\t_j))_{i \in \procs, j \in \ts} \in \real^{\np \times \ns}.
+  \mP = (\p_i(\t_j))_{i = 1, j = 1}^{\np, \ns} \in \real^{\np \times \ns}.
 \]
 The above is essentially a matrix where row $i$ captures the power consumed by
 processing element $i$ at the $\ns$ time moments.
 
-A valuable quantity, which can be calculated at this point, is the total energy
-consumed by the system during an application run. To this end, \eref{power} is
-integrated over the time span of the application---which is demarcated by the
-minuend and subtrahend in \eref{end-to-end-delay}---and the corresponding
-integral can be approximated using the power profile as follows:
+The total energy consumed by the system during an application run can be
+computed by integrating \eref{power} over the time span of the
+application---which is demarcated by the minuend and subtrahend in
+\eref{end-to-end-delay}---and the corresponding integral can be estimated using
+the power profile as follows:
 \begin{equation} \elab{total-energy}
-  \text{Total energy} = \sum_{i \in \procs} \int \p_i(\t) \, d\t \approx \sum_{i \in \procs} \sum_{j \in \ts} \p_i(\t_j) \, \Delta \t_j
+  \text{Total energy} = \sum_{i = 1}^\np \int \p_i(\t) \, d\t \approx \sum_{i = 1}^\np \sum_{j = 1}^\ns \p_i(\t_j) \, \Delta \t_j
 \end{equation}
 where $\Delta \t_j$ is either $\t_j - \t_{j - 1}$ or $\t_{j + 1} - \t_j$,
 depending on how power values are encoded in $\mP$. The assumption that

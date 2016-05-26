@@ -1,17 +1,14 @@
 Consider an electronic system composed of two major components: a platform and
-an application. The platform is given as a set of processing elements, and the
-application is given as a set of dependent tasks. In what follows, the two sets
-will be denoted by $\procs = \{ i \}_{i = 1}^\np$ and $\tasks = \{ i \}_{i =
-1}^\nt$, respectively, and the whole system by the tuple $(\procs, \tasks)$.
+an application. The platform is given as a set of $\np$ heterogeneous processing
+elements, and the application is given as a set of $\nt$ dependent tasks.
 
 The designer is assumed to be interested in studying a quantity $\g$ that
-characterizes $(\procs, \tasks)$ from a certain perspective. Examples of $\g$
-include the end-to-end delay, total energy, and maximum temperature. The
-quantity $\g$, referred to as the quantity of interest, depends on a set of
-parameters that are uncertain at the design stage. The parameters are modeled by
-a random vector $\vu = (\u_i)_{i = 1}^\nu: \outcomes \to \real^\nu$ with
-distribution $\distribution_\vu$. Examples of $\vu$ include the execution times
-of the tasks.
+characterizes the system from a certain perspective. Examples of $\g$ include
+the end-to-end delay, total energy, and maximum temperature. The quantity $\g$,
+referred to as the quantity of interest, depends on a set of parameters that are
+uncertain at the design stage. The parameters are modeled by a random vector
+$\vu = (\u_i)_{i = 1}^\nu: \outcomes \to \real^\nu$ with distribution
+$\distribution_\vu$. Examples of $\vu$ include the execution times of the tasks.
 
 The dependency of $\g$ on $\vu$, written as $\g(\vu)$, implies that $\g$ is
 random to the designer. For a given $\vu$, however, $\g$ is assumed to be purely
@@ -20,7 +17,7 @@ doable but computationally or otherwise expensive. (If the cost of $\g$ was low,
 one could proceed to sampling methods directly without any auxiliary framework.)
 
 Our objective in this paper is to develop an efficient framework for analyzing
-the quantity of interest $\g$ characterizing the system $(\procs, \tasks)$ such
+the quantity of interest $\g$ characterizing the electronic system at hand such
 that the uncertainty originating from the parameters $\vu$ is taken into
 consideration. In this context, the analysis of $\g$ refers to the estimation of
 the probability distribution of $\g$, which naturally implies the availability

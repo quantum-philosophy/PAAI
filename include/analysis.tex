@@ -5,17 +5,17 @@ the designer is typically interested in studying. In the previous section,
 approximating hypothetical multidimensional functions $\f$. Now we shall
 amalgamate the ideas developed in the aforementioned two sections.
 
-Given an electronic system $(\procs, \tasks)$ dependent on a number of uncertain
-parameters $\vu: \outcomes \to \real^\nu$, the goal is to analyze a quantity of
-interest $\g$ representing a certain aspect of the system. For instance, $\vu$
-can correspond to the execution times of the tasks $\tasks$ that the processing
-elements $\procs$ are to execute, and $\g$ can correspond the total energy
-consumed by the processing elements. The goal is attained as follows. First, the
-parametrization of $\g$ is changed from $\vu$ to \rvs\ $\vz: \outcomes \to [0,
-1]^\nz$ via a suitable transformation $\transformation$; this stage is described
-in \sref{uncertain-parameters}. Second, an interpolant of the resulting
-composition $\g \circ \transformation$ is constructed by treating the
-composition as a deterministic function $\f$ of $\vz$; this stage is detailed in
+Given an electronic system dependent on a number of uncertain parameters $\vu:
+\outcomes \to \real^\nu$, the goal is to analyze a quantity of interest $\g$
+representing a certain aspect of the system. For instance, $\vu$ can correspond
+to the execution times of the tasks that the processing elements are to execute,
+and $\g$ can correspond the total energy consumed by the processing elements.
+The goal is attained as follows. First, the parametrization of $\g$ is changed
+from $\vu$ to \rvs\ $\vz: \outcomes \to [0, 1]^\nz$ via a suitable
+transformation $\transformation$; this stage is described in
+\sref{uncertain-parameters}. Second, an interpolant of the resulting composition
+$\g \circ \transformation$ is constructed by treating the composition as a
+deterministic function $\f$ of $\vz$; this stage is detailed in
 \sref{interpolation}. Third, an estimation of the probability distribution of
 $\g$ is undertaken in the usual sampling-based manner but relying solely on the
 constructed interpolant; $\g$ is no longer involved. This last stage boils down

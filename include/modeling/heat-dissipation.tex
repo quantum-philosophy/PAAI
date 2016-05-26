@@ -22,16 +22,17 @@ consumption of the processing elements across the thermal nodes; without loss of
 generality, $\mM$ is a rectangular diagonal matrix whose diagonal elements are
 equal to one.
 
-Given a set of time instances $\{ \t_j: j \in \ts \}$ with an index set $\ts =
-\{ i \}_{j = 1}^\ns$, \eref{thermal-system} can be utilized to compute a
-temperature profile of the system:
+Given a set of $\ns$ points on the timeline $\{ \t_i \}_{i = 1}^\ns$,
+\eref{thermal-system} can be used to compute a temperature profile of the system
+as follows:
 \begin{equation*}
-  \mQ = (\q_i(\t_j))_{i \in \procs, j \in \ts} \in \real^{\np \times \ns}.
+  \mQ = (\q_i(\t_j))_{i = 1, j = 1}^{\np, \ns} \in \real^{\np \times \ns}.
 \end{equation*}
-Then the maximum temperature can be estimated as follows:
+Then the maximum temperature of the system can be estimated using the
+temperature profile as follows:
 \begin{align}
-  \text{Maximum temperature} &= \max_{i \in \procs} \, \sup_{\t} \, \q_i(\t) \nonumber \\
-                             &\approx \max_{i \in \procs, j \in \ts} \, \q_i(\t_j). \elab{maximum-temperature}
+  \text{Maximum temperature} &= \max_{i = 1}^\np \, \sup_{\t} \, \q_i(\t) \nonumber \\
+                             &\approx \max_{i = 1}^\np \max_{j = 1}^\ns \, \q_i(\t_j). \elab{maximum-temperature}
 \end{align}
 
 Assuming that temperature depends on $\vu$---which is the case whenever, for
