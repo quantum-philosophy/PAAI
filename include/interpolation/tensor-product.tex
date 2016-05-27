@@ -1,16 +1,16 @@
 In one dimension ($\nin = 1$), $\f$ is approximated by virtue of the following
-interpolating formula:
+interpolation formula:
 \begin{equation} \elab{tensor-1d}
   \tensor{i}(\f) := \sum_{j \in \index_i} \f(\x_{ij}) \, \e_{ij}.
 \end{equation}
 The superscript $i \in \natural$ signifies the level of interpolation; $\X_i =
-\{ \x_{ij} \} \subset [0, 1]$ are the collocation nodes; $\E_i = \{ \e_{ij} \}
-\subset \continuous([0, 1])$ are the basis functions; and $\index_i = \{ 0,
-\dots, \n_i - 1 \}$ is a set with cardinality $\n_i$ that indexes the nodes and
-functions on the corresponding level. We shall refer to the subscript $j \in
-\index_i$ as the order of a node or function. The choice of the collocation
-nodes and basis functions is an important concern which will be thoroughly
-discussed later on.
+\{ \x_{ij} \}_{j \in \index_i} \subset [0, 1]$ are the collocation nodes; $\E_i
+= \{ \e_{ij} \}_{j \in \index_i} \subset \continuous([0, 1])$ are the basis
+functions; and $\index_i = \{ j - 1 \}_{j = 1}^{n_i}$ is an index set
+enumerating (starting from zero) the nodes and functions that belong to level
+$i$. We shall refer to the subscript $j \in \index_i$ as the order of a node or
+function. The choice of the collocation nodes and basis functions is an
+important concern, and it will be discussed thoroughly later on.
 
 In multiple dimensions ($\nin > 1$), $\f$ is approximated by the tensor product
 of $\nin$ one-dimensional interpolants:
@@ -18,32 +18,33 @@ of $\nin$ one-dimensional interpolants:
   \tensor{\vi}(\f) := (\tensor{i_1} \otimes \cdots \otimes \tensor{i_\nin})(\f) = \sum_{\vj \in \index_\vi} \f(\vx_{\vi\vj}) \, \e_{\vi\vj}
 \end{equation}
 where $\vi = (i_k) \in \natural^\nin$ and $\vj = (j_k) \in \natural^\nin$ are
-multi-indices specifying, respectively, the interpolation levels and node orders
-for all dimensions, and $\index_\vi := \index_{i_1} \times \cdots \times
-\index_{i_\nin}$ is a set of multi-indices corresponding to the tensor-product
-structure. In the above formula,
+multi-indices specifying levels and orders, respectively, for each of the
+dimensions, and $\index_\vi := \index_{i_1} \times \cdots \times
+\index_{i_\nin}$ is a multi-index set obtained by computing the tensor product
+of one-dimensional index sets. In the above formula,
 \begin{align}
   \X_\vi &= \X_{i_1} \times \cdots \times \X_{i_\nin} \elab{collocation-nodes} \\
-         &= \left\{ \vx_{\vi\vj} = (\x_{i_k j_k}): \vj \in \index_\vi \right\} \subset [0, 1]^\nin \nonumber
+         &= \left\{ \vx_{\vi\vj} = (\x_{i_k j_k}) \right\}_{\vj \in \index_\vi} \subset [0, 1]^\nin \nonumber
 \end{align}
 and
 \begin{align}
   \E_\vi &= \E_{i_1} \otimes \cdots \otimes \E_{i_\nin} \elab{basis-functions} \\
-         &= \left\{ \e_{\vi\vj} = \e_{i_1 j_1} \otimes \cdots \otimes \e_{i_\nin j_\nin}: \vj \in \index_\vi \right\} \subset \continuous([0, 1]^\nin) \nonumber
+         &= \left\{ \e_{\vi\vj} = \e_{i_1 j_1} \otimes \cdots \otimes \e_{i_\nin j_\nin} \right\}_{\vj \in \index_\vi} \subset \continuous([0, 1]^\nin) \nonumber
 \end{align}
-are the collocation nodes and basis functions corresponding to the multi-index
-$\vi$, respectively. In \eref{basis-functions}, for any $\vx \in [0, 1]^\nin$,
+are the collocation nodes and basis functions, respectively, corresponding to
+multi-index $\vi$. In \eref{basis-functions}, for any $\vx \in [0, 1]^\nin$,
 \[
   \e_{\vi\vj}(\vx) = \left(\e_{i_1 j_1} \otimes \cdots \otimes \e_{i_\nin j_\nin}\right)(\vx) := \prod_{k = 1}^\nin \e_{i_k j_k}(\x_k).
 \]
-The cardinality of $\index_\vi$, which we denote by $\n_\vi$, is
+Lastly, the cardinality of $\index_\vi$ is as follows:
 \begin{equation} \elab{tensor-cardinality}
   \n_\vi = \prod_{k = 1}^\nin \n_{i_k}.
 \end{equation}
-The last equation elucidates the prohibited expense of the tensor-product
-construction shown in \eref{tensor} for high-dimensional problems: the number of
-nodes grows exponentially as $\nin$ increases. However, \eref{tensor} serves
-well as a building block for more efficient algorithms, which we discuss next.
+Equation \eref{tensor-cardinality} elucidates the prohibited expense of the
+tensor-product construction shown in \eref{tensor} for multidimensional
+problems: the number of nodes grows exponentially as $\nin$ increases. However,
+\eref{tensor} serves well as a building block for more efficient algorithms,
+which we discuss next.
 
 \begin{remark}
 Each dimension can have its own rule defining the distribution of collocation

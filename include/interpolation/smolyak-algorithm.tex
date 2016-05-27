@@ -1,4 +1,4 @@
-One of the central algorithms in the field of high-dimensional integration and
+One of the central algorithms in the field of multidimensional integration and
 interpolation is the Smolyak algorithm \cite{smolyak1963}. The technique was
 developed in the 1960s by Sergey Smolyak, and its impact is comparable to the
 one of Monte Carlo sampling. Intuitively speaking, the algorithm takes a number
@@ -10,15 +10,15 @@ functions that one is typically interested in integrating or interpolating
 
 The Smolyak interpolant for $\f$ is as follows:
 \begin{equation} \elab{smolyak}
-  \smolyak{l}(\f) := \sum_{l - \nin + 1 \leq |\vi| \leq l} (-1)^{l - |\vi|} \, {\nin - 1 \choose l - |\vi|} \, \tensor{\vi}(\f)
+  \smolyak{\l}(\f) := \sum_{\l - \nin + 1 \leq |\vi| \leq \l} (-1)^{\l - |\vi|} \, {\nin - 1 \choose \l - |\vi|} \, \tensor{\vi}(\f)
 \end{equation}
-where $l \in \natural$ is the level of Smolyak's interpolation, and $|\vi| :=
+where $\l \in \natural$ is the level of Smolyak's interpolation, and $|\vi| :=
 i_1 + \dots + i_\nin$. We see that the algorithm is indeed just a peculiar
 composition of cherry-picked tensor products. However, the formula has an
-implication of paramount importance: the quantity of interest needs to be
+implication of paramount importance. The quantity of interest needs to be
 evaluated only at the nodes of the sparse grid underpinning \eref{smolyak}:
 \begin{equation} \elab{smolyak-grid}
-  \Y_l = \bigcup_{l - \nin + 1 \leq |\vi| \leq l} \X_\vi.
+  \Y_l = \bigcup_{\l - \nin + 1 \leq |\vi| \leq \l} \X_\vi.
 \end{equation}
 The cardinality of the above set does not have a general closed-form formula;
 however, it can be several orders of magnitude smaller than the one of the full
@@ -34,7 +34,7 @@ $\Delta\tensor{-1}(\f) := 0$,
 \end{align}
 Then, \eref{smolyak} is identical to
 \begin{equation} \elab{smolyak-incremental}
-  \smolyak{l}(\f) = \sum_{|\vi| \leq l} \Delta\tensor{\vi}(\f) = \smolyak{l - 1}(\f) + \sum_{|\vi| = l} \Delta\tensor{\vi}(\f)
+  \smolyak{\l}(\f) = \sum_{|\vi| \leq \l} \Delta\tensor{\vi}(\f) = \smolyak{\l - 1}(\f) + \sum_{|\vi| = \l} \Delta\tensor{\vi}(\f)
 \end{equation}
 where $\smolyak{-1}(\f) := 0$. It can be seen that a Smolyak interpolant can be
 refined efficiently: the work done to attain one accuracy level can be entirely
@@ -50,12 +50,12 @@ let $\Delta\X_{-1} := \emptyset$,
 \end{align*}
 Then, \eref{smolyak-grid} can be rewritten as
 \begin{equation} \elab{smolyak-grid-incremental}
-  \Y_l = \bigcup_{|\vi| \leq l} \Delta\X_\vi = \Y_{l - 1} \cup \bigcup_{|\vi| = l} \Delta\X_\vi,
+  \Y_l = \bigcup_{|\vi| \leq \l} \Delta\X_\vi = \Y_{\l - 1} \cup \bigcup_{|\vi| = \l} \Delta\X_\vi,
 \end{equation}
 which is analogous to \eref{smolyak-incremental}. It can be seen now that it is
 beneficial for refinement to have $\X_{i - 1}$ be entirely included in $\X_i$
-since, in that case, the cardinality of $\Y_l \setminus \Y_{l - 1} =
-\bigcup_{|\vi| = l} \Delta\X_\vi$ derived from \eref{smolyak-grid-incremental}
+since, in that case, the cardinality of $\Y_l \setminus \Y_{\l - 1} =
+\bigcup_{|\vi| = \l} \Delta\X_\vi$ derived from \eref{smolyak-grid-incremental}
 decreases. In words, the values of $\f$ obtained on lower levels can be reused
 to attain higher levels if the grid grows without abandoning its previous
 structure. With this in mind, the rule used for generating successive sets of
@@ -63,10 +63,10 @@ points $\{ \X_i \}_{i \in \natural}$ should be chosen to be nested, that is, in
 such a way that $\X_i$ contains all nodes of $\X_{i - 1}$. By doing so, the
 incremental refinement really starts to shine.
 
-Lastly, we need to impose one additional property in order to rewrite
-\eref{smolyak-incremental} in a hierarchical form. Namely, we require the
-interpolants of higher levels to represent exactly the interpolants of lower
-levels. In one dimension, it means that
+The final step in this subsection is to rewrite \eref{smolyak-incremental} in a
+hierarchical form. To this end, we require the interpolants of higher levels to
+represent exactly the interpolants of lower levels. In one dimension, it means
+that
 \begin{equation} \elab{tensor-exactness}
   \tensor{i - 1}(\f) = \tensor{i}(\tensor{i - 1}(\f)).
 \end{equation}
@@ -80,7 +80,9 @@ If \eref{tensor-exactness} holds, using \eref{tensor-1d} and
 where $\Delta\index_i := \{ j \in \index_i: \x_{ij} \in \Delta\X_i \}$. The
 above sum is over $\Delta\X_i$ due to the fact that the difference in the
 parentheses is zero whenever $\x_{ij} \in \X_{i - 1}$ since $\X_{i - 1} \subset
-\X_i$. In multiple dimensions, using the Smolyak formula, we have
+\X_i$.
+
+In multiple dimensions, using the Smolyak formula,
 \begin{equation} \elab{tensor-delta}
   \Delta\tensor{\vi}(\f) = \sum_{\vj \in \Delta\index_\vi} \left( \f(\vx_{\vi\vj}) - \smolyak{|\vi| - 1}(\f)(\vx_{\vi\vj}) \right) \, \e_{\vi\vj}
 \end{equation}
@@ -97,7 +99,7 @@ so far.
 The final formula for nonadaptive hierarchical interpolation is obtained by
 substituting \eref{tensor-delta} into \eref{smolyak-incremental}:
 \begin{align}
-  \smolyak{l}(\f) &= \sum_{|\vi| \leq l} \, \sum_{\vj \in \Delta\index_\vi} \surplus(\vx_{\vi\vj}) \, \e_{\vi\vj} \elab{smolyak-hierarchical} \\
-                  &= \smolyak{l-1}(\f) + \sum_{|\vi| = l} \, \sum_{\vj \in \Delta\index_\vi} \surplus(\vx_{\vi\vj}) \, \e_{\vi\vj} \nonumber
+  \smolyak{\l}(\f) &= \sum_{|\vi| \leq \l} \, \sum_{\vj \in \Delta\index_\vi} \surplus(\vx_{\vi\vj}) \, \e_{\vi\vj} \elab{smolyak-hierarchical} \\
+                  &= \smolyak{\l-1}(\f) + \sum_{|\vi| = \l} \, \sum_{\vj \in \Delta\index_\vi} \surplus(\vx_{\vi\vj}) \, \e_{\vi\vj} \nonumber
 \end{align}
 where $\surplus(\vx_{\vi\vj})$ is computed according to \eref{surplus}.

@@ -60,13 +60,15 @@ applications running on heterogeneous multiprocessor platforms.
 In contract to sampling methods, our technique explores and, thereby, exploits
 the structure of the problem---that is, the way the quantity of interest depends
 on the uncertain parameters---by exercising the ``black box'' at a set of points
-chosen adaptively. The adaptivity that our framework leverages is not only
-dimensional \cite{klimke2006} but also regional, which means that the framework
-is able to benefit from any particularities that might be present in the
-stochastic space, that is, the space of the uncertain parameters. Adaptivity is
-the capital feature of our technique, and, therefore, we would like to elaborate
-on it now. To this end, we first need to give one classification of sources of
-uncertainty present in electronic systems.
+chosen adaptively. The adaptivity that our framework leverages is hybrid
+\cite{jakeman2012}: it tries to pick up not only global (that is, on the level
+of entire dimensions \cite{klimke2006}) but also local (that is, on the level on
+individual points \cite{ma2009}) variations, which means that the framework is
+able to benefit from any particularities that might be present in the stochastic
+space, that is, the space of the uncertain parameters. Adaptivity is the capital
+feature of our technique, and, therefore, we would like to elaborate on it now.
+To this end, we first need to give one classification of sources of uncertainty
+present in electronic systems.
 
 Sources of uncertainty can be divided into analog and digital. The major
 representative of the former is process variation \cite{srivastava2005}, which
