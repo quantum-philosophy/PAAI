@@ -1,11 +1,10 @@
 In this section, we evaluate the performance of the proposed framework. Our
-prototype of the framework has been implemented in the Go programming language
-\cite{go}. The implementation comprises multiple independent libraries, and the
-corresponding source code is available online \cite{sources}. The source code of
-the experimental setup below along with all the configuration files and input
-data is available at \cite{sources} as well. The experiments are conducted on a
-laptop equipped with four processors Intel Core i7 2.5~\abbr{GH}z and
-16~\abbr{GB} of \abbr{RAM}.
+implementation is written in the Go programming language \cite{go}, and it
+consists of multiple standalone libraries. The corresponding source code is
+available online \cite{sources}, which also covers our experimental setup along
+with all the configuration files and input data. The experiments are conducted
+on a \abbr{GNU}/Linux machine equipped with 16 processors Intel Xeon E5520
+2.27~\abbr{GH}z and 24~\abbr{GB} of \abbr{RAM}.
 
 We shall consider $3 \times 2 \times 3 = 18$ uncertainty-quantification
 problems. There are three platform sizes $\np$: 2, 4, and 8 processing elements;
@@ -32,8 +31,8 @@ is delegated to the HotSpot tool \cite{skadron2004}. The floorplan of each
 platform is a regular grid wherein each processing element occupies $2 \times
 2~\text{mm}^2$ on the die. The output of the tool is essentially a pair of a
 thermal capacitance matrix $\mC$ and a thermal conductance $\mG$ matrix used in
-\eref{thermal-system}. The leakage power is not considered in these experiments,
-which is solely for the sake of simplicity and is not required by our framework.
+\eref{thermal-system}. The leakage modeling is based on a linear approximation
+\cite{yang2013, ukhov2012, liu2007}.
 
 \input{include/assets/figures/distribution}
 The uncertain parameters $\vu$ are the execution times of the tasks; all other
