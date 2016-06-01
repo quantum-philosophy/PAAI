@@ -4,17 +4,17 @@ Under these circumstances, it is natural to expect that, in order to attain the
 same accuracy, the first half would require much fewer collocation nodes than
 the other one; recall the example given in \fref{motivation}. However, if we
 followed the construction procedure described so far, we would not be able to
-benefit from this behavior: we would treat both sides equally and would add all
-the nodes of each level.
+benefit from the peculiar behavior: we would treat both sides equally and would
+add all the nodes of each level.
 
 The solution to the above problem is to make the interpolation algorithm
 adaptive. First, we need to find a way to measure how good our approximation is
 at any point in the domain of $\f$. Then, when traversing from level $\l - 1$ to
-level $\l$, instead of bombarding $\f$ with all the nodes in $\Y_\l \setminus
-\Y_{\l - 1}$ (see \eref{smolyak-grid-incremental}), we will take only on those
-new nodes that are located in the regions with poor accuracy identified by the
-yet-to-be-found accuracy metric. This strategy practically means that the inner
-sum in \eref{smolyak-hierarchical} will iterate over a subset of
+$\l$, instead of bombarding $\f$ with all the nodes in $\Y_\l \setminus \Y_{\l -
+1}$ (see \eref{smolyak-grid-incremental} and below it), we will take only those
+new nodes that are located in the regions with poor accuracy as identified by
+the yet-to-be-found accuracy metric. This strategy practically means that the
+inner sum in \eref{smolyak-hierarchical} will iterate over a subset of
 $\Delta\index_\vi$.
 
 Thanks to the hierarchical form obtained in the previous subsection, we already
@@ -25,26 +25,32 @@ approximation at the nodes of the underlying sparse grid. Thus, after computing
 the surpluses corresponding to the nodes of one level, we can recycle their
 values in order to decide which of the nodes are to be refined, that is, which
 of the nodes of the next level are to be included in the interpolant. The
-meaning of refinement will be discussed further in \sref{collocation-nodes}; for
-the moment, we are only concerned with identifying ``problematic'' nodes.
+essence of refinement will be discussed in \sref{collocation-nodes}; for the
+moment, we are only concerned with identifying ``problematic'' nodes.
 
-First of all, looking at \eref{smolyak-hierarchical}, it is not clear what the
-interpolation level $\l$ should be in order to achieve a certain accuracy level.
-When should we stop?
-
-In this regards, one can adhere to various strategies \cite{ma2009}. One of them
-is as follows. Let $\error$ be the threshold of the absolute error that
-represents the accuracy requirement of the problem at hand. Then, a collocation
-node $\vx_{\vi\vj}$ is to be refined if
-\begin{equation} \elab{error}
-  \left| \surplus(\vx_{\vi\vj}) \right| > \error
+In this regards, one can adhere to various strategies, and ours is as follows. A
+collocation node $\vx_{\vi\vj}$ is to be refined if
+\begin{equation} \elab{serror}
+  \left| \surplus(\vx_{\vi\vj}) \right| \ge \serror
 \end{equation}
-where $\surplus(\vx_{\vi\vj})$ is given by \eref{surplus}. We shall use this
-criterion in the experiment results reported in \sref{experimental-results}.
+where $\surplus(\vx_{\vi\vj})$ is given by \eref{surplus}. The scalar $\serror$
+is a user-defined threshold, which we shall refer to as the surplus error. The
+above criterion will be used in our experiments, \sref{experimental-results}.
+
+Equation \eref{serror} gives us local adaptivity. \emph{Local} refers to the
+fact that this strategy operates on the level of individual nodes. However, it
+is not the only type of adaptivity that we would like to have. Another type,
+which has its own merits, is global adaptivity. Global adaptivity operates on
+the level of individual dimensions. The intuition is, in general, the input
+variables manifest themselves differently, and, hence, the interpolation
+algorithm is likely to benefit by prioritizing those variables that the most
+influential ones. In order to understand how global adaptivity works, one has to
+be familiar first with the refinement procedure; this discussed is left to the
+next subsection.
 
 To summarize, assuming that collocation points and basis functions have been
 carefully chosen, we have obtained an efficient algorithm for adaptive
 hierarchical interpolation in multiple dimensions. The main equations are
 \eref{surplus} and \eref{smolyak-hierarchical} where $\Delta\index_\vi$ is
 generally replaced by its subset according to a local adaptation strategy such
-as the one in \eref{error}.
+as the one in \eref{serror}.
