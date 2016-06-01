@@ -15,26 +15,26 @@ important concern, and it will be discussed thoroughly later on.
 In multiple dimensions ($\nin > 1$), $\f$ is approximated by the tensor product
 of $\nin$ one-dimensional interpolants:
 \begin{equation} \elab{tensor}
-  \tensor{\vi}(\f) := (\tensor{i_1} \otimes \cdots \otimes \tensor{i_\nin})(\f) = \sum_{\vj \in \index_\vi} \f(\vx_{\vi\vj}) \, \e_{\vi\vj}
+  \tensor{\vi}(\f) := \left( \bigotimes_{k = 1}^\nin \tensor{i_k} \right)(\f) = \sum_{\vj \in \index_\vi} \f(\vx_{\vi\vj}) \, \e_{\vi\vj}
 \end{equation}
-where $\vi = (i_k) \in \natural^\nin$ and $\vj = (j_k) \in \natural^\nin$ are
-multi-indices specifying levels and orders, respectively, for each of the
-dimensions, and $\index_\vi := \index_{i_1} \times \cdots \times
+where $\vi = (i_k)_{k = 1}^\nin \in \natural^\nin$ and $\vj = (j_k)_{k = 1}^\nin
+\in \natural^\nin$ are multi-indices specifying levels and orders, respectively,
+for each of the dimensions, and $\index_\vi := \index_{i_1} \times \cdots \times
 \index_{i_\nin}$ is a multi-index set obtained by computing the tensor product
 of one-dimensional index sets. In the above formula,
 \begin{align}
   \X_\vi &= \X_{i_1} \times \cdots \times \X_{i_\nin} \elab{collocation-nodes} \\
-         &= \left\{ \vx_{\vi\vj} = (\x_{i_k j_k}) \right\}_{\vj \in \index_\vi} \subset [0, 1]^\nin \nonumber
+         &= \left\{ \vx_{\vi\vj} = (\x_{i_k j_k})_{k = 1}^\nin \right\}_{\vj \in \index_\vi} \subset [0, 1]^\nin \nonumber
 \end{align}
 and
-\begin{align}
-  \E_\vi &= \E_{i_1} \otimes \cdots \otimes \E_{i_\nin} \elab{basis-functions} \\
-         &= \left\{ \e_{\vi\vj} = \e_{i_1 j_1} \otimes \cdots \otimes \e_{i_\nin j_\nin} \right\}_{\vj \in \index_\vi} \subset \continuous([0, 1]^\nin) \nonumber
-\end{align}
+\begin{equation} \elab{basis-functions}
+  \E_\vi = \bigotimes_{k = 1}^\nin \E_{i_k}
+         = \left\{ \e_{\vi\vj} = \bigotimes_{k = 1}^\nin \e_{i_k j_k} \right\}_{\vj \in \index_\vi} \subset \continuous([0, 1]^\nin)
+\end{equation}
 are the collocation nodes and basis functions, respectively, corresponding to
 multi-index $\vi$. In \eref{basis-functions}, for any $\vx \in [0, 1]^\nin$,
 \[
-  \e_{\vi\vj}(\vx) = \left(\e_{i_1 j_1} \otimes \cdots \otimes \e_{i_\nin j_\nin}\right)(\vx) := \prod_{k = 1}^\nin \e_{i_k j_k}(\x_k).
+  \e_{\vi\vj}(\vx) = \left( \bigotimes_{k = 1}^\nin \e_{i_k j_k} \right)(\vx) := \prod_{k = 1}^\nin \e_{i_k j_k}(\x_k).
 \]
 Lastly, the cardinality of $\index_\vi$ is as follows:
 \begin{equation} \elab{tensor-cardinality}

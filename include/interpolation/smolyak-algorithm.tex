@@ -30,7 +30,7 @@ obtained by rewriting \eref{smolyak} in an incremental form. To this end, let
 $\Delta\tensor{-1}(\f) := 0$,
 \begin{align}
   & \Delta\tensor{i}(\f) := (\tensor{i} - \tensor{i - 1})(\f), \text{ and} \elab{tensor-delta-1d} \\
-  & \Delta\tensor{\vi}(\f) := \left(\Delta\tensor{i_1} \otimes \cdots \otimes \Delta\tensor{i_\nin}\right)(\f). \nonumber
+  & \Delta\tensor{\vi}(\f) := \left( \bigotimes_{k = 1}^\nin \Delta\tensor{i_k} \right)(\f). \nonumber
 \end{align}
 Then, \eref{smolyak} is identical to
 \begin{equation} \elab{smolyak-incremental}
