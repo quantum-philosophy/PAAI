@@ -8,7 +8,7 @@ the thermal package is represented as a set of additional nodes.
 The thermal dynamics of the system are modeled using the following system of
 differential-algebraic equations \cite{ukhov2014, ukhov2012}:
 \begin{subnumcases}{\elab{thermal-system}}
-  \mC \frac{d\vs(\t)}{d\t} + \mG \vs(\t) = \mM \vp(\t) \elab{thermal-system-ode} \\
+  \mC \frac{\d\vs(\t)}{\d\t} + \mG \vs(\t) = \mM \vp(\t) \elab{thermal-system-ode} \\
   \vq(\t) = \mM^T \vs(\t) + \vq_\ambient
 \end{subnumcases}
 The coefficients $\mC \in \real^{\nn \times \nn}$ and $\mG \in \real^{\nn \times

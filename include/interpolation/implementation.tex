@@ -60,7 +60,7 @@ user-defined limit such as the maximum level of interpolation, number of
 \point{Line~14:} The loop iterates over the surpluses of the current level and
 identifies those indices that need refinement. The \token{IsAccurate} function
 represents a refinement strategy and might not necessarily be solely based on
-the surpluses. In our experiments, we use the formula given in \eref{error}.
+the surpluses. In our experiments, we use the formula given in \eref{serror}.
 
 \point{Line~18:} The check is to stop the algorithm when there is nothing left
 to refine, which is dictated by \token{IsAccurate}.

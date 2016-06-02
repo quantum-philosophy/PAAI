@@ -1,11 +1,11 @@
-Let us now draw attention to the following concern. Imagine a function that is
-nearly flat on the first half of $[0, 1]$ and rather irregular on the other.
-Under these circumstances, it is natural to expect that, in order to attain the
-same accuracy, the first half would require much fewer collocation nodes than
-the other one; recall the example given in \fref{motivation}. However, if we
-followed the construction procedure described so far, we would not be able to
-benefit from the peculiar behavior: we would treat both sides equally and would
-add all the nodes of each level.
+We are ready to discuss adaptivity, and we begin by reiterating briefly out
+motivation. Imagine a function that is nearly flat on the first half of $[0, 1]$
+and rather irregular on the other. Under these circumstances, it is natural to
+expect that, in order to attain the same accuracy, the first half would require
+much fewer collocation nodes than the other one; recall the example given in
+\fref{motivation}. However, if we followed the construction procedure described
+so far, we would not be able to benefit from the peculiar behavior: we would
+treat both sides equally and would add all the nodes of each level.
 
 The solution to the above problem is to make the interpolation algorithm
 adaptive. First, we need to find a way to measure how good our approximation is
@@ -17,40 +17,60 @@ the yet-to-be-found accuracy metric. This strategy practically means that the
 inner sum in \eref{smolyak-hierarchical} will iterate over a subset of
 $\Delta\index_\vi$.
 
+\begin{remark}
+It is important to note that an arbitrary set of nodes identified by some pairs
+$\{ (\vi_k, \vj_k) \}_k$ does not necessarily correspond to a valid
+construction. In order to have a valid construction, the multi-indices $\{ \vi_k
+\}_k$ should satisfy the so-called admissibility condition \cite{klimke2006}.
+The condition is diligently satisfied when the refinement is undertaken level
+by level following neighbor connections, which is what we do.
+\end{remark}
+
 Thanks to the hierarchical form obtained in the previous subsection, we already
 have a good candidate for the accuracy metric. Recall \eref{surplus}.
 Hierarchical surpluses are a natural indicator of the interpolation error: as
 noted earlier, they are the difference between the true function and its
-approximation at the nodes of the underlying sparse grid. Thus, after computing
-the surpluses corresponding to the nodes of one level, we can recycle their
-values in order to decide which of the nodes are to be refined, that is, which
-of the nodes of the next level are to be included in the interpolant. The
-essence of refinement will be discussed in \sref{collocation-nodes}; for the
-moment, we are only concerned with identifying ``problematic'' nodes.
+approximation at the nodes of the underlying sparse grid. Consequently, after
+computing the surpluses corresponding to the nodes of one level, we can recycle
+their values in order to decide which of the nodes are to be refined, that is,
+which of the nodes of the next level are to be included in the interpolant.
 
-In this regards, one can adhere to various strategies, and ours is as follows. A
-collocation node $\vx_{\vi\vj}$ is to be refined if
+In order to identify ``problematic'' nodes, one can adhere to various
+strategies, and ours is as follows. A collocation node $\vx_{\vi\vj}$ is to be
+refined if
 \begin{equation} \elab{serror}
-  \left| \surplus(\vx_{\vi\vj}) \right| \ge \serror
+  \left| \surplus(\vx_{\vi\vj}) \, \w_{\vi\vj} \right| \ge \serror
 \end{equation}
-where $\surplus(\vx_{\vi\vj})$ is given by \eref{surplus}. The scalar $\serror$
-is a user-defined threshold, which we shall refer to as the surplus error. The
-above criterion will be used in our experiments, \sref{experimental-results}.
+where $\surplus(\vx_{\vi\vj})$ and $\w_{\vi\vj}$ are given by \eref{surplus} and
+\eref{volume}, respectively, and $\serror$ is a user-defined threshold. We refer
+to the left-hand side of \eref{serror} as the score of $\vx_{\vi\vj}$ and to
+$\serror$ as the score error. The above criterion will be used in our
+experiments.
 
-Equation \eref{serror} gives us local adaptivity. \emph{Local} refers to the
-fact that this strategy operates on the level of individual nodes. However, it
-is not the only type of adaptivity that we would like to have. Another type,
-which has its own merits, is global adaptivity. Global adaptivity operates on
-the level of individual dimensions. The intuition is, in general, the input
-variables manifest themselves differently, and, hence, the interpolation
-algorithm is likely to benefit by prioritizing those variables that the most
-influential ones. In order to understand how global adaptivity works, one has to
-be familiar first with the refinement procedure; this discussed is left to the
-next subsection.
+The question now is: How is the refinement of a node undertaken? The refinement
+procedure of the Newton--Cotes rule is illustrated in \fref{rule}. The arrows
+emerging from a node connect the node with its forward (next-level) neighbors.
+The number of such neighbors is two in one dimension and $2 \nin$ in general.
+Formally, for a pair $(\vi, \vj)$, the neighbor pairs are
+\begin{align}
+  \left\{\vphantom{\Big(}\right. \Big( &(i_1, \dots,   i_k + 1, \dots, i_\nin), \elab{neighbors} \\
+                                       &(j_1, \dots, 2 j_k + c, \dots, j_\nin) \Big) \left.\vphantom{\Big)} \right\}_{k, c} \nonumber
+\end{align}
+for $k = 1, \dots, \nin$ and $c \in \{ 0, 2 \}$. Whenever a node is chosen for
+refinement, some or all of its neighbors can be added to the interpolant. The
+simplest strategy is to include all $2 \nin$ neighbors of each ``problematic''
+node, as in \cite{ma2009}.
 
-To summarize, assuming that collocation points and basis functions have been
-carefully chosen, we have obtained an efficient algorithm for adaptive
-hierarchical interpolation in multiple dimensions. The main equations are
-\eref{surplus} and \eref{smolyak-hierarchical} where $\Delta\index_\vi$ is
-generally replaced by its subset according to a local adaptation strategy such
-as the one in \eref{serror}.
+Equation \eref{serror} gives us local adaptivity. Local adaptivity operates on
+the level of individual nodes. However, it is only one of the two types of
+adaptivity that we would like to have. The other one is global adaptivity
+\cite{klimke2006}. Global adaptivity operates on the level of individual
+dimensions. The intuition behind is that, in general, the input variables
+manifest themselves (impact $\f$) differently, and the interpolation algorithm
+is likely to benefit by prioritizing those variables that the most influential.
+An adaptivity strategy that is both local and global is referred to as hybrid,
+and this is our goal in this subsection.
+
+Global adaptivity can be attained by revisiting the set of forward neighbors
+given in \eref{neighbors}. The set currently contains the neighbors of a node
+with respect to all dimensions.
