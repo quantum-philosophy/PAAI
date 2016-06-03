@@ -8,22 +8,21 @@ so far, we would not be able to benefit from the peculiar behavior: we would
 treat both sides equally and would add all the nodes of each level.
 
 The solution to the above problem is to make the interpolation algorithm
-adaptive. First, we need to find a way to measure how good our approximation is
-at any point in the domain of $\f$. Then, when traversing from level $\l - 1$ to
-$\l$, instead of bombarding $\f$ with all the nodes in $\Y_\l \setminus \Y_{\l -
-1}$ (see \eref{smolyak-grid-incremental} and below it), we will take only those
-new nodes that are located in the regions with poor accuracy as identified by
-the yet-to-be-found accuracy metric. This strategy practically means that the
-inner sum in \eref{smolyak-hierarchical} will iterate over a subset of
-$\Delta\index_\vi$.
+adaptive. First of all, we need to find a way to measure how good our
+approximation is at any point in the domain of $\f$. Then, when taking an
+interpolation step, instead of bombarding $\f$ with all the nodes that can be
+legitimately added to the interpolant at that step, we will only include those
+nodes that are located in the regions with poor accuracy as indicated by the
+yet-to-be-found accuracy metric. The outlined strategy practically means that
+$\Delta\lindex_\l$ and $\Delta\oindex_\vi$ in \eref{smolyak-hierarchical} will
+be only subsets of what is possible at step $\l$.
 
 \begin{remark}
-It is important to note that an arbitrary set of nodes identified by some pairs
-$\{ (\vi_k, \vj_k) \}_k$ does not necessarily correspond to a valid
-construction. In order to have a valid construction, the multi-indices $\{ \vi_k
-\}_k$ should satisfy the so-called admissibility condition \cite{klimke2006}.
-The condition is diligently satisfied when the refinement is undertaken level
-by level following neighbor connections, which is what we do.
+It is important to note that, in general, an arbitrary set of nodes does not
+correspond to a valid construction. In order to have a valid interpolant, the
+corresponding set of level and order indices, $\{ (\vi_k, \vj_k) \}_k$, should
+satisfy the so-called admissibility condition \cite{jakeman2012, klimke2006}.
+The condition is diligently satisfied in the algorithms presented here.
 \end{remark}
 
 Thanks to the hierarchical form obtained in the previous subsection, we already
@@ -42,7 +41,7 @@ refined if
   \left| \surplus(\vx_{\vi\vj}) \, \w_{\vi\vj} \right| \ge \serror
 \end{equation}
 where $\surplus(\vx_{\vi\vj})$ and $\w_{\vi\vj}$ are given by \eref{surplus} and
-\eref{volume}, respectively, and $\serror$ is a user-defined threshold. We refer
+\eref{volume}, respectively, and $\serror$ is a user-defined constant. We refer
 to the left-hand side of \eref{serror} as the score of $\vx_{\vi\vj}$ and to
 $\serror$ as the score error. The above criterion will be used in our
 experiments.
@@ -73,4 +72,4 @@ and this is our goal in this subsection.
 
 Global adaptivity can be attained by revisiting the set of forward neighbors
 given in \eref{neighbors}. The set currently contains the neighbors of a node
-with respect to all dimensions.
+with respect to all the dimensions.
