@@ -13,14 +13,14 @@ $\E_i$ is important and will be discussed thoroughly later on.
 
 In multiple dimensions ($\nin > 1$), $\f$ is approximated by the tensor product
 of $\nin$ one-dimensional interpolants:
-\begin{equation} \elab{tensor}
+\begin{equation} \elab{tensor-nd}
   \tensor{\vi}(\f) = \left( \bigotimes_{k = 1}^\nin \tensor{i_k} \right)(\f) = \sum_{\vj \in \oindex_\vi} \f(\vx_{\vi\vj}) \, \e_{\vi\vj}
 \end{equation}
 where $\vi = (i_k)_{k = 1}^\nin$ and $\vj = (j_k)_{k = 1}^\nin$ are
-multi-indices specifying levels and orders, respectively, for each of the
+(multi-)indices specifying levels and orders, respectively, for each of the
 dimensions, and $\oindex_\vi = \oindex_{i_1} \times \cdots \times
-\oindex_{i_\nin}$ is a multi-index set obtained by computing the tensor product
-of one-dimensional index sets. In the above formula,
+\oindex_{i_\nin}$ is an index set obtained by computing the tensor product of
+one-dimensional index sets. In the above formula,
 \begin{align}
   \X_\vi &= \X_{i_1} \times \cdots \times \X_{i_\nin} \elab{collocation-nodes} \\
          &= \left\{ \vx_{\vi\vj} = (\x_{i_k j_k})_{k = 1}^\nin \right\}_{\vj \in \oindex_\vi} \subset [0, 1]^\nin \nonumber
@@ -31,7 +31,7 @@ and
          = \left\{ \e_{\vi\vj} = \bigotimes_{k = 1}^\nin \e_{i_k j_k} \right\}_{\vj \in \oindex_\vi} \subset \continuous([0, 1]^\nin)
 \end{equation}
 are the collocation nodes and basis functions, respectively, corresponding to
-multi-index $\vi$. In \eref{basis-functions}, for any $\vx \in [0, 1]^\nin$,
+index $\vi$. In \eref{basis-functions}, for any $\vx \in [0, 1]^\nin$,
 \begin{equation} \elab{basis-function}
   \e_{\vi\vj}(\vx) = \left( \bigotimes_{k = 1}^\nin \e_{i_k j_k} \right)(\vx) = \prod_{k = 1}^\nin \e_{i_k j_k}(\x_k).
 \end{equation}
@@ -40,9 +40,9 @@ Lastly, the cardinality of $\oindex_\vi$ is as follows:
   \n_\vi = \prod_{k = 1}^\nin \n_{i_k}.
 \end{equation}
 Equation \eref{tensor-cardinality} elucidates the prohibited expense of the
-tensor-product construction shown in \eref{tensor} for multidimensional
+tensor-product construction shown in \eref{tensor-nd} for multidimensional
 problems: the number of nodes grows exponentially as $\nin$ increases. However,
-\eref{tensor} serves well as a building block for more efficient algorithms,
+\eref{tensor-nd} serves well as a building block for more efficient algorithms,
 which we discuss next.
 
 \begin{remark}

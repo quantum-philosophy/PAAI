@@ -9,48 +9,74 @@ treat both sides equally and would add all the nodes of each level.
 
 The solution to the above problem is to make the interpolation algorithm
 adaptive. First of all, we need to find a way to measure how good our
-approximation is at any point in the domain of $\f$. Then, when taking an
-interpolation step, instead of bombarding $\f$ with all the nodes that can be
-legitimately added to the interpolant at that step, we will only include those
-nodes that are located in the regions with poor accuracy as indicated by the
-yet-to-be-found accuracy metric. The outlined strategy practically means that
-$\Delta\lindex_\l$ and $\Delta\oindex_\vi$ in \eref{smolyak-hierarchical} will
-be only subsets of what is possible at step $\l$.
-
-\begin{remark}
-It is important to note that, in general, an arbitrary set of nodes does not
-correspond to a valid construction. In order to have a valid interpolant, the
-corresponding set of level and order indices, $\{ (\vi_k, \vj_k) \}_k$, should
-satisfy the so-called admissibility condition \cite{jakeman2012, klimke2006}.
-The condition is diligently satisfied in the algorithms presented here.
-\end{remark}
+approximation is at any point in the domain of $\f$. Then, when refining the
+interpolant, instead of bombarding $\f$ with all possible nodes, we will only
+consider those that are located in the regions with poor accuracy as indicated
+by the yet-to-be-found accuracy metric.
 
 Thanks to the hierarchical form obtained in the previous subsection, we already
-have a good candidate for the accuracy metric. Recall \eref{surplus}.
-Hierarchical surpluses are a natural indicator of the interpolation error: as
-noted earlier, they are the difference between the true function and its
-approximation at the nodes of the underlying sparse grid. Consequently, after
-computing the surpluses corresponding to the nodes of one level, we can recycle
-their values in order to decide which of the nodes are to be refined, that is,
-which of the nodes of the next level are to be included in the interpolant.
-
-In order to identify ``problematic'' nodes, one can adhere to various
-strategies, and ours is as follows. A collocation node $\vx_{\vi\vj}$ is to be
-refined if
-\begin{equation} \elab{serror}
-  \left| \surplus(\vx_{\vi\vj}) \, \w_{\vi\vj} \right| \ge \serror
+have a good material for building an accuracy metric. Recall \eref{surplus}.
+Hierarchical surpluses are a natural indicator of the interpolation error: they
+are the difference between the true function and its approximation at the nodes
+of the underlying sparse grid. Hence, they can be recycled in order to identify
+``problematic'' regions. Specifically, we assign the following score to each
+node $\vx_{\vi\vj}$ or, equivalently, to each pair of level and order indices
+$(\vi, \vj)$:
+\begin{equation} \elab{score}
+  \score_{\vi\vj} = \left| \surplus(\vx_{\vi\vj}) \, \w_{\vi\vj} \right|
 \end{equation}
 where $\surplus(\vx_{\vi\vj})$ and $\w_{\vi\vj}$ are given by \eref{surplus} and
-\eref{volume}, respectively, and $\serror$ is a user-defined constant. We refer
-to the left-hand side of \eref{serror} as the score of $\vx_{\vi\vj}$ and to
-$\serror$ as the score error. The above criterion will be used in our
-experiments.
+\eref{volume}, respectively, and the score is used to guide the algorithm.
+
+Next, \eref{smolyak-hierarchical} is rewritten as follows:
+\begin{equation} \elab{approximation}
+  \approximation{\l}(\f) = \approximation{\l-1}(\f) + \sum_{\vi \in \Delta\lindex_\l} \sum_{\vj \in \Delta\oindex_\vi} \surplus(\vx_{\vi\vj}) \, \e_{\vi\vj}
+\end{equation}
+The main different with respect to \eref{smolyak-hierarchical} is that $\l \geq
+0$ no longer signifies a Smolyak level but a more abstract interpolation step,
+and $\approximation{\l}$ is the interpolant at that step (as always,
+$\approximation{-1} = 0$). Moreover, all index sets from now on will be
+generally subsets of their counterparts defined in \sref{smolyak-algorithm}.
+
+Each $\approximation{\l}$ is characterized by a set of level indices
+$\lindex_\l$, and each $\vi \in \lindex_\l$ by a set of order indices
+$\Delta\oindex_\vi$. At each step $\l \geq 0$, a single element is chosen from
+$\lindex_{\l-1}$ where we let $\lindex_{-1} = \{ \v{0} \}$. The chosen element,
+denoted by $\vi_\l$, then gives birth to $\Delta\lindex_\l$ and $\{
+\Delta\oindex_\vi \}_{\vi \in \Delta\lindex_\l}$, which are needed in
+\eref{approximation}.
+
+The set $\Delta\lindex_\l$ contains the so-called admissible forward neighbors
+of $\vi_\l$. Let us now parse the previous statement. First, the forward
+neighbors of an index $\vi$ are given by
+\[
+  \left\{ \vi + \v{1}_k: k = 1, \dots, \nin \right\}
+\]
+where $\v{1}_k$ is a vector whose elements are zero except for element $k$ equal
+to unity. Next, an index $\vi$ is admissible if its inclusion into the index set
+in question $\lindex$ keeps the set admissible. Finally, $\lindex$ is admissible
+if it satisfies the following condition \cite{klimke2006}:
+\begin{equation} \elab{admissibility}
+  \vi - \v{1}_k \in \lindex, \text{ for $\vi \in \lindex$ and $k = 1, \dots, \nin$,}
+\end{equation}
+where the cases with $i_k = 0$ naturally need no check.
+
+\begin{remark}
+All the rules make sure that the construction in \eref{approximation} adhere to
+the same principles as the ones underpinning \eref{smolyak-hierarchical}. An
+arbitrary construction is generally invalid.
+\end{remark}
+
+How is $\vi_\l$ chosen? First of all, each index gets to be picked at most once.
+The rest is resolved by prioritizing the candidates. The priority of $\vi$ is
+calculated based on the scores of the order indices associated with it, that is,
+on the scores of $\oindex_\vi$.
 
 The question now is: How is the refinement of a node undertaken? The refinement
 procedure of the Newton--Cotes rule is illustrated in \fref{rule}. The arrows
 emerging from a node connect the node with its forward (next-level) neighbors.
 The number of such neighbors is two in one dimension and $2 \nin$ in general.
-Formally, for a pair $(\vi, \vj)$, the neighbor pairs are
+Formally, for a pair $(\vi, \vj)$, the forward neighbors are
 \begin{align}
   \left\{\vphantom{\Big(}\right. \Big( &(i_1, \dots,   i_k + 1, \dots, i_\nin), \elab{neighbors} \\
                                        &(j_1, \dots, 2 j_k + c, \dots, j_\nin) \Big) \left.\vphantom{\Big)} \right\}_{k, c} \nonumber
@@ -60,7 +86,7 @@ refinement, some or all of its neighbors can be added to the interpolant. The
 simplest strategy is to include all $2 \nin$ neighbors of each ``problematic''
 node, as in \cite{ma2009}.
 
-Equation \eref{serror} gives us local adaptivity. Local adaptivity operates on
+Equation \eref{score} gives us local adaptivity. Local adaptivity operates on
 the level of individual nodes. However, it is only one of the two types of
 adaptivity that we would like to have. The other one is global adaptivity
 \cite{klimke2006}. Global adaptivity operates on the level of individual
@@ -71,5 +97,9 @@ An adaptivity strategy that is both local and global is referred to as hybrid,
 and this is our goal in this subsection.
 
 Global adaptivity can be attained by revisiting the set of forward neighbors
-given in \eref{neighbors}. The set currently contains the neighbors of a node
-with respect to all the dimensions.
+given in \eref{neighbors}. Currently, the set contains the neighbors of a node
+with respect to all dimensions; we, however, would like to advance with respect
+to only those dimensions along which we are not accurate enough. Concretely,
+dimension $k$ is to be refined---that is, its two nodes should be added to the
+interpolant (see \eref{neighbors} for a fixed $k$)---if \eref{score} is
+satisfied for any of its backward neighbors.

@@ -9,14 +9,14 @@ functions that one is typically interested in integrating or interpolating
 \cite{klimke2006}.
 
 The Smolyak interpolant for $\f$ is as follows:
-\begin{equation} \elab{smolyak}
+\begin{equation} \elab{smolyak-original}
   \smolyak{\l}(\f) = \sum_{\l - \nin + 1 \leq |\vi| \leq \l} (-1)^{\l - |\vi|} \, {\nin - 1 \choose \l - |\vi|} \, \tensor{\vi}(\f)
 \end{equation}
 where $\l \geq 0$ is the level of Smolyak's interpolation, and $|\vi| = i_1 +
 \dots + i_\nin$. We see that the algorithm is indeed just a peculiar composition
 of cherry-picked tensor products. However, the formula has an implication of
 paramount importance. The quantity of interest needs to be evaluated only at the
-nodes of the sparse grid underpinning \eref{smolyak}:
+nodes of the sparse grid underpinning \eref{smolyak-original}:
 \begin{equation} \elab{smolyak-grid}
   \Y_l = \bigcup_{\l - \nin + 1 \leq |\vi| \leq \l} \X_\vi.
 \end{equation}
@@ -26,13 +26,13 @@ tensor product given in \eref{tensor-cardinality}, which depends on the
 dimensionality of the problem at hand and the one-dimensional rules utilized.
 
 A better intuition about the properties of Smolyak's construction can be
-obtained by rewriting \eref{smolyak} in an incremental form. To this end, let
-$\Delta\tensor{-1}(\f) = 0$,
+obtained by rewriting \eref{smolyak-original} in an incremental form. To this
+end, let $\Delta\tensor{-1}(\f) = 0$,
 \begin{align}
   & \Delta\tensor{i}(\f) = (\tensor{i} - \tensor{i - 1})(\f), \text{ and} \elab{tensor-delta-1d} \\
   & \Delta\tensor{\vi}(\f) = \left( \bigotimes_{k = 1}^\nin \Delta\tensor{i_k} \right)(\f). \nonumber
 \end{align}
-Then, \eref{smolyak} is identical to
+Then, \eref{smolyak-original} is identical to
 \begin{equation} \elab{smolyak-incremental}
   \smolyak{\l}(\f) = \sum_{\vi \in \lindex_\l} \Delta\tensor{\vi}(\f) = \smolyak{\l - 1}(\f) + \sum_{\vi \in \Delta\lindex_\l} \Delta\tensor{\vi}(\f)
 \end{equation}
