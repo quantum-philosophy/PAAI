@@ -82,7 +82,7 @@ the priority as the average score:
 Consequently, the answer to the above question is that, at each step $\l$, the
 index $\vi$ with the highest $\score_\vi$ gets promoted to $\vi_\l$.
 
-The final question is the content of $\Delta\oindex_\vi$ where $\vi = \vi_\l +
+Let us now turn to the content of $\Delta\oindex_\vi$ where $\vi = \vi_\l +
 \v{1}_k$ for a fixed $k$. It also contains admissible forward neighbors, but
 they are order indices, and their construction is drastically different from the
 one in \eref{forward-level-neighbors}. Concretely, these indices are identified
@@ -98,11 +98,27 @@ the condition holds, the forward neighbors of $\vj$ in dimension $k$ are added
 to $\Delta\oindex_\vi$. This procedure for the open Newton--Cotes rule is
 illustrated in \fref{rule}. The arrows emerging from a node connect the node
 with its forward neighbors. It can be seen that each node has two forward
-neighbors (with respect to each dimension); their order indices are
-\begin{align*}
-  &(j_1, \dots, 2 j_k \phantom{{} + 0}, \dots, j_\nin) \text{ and} \\
-  &(j_1, \dots, 2 j_k + 2, \dots, j_\nin).
-\end{align*}
+neighbors (for one dimension); their order indices are
+\[
+  (j_1, \dots, 2 j_k, \dots, j_\nin) \hspace{1em} \text{and} \hspace{1em} (j_1, \dots, 2 j_k + 2, \dots, j_\nin).
+\]
+The above refinement procedure is repeated for each index $\vi \in
+\Delta\lindex_\l$ with respect to each dimension $k = 1, \dots, \nin$.
+
+The final question is the stopping condition of the approximation process in
+\eref{approximation}. Apart from the obvious constraints on the maximum number
+of function evaluations and deepness of interpolation (the Smolyak level), we
+rely on the following criterion. Assume given two additional constants:
+$\aerror$ and $\rerror$ referred to as the absolute and relative error,
+respective. Then, the process is terminated as soon as
+\[
+  \max_{(\vi, \vj)} \, |\surplus(\vx_{\vi\vj})| \leq \max \left\{ \aerror, \, \rerror (\f_\text{max} - \f_\text{min}) \right\}
+\]
+where $\f_\text{min}$ and $\f_\text{max}$ the minimum and maximum observed
+values of $\f$, respectively, and the left-hand side is the maximum surplus
+whose level index has not been refined yet (considered as $\vi_\l$ at some step
+$\l$ in \eref{approximation}). The above criterion is a sound way to curtail the
+process it is based on the actual progress.
 
 The adaptivity presented in this subsection is referred to as hybrid as it
 exhibits features of both global and local adaptivity. Local adaptivity operates
