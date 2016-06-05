@@ -1,57 +1,66 @@
-We are ready to discuss adaptivity, and we begin by reiterating briefly out
-motivation. Imagine a function that is nearly flat on the first half of $[0, 1]$
-and rather irregular on the other. Under these circumstances, it is natural to
-expect that, in order to attain the same accuracy, the first half would require
-much fewer collocation nodes than the other one; recall the example given in
-\fref{motivation}. However, if we followed the construction procedure described
-so far, we would not be able to benefit from the peculiar behavior: we would
-treat both sides equally and would add all the nodes of each level.
+Imagine a function that is nearly flat on the first half of $[0, 1]$ and rather
+irregular on the other. Under these circumstances, it is natural to expect that,
+in order to attain the same accuracy, the first half would require much fewer
+collocation nodes than the other one; recall \fref{motivation}. However, if we
+followed the construction procedure described so far, we would not be able to
+benefit from the peculiar behavior: we would treat both sides equally and would
+add all the nodes of each level.
 
 The solution to the above problem is to make the interpolation algorithm
-adaptive. First of all, we need to find a way to measure how good our
+adaptive. To this end, we first need to find a way to measure how good our
 approximation is at any point in the domain of $\f$. Then, when refining the
 interpolant, instead of bombarding $\f$ with all possible nodes, we will only
-consider those that are located in the regions with poor accuracy as indicated
-by the yet-to-be-found accuracy metric.
+choose those that are located in the regions with poor accuracy as indicated by
+the yet-to-be-found accuracy metric.
 
 Thanks to the hierarchical form obtained in the previous subsection, we already
 have a good material for building an accuracy metric. Recall \eref{surplus}.
-Hierarchical surpluses are a natural indicator of the interpolation error: they
+Hierarchical surpluses are natural indicators of the interpolation error: they
 are the difference between the true function and its approximation at the nodes
-of the underlying sparse grid. Hence, they can be recycled in order to identify
-``problematic'' regions. Specifically, we assign the following score to each
-node $\vx_{\vi\vj}$ or, equivalently, to each pair of level and order indices
-$(\vi, \vj)$:
+of the underlying sparse grid. Hence, they can be recycled in order to
+effectively identify ``problematic'' regions. Specifically, we first assign a
+score to each node $\vx_{\vi\vj}$ or, equivalently, to each pair of level and
+order indices $(\vi, \vj)$:
 \begin{equation} \elab{score}
   \score_{\vi\vj} = \left| \surplus(\vx_{\vi\vj}) \, \w_{\vi\vj} \right|
 \end{equation}
 where $\surplus(\vx_{\vi\vj})$ and $\w_{\vi\vj}$ are given by \eref{surplus} and
-\eref{volume}, respectively, and the score is used to guide the algorithm.
+\eref{volume}, respectively, and this score is then used in order to guide the
+algorithm as we shall explain in the rest of this subsection.
 
-Next, \eref{smolyak-hierarchical} is rewritten as follows:
+The Smolyak construction in \eref{smolyak-hierarchical} is rewritten as follows:
 \begin{equation} \elab{approximation}
-  \approximation{\l}(\f) = \approximation{\l-1}(\f) + \sum_{\vi \in \Delta\lindex_\l} \sum_{\vj \in \Delta\oindex_\vi} \surplus(\vx_{\vi\vj}) \, \e_{\vi\vj}
+  \approximation{\l}(\f) = \approximation{\l-1}(\f) + \sum_{\vi \in \Delta\lindex_\l} \sum_{\vj \in \Delta\oindex_\vi} \surplus(\vx_{\vi\vj}) \,
+\e_{\vi\vj}.
 \end{equation}
 The main different with respect to \eref{smolyak-hierarchical} is that $\l \geq
 0$ no longer signifies a Smolyak level but a more abstract interpolation step,
-and $\approximation{\l}$ is the interpolant at that step (as always,
-$\approximation{-1} = 0$). Moreover, all index sets from now on will be
-generally subsets of their counterparts defined in \sref{smolyak-algorithm}.
+and $\approximation{\l}$ is the interpolant at that step. As always,
+$\approximation{-1} = 0$, and the definition of $\surplus$ given in
+\eref{surplus} is adjusted accordingly. Lastly, all index sets from now on are
+generally subsets of their full-fledged counterparts defined in
+\sref{smolyak-algorithm}.
+
+\begin{remark}
+All the rules below make sure that the construction in \eref{approximation}
+adhere to the same principles as the ones underpinning
+\eref{smolyak-hierarchical}. An arbitrary construction is generally invalid.
+\end{remark}
 
 Each $\approximation{\l}$ is characterized by a set of level indices
 $\lindex_\l$, and each $\vi \in \lindex_\l$ by a set of order indices
-$\Delta\oindex_\vi$. At each step $\l \geq 0$, a single element is chosen from
-$\lindex_{\l-1}$ where we let $\lindex_{-1} = \{ \v{0} \}$. The chosen element,
-denoted by $\vi_\l$, then gives birth to $\Delta\lindex_\l$ and $\{
-\Delta\oindex_\vi \}_{\vi \in \Delta\lindex_\l}$, which are needed in
-\eref{approximation}.
+$\Delta\oindex_\vi$. At each interpolation step $\l \geq 0$, a single index
+$\vi_\l$ is chosen from $\lindex_{\l-1}$ with $\lindex_{-1} = \{ \v{0} \}$. The
+chosen index then gives birth to $\Delta\lindex_\l$ and $\{ \Delta\oindex_\vi
+\}_{\vi \in \Delta\lindex_\l}$, which shape the increment in the right-hand side
+of \eref{approximation}.
 
 The set $\Delta\lindex_\l$ contains the so-called admissible forward neighbors
-of $\vi_\l$. Let us now parse the previous statement. First, the forward
+of $\vi_\l$. Let us now parse the previous sentence. First, the forward
 neighbors of an index $\vi$ are given by
-\[
+\begin{equation} \elab{forward-level-neighbors}
   \left\{ \vi + \v{1}_k: k = 1, \dots, \nin \right\}
-\]
+\end{equation}
 where $\v{1}_k$ is a vector whose elements are zero except for element $k$ equal
 to unity. Next, an index $\vi$ is admissible if its inclusion into the index set
 in question $\lindex$ keeps the set admissible. Finally, $\lindex$ is admissible
@@ -59,47 +68,46 @@ if it satisfies the following condition \cite{klimke2006}:
 \begin{equation} \elab{admissibility}
   \vi - \v{1}_k \in \lindex, \text{ for $\vi \in \lindex$ and $k = 1, \dots, \nin$,}
 \end{equation}
-where the cases with $i_k = 0$ naturally need no check.
+where, naturally, the cases with $i_k = 0$ need no check.
 
-\begin{remark}
-All the rules make sure that the construction in \eref{approximation} adhere to
-the same principles as the ones underpinning \eref{smolyak-hierarchical}. An
-arbitrary construction is generally invalid.
-\end{remark}
+Now, how is $\vi_\l$ chosen from $\lindex_{\l-1}$ at each iteration of
+\eref{approximation}? First of all, each index can be obviously picked at most
+once. The rest is resolved by prioritizing the candidates. It is reasonable to
+assign a priority to a level index $\vi$ based on the scores of the order
+indices associated with it, that is, on the scores of $\oindex_\vi$. We compute
+the priority as the average score:
+\[
+  \score_\vi = \frac{1}{\card{\Delta\oindex_\vi}} \sum_{\vj \in \Delta\oindex_\vi} \score_{\vi\vj}
+\]
+Consequently, the answer to the above question is that, at each step $\l$, the
+index $\vi$ with the highest $\score_\vi$ gets promoted to $\vi_\l$.
 
-How is $\vi_\l$ chosen? First of all, each index gets to be picked at most once.
-The rest is resolved by prioritizing the candidates. The priority of $\vi$ is
-calculated based on the scores of the order indices associated with it, that is,
-on the scores of $\oindex_\vi$.
+The final question is the content of $\Delta\oindex_\vi$ where $\vi = \vi_\l +
+\v{1}_k$ for a fixed $k$. It also contains admissible forward neighbors, but
+they are order indices, and their construction is drastically different from the
+one in \eref{forward-level-neighbors}. Concretely, these indices are identified
+by inspecting the backward neighborhood of $\vi$ (analogous to
+\eref{forward-level-neighbors}). For each backward neighbor $\hat{\vi} = \vi -
+\v{1}_{\hat{k}}$ and each $\vj \in \Delta\oindex_{\hat{\vi}}$, we begin by
+checking the following condition:
+\[
+  \score_{\hat{\vi}\vj} \geq \serror
+\]
+where $\serror$ is a user-defined constant referred to as the score error. If
+the condition holds, the forward neighbors of $\vj$ in dimension $k$ are added
+to $\Delta\oindex_\vi$. This procedure for the open Newton--Cotes rule is
+illustrated in \fref{rule}. The arrows emerging from a node connect the node
+with its forward neighbors. It can be seen that each node has two forward
+neighbors (with respect to each dimension); their order indices are
+\begin{align*}
+  &(j_1, \dots, 2 j_k \phantom{{} + 0}, \dots, j_\nin) \text{ and} \\
+  &(j_1, \dots, 2 j_k + 2, \dots, j_\nin).
+\end{align*}
 
-The question now is: How is the refinement of a node undertaken? The refinement
-procedure of the Newton--Cotes rule is illustrated in \fref{rule}. The arrows
-emerging from a node connect the node with its forward (next-level) neighbors.
-The number of such neighbors is two in one dimension and $2 \nin$ in general.
-Formally, for a pair $(\vi, \vj)$, the forward neighbors are
-\begin{align}
-  \left\{\vphantom{\Big(}\right. \Big( &(i_1, \dots,   i_k + 1, \dots, i_\nin), \elab{neighbors} \\
-                                       &(j_1, \dots, 2 j_k + c, \dots, j_\nin) \Big) \left.\vphantom{\Big)} \right\}_{k, c} \nonumber
-\end{align}
-for $k = 1, \dots, \nin$ and $c \in \{ 0, 2 \}$. Whenever a node is chosen for
-refinement, some or all of its neighbors can be added to the interpolant. The
-simplest strategy is to include all $2 \nin$ neighbors of each ``problematic''
-node, as in \cite{ma2009}.
-
-Equation \eref{score} gives us local adaptivity. Local adaptivity operates on
-the level of individual nodes. However, it is only one of the two types of
-adaptivity that we would like to have. The other one is global adaptivity
-\cite{klimke2006}. Global adaptivity operates on the level of individual
-dimensions. The intuition behind is that, in general, the input variables
-manifest themselves (impact $\f$) differently, and the interpolation algorithm
-is likely to benefit by prioritizing those variables that the most influential.
-An adaptivity strategy that is both local and global is referred to as hybrid,
-and this is our goal in this subsection.
-
-Global adaptivity can be attained by revisiting the set of forward neighbors
-given in \eref{neighbors}. Currently, the set contains the neighbors of a node
-with respect to all dimensions; we, however, would like to advance with respect
-to only those dimensions along which we are not accurate enough. Concretely,
-dimension $k$ is to be refined---that is, its two nodes should be added to the
-interpolant (see \eref{neighbors} for a fixed $k$)---if \eref{score} is
-satisfied for any of its backward neighbors.
+The adaptivity presented in this subsection is referred to as hybrid as it
+exhibits features of both global and local adaptivity. Local adaptivity operates
+on the level of individual nodes, and it has already been motivated. Global
+adaptivity operates on the level of individual dimensions. The intuition behind
+it is that, in general, the input variables manifest themselves (impact $\f$)
+differently, and the interpolation algorithm is likely to benefit by
+prioritizing those variables that the most influential.
