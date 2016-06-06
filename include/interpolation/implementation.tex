@@ -1,10 +1,29 @@
 The life cycle of interpolation has roughly two stages: construction and usage.
 The construction stage invokes $\f$ at a set of collocation nodes and produces
 certain artifacts. The usage stage estimates the values of $\f$ at a set of
-arbitrary (likely unseen) points solely by manipulating the artifacts. It can be
-seen in \eref{approximation} that an interpolant is entirely characterized by a
-set of triplets $\{ (\vi_k, \vj_k, \surplus(\vx_{\vi_k \vj_k}) \}_k$, which is
-obtained by following the recursion and ``flattening'' the nested sums in
+arbitrary (likely unseen) points solely by manipulating the artifacts. In this
+subsection, we delineate the two stages. However, we begin by making a general
+note related to indexing.
+
+We found that the clarity and ease of implementation benefit from collapsing the
+two sums into one in \eref{approximation}. This is achieved by storing a level
+index $\vi = (i_k)_{k = 1}^\nin$ and an order index $\vj = (j_k)_{k = 1}^\nin$
+for each collocation node or, equivalently, each basis function involved in the
+interpolation process. Excessive memory usage can be avoided by encoding each
+$(i_k, j_k)$ as a single unsigned integer. In multiple dimensions, this results
+in a single vector $\vl = (\iota_k)_{k = 1}^\nin$, which we call simply an
+index. The encoding that we employ is as follows:
+\[
+  \iota_k = i_k \lor (j_k \ll \n_\text{bits})
+\]
+where $\lor$ and $\ll$ are the bitwise \abbr{OR} and logical left shift,
+respectively, and $\n_\text{bits}$ is the number of bits reserved for storing
+Smolyak levels, which can be adjusted according to the maximum permitted
+deepness of interpolation.
+
+It can be seen in \eref{approximation} that an interpolant is entirely
+characterized by a set of tuples $\{ (\vl_k, \surplus(\vx_{\vl_k}) \}_k$, which
+is obtained by following the recursion and ``flattening'' the nested sums in
 \eref{approximation}. These triples are the above-mentioned artifacts.
 
 \input{include/assets/algorithms/construct}
