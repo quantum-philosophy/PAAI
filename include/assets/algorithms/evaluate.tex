@@ -4,26 +4,24 @@
   \begin{algorithmic}[1]
     \vspace{0.4em}
 
-    \Require{surrogate} \Comment{Artifacts of approximation}
+    \Require{surrogate} \Comment{Artifacts of interpolation}
     \Require{points} \Comment{Points of interest}
-    \Ensure{values} \Comment{Approximated values}
+    \Ensure{estimates} \Comment{Estimated values}
 
     \vspace{0.4em}
 
-    \Let{indices}{surrogate.Indices}
-    \Let{surpluses}{surrogate.Surpluses}
-    \Let{values}{NewArray()}
+    \Let{estimates}{New()}
 
-    \For{i \textbf{in range of} points}
-      \Let{value}{0}
-      \For{j \textbf{in range of} indices}
-        \Let{weight}{basis.Compute(indices[j], points[i])}
-        \Let{value}{$\text{value} + \text{weight} \times \text{surpluses[j]}$}
+    \For{point \textbf{in} points}
+      \Let{estimate}{0}
+      \For{(index, surplus) \textbf{in} surrogate}
+        \Let{weight}{Interpolate(index, point)}
+        \Let{estimate}{$\text{estimate} + \text{surplus} \times \text{weight}$}
       \EndFor
-      \State Append(values, value)
+      \State Append(estimates, estimate)
     \EndFor
 
-    \State \textbf{return} values
+    \State \textbf{return} estimates
 
     \vspace{0.4em}
   \end{algorithmic}

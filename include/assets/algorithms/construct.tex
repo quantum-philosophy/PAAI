@@ -4,36 +4,21 @@
   \begin{algorithmic}[1]
     \vspace{0.4em}
 
-    \Require{target} \Comment{A function to approximate}
-    \Ensure{surrogate} \Comment{Artifacts of approximation}
+    \Require{target} \Comment{A function to interpolate}
+    \Ensure{surrogate} \Comment{Artifacts of interpolation}
 
     \vspace{0.4em}
 
-    \Let{level}{0}
-    \Let{indices}{grid.ComputeIndices(level)}
-    \Let{surrogate}{NewStructure()}
+    \Let{surrogate}{New()}
 
-    \Loop
-      \Let{nodes}{grid.ComputeNodes(indices)}
-      \Let{values}{Invoke(target, nodes)}
-      \Let{approximations}{Evaluate(surrogate, nodes)}
-      \Let{surpluses}{$\text{values} - \text{approximations}$}
-      \State Append(surrogate.Indices, indices)
-      \State Append(surrogate.Surpluses, surpluses)
-      \If{IsEnough(surrogate)}
-        \State \textbf{break}
-      \EndIf
-      \For{i \textbf{in range of} indices}
-        \If{IsAccurate(surpluses[i])}
-          \State Exclude(indices, i)
-        \EndIf
-      \EndFor
-      \If{IsEmpty(indices)}
-        \State \textbf{break}
-      \EndIf
-      \Let{indices}{grid.ComputeNeighbors(indices)}
-      \Let{level}{$\text{level} + 1$}
-    \EndLoop
+    \For{s = First(); !Check(s); s = Next(s)}
+      \Let{s.nodes}{Locate(s.indices)}
+      \Let{s.values}{Invoke(target, s.nodes)}
+      \Let{s.estimates}{Evaluate(surrogate, s.nodes)}
+      \Let{s.surpluses}{Subtract(s.values, s.estimates)}
+      \Let{s.scores}{Assess(s.surpluses)}
+      \State Append(surrogate, s.indices, s.surpluses)
+    \EndFor
 
     \State \textbf{return} surrogate
 
