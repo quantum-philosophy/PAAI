@@ -1,45 +1,34 @@
 The life cycle of interpolation has roughly two stages: construction and usage.
 The construction stage invokes $\f$ at a set of collocation nodes and produces
 certain artifacts. The usage stage estimates the values of $\f$ at a set of
-arbitrary (likely unseen) points solely by manipulating the artifacts. In this
-subsection, we delineate the two stages. However, we begin by making a general
-note related to indexing.
+arbitrary points by manipulating the artifacts. In this subsection, we shall
+have a look at the pseudocodes of the two stages. The purpose here is to give
+the big picture; a lot of implementation details are purposely omitted. All the
+details, however, can be found and studied at online as our implementation is
+open-source \cite{sources}.
 
-We found that the clarity and ease of implementation benefit from collapsing the
-two sums into one in \eref{approximation}. This is achieved by storing a level
-index $\vi = (i_k)_{k = 1}^\nin$ and an order index $\vj = (j_k)_{k = 1}^\nin$
-for each collocation node or, equivalently, each basis function involved in the
-interpolation process. Excessive memory usage can be avoided by encoding each
-$(i_k, j_k)$ as a single unsigned integer. In multiple dimensions, this results
-in a single vector $\vl = (\iota_k)_{k = 1}^\nin$, which we call simply an
-index. The encoding that we employ is as follows:
+Let us first make a general note. We found it beneficial to the clarity and ease
+of implementation to collapse the two sums in \eref{approximation} into one.
+This requires storing a level index $\vi = (i_k)_{k = 1}^\nin$ and an order
+index $\vj = (j_k)_{k = 1}^\nin$ for each interpolation element. Furthermore, it
+is advantageous to encode each pair $(i_k, j_k)$ as a single unsigned integer,
+which, in particular, eliminates excessive memory usage. In multiple dimensions,
+this results in a single vector $\vl = (\iota_k)_{k = 1}^\nin$, which we simply
+call an index. The encoding that we utilize is as follows:
 \[
   \iota_k = i_k \lor (j_k \ll \n_\text{bits})
 \]
-where $\lor$ and $\ll$ are the bitwise \abbr{OR} and logical left shift,
+where $\lor$ and $\ll$ are the bitwise \up{OR} and logical left shift,
 respectively, and $\n_\text{bits}$ is the number of bits reserved for storing
 Smolyak levels, which can be adjusted according to the maximum permitted
 deepness of interpolation.
 
-It can be seen in \eref{approximation} that an interpolant is entirely
-characterized by a set of tuples $\{ (\vl_k, \surplus(\vx_{\vl_k}) \}_k$, which
-is obtained by following the recursion and ``flattening'' the nested sums in
-\eref{approximation}. These triples are the above-mentioned artifacts.
-
 \input{include/assets/algorithms/construct}
-The conceptual code corresponding to the construction stage is given in
-\aref{construct} called \token{Construct}.
-
-\begin{remark}
-The purpose of the pseudocodes presented here is to give the big picture of the
-interpolation algorithm, not minute implementation details. Since we open-source
-our code, all the details can be found and studied at online \cite{sources}.
-\end{remark}
-
-The input \token{target} is a function $\f$ to be approximated. The output
-\token{surrogate} is a structure containing the artifacts mentioned earlier:
-indexing pairs and surpluses; hereafter, the former are referred to as just
-indices. The key steps of the \token{Construct} algorithm are as follows.
+The pseudocode of the construction stage is given in \aref{construct} called
+\token{Construct}. The input \token{target} is a function $\f$ to be
+approximated. The output \token{surrogate} is a set of tuples $\{ (\vl_k,
+\surplus(\vx_{\vl_k}) \}_k$, which is a comprehensive characterization of an
+interpolant. The key steps of \token{Construct} are as follows.
 
 \begin{compactlist}
 
