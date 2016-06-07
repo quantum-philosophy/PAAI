@@ -16,14 +16,14 @@ follows, we shall focus on the three aforementioned characteristics.
 Let us first discuss analog sources of uncertainty and, more concretely, process
 variation as it by far dominates. Circuit-level timing and power analyses under
 process variation are undertaken in \cite{bhardwaj2008} by means of polynomial
-chaos (\abbr{PC}) expansions \cite{xiu2010}. The work in \cite{juan2012} models
+chaos (\up{PC}) expansions \cite{xiu2010}. The work in \cite{juan2012} models
 static steady-state temperature and accounts for process variation by leveraging
 the linearity of Gaussian distributions and time-invariant systems. A stochastic
 collocation \cite{xiu2010} approach to static steady-state temperature analysis
 is given in \cite{lee2013}, which relies on global interpolation using Newton
 polynomials. In \cite{ukhov2014}, transient temperature analysis is considered,
-and process variation is address via \abbr{PC} expansions. The machinery of
-\abbr{PC} expansions is also utilized in \cite{ukhov2015} in order to model
+and process variation is address via \up{PC} expansions. The machinery of
+\up{PC} expansions is also utilized in \cite{ukhov2015} in order to model
 dynamic steady-state temperature \cite{ukhov2012} and to enhance reliability
 models.
 
@@ -66,11 +66,11 @@ else from scratch, which is wasteful and not desirable.
 Some of the techniques listed earlier in this section, in fact, preserve the
 generality and straightforwardness of sampling methods. An example is the
 uncertainty analysis presented in \cite{ukhov2015}. The reason is that the
-construction of \abbr{PC} expansions in \cite{ukhov2015} is undertaken by means
-of so-called nonintrusive spectral projections \cite{xiu2010}, which do not need
-to look inside the ``black box,'' similar to sampling methods. However, as
+construction of \up{PC} expansions in \cite{ukhov2015} is undertaken by means of
+so-called nonintrusive spectral projections \cite{xiu2010}, which do not need to
+look inside the ``black box,'' similar to sampling methods. However, as
 motivated in \sref{introduction}, nonsmoothness is a serious problem for global
-approximation based on polynomials. The convergence of \abbr{PC} expansions, for
+approximation based on polynomials. The convergence of \up{PC} expansions, for
 instance, deteriorates substantially in such cases, requiring partitioning of
 the stochastic space in order to alleviate the problem. Therefore, it is not
 straightforward to apply such techniques as the one given in \cite{ukhov2015} in

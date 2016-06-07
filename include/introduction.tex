@@ -27,12 +27,12 @@ and control systems.
 
 When it comes to the estimation of probability distributions and to uncertainty
 quantification in general, sampling methods are of great use. The classical
-Monte Carlo (\abbr{MC}) sampling, quasi-\abbr{MC} sampling, and Latin hypercube
+Monte Carlo (\up{MC}) sampling, quasi-\up{MC} sampling, and Latin hypercube
 sampling are examples of such methods. Compared to other techniques for
 probabilistic analysis, these methods are straightforward to apply. The system
 at hand is treated as being completely opaque, and it only needs to be simulated
 a number of times, following an adequate strategy, in order to start drawing
-conclusions about the system's behavior. Consider, for instance, \abbr{MC}
+conclusions about the system's behavior. Consider, for instance, \up{MC}
 sampling, which is arguably the most famous and versatile approach to
 uncertainty quantification. The technique was introduced in the middle of the
 twentieth century and since then has expanded into a rich family of methods that
@@ -88,11 +88,11 @@ highly beneficial if not essential.
 \input{include/assets/figures/motivation.tex}
 Due to the physical nature, the variability induced by analog sources of
 uncertainty is typically smooth. In such cases, uncertainty quantification based
-polynomial chaos (\abbr{PC}) expansions \cite{xiu2010} and other global
+polynomial chaos (\up{PC}) expansions \cite{xiu2010} and other global
 approximations relying on polynomials generally works well, as in
 \cite{bhardwaj2008, lee2013, ukhov2014, ukhov2015}. On the other hand, the
 variability induced by digital sources of uncertainty often has steep gradients
-and favors nondifferentiability and even discontinuity. In such cases, \abbr{PC}
+and favors nondifferentiability and even discontinuity. In such cases, \up{PC}
 expansions and similar techniques fail: they require extremely many evaluations
 of the quantity of interest in order to deliver an acceptable level of accuracy
 and, hence, are not worth it.
@@ -113,9 +113,9 @@ application) is 0.1~s if $\u \in [0, 0.6]$, and it is 1~s if $\u \in (0.6, 1]$.
 The response in this case is a step function, which is illustrated by the yellow
 line in \fref{motivation}.
 
-First, we try to quantify the end-to-end delay by constructing a \abbr{PC}
+First, we try to quantify the end-to-end delay by constructing a \up{PC}
 expansion founded on the Legendre polynomial basis \cite{xiu2010}. The orange
-line in \fref{motivation} shows a ninth-order \abbr{PC} expansion, which uses 10
+line in \fref{motivation} shows a ninth-order \up{PC} expansion, which uses 10
 points. It can be seen that the approximation is poor, let alone negative
 execution times. The observed oscillating behavior is the well-known Gibbs
 phenomenon stemming from the discontinuity of the response. No matter how many
@@ -124,7 +124,7 @@ never go away completely.
 
 Let us now turn to our framework and its adaptive interpolation kernel. For the
 purpose of the experiment, the technique is constrained to make use of as many
-points as the \abbr{PC} expansion did. The result is the blue curve in
+points as the \up{PC} expansion did. The result is the blue curve in
 \fref{motivation}, and the adaptively chosen points are plotted on the
 horizontal axis. It can be seen that the approximation is good, and, in fact, it
 would be indistinguishable from the true response with a few additional points.
