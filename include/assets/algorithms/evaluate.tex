@@ -15,7 +15,7 @@
     \For{point \textbf{in} points}
       \Let{estimate}{0}
       \For{(index, surplus) \textbf{in} surrogate}
-        \Let{weight}{Interpolate(index, point)}
+        \Let{weight}{Interpolate(basis, index, point)}
         \Let{estimate}{$\text{estimate} + \text{surplus} \times \text{weight}$}
       \EndFor
       \State Append(estimates, estimate)
