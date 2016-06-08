@@ -111,9 +111,9 @@ of function evaluations and deepness of interpolation (the Smolyak level), we
 rely on the following criterion. Assume given two additional constants:
 $\aerror$ and $\rerror$ referred to as the absolute and relative error,
 respective. Then, the process is terminated as soon as
-\[
+\begin{equation} \elab{stopping-condition}
   \max_{(\vi, \vj)} \, |\surplus(\vx_{\vi\vj})| \leq \max \left\{ \aerror, \, \rerror (\f_\text{max} - \f_\text{min}) \right\}
-\]
+\end{equation}
 where $\f_\text{min}$ and $\f_\text{max}$ the minimum and maximum observed
 values of $\f$, respectively, and the left-hand side is the maximum surplus
 whose level index has not been refined yet (considered as $\vi_\l$ at some step

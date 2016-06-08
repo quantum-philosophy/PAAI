@@ -20,33 +20,13 @@ deterministic function $\f$ of $\vz$; this stage is detailed in
 $\g$ is undertaken in the usual sampling-based manner but relying solely on the
 constructed interpolant; $\g$ is no longer involved. This last stage boils down
 to drawing independent samples from $\distribution_\vz$ and evaluating the
-interpolant $\smolyak{l}(\f) \equiv \smolyak{l}(\g \circ \transformation)$ at
-those points. Needless to say that, having collected samples of $\g$, other
-statistics about $\g$, such as probabilities of particular events, can be
-straightforwardly estimated. We do not discuss the estimation stage any further
-as it is standard. However, there are two other aspects concerning the usage of
-the proposed framework that we would like to cover in what follows.
-
-\subsection{Quantities with Multiple Outputs}
-The careful reader might have noted that some of the quantities of interest $\g$
-mentioned in \sref{modeling} take values in multidimensional spaces; for
-instance, power and temperature profiles are in $\real^{\np \times \ns}$, as
-shown in \sref{power-consumption} and \sref{heat-dissipation}, respectively.
-However, the function $\f$ has been depicted so far as having a one-dimensional
-codomain. Then the question is: How to apply the interpolation algorithm when
-$\f$ has multiple outputs? The answer is that the mathematics presented in
-\sref{interpolation} along with the pseudocodes given in \aref{construct} and
-\aref{evaluate} stay the same for vector-valued functions. The only except is
-that, since the surpluses $\surplus(\vx_{\vi\vj})$ naturally inherit the
-dimensionality of $\f$, the operations that involve $\surplus(\vx_{\vi\vj})$
-should be understood elementwise. For example, in \eref{smolyak-hierarchical},
-each entry of $\surplus(\vx_{\vi\vj})$ is multiplied by the same basis function
-$\e_{\vi\vj}$, which is always scalar valued. Another example is the refinement
-criterion given in \eref{score}. Here the absolute value $|\cdot|$ should be
-essentially replaced by the uniform norm $\norm{\cdot}_\infty$. In this last
-example, a more preferable alternative is to reside to the $L^2$ norm
-$\norm{\cdot}_2$ as the uniform norm might be too harsh when the number of
-outputs of $\f$ is large.
+interpolant $\approximation{\l}(\f) \equiv \approximation{\l}(\g \circ
+\transformation)$ at those points. Needless to say that, having collected
+samples of $\g$, other statistics about $\g$, such as probabilities of
+particular events, can be straightforwardly estimated. We do not discuss the
+estimation stage any further as it is standard. However, there are two other
+aspects concerning the usage of the proposed framework that we would like to
+cover in what follows.
 
 \subsection{Expectation and Variance} \slab{probabilistic-moments}
 Since the expected value and variance, defined in \eref{expectation} and
@@ -58,14 +38,14 @@ As shown in \sref{uncertain-parameters}, $\g$ can be reparameterized in terms of
 independent variables that are uniformly distributed on $[0, 1]^\nz$. This means
 that the probability density function of $\vz$ simply equals to one. Therefore,
 by the law of the unconscious statistician, using \eref{expectation} and
-\eref{smolyak-hierarchical}, we have
+\eref{approximation}, we have
 \begin{align*}
-  \expectation{\g} \approx \expectation{\smolyak{l}(\f)} &= \int_{[0, 1]^\nz} \smolyak{l}(\f)(\vz) \, d\vz \\
-  &= \sum_{|\vi| \leq l} \, \sum_{\vj \in \Delta\oindex_\vi} \surplus(\vx_{\vi\vj}) \, \w_{\vi\vj}
+  \expectation{\g} \approx \expectation{\approximation{\l}(\f)} &= \int_{[0, 1]^\nz} \approximation{\l}(\f)(\vz) \, \d\vz \\
+  &= \sum_{\vi \in \lindex_\l} \, \sum_{\vj \in \Delta\oindex_\vi} \surplus(\vx_{\vi\vj}) \, \w_{\vi\vj}
 \end{align*}
 where
 \[
-  \w_{\vi\vj} = \int_{[0, 1]^\nz} \e_{\vi\vj}(\vz) \, d\vz = \prod_{k = 1}^{\nz} \int_0^1 \e_{i_k j_k}(\z_k) \, d\z_k = \prod_{k = 1}^{\nz} \w_{i_k j_k}.
+  \w_{\vi\vj} = \int_{[0, 1]^\nz} \e_{\vi\vj}(\vz) \, \d\vz = \prod_{k = 1}^{\nz} \int_0^1 \e_{i_k j_k}(\z_k) \, \d\z_k = \prod_{k = 1}^{\nz} \w_{i_k j_k}.
 \]
 In the above equation, $\w_{ij}$ is as shown in \eref{volume}. Consequently, we
 have obtained an analytical formula for the expected value of $\g$, which does
@@ -79,7 +59,24 @@ Then the expected values of both $\g$ and $\g^2$ will be available in analytical
 forms, and the variance of $\g$ can be computed using \eref{variance}. This
 approach can be generalized to probabilistic moments of higher orders.
 
-To sum up, once an interpolant of $\g$ has been constructed, the probability
-distribution of $\g$ is estimated using versatile sampling methods applied to
-the interpolant. The framework extends naturally to multi-output quantities of
-interest, and it provides analytical formulae for expectations and variances.
+\subsection{Multiple Outputs}
+The careful reader has noted a problem with the calculation of variance in the
+previous subsection: $h$ is vector valued. More generally, the quantity $\g$ in
+\sref{modeling} and the function $\f$ in \sref{interpolation} have been depicted
+so far as having one-dimensional codomains. This, however, has been done only
+for the sake of clarity. All the mathematics and pseudocodes stay the same for
+vector-valued functions. The only except is that, since a surplus
+$\surplus(\vx_{\vi\vj})$ naturally inherits the output dimensionality of $\f$,
+the operations that involve $\surplus(\vx_{\vi\vj})$ should be adequately
+adjusted. If the outputs are on different scales and/or have different accuracy
+requirements, one might want to have different $\aerror$ and $\rerror$ in
+\eref{stopping-condition} for different outputs. In that case, one also need to
+device a more sensible strategy for scoring collocation nodes in \eref{score}
+such as rescaling individual outputs and then calculating the uniform norm
+$\norm{\cdot}_\infty$ or $L^2$ norm $\norm{\cdot}_2$. Our code \cite{sources}
+has been written with multiple outputs in mind.
+
+To sum up, once an interpolant of $\g$ has been constructed, the distribution of
+$\g$ is estimated using versatile sampling methods applied to the interpolant.
+The framework extends naturally to quantities of interest with multiple outputs,
+and it provides analytical formulae for expectations and variances.
