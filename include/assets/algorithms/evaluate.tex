@@ -4,9 +4,8 @@
   \begin{algorithmic}[1]
     \vspace{0.4em}
 
-    \Require{surrogate} \Comment{Artifacts of interpolation}
-    \Require{points} \Comment{Points of interest}
-    \Ensure{estimates} \Comment{Estimated values}
+    \Require{surrogate, points} \Comment{Interpolant and points}
+    \Ensure{estimates} \Comment{Approximated values}
 
     \vspace{0.4em}
 
@@ -15,7 +14,7 @@
     \For{point \textbf{in} points}
       \Let{estimate}{0}
       \For{(index, surplus) \textbf{in} surrogate}
-        \Let{weight}{Interpolate(basis, index, point)}
+        \Let{weight}{basis.Compute(index, point)}
         \Let{estimate}{$\text{estimate} + \text{surplus} \times \text{weight}$}
       \EndFor
       \State Append(estimates, estimate)
@@ -23,6 +22,6 @@
 
     \State \textbf{return} estimates
 
-    \vspace{0.4em}
+    \vspace{0.6em}
   \end{algorithmic}
 \end{algorithm}

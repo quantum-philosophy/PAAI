@@ -26,24 +26,28 @@ deepness of interpolation.
 \input{include/assets/algorithms/construct}
 The pseudocode of the construction stage is given in \aref{construct} called
 \token{Construct}. The \token{target} input is a function $\f$ to be
-approximated. The \token{surrogate} output is a set of tuples $\{ (\vl_k,
-\surplus(\vx_{\vl_k}) \}_k$, which is a comprehensive characterization of an
+approximated. The \token{surrogate} output is a structure containing the
+artifacts of interpolation, which are a set of tuples $\{ (\vl_k,
+\surplus(\vx_{\vl_k}) \}_k$ giving a comprehensive description of an
 interpolant. The routine works as follows.
 
 \begin{compactlist}
 
-\point{Line~2:} Each iteration is an interpolation step in \eref{approximation};
-it has a state represented by a structure with multiple fields \token{s}. The
-\token{First} function returns the initial state of the first step so that the
-\token{indices} field of \token{s} is initialized with the indices of that step.
-Then the body of the loop populates the rest of the fields of \token{s} so that
-\token{Next} can adequately produce the initial state for the next step. The
-process terminates when a stopping condition is satisfied, which is controlled
-by \token{Check}. \token{Next} and \token{Check} operate according to the logic
-discussed in \sref{adaptivity}.
+\point{Line~2:} Each iteration is an interpolation step in \eref{approximation},
+and it has a state captured by a structure denoted by \token{s}. The
+\token{strategy} object represents an adaptivity strategy utilized and works as
+described in \sref{adaptivity}. The \token{First} method of \token{strategy}
+returns the initial state of the first step so that the \token{indices} field of
+\token{s} is initialized with the indices of that step. The body of the loop
+populates the rest of the fields of \token{s} so that \token{strategy.Next} can
+adequately produce the initial state of the next iteration. The process
+terminates when a stopping condition is satisfied, in which case \token{Next}
+returns a null state.
 
-\point{Line~3:} \token{Locate} converts the step's indices into coordinates
-(that is, $\vl_k$ into $\vx_{\vl_k}$) in accordance with the utilized grid.
+\point{Line~3:} The \token{grid} object represents the interpolation grid
+utilized (see \sref{collocation-nodes}), and its \token{Compute} method converts
+the step's indices into the coordinates of the corresponding collocation nodes,
+that is, $\{ \vl_k \}_k$ into $\{ \vx_{\vl_k} \}_k$.
 
 \point{Line~4:} \token{Invoke} exercises \token{target} at the collocation
 nodes. This function a prominent candidate for parallelization since each node
@@ -55,39 +59,35 @@ function will be discussed separately.
 
 \point{Line~6:} \token{Subtract} computes the difference between the true and
 approximated values of \token{target}, which yields the step's hierarchical
-surpluses $\surplus(\vx_\vl)$, similar to \eref{surplus}.
+surpluses $\{ \surplus(\vx_{\vl_k}) \}_k$, similar to \eref{surplus}.
 
-\point{Line~7:} \token{Assess} calculates the scores of the new collocation
-nodes based primarily on their surpluses; see \eref{score}.
+\point{Line~7:} \token{strategy.Score} calculates the scores of the new
+collocation nodes based on their surpluses; see \eref{score}.
 
-\point{Line~8:} \token{Append} ameliorates the surrogate by extending it with
+\point{Line~8:} \token{Append} ameliorates the interpolant by extending it with
 the indices and surpluses of the current iteration.
 
 \end{compactlist}
 
 \input{include/assets/algorithms/evaluate}
-Let us now turn to the usage stage of interpolant. The corresponding pseudocode
-is given in \aref{evaluate}, which is called \token{Evaluate}. This algorithm is
-also involved in the construction stage; see \aref{construct}, line~7. The main
-steps of the \token{Evaluate} algorithm are given below.
+Let us now turn to the usage stage of an interpolant. The pseudocode is given in
+\aref{evaluate} called \token{Evaluate}. This algorithm is also involved in
+\aref{construct}; see line~5. Let us make a couple of observations regarding
+\token{Evaluate}.
 
 \begin{compactlist}
 
-\point{Line~6:} The inner loop directly corresponds to
-\eref{smolyak-hierarchical} with the exception that, due to adaptivity, the loop
-generally iterates over a subset of the summands in the aforementioned equation,
-which we discussed in \sref{adaptivity}.
+\point{Line~4:} The inner loop is an unfolded version of \eref{approximation}
+(there is no separation between individual interpolation steps taken).
 
-\point{Line~6:} \token{basis.Compute} takes a pair $(\vi, \vj)$ and a point and
-returns the value of the (multidimensional) basis function corresponding to the
-pair evaluated at the point; see \sref{basis-functions}.
+\point{Line~5:} The \token{basis} object represents the interpolation basis
+utilized (see \sref{basis-functions}), and its \token{Compute} method evaluates
+a single basis function at a single point.
 
 \end{compactlist}
 
-To recapitulate, in this section, we have presented the key component of the
-proposed framework for probabilistic analysis of electronic systems: an
-efficient approach to multidimensional interpolation. The interpolation
-technique is based on the Smolyak algorithm, which enables the interpolation to
-be performed in an adaptive hierarchical manner, highly beneficial for practical
-computations. The overall technique has been consolidated in \aref{construct}
-and \aref{evaluate}.
+It is worth noting that the \token{basis}, \token{grid}, and \token{strategy}
+objects conform to certain interfaces and can be easily swapped out. This makes
+the two algorithms very general, reusable with different configurations. In
+particular, the adaptivity strategy can be fined tuned for each particular
+problem.

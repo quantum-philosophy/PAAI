@@ -4,19 +4,19 @@
   \begin{algorithmic}[1]
     \vspace{0.4em}
 
-    \Require{target} \Comment{A function to interpolate}
-    \Ensure{surrogate} \Comment{Artifacts of interpolation}
+    \Require{target} \Comment{Function to interpolate}
+    \Ensure{surrogate} \Comment{Interpolant}
 
     \vspace{0.4em}
 
     \Let{surrogate}{New()}
 
-    \For{s = First(); !Check(s); s = Next(s)}
-      \Let{s.nodes}{Locate(grid, s.indices)}
+    \For{s = strategy.First(); s != nil; s = strategy.Next(s)}
+      \Let{s.nodes}{grid.Compute(s.indices)}
       \Let{s.values}{Invoke(target, s.nodes)}
       \Let{s.estimates}{Evaluate(surrogate, s.nodes)}
       \Let{s.surpluses}{Subtract(s.values, s.estimates)}
-      \Let{s.scores}{Assess(s.surpluses)}
+      \Let{s.scores}{strategy.Score(s.surpluses)}
       \State Append(surrogate, s.indices, s.surpluses)
     \EndFor
 
