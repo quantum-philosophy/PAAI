@@ -82,20 +82,30 @@ convergence properties than those of the vanilla Monte-Carlo sampling
 \cite{joe2008}.
 
 As a result, we obtain three estimates of $\g$'s distribution: reference (the
-one considered true), interpolation powered (the one proposed), and na\"{i}ve
-(the one direct and equal in terms of the number of $\g$'s evaluations to the
-proposed solution). The last two are compared with the first one. For comparing
-the proximity between two distributions, we use the well-known
-Kolmogorov--Smirnov statistic \cite{rao2009}, which is the supremum over the
-distance between two empirical distribution functions and, hence, is a rather
-unforgiving error indicator.
+one considered true), proposed (the one interpolation powered), and direct (the
+one equal in terms of the number of $\g$'s evaluations to the proposed
+solution). The last two are compared with the first one. For comparing the
+proximity between two distributions, we use the well-known Kolmogorov--Smirnov
+(\up{KS}) statistic \cite{rao2009}, which is the supremum over the distance
+between two empirical distribution functions and, hence, is a rather unforgiving
+error indicator.
 
 \input{include/assets/figures/results}
 \subsection{Discussion}
-The results for all 18 experiments are given in \fref{results}.
+The results of all the 18 problems are depicted in the 6-by-3 grid of plots
+given in \fref{results}, one plot per problem. The plots in the columns
+correspond to the tree quantities of interest: the end-to-end delay (left),
+total energy (middle), and maximum temperature (right). The three pairs of rows
+correspond to the three platform sizes: 2 (top), 4 (middle), and 8 (bottom)
+processing elements. The rows alternate between the two application sizes: 10
+(odd) and 20 (even) tasks.
 
-Let $\g$ be the end-to-end delay given by \eref{end-to-end-delay}.
-
-Let $\g$ be the total energy given by \eref{total-energy}.
-
-Let $\g$ be the maximum temperature given by \eref{maximum-temperature}.
+The horizontal axis of each plot shows the number of points, that is,
+evaluations of the quantity of interest $\g$, and the vertical one the \up{KS}
+statistic on a logarithmic scale. To elaborate, note first that each plot has
+two curves. The solid curve corresponds to the technique proposed in this paper.
+It shows how the \up{KS} statistic computed with respect to the reference
+solution decreases as the interpolation process consumes more and more points.
+The dashed curve shows the error of directly sampling (with respect to the
+reference solution) for the same numbers of $\g$'s evaluations as those of our
+technique.
