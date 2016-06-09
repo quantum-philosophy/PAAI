@@ -45,9 +45,9 @@ terminates when a stopping condition is satisfied, in which case \token{Next}
 returns a null state.
 
 \point{Line~3:} The \token{grid} object represents the interpolation grid
-utilized (see \sref{collocation-nodes}), and its \token{Compute} method converts
-the step's indices into the coordinates of the corresponding collocation nodes,
-that is, $\{ \vl_k \}_k$ into $\{ \vx_{\vl_k} \}_k$.
+utilized (see \sref{grid}), and its \token{Compute} method converts the step's
+indices into the coordinates of the corresponding collocation nodes, that is,
+$\{ \vl_k \}_k$ into $\{ \vx_{\vl_k} \}_k$.
 
 \point{Line~4:} \token{Invoke} exercises \token{target} at the collocation
 nodes. This function a prominent candidate for parallelization since each node
@@ -81,8 +81,8 @@ Let us now turn to the usage stage of an interpolant. The pseudocode is given in
 (there is no separation between individual interpolation steps taken).
 
 \point{Line~5:} The \token{basis} object represents the interpolation basis
-utilized (see \sref{basis-functions}), and its \token{Compute} method evaluates
-a single (multidimensional) basis function at a single point.
+utilized (see \sref{basis}), and its \token{Compute} method evaluates a single
+(multidimensional) basis function at a single point.
 
 \end{compactlist}
 

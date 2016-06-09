@@ -20,17 +20,17 @@ In what follows, we shall gradually construct an efficient interpolant for $\f$.
 Efficiency here refers to the number of collocation nodes required to achieve a
 certain accuracy level.
 
-\subsection{Tensor Product} \slab{tensor-product}
-\input{include/interpolation/tensor-product}
+\subsection{Tensor Product}
+\input{include/interpolation/tensor}
 
-\subsection{Smolyak Algorithm} \slab{smolyak-algorithm}
-\input{include/interpolation/smolyak-algorithm}
+\subsection{Smolyak Algorithm} \slab{smolyak}
+\input{include/interpolation/smolyak}
 
-\subsection{Collocation Nodes} \slab{collocation-nodes}
-\input{include/interpolation/collocation-nodes}
+\subsection{Collocation Nodes} \slab{grid}
+\input{include/interpolation/grid}
 
-\subsection{Basis Functions} \slab{basis-functions}
-\input{include/interpolation/basis-functions}
+\subsection{Basis Functions} \slab{basis}
+\input{include/interpolation/basis}
 
 \subsection{Adaptivity} \slab{adaptivity}
 \input{include/interpolation/adaptivity}
@@ -38,10 +38,10 @@ certain accuracy level.
 To summarize, we have obtained an efficient algorithm for adaptive hierarchical
 interpolation in multiple dimensions. The main equation is \eref{approximation}
 where $\surplus$, $\vx_{\vi\vj}$, and $\e_{\vi\vj}$ are the ones given in
-\sref{smolyak-algorithm}, \sref{collocation-nodes}, and \sref{basis-functions},
-respectively, and the interpolation procedure is undertaken according to the
-rules given in \sref{adaptivity}. In the next subsection, we shall discuss the
-algorithmic structure of our interpolation.
+\sref{smolyak}, \sref{grid}, and \sref{basis}, respectively, and the
+interpolation procedure is undertaken according to the rules given in
+\sref{adaptivity}. In the next subsection, we shall discuss the algorithmic
+structure of our interpolation.
 
 \subsection{Implementation} \slab{implementation}
 \input{include/interpolation/implementation}
