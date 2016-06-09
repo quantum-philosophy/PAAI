@@ -39,11 +39,11 @@ approximation \cite{yang2013, ukhov2012, liu2007}.
 \input{include/assets/figures/distribution}
 The uncertain parameters $\vu$ are the execution times of the tasks; all other
 parameters are deterministic. Targeting the practical scenario described in
-\sref{uncertain-parameters}, the marginal distributions and correlation matrix
-of $\vu$ are assumed to be available. Without loss of generality, the marginal
-of $\u_i$ is a four-parametric beta distribution $\text{Beta}(\alpha_i, \beta_i,
-a_i, b_i)$ where $\alpha_i$ and $\beta_i$ are the shape parameters, and $a_i$
-and $b_i$ are the endpoints of the support. This family of distributions is very
+\sref{parameters}, the marginal distributions and correlation matrix of $\vu$
+are assumed to be available. Without loss of generality, the marginal of $\u_i$
+is a four-parametric beta distribution $\text{Beta}(\alpha_i, \beta_i, a_i,
+b_i)$ where $\alpha_i$ and $\beta_i$ are the shape parameters, and $a_i$ and
+$b_i$ are the endpoints of the support. This family of distributions is very
 reach; \fref{distribution} illustrates how the density function changes
 dramatically depending on $\alpha_i$ and $\beta_i$. The left $a_i$ and right
 $b_i$ endpoint are set to 80\% and 120\%, respectively, of the reference
@@ -66,16 +66,16 @@ The performance of our framework with respect to each problem is assessed as
 follows. First, we obtain the ``true'' distribution of the quantity in question
 $\g$ by sampling $\g$ directly and extensively. Direct sampling means that $\g$
 is evaluated \emph{as is}; in particular, no model-order reduction is perform,
-which could affect the resulting accuracy (see \sref{uncertain-parameters}).
-Second, we construct an interpolant for $\g$ and estimate $\g$'s distribution by
-sampling the interpolant. In both cases, we draw $10^5$ samples; let us remind,
-however, that the cost of sampling the interpolant is negligible. Third, we
-perform another round of direct sampling of $\g$, but this time we draw as many
-samples as many times the quantity was evaluated during the interpolation
-process. In each of the three cases, the sampling is undertaken in accordance
-with a Sobol sequence, which is a quasi-random low-discrepancy sequence
-featuring much better convergence properties than those of the vanilla
-Monte-Carlo sampling \cite{joe2008}.
+which could affect the resulting accuracy (see \sref{parameters}). Second, we
+construct an interpolant for $\g$ and estimate $\g$'s distribution by sampling
+the interpolant. In both cases, we draw $10^5$ samples; let us remind, however,
+that the cost of sampling the interpolant is negligible. Third, we perform
+another round of direct sampling of $\g$, but this time we draw as many samples
+as many times the quantity was evaluated during the interpolation process. In
+each of the three cases, the sampling is undertaken in accordance with a Sobol
+sequence, which is a quasi-random low-discrepancy sequence featuring much better
+convergence properties than those of the vanilla Monte-Carlo sampling
+\cite{joe2008}.
 
 As a result, we obtain three estimates of $\g$'s distribution: reference (the
 one considered true), interpolation powered (the one proposed), and na\"{i}ve
