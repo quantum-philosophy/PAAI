@@ -67,18 +67,19 @@ depending on the problem and can be found at \cite{sources}, which, again,
 contains all other details too.
 
 The performance of our framework with respect to each problem is assessed as
-follows. First, we obtain the ``true'' distribution of the quantity in question
-$\g$ by sampling $\g$ directly and extensively. Direct sampling means that $\g$
-is evaluated \emph{as is}; in particular, no model-order reduction is perform,
-which could affect the resulting accuracy (see \sref{parameters}). Second, we
-construct an interpolant for $\g$ and estimate $\g$'s distribution by sampling
-the interpolant. In both cases, we draw $10^5$ samples; let us remind, however,
-that the cost of sampling the interpolant is practically zero. Third, we perform
-another round of direct sampling of $\g$, but this time we draw as many samples
-as many times the quantity was evaluated during the interpolation process. In
-each of the three cases, the sampling is undertaken in accordance with a Sobol
-sequence, which is a quasi-random low-discrepancy sequence featuring much better
-convergence properties than those of the vanilla Monte-Carlo sampling
+follows. First, we obtain the ``true'' probability distribution of the quantity
+in question $\g$ by sampling $\g$ directly and extensively. Direct sampling
+means that $\g$ is evaluated \emph{as is}; in particular, no model-order
+reduction is perform, which could affect the resulting accuracy (see
+\sref{parameters}). Second, we construct an interpolant for $\g$ and estimate
+$\g$'s distribution by sampling the interpolant. In both cases, we draw $10^5$
+samples; let us remind, however, that the cost of sampling the interpolant is
+practically negligible. Third, we perform another round of direct sampling of
+$\g$, but this time we draw as many samples as many times the quantity of
+interest was evaluated during the interpolation process. In each of the three
+cases, the sampling is undertaken in accordance with a Sobol sequence, which is
+a quasi-random low-discrepancy sequence featuring much better convergence
+properties than those of the vanilla Monte-Carlo (\up{MC}) sampling
 \cite{joe2008}.
 
 As a result, we obtain three estimates of $\g$'s distribution: reference (the
@@ -124,4 +125,15 @@ The message of the above observation is that the designer of an electronic
 system can benefit substantially in terms of accuracy per computation time by
 switching from direct sampling to the proposed technique. If the designer's
 current workhorse is the classical \up{MC} sampling, the switch might lead to
-even more drastic savings than those shown in \fref{results}.
+even more dramatic savings than those shown in \fref{results}. Needless to
+mention that the gain is especially prominent in situations where the analysis
+needs to be performed many times such as when it resides in a design-space
+exploration loop.
+
+It is worth emphasizing that, for the same price, the proposed framework yields
+an object that is much more rich and powerful than a bunch of samples delivered
+by direct sampling. The constructed interpolant can be also used to obtain a
+bunch of samples, but we are not constrained by their number; moreover, we can
+always go back and generate more if needed. Furthermore, the hierarchical
+surpluses are a valuable source of information, and one example was given in
+\sref{moments}.
