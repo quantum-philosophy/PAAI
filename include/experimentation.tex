@@ -92,20 +92,36 @@ error indicator.
 
 \input{include/assets/figures/results}
 \subsection{Discussion}
-The results of all the 18 problems are depicted in the 6-by-3 grid of plots
-given in \fref{results}, one plot per problem. The plots in the columns
-correspond to the tree quantities of interest: the end-to-end delay (left),
-total energy (middle), and maximum temperature (right). The three pairs of rows
-correspond to the three platform sizes: 2 (top), 4 (middle), and 8 (bottom)
-processing elements. The rows alternate between the two application sizes: 10
-(odd) and 20 (even) tasks.
+The results of all 18 uncertainty-quantification problems are given in
+\fref{results} as a 6-by-3 grid of plots, one plot per problem. The three
+columns correspond to the tree quantities of interest: the end-to-end delay
+(left), total energy (middle), and maximum temperature (right). The rows
+alternate between the two application sizes: 10 (odd) and 20 (even) tasks. The
+three pairs of rows correspond to the three platform sizes: 2 (top), 4 (middle),
+and 8 (bottom) processing elements.
 
 The horizontal axis of each plot shows the number of points, that is,
-evaluations of the quantity of interest $\g$, and the vertical one the \up{KS}
-statistic on a logarithmic scale. To elaborate, note first that each plot has
-two curves. The solid curve corresponds to the technique proposed in this paper.
-It shows how the \up{KS} statistic computed with respect to the reference
-solution decreases as the interpolation process consumes more and more points.
-The dashed curve shows the error of directly sampling (with respect to the
-reference solution) for the same numbers of $\g$'s evaluations as those of our
-technique.
+evaluations of the quantity of interest $\g$, and the vertical one shows the
+\up{KS} statistic on a logarithmic scale. Each plot has two lines. The solid
+line corresponds to the technique proposed in this paper. It shows how the
+\up{KS} statistic computed with respect to the reference solution changes as the
+interpolation process consumes more and more points, that is, as more and more
+interpolation steps in \eref{approximation} are taken. Note that we display only
+a subset of the interpolation steps taken in order to make the figure more
+legible. Synchronously with the solid line (that is, for the same numbers of
+$\g$'s evaluations), the dashed line shows the error of directly sampling,
+which, as before, is computed with respect to the reference solution.
+
+Looking at \fref{results}, one can make a number of observations. First and
+foremost, the interpolation-powered approach (solid lines) to probabilistic
+analysis outperforms direct sampling (dashed lines) in all the cases. To
+elaborate, given a fixed budget of $\g$'s evaluations, our framework delivers
+probability distributions that are closer to the true ones than those delivered
+by sampling $\g$ directly, despite the fact that the latter relies on a
+sophisticated sampling strategy (Sobol sequences).
+
+The message of the above observation is that the designer of an electronic
+system can benefit substantially in terms of accuracy per computation time by
+switching from direct sampling to the proposed technique. If the designer's
+current workhorse is the classical \up{MC} sampling, the switch might lead to
+even more drastic savings than those shown in \fref{results}.
