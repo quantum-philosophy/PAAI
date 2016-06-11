@@ -1,10 +1,12 @@
 In this section, we evaluate the performance of our framework. A prototype of
-the framework has been implemented in the Go programming language \cite{go}. It
-consists of multiple standalone libraries, and the corresponding source code is
-available online \cite{sources}, which also includes the experimental setup
-along with all the configuration files and input data. The experiments are
-conducted on a \up{GNU}/Linux machine equipped with 16 processors Intel Xeon
-E5520 2.27~\up{GH}z and 24~\up{GB} of \up{RAM}.
+the framework has been implemented in the Go programming language \cite{go}.
+Aspiring to a clear separation of concerns, the implementation is broken down
+into of dozens of libraries, each of which is intended to be useful on its own.
+The corresponding source code is available online \cite{sources}, and it also
+includes our experimental setup along with all configuration files and input
+data. The experiments discussed below are conducted on a \up{GNU}/Linux machine
+equipped with 16 processors Intel Xeon E5520 2.27~\up{GH}z and 24~\up{GB} of
+\up{RAM}.
 
 \subsection{Configuration}
 
@@ -129,6 +131,16 @@ even more dramatic savings than those shown in \fref{results}. Needless to
 mention that the gain is especially prominent in situations where the analysis
 needs to be performed many times such as when it resides in a design-space
 exploration loop.
+
+As it has become clear, we do not discuss the wall-clock time taken by the
+experiments. The reason is that this time is irrelevant: $\g$ is assumed to be
+time consuming (see \sref{problem}), which renders the number of $\g$'s
+evaluations as the most apposite expense metric. However, for the curious
+reader, let us mention that, for instance, in the bottom-right problem shown in
+\fref{results} (where $\q$ is the maximal temperature, $\np = 8$, and $\nt =
+20$), it took around two hours to perform $10^5$ simulations in parallel on 16
+processors. Evaluating the corresponding interpolant $10^5$ times took less than
+a second.
 
 It is worth emphasizing that, for the same price, the proposed framework yields
 an object that is much more rich and powerful than a bunch of samples delivered
