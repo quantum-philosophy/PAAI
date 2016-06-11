@@ -63,7 +63,7 @@ correlated. The model-order reduction parameter $\eta$ in \eref{reduction}
 variables for applications with $\nt = 10$ and 20 tasks, respectively.
 
 The configuration of the interpolation algorithm (the collocation nodes, basis
-functions, and adaptivity strategy with stopping conditions) is as described in
+functions, and adaptation strategy with stopping conditions) is as described in
 \sref{interpolation}. The parameters $\aerror$, $\rerror$, and $\serror$ vary
 depending on the problem and can be found at \cite{sources}, which, again,
 contains all other details too.
@@ -110,18 +110,18 @@ line corresponds to the technique proposed in this paper. It shows how the
 \up{KS} statistic computed with respect to the reference solution changes as the
 interpolation process consumes more and more points, that is, as more and more
 interpolation steps in \eref{approximation} are taken. Note that we display only
-a subset of the interpolation steps taken in order to make the figure more
+a subset of the actual interpolation steps in order to make the figure more
 legible. Synchronously with the solid line (that is, for the same numbers of
 $\g$'s evaluations), the dashed line shows the error of directly sampling,
 which, as before, is computed with respect to the reference solution.
 
-Looking at \fref{results}, one can make a number of observations. First and
+Studying \fref{results}, one can make a number of observations. First and
 foremost, the interpolation-powered approach (solid lines) to probabilistic
 analysis outperforms direct sampling (dashed lines) in all the cases. To
 elaborate, given a fixed budget of $\g$'s evaluations, our framework delivers
-probability distributions that are closer to the true ones than those delivered
-by sampling $\g$ directly, despite the fact that the latter relies on a
-sophisticated sampling strategy (Sobol sequences).
+such probability distributions that are closer to the true ones than those
+delivered by sampling $\g$ directly, despite the fact that the latter relies on
+a sophisticated sampling strategy (Sobol sequences).
 
 The message of the above observation is that the designer of an electronic
 system can benefit substantially in terms of accuracy per computation time by
@@ -132,20 +132,37 @@ mention that the gain is especially prominent in situations where the analysis
 needs to be performed many times such as when it resides in a design-space
 exploration loop.
 
-As it has become clear, we do not discuss the wall-clock time taken by the
+It can also be seen in \fref{results} that the error of our technique decreases
+generally steeper than the error of direct sampling. The decrease tends to
+plateau toward the end of the interpolation process. This behavior can be
+explained by the following two reasons. First, the algorithm has been instructed
+to satiate certain accuracy requirements ($\aerror$, $\rerror$, and $\serror$),
+and it reasonably does not do more than what has been requested. Second, since
+the model-order reduction mechanism is enabled in the case of interpolation, the
+quantity being interpolated is not $\g$, strictly speaking; it is a
+lower-dimensional representation of $\g$, which already implies an information
+loss. Consequently, there is a limit on the accuracy that can be achieved, which
+depends on the amount of reduction applied. On the flip side, model-order
+reduction allows one to circumvent unnecessary complexity and, thereby, to make
+problems much more tractable.
+
+As it has become clear, we do not report the wall-clock time taken by the
 experiments. The reason is that this time is irrelevant: $\g$ is assumed to be
 time consuming (see \sref{problem}), which renders the number of $\g$'s
-evaluations as the most apposite expense metric. However, for the curious
-reader, let us mention that, for instance, in the bottom-right problem shown in
-\fref{results} (where $\q$ is the maximal temperature, $\np = 8$, and $\nt =
-20$), it took around two hours to perform $10^5$ simulations in parallel on 16
-processors. Evaluating the corresponding interpolant $10^5$ times took less than
-a second.
+evaluations as the most apposite expense indicator. However, for the curious
+reader, let us note briefly that, for instance, in the bottom-right problem
+shown in \fref{results} (where $\q$ is the maximal temperature, $\np = 8$, and
+$\nt = 20$), it took around two hours to perform $10^5$ simulations of $\g$ in
+parallel on 16 processors. Evaluating the corresponding interpolant $10^5$ times
+took less than a second.
 
-It is worth emphasizing that, for the same price, the proposed framework yields
-an object that is much more rich and powerful than a bunch of samples delivered
-by direct sampling. The constructed interpolant can be also used to obtain a
-bunch of samples, but we are not constrained by their number; moreover, we can
-always go back and generate more if needed. Furthermore, the hierarchical
-surpluses are a valuable source of information, and one example was given in
-\sref{moments}.
+In conclusion, it is important to realize that, for the same price, the proposed
+framework yields an object that is much more rich and powerful than a bunch of
+samples delivered by direct sampling. A surrogate produced by the framework for
+a quantity of interest can also be used to obtain a bunch of samples, but we are
+not constrained by their number; moreover, if needed, we can always go back and
+generate more samples without even touching the expansive quantity in question.
+Furthermore, the placement of the collocation nodes and the magnitudes of the
+corresponding surpluses are an invaluable source of information about the
+behavior of the quantity at hand. Hierarchical surpluses are also valuable on
+their own, and an example was given in \sref{moments}.

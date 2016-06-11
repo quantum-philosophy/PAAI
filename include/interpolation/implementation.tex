@@ -35,7 +35,7 @@ interpolant. The routine works as follows.
 
 \point{Line~2:} Each iteration is an interpolation step in \eref{approximation},
 and it has a state captured by a structure denoted by \token{s}. The
-\token{strategy} object represents an adaptivity strategy utilized and works as
+\token{strategy} object represents an adaptation strategy utilized and works as
 described in \sref{adaptivity}. The \token{First} method of \token{strategy}
 returns the initial state of the first step so that the \token{indices} field of
 \token{s} is initialized with the indices of that step. The body of the loop
@@ -89,5 +89,5 @@ utilized (see \sref{basis}), and its \token{Compute} method evaluates a single
 It is worth noting that the \token{basis}, \token{grid}, and \token{strategy}
 objects conform to certain interfaces and can be easily swapped out. This makes
 the two algorithms very general, reusable with different configurations. In
-particular, the adaptivity strategy can be fine-tuned for each particular
+particular, the adaptation strategy can be fine-tuned for each particular
 problem.
