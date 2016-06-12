@@ -2,20 +2,20 @@ In this section, we evaluate the performance of our framework. A prototype of
 the framework has been implemented in the Go programming language \cite{go}.
 Aspiring to a clear separation of concerns, the implementation is broken down
 into of dozens of libraries, each of which is intended to be useful on its own.
-The corresponding source code is available online \cite{sources}, and it also
+The corresponding source code is available online \cite{sources}, which also
 includes our experimental setup along with all configuration files and input
 data. The experiments discussed below are conducted on a \up{GNU}/Linux machine
 equipped with 16 processors Intel Xeon E5520 2.27~\up{GH}z and 24~\up{GB} of
 \up{RAM}.
 
-\subsection{Configuration}
+We shall get to grips with $3 \times 2 \times 3 = 18$ uncertainty-quantification
+problems. There are considered three platform sizes $\np$: 2, 4, and 8
+processing elements; two application sizes $\nt$: 10 and 20 tasks; and three
+quantities of interest $\g$: the end-to-end delay, total energy consumption, and
+maximum temperature defined in \eref{end-to-end-delay}, \eref{total-energy}, and
+\eref{maximum-temperature}, respectively.
 
-We consider $3 \times 2 \times 3 = 18$ problems. There are three platform sizes
-$\np$ considered: 2, 4, and 8 processing elements; there are two application
-sizes $\nt$ considered: 10 and 20 tasks; and there are three quantities of
-interest $\g$ considered: the end-to-end delay, total energy consumption, and
-maximum temperature, which are defined in \eref{end-to-end-delay},
-\eref{total-energy}, and \eref{maximum-temperature}, respectively.
+\subsection{Configuration}
 
 A platform with $\np$ processing elements and an application with $\nt$ tasks
 are generated randomly by the \up{TGFF} tool \cite{dick1998}. The tool generates
@@ -112,14 +112,14 @@ interpolation process consumes more and more points, that is, as more and more
 interpolation steps in \eref{approximation} are taken. Note that we display only
 a subset of the actual interpolation steps in order to make the figure more
 legible. Synchronously with the solid line (that is, for the same numbers of
-$\g$'s evaluations), the dashed line shows the error of directly sampling,
-which, as before, is computed with respect to the reference solution.
+$\g$'s evaluations), the dashed line shows the error of direct sampling, which,
+as before, is computed with respect to the reference solution.
 
 Studying \fref{results}, one can make a number of observations. First and
 foremost, the interpolation-powered approach (solid lines) to probabilistic
 analysis outperforms direct sampling (dashed lines) in all the cases. To
-elaborate, given a fixed budget of $\g$'s evaluations, our framework delivers
-such probability distributions that are closer to the true ones than those
+elaborate, given a fixed budget of $\g$'s evaluations, the probability
+distributions delivered by our framework are closer to the true ones than those
 delivered by sampling $\g$ directly, despite the fact that the latter relies on
 a sophisticated sampling strategy (Sobol sequences).
 
@@ -141,28 +141,29 @@ and it reasonably does not do more than what has been requested. Second, since
 the model-order reduction mechanism is enabled in the case of interpolation, the
 quantity being interpolated is not $\g$, strictly speaking; it is a
 lower-dimensional representation of $\g$, which already implies an information
-loss. Consequently, there is a limit on the accuracy that can be achieved, which
-depends on the amount of reduction applied. On the flip side, model-order
-reduction allows one to circumvent unnecessary complexity and, thereby, to make
-problems much more tractable.
+loss. Therefore, there is a limit on the accuracy that can be achieved, which
+depends on the amount of reduction applied. However, model-order reduction is a
+good, recommended practice as it circumvents unnecessary complexity and,
+thereby, makes problems more tractable.
 
-As it has become clear, we do not report the wall-clock time taken by the
-experiments. The reason is that this time is irrelevant: $\g$ is assumed to be
-time consuming (see \sref{problem}), which renders the number of $\g$'s
-evaluations as the most apposite expense indicator. However, for the curious
-reader, let us note briefly that, for instance, in the bottom-right problem
-shown in \fref{results} (where $\q$ is the maximal temperature, $\np = 8$, and
-$\nt = 20$), it took around two hours to perform $10^5$ simulations of $\g$ in
-parallel on 16 processors. Evaluating the corresponding interpolant $10^5$ times
-took less than a second.
-
-In conclusion, it is important to realize that, for the same price, the proposed
+At this point, it is important to realize that, for the same price, the proposed
 framework yields an object that is much more rich and powerful than a bunch of
 samples delivered by direct sampling. A surrogate produced by the framework for
 a quantity of interest can also be used to obtain a bunch of samples, but we are
-not constrained by their number; moreover, if needed, we can always go back and
+not constrained by their number. Moreover, if needed, we can always go back and
 generate more samples without even touching the expansive quantity in question.
 Furthermore, the placement of the collocation nodes and the magnitudes of the
-corresponding surpluses are an invaluable source of information about the
-behavior of the quantity at hand. Hierarchical surpluses are also valuable on
-their own, and an example was given in \sref{moments}.
+corresponding surpluses are an invaluable source of information, which can be
+utilized for such tasks as sensitivity analysis and edge detection. Hierarchical
+surpluses are also valuable on their own; an example was given in
+\sref{moments}.
+
+Before we conclude, let us state explicitly that the wall-clock time taken by
+the experiments is not reported here. This time is irrelevant: $\g$ is time
+consuming (see \sref{problem}), which renders the number of $\g$'s evaluations
+as the most apposite expense indicator. However, for the curious reader, we
+would like to note briefly that, for instance, in the bottom-right problem shown
+in \fref{results} ($\np = 8$, $\nt = 20$, and $\q$ is temperature), it took
+around two hours to perform $10^5$ simulations of $\g$ in parallel on 16
+processors. Evaluating the corresponding interpolant the same number of times
+took less than a second.
