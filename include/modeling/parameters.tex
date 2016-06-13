@@ -13,9 +13,9 @@ overall transformation by $\vu = \transformation(\vz)$ where
 \begin{equation} \elab{transformation}
   \transformation: \real^\nu \to [0, 1]^\nz.
 \end{equation}
-Now, for any point $\vz \in [0, 1]^\nz$, we are able to compute the
-corresponding $\vu$ and, consequently, the quantity of interest $\g$ as $(\g
-\circ \transformation)(\vz) = \g(\transformation(\vz)) = \g(\vu)$; recall also
+For any point $\vz \in [0, 1]^\nz$, we are now able to compute the corresponding
+$\vu$ and, consequently, the quantity of interest $\g$ as $(\g \circ
+\transformation)(\vz) = \g(\transformation(\vz)) = \g(\vu)$; recall also
 \sref{problem}.
 
 Let us consider a concrete example in order to get a better intuition about
@@ -28,15 +28,15 @@ assumed to be a Gaussian copula whose correlation matrix is $\correlation \in
 
 \begin{remark}
 A set of marginals and a copula entirely characterize the joint distribution of
-$\vu$, $\distribution_\vu$. However, we consider this distribution to be an
-approximation rather than the true one. The knowledge of the true joint would be
-an impractical assumption to make. A more realistic assumption is the
+$\vu$, that is, $\distribution_\vu$. However, we consider this distribution as
+an approximation rather than as the true one. The knowledge of the true joint
+would be an impractical assumption to make. A more realistic assumption is the
 availability of the marginals and correlation matrix of $\vu$. In general, these
 two pieces are not sufficient to recover the joint of $\vu$; however, the joint
 can be approximated well by accompanying the available marginals by a Gaussian
 copula constructed based on the available correlation matrix; see \cite{liu1986}
 and also \cite{ukhov2014}. Hence, a set of marginals and a Gaussian copula are
-a practical input to probabilistic analysis.
+practical inputs to probabilistic analysis.
 \end{remark}
 
 The number of variables, which is so far $\nu$, has a significant impact on the
@@ -53,11 +53,11 @@ are the eigenvectors of $\correlation$, and $\m{\Lambda} = \diag(\lambda_i)_{i =
 1}^\nu$ is a diagonal matrix whose diagonal elements are the eigenvalues of
 $\correlation$. The eigenvalues $(\lambda_i)_{i = 1}^\nu$ correspond to the
 variances of the corresponding components revealed by the decomposition. The
-model-order reduction boils down to selecting those components whose cumulative
-contributions to the total variance is above a certain threshold. Formally,
-assuming that $(\lambda_i)_{i = 1}^\nu$ are sorted in the descending order and
-given a threshold parameter $\eta \in (0, 1]$, we identify the smallest $\nz$
-such that
+model-order reduction boils down to selecting those major components whose
+cumulative contributions to the total variance is above a certain threshold.
+Formally, assuming that $(\lambda_i)_{i = 1}^\nu$ are sorted in the descending
+order and given a threshold parameter $\eta \in (0, 1]$, we identify the
+smallest $\nz$ such that
 \begin{equation} \elab{reduction}
   \frac{\sum_{i = 1}^\nz \lambda_i}{\sum_{i = 1}^\nu \lambda_i} \geq \eta.
 \end{equation}
