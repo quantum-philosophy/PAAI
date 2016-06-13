@@ -13,10 +13,11 @@ The Smolyak interpolant for $\f$ is as follows:
   \smolyak{\l}(\f) = \sum_{\l - \nin + 1 \leq |\vi| \leq \l} (-1)^{\l - |\vi|} \, {\nin - 1 \choose \l - |\vi|} \, \tensor{\vi}(\f)
 \end{equation}
 where $\l \geq 0$ is the level of Smolyak's interpolation, and $|\vi| = i_1 +
-\dots + i_\nin$. We see that the algorithm is indeed just a peculiar composition
-of cherry-picked tensor products. However, the formula has an implication of
-paramount importance. The quantity of interest needs to be evaluated only at the
-nodes of the sparse grid underpinning \eref{smolyak-original}:
+\dots + i_\nin$. It can be seen that the algorithm is indeed just a peculiar
+composition of cherry-picked tensor products. However, the formula has an
+implication of paramount importance. The quantity of interest needs to be
+evaluated only at the nodes of the sparse grid underpinning
+\eref{smolyak-original}:
 \begin{equation} \elab{smolyak-grid}
   \Y_l = \bigcup_{\l - \nin + 1 \leq |\vi| \leq \l} \X_\vi.
 \end{equation}
@@ -38,7 +39,7 @@ Then, \eref{smolyak-original} is identical to
 \end{equation}
 where $\smolyak{-1}(\f) = 0$, and we let $\lindex_\l = \{ \vi: |\vi| \leq \l
 \}$ and $\Delta\lindex_\l = \{ \vi: |\vi| = \l \}$. It can be seen that a
-Smolyak interpolant can be refined efficiently: the work done in order to attain
+Smolyak interpolant can be efficiently refined: the work done in order to attain
 one accuracy level is entirely recycled to go to the next.
 
 The sparsity and incremental refinement of Smolyak's approach, which are shown
@@ -100,7 +101,7 @@ so far.
 The final formula for nonadaptive hierarchical interpolation is obtained by
 substituting \eref{tensor-delta} into \eref{smolyak-incremental}:
 \begin{align}
-  \smolyak{\l}(\f) &= \sum_{\vi \in \lindex_\l} \, \sum_{\vj \in \Delta\oindex_\vi} \surplus(\vx_{\vi\vj}) \, \e_{\vi\vj} \elab{smolyak-hierarchical} \\
-                   &= \smolyak{\l-1}(\f) + \sum_{\vi \in \Delta\lindex_\l} \, \sum_{\vj \in \Delta\oindex_\vi} \surplus(\vx_{\vi\vj}) \, \e_{\vi\vj} \nonumber
+  \smolyak{\l}(\f) &= \sum_{\vi \in \lindex_\l} \, \sum_{\vj \in \Delta\oindex_\vi} \surplus(\vx_{\vi\vj}) \, \e_{\vi\vj} \nonumber \\
+                   &= \smolyak{\l-1}(\f) + \sum_{\vi \in \Delta\lindex_\l} \, \sum_{\vj \in \Delta\oindex_\vi} \surplus(\vx_{\vi\vj}) \, \e_{\vi\vj} \elab{smolyak-hierarchical}
 \end{align}
 where $\surplus(\vx_{\vi\vj})$ is computed according to \eref{surplus}.

@@ -3,7 +3,7 @@ irregular on the other. Under these circumstances, it is natural to expect that,
 in order to attain the same accuracy, the first half would require much fewer
 collocation nodes than the other one; recall \fref{motivation}. However, if we
 followed the construction procedure described so far, we would not be able to
-benefit from the peculiar behavior: we would treat both sides equally and would
+benefit from this peculiar behavior: we would treat both sides equally and would
 add all the nodes of each level.
 
 The solution to the above problem is to make the interpolation algorithm
@@ -37,7 +37,7 @@ The main different with respect to \eref{smolyak-hierarchical} is that $\l \geq
 0$ no longer signifies a Smolyak level but a more abstract interpolation step,
 and $\approximation{\l}$ is the interpolant at that step. As always,
 $\approximation{-1} = 0$, and the definition of $\surplus$ given in
-\eref{surplus} is adjusted accordingly. Lastly, all index sets from now on are
+\eref{surplus} is adjusted accordingly. From now on, all index sets will be
 generally subsets of their full-fledged counterparts defined in \sref{smolyak}.
 
 \begin{remark}
@@ -94,10 +94,10 @@ checking the following condition:
 \]
 where $\serror$ is a user-defined constant referred to as the score error. If
 the condition holds, the forward neighbors of $\vj$ in dimension $k$ are added
-to $\Delta\oindex_\vi$. This procedure for the open Newton--Cotes rule is
-illustrated in \fref{grid}. The arrows emerging from a node connect the node
-with its forward neighbors. It can be seen that each node has two forward
-neighbors (for one dimension); their order indices are
+to $\Delta\oindex_\vi$. This procedure is illustrated in \fref{grid} for the
+open Newton--Cotes rule. The arrows emerging from a node connect the node with
+its forward neighbors. It can be seen that each node has two forward neighbors
+(for each dimension); their order indices are
 \[
   (j_1, \dots, 2 j_k, \dots, j_\nin) \hspace{1em} \text{and} \hspace{1em} (j_1, \dots, 2 j_k + 2, \dots, j_\nin).
 \]
@@ -107,9 +107,9 @@ The above refinement procedure is repeated for each index $\vi \in
 The final question is the stopping condition of the approximation process in
 \eref{approximation}. Apart from the obvious constraints on the maximum number
 of function evaluations and deepness of interpolation (the Smolyak level), we
-rely on the following criterion. Assume given two additional constants:
-$\aerror$ and $\rerror$ referred to as the absolute and relative error,
-respective. Then, the process is terminated as soon as
+rely on the following criterion. Assume that we are given two additional
+constants: $\aerror$ and $\rerror$ referred to as the absolute and relative
+error, respective. Then, the process is terminated as soon as
 \begin{equation} \elab{stopping-condition}
   \max_{(\vi, \vj)} \, |\surplus(\vx_{\vi\vj})| \leq \max \left\{ \aerror, \, \rerror (\f_\text{max} - \f_\text{min}) \right\}
 \end{equation}
@@ -117,7 +117,7 @@ where $\f_\text{min}$ and $\f_\text{max}$ the minimum and maximum observed
 values of $\f$, respectively, and the left-hand side is the maximum surplus
 whose level index has not been refined yet (considered as $\vi_\l$ at some step
 $\l$ in \eref{approximation}). The above criterion is a sound way to curtail the
-process it is based on the actual progress.
+process as it is based on the actual progress.
 
 The adaptivity presented in this subsection is referred to as hybrid as it
 exhibits features of both global and local adaptivity. Local adaptivity operates

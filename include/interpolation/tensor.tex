@@ -19,7 +19,7 @@ of $\nin$ one-dimensional interpolants:
 where $\vi = (i_k)_{k = 1}^\nin$ and $\vj = (j_k)_{k = 1}^\nin$ are
 (multi-)indices specifying levels and orders, respectively, for each of the
 dimensions, and $\oindex_\vi = \oindex_{i_1} \times \cdots \times
-\oindex_{i_\nin}$ is an index set obtained by computing the tensor product of
+\oindex_{i_\nin}$ is an index set obtained by computing the Cartesian product of
 one-dimensional index sets. In the above formula,
 \begin{align}
   \X_\vi &= \X_{i_1} \times \cdots \times \X_{i_\nin} \elab{collocation-nodes} \\
@@ -35,7 +35,7 @@ index $\vi$. In \eref{basis-functions}, for any $\vx \in [0, 1]^\nin$,
 \begin{equation} \elab{basis-function}
   \e_{\vi\vj}(\vx) = \left( \bigotimes_{k = 1}^\nin \e_{i_k j_k} \right)(\vx) = \prod_{k = 1}^\nin \e_{i_k j_k}(\x_k).
 \end{equation}
-Lastly, the cardinality of $\oindex_\vi$ is as follows:
+Finally, the cardinality of $\oindex_\vi$ is as follows:
 \begin{equation} \elab{tensor-cardinality}
   \n_\vi = \card{\oindex_\vi} = \prod_{k = 1}^\nin \card{\oindex_{i_k}} = \prod_{k = 1}^\nin \n_{i_k}.
 \end{equation}

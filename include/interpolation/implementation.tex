@@ -2,16 +2,16 @@ The life cycle of interpolation has roughly two stages: construction and usage.
 The construction stage invokes $\f$ at a set of collocation nodes and produces
 certain artifacts. The usage stage estimates the values of $\f$ at a set of
 arbitrary points by manipulating the artifacts. In this subsection, we shall
-have a look at the pseudocodes of the two stages. The purpose here is to give
-the big picture; a lot of implementation details are purposely omitted. All the
-details, however, can be found and studied at online as our implementation is
-open-source \cite{sources}.
+look at the pseudocodes of the two stages. The purpose is to give the big
+picture. A lot of implementation details are purposely omitted; however, all the
+details can be found and studied online as our implementation is open source
+\cite{sources}.
 
 Let us first make a general note. We found it beneficial to the clarity and ease
 of implementation to collapse the two sums in \eref{approximation} into one.
 This requires storing a level index $\vi = (i_k)_{k = 1}^\nin$ and an order
-index $\vj = (j_k)_{k = 1}^\nin$ for each interpolation element. Furthermore, it
-is advantageous to encode each pair $(i_k, j_k)$ as a single unsigned integer,
+index $\vj = (j_k)_{k = 1}^\nin$ for each interpolation element. It is also
+advantageous to encode each pair $(i_k, j_k)$ as a single unsigned integer,
 which, in particular, eliminates excessive memory usage. In multiple dimensions,
 this results in a single vector $\vl = (\iota_k)_{k = 1}^\nin$, which we simply
 call an index. The encoding that we utilize is as follows:
@@ -28,13 +28,13 @@ The pseudocode of the construction stage is given in \aref{construct} called
 \token{Construct}. The \token{target} input is a function $\f$ to be
 approximated. The \token{surrogate} output is a structure containing the
 artifacts of interpolation, which are a set of tuples $\{ (\vl_k,
-\surplus(\vx_{\vl_k}) \}_k$ giving a comprehensive description of an
+\surplus(\vx_{\vl_k}) \}_k$, giving a comprehensive description of an
 interpolant. The routine works as follows.
 
 \begin{compactlist}
 
-\point{Line~2:} Each iteration is an interpolation step in \eref{approximation},
-and it has a state captured by a structure denoted by \token{s}. The
+\point{Line~2:} Each iteration is an interpolation step in \eref{approximation}.
+It has a state captured by a structure denoted by \token{s}. The
 \token{strategy} object represents an adaptation strategy utilized and works as
 described in \sref{adaptivity}. The \token{First} method of \token{strategy}
 returns the initial state of the first step so that the \token{indices} field of
@@ -64,13 +64,13 @@ surpluses $\{ \surplus(\vx_{\vl_k}) \}_k$, similar to \eref{surplus}.
 \point{Line~7:} \token{strategy.Score} calculates the scores of the new
 collocation nodes based on their surpluses; see \eref{score}.
 
-\point{Line~8:} \token{Append} ameliorates the interpolant by extending it with
-the indices and surpluses of the current iteration.
+\point{Line~8:} \token{Append} improves the interpolant by extending it with the
+indices and surpluses of the current iteration.
 
 \end{compactlist}
 
 \input{include/assets/algorithms/evaluate}
-Let us now turn to the usage stage of an interpolant. The pseudocode is given in
+We now turn to the usage stage of an interpolant. The pseudocode is given in
 \aref{evaluate} called \token{Evaluate}. This algorithm is also involved in
 \aref{construct}; see line~5. Let us make a couple of observations regarding
 \token{Evaluate}.
@@ -88,6 +88,6 @@ utilized (see \sref{basis}), and its \token{Compute} method evaluates a single
 
 It is worth noting that the \token{basis}, \token{grid}, and \token{strategy}
 objects conform to certain interfaces and can be easily swapped out. This makes
-the two algorithms very general, reusable with different configurations. In
+the two algorithms very general and reusable with different configurations. In
 particular, the adaptation strategy can be fine-tuned for each particular
 problem.
