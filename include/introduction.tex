@@ -4,20 +4,20 @@ accelerating pace. The rapid growth is instigated by the fact that electronic
 systems naturally become more sophisticated and refined, and that they penetrate
 deeper into everyday life. Therefore, the impact of uncertainty inevitably
 becomes more prominent and entails more severe consequences, necessitating an
-adequate treatment. Consequently, the designer of electronic systems is obliged
-to account for the presence of uncertainty in order to produce efficient and
-reliable products.
+adequate treatment. Consequently, the designer of an electronic system is
+obliged to account for the presence of uncertainty in order to produce an
+efficient and reliable product.
 
 In order to account for uncertainty, one has to quantify it first. In this
 setting, one is usually interested in a quantity---referred to as the quantity
 of interest---whose complete knowledge would be highly profitable for the design
 at hand but cannot be attained as the quantity depends on a number of parameters
-which are inherently uncertain at design time. Consider, for instance, the
+that are inherently uncertain at design time. Consider, for instance, the
 maximum temperature of a system running a number of tasks whose execution times
 are random.
 
-Uncertainty quantification is a broad umbrella, and the corresponding techniques
-can deliver radically different pieces of information about the quantity of
+Uncertainty quantification is a broad umbrella. The corresponding techniques can
+deliver radically different pieces of information about the quantity of
 interest. In this paper, we are interested in probability distributions rather
 than, for instance, corner cases. Designing for the worst case is often a poor
 solution as the system at hand might easily end up being too conservative,
@@ -30,69 +30,68 @@ quantification in general, sampling methods are of great use. The classical
 Monte Carlo (\up{MC}) sampling, quasi-\up{MC} sampling, and Latin hypercube
 sampling are examples of such methods. Compared to other techniques for
 probabilistic analysis, these methods are straightforward to apply. The system
-at hand is treated as being completely opaque, and it only needs to be simulated
-a number of times, following an adequate strategy, in order to start drawing
-conclusions about the system's behavior. Consider, for instance, \up{MC}
-sampling, which is arguably the most famous and versatile approach to
-uncertainty quantification. The technique was introduced in the middle of the
-twentieth century and since then has expanded into a rich family of methods that
-have had a tremendous impact both in academia and in terms of industrial
-breakthroughs.
+at hand is treated as a completely opaque object, and one only has to evaluate
+this object a number of times in order to start to draw conclusions about the
+system's behavior. Consider, for instance, \up{MC} sampling, which is arguably
+the most famous and versatile approach to uncertainty quantification. The
+technique was introduced in the middle of the twentieth century and, since then,
+has expanded into a rich family of methods that have had a tremendous impact
+both in academia and in terms of industrial breakthroughs.
 
 The major problem with sampling techniques, however, is in sampling: one should
 be able to obtain sufficient many realizations of the quantity of interest in
-order to estimate the needed statistics of that quantity accurately
+order to accurately estimate the needed statistics of that quantity
 \cite{diaz-emparanza2002}. The main concerns in this context are: How much does
 it cost in terms of time and other resources to obtain one sample? How many
 samples do we need? How many can we afford? When the subject under analysis is
 expensive---as measured by the metric that makes the most sense to the problem
-at hand---computer experiments are rendered slow and often unfeasible.
+at hand---sampling methods are rendered slow and often unfeasible.
 
-We propose a system-level framework for the analysis of electronic systems that
-are dependent on uncertain parameters. Similar to sampling methods, our
-technique treats the system at hand as a ``black box'' and, therefore, is
+We propose a design-time system-level framework for the analysis of electronic
+systems that are dependent on uncertain parameters. Similar to sampling methods,
+our technique treats the system at hand as a ``black box'' and, therefore, is
 straightforward to apply since no handcrafting is required, and existing codes
 need no change. Consequently, the quantities of interest that the framework is
 able to tackle are diverse. Examples include those quantities concerned with
-timing-, power-, and temperature-related characteristics of sophisticated
+timing-, power-, and temperature-related characteristics of elaborate
 applications running on heterogeneous multiprocessor platforms.
 
-In contract to sampling methods, our technique explores and, thereby, exploits
-the structure of the problem---that is, the way the quantity of interest depends
-on the uncertain parameters---by exercising the ``black box'' at a set of points
-chosen adaptively. The adaptivity that our framework leverages is hybrid
-\cite{jakeman2012}: it tries to pick up not only global (that is, on the level
-of entire dimensions \cite{klimke2006}) but also local (that is, on the level on
-individual points \cite{ma2009}) variations, which means that the framework is
-able to benefit from any particularities that might be present in the stochastic
-space, that is, the space of the uncertain parameters. Adaptivity is the capital
-feature of our technique, and, therefore, we would like to elaborate on it now.
-To this end, we first need to give one classification of sources of uncertainty
-present in electronic systems.
+In contract to sampling methods, our technique explores and exploits the
+structure of the problem---that is, the way the quantity of interest depends on
+the uncertain parameters---by exercising the aforementioned ``black box'' at a
+set of points chosen adaptively. The adaptivity that our framework leverages is
+hybrid \cite{jakeman2012}: it tries to pick up both global (that is, on the
+level of entire dimensions \cite{klimke2006}) and, more importantly, local (that
+is, on the level on individual points \cite{ma2009}) variations. This means that
+the framework is able to benefit from many particularities that might be present
+in the stochastic space, that is, the space of the uncertain parameters.
+Adaptivity is the capital feature of our technique, and, therefore, we would
+like to elaborate on it now. To this end, we first need to give one
+classification of the sources of uncertainty present in electronic systems.
 
-Sources of uncertainty can be divided into analog and digital. The major
+The sources of uncertainty can be divided into analog and digital. The major
 representative of the former is process variation \cite{srivastava2005}, which
 has been central for many lines of research \cite{bhardwaj2008, juan2012,
 lee2013, ukhov2014, ukhov2015}. Process variation is a side effect of
 contemporary fabrication processes. In contrast, the sources labeled as
 ``digital'' are phenomena of the computer world rather than physical. To
-elaborate, applications running on modern devices often exhibit nondeterministic
-behavior: their characteristics change from one activation to another, depending
-on such aspects as the runtime environment and input data. The digital category
-has not been deprived of attention either, especially in the real-time community
-\cite{quinton2012, diaz2002, santinelli2011, yang2013, tanasa2015}. Both analog
-and digital sources of uncertainty render the behavior of electronic systems as
-essentially random to the designer of such systems, and accounting for them is
+elaborate, applications running on modern devices often exhibit a
+nondeterministic behavior: their characteristics change from one activation to
+another, depending on such aspects as the runtime environment and input data.
+The digital category has not been deprived of attention either, especially in
+the real-time community \cite{quinton2012, diaz2002, santinelli2011, yang2013,
+tanasa2015}. Both analog and digital sources of uncertainty render the behavior
+of an electronic system as random to the designer, and accounting for them is
 highly beneficial if not essential.
 
 \input{include/assets/figures/motivation.tex}
-Due to the physical nature, the variability induced by analog sources of
-uncertainty is typically smooth. In such cases, uncertainty quantification based
-polynomial chaos (\up{PC}) expansions \cite{xiu2010} and other global
-approximations relying on polynomials generally works well, as in
+Due to the physical nature, the variability induced by analog uncertainties is
+typically smooth, well behaved. In such cases, uncertainty quantification based
+on polynomial chaos (\up{PC}) expansions \cite{xiu2010} and other approximation
+techniques making use of global polynomials generally works well, as in
 \cite{bhardwaj2008, lee2013, ukhov2014, ukhov2015}. On the other hand, the
-variability induced by digital sources of uncertainty often has steep gradients
-and favors nondifferentiability and even discontinuity. In such cases, \up{PC}
+variability induced by digital uncertainties often has steep gradients and
+favors nondifferentiability and even discontinuity. In such cases, \up{PC}
 expansions and similar techniques fail: they require extremely many evaluations
 of the quantity of interest in order to deliver an acceptable level of accuracy
 and, hence, are not worth it.
@@ -100,12 +99,12 @@ and, hence, are not worth it.
 In order to explore this concern, let us consider a toy example. Suppose that
 our electronic system has only one processing element, and it is running an
 application with only one task. Suppose further that the task has two branches
-and takes either of them depending on the input data. Assume that one branch
-takes 0.1~s to execute and has probability 0.6, and the other branch takes 1~s
-and has probability 0.4. Our goal is to find the distribution of the end-to-end
-delay of the application. In this example, the end-to-end delay coincides with
-the execution time of the task; hence, we already know the answer. Let us
-pretend we do not and try to figure it out by other means.
+and takes either one depending on the input data. Assume that one branch takes
+0.1~s to execute and has probability 0.6, and the other branch takes 1~s and has
+probability 0.4. Our goal is to find the distribution of the end-to-end delay of
+the application. In this example, the end-to-end delay coincides with the
+execution time of the task; hence, we already know the answer. Let us pretend we
+do not and try to figure it out by other means.
 
 Suppose the above scenario is modeled by a \rv\ $\u$ uniformly distributed on
 $[0, 1]$: the execution time of the task (the end-to-end delay of the
@@ -137,18 +136,19 @@ density estimation. The crucial point to note is that this follow-up sampling
 does not involve the original system at all and, thus, costs practically
 nothing.
 
-To summarize, the adaptivity featured by the proposed framework implies that our
-technique is well suited for nonsmooth response surfaces. As motivated
-previously, the ability to tackle such problems is important for the design of
-electronic systems. More generally, the adaptivity that we perform allows for
+The example discussed above illustrates the fact that the proposed framework is
+well suited for nonsmooth response surfaces. As motivated previously, the
+ability to tackle such problems is important for the design of electronic
+systems. More generally, the adaptivity featured by our technique allows for
 reduction of the costs associated with the evaluation of the quantity being
-studied. The magnitude of reduction depends on the problem, and it can be
-substantial when the problem is well disposed to adaptation.
+studied, which can be also seen in \fref{motivation}. The magnitude of reduction
+depends on the problem, and it can be substantial when the problem is well
+disposed to adaptation.
 
 Lastly, we would like to reiterate that the output of our framework is
 generative: we construct a light representation of the quantity of interest that
 can be used to generate realizations of this quantity without touching the
-expensive ``black box.'' Therefore, having constructed such a representation,
+expensive ``black box.'' Consequently, having constructed such a representation,
 sampling methods can be applied and have a negligible cost.
 
 The remainder of the paper is organized as follows. Section~\ref{sec:prior-work}
