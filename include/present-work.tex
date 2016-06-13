@@ -8,12 +8,12 @@ techniques: one only has to be able to evaluate the quantity of interest given a
 set of deterministic parameters. Moreover, the framework can be utilized in
 scenarios with limited knowledge about the joint probability distribution of the
 uncertain parameters, which are common in practice. The scope of the framework
-is wide because the framework is based on a powerful approximation engine. The
-approach that we take belongs to the class of stochastic collocation techniques
+is wide because the framework has a powerful approximation engine. The approach
+that we take belongs to the class of stochastic collocation techniques
 \cite{xiu2010}. Stochastic collocation leverages interpolation as a means of
 uncertainty quantification, which should be contrasted with other techniques
 such as \up{PC} expansions relying on regression. More concretely, our framework
-make use of adaptive hierarchical interpolation on sparse grids
+makes use of adaptive hierarchical interpolation on sparse grids
 \cite{jakeman2012, klimke2006, ma2009}, which enables the framework to
 substantially reduce the costs associated with uncertainty quantification, as
 discussed and illustrated in \sref{introduction}.
@@ -21,10 +21,10 @@ discussed and illustrated in \sref{introduction}.
 In addition to the above contribution, we open-source our implementation of the
 ideas presented in this paper \cite{sources}, which also includes the whole
 experimental setup described in \sref{experimentation}. The implementation is
-broken down into a number of libraries, which makes it well disposed to
+broken down into multiple libraries, which makes it well disposed to
 cherry-picked reusage.
 
-Lastly, let us note that, in this paper, we are mainly oriented towards digital
+Lastly, let us note that, in this paper, we are mainly oriented toward digital
 sources of uncertainty introduced earlier, and our examples and experiments are
 tailored accordingly. However, the framework is expected to perform well when
 modeling other uncertainties such as those due to process variation.
