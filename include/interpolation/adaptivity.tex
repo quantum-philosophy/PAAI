@@ -9,9 +9,9 @@ add all the nodes of each level.
 The solution to the above problem is to make the interpolation algorithm
 adaptive. To this end, we first need to find a way to measure how good our
 approximation is at any point in the domain of $\f$. Then, when refining the
-interpolant, instead of bombarding $\f$ with all possible nodes, we will only
-choose those that are located in the regions with poor accuracy as indicated by
-the yet-to-be-found accuracy metric.
+interpolant, instead of evaluating the function at all possible nodes, we will
+only choose those that are located in the regions with poor accuracy as
+indicated by the yet-to-be-found accuracy metric.
 
 Thanks to the hierarchical form obtained in the previous subsection, we already
 have a good material for building an accuracy metric. Recall \eref{surplus}.
@@ -42,7 +42,7 @@ generally subsets of their full-fledged counterparts defined in \sref{smolyak}.
 
 \begin{remark}
 All the rules below make sure that the construction in \eref{approximation}
-adhere to the same principles as the ones underpinning
+adheres to the same principles as the ones underpinning
 \eref{smolyak-hierarchical}. An arbitrary construction is generally invalid.
 \end{remark}
 
@@ -62,7 +62,7 @@ neighbors of an index $\vi$ are given by
 \end{equation}
 where $\v{1}_k$ is a vector whose elements are zero except for element $k$ equal
 to unity. Next, an index $\vi$ is admissible if its inclusion into the index set
-in question $\lindex$ keeps the set admissible. Finally, $\lindex$ is admissible
+$\lindex$ in question keeps the set admissible. Finally, $\lindex$ is admissible
 if it satisfies the following condition \cite{klimke2006}:
 \begin{equation} \elab{admissibility}
   \vi - \v{1}_k \in \lindex, \text{ for $\vi \in \lindex$ and $k = 1, \dots, \nin$,}
@@ -113,10 +113,10 @@ error, respective. Then, the process is terminated as soon as
 \begin{equation} \elab{stopping-condition}
   \max_{(\vi, \vj)} \, |\surplus(\vx_{\vi\vj})| \leq \max \left\{ \aerror, \, \rerror (\f_\text{max} - \f_\text{min}) \right\}
 \end{equation}
-where $\f_\text{min}$ and $\f_\text{max}$ the minimum and maximum observed
-values of $\f$, respectively, and the left-hand side is the maximum surplus
-whose level index has not been refined yet (considered as $\vi_\l$ at some step
-$\l$ in \eref{approximation}). The above criterion is a sound way to curtail the
+where $\f_\text{min}$ and $\f_\text{max}$ are the minimum and maximum observed
+value of $\f$, respectively, and the left-hand side is the maximum surplus whose
+level index has not been refined yet (considered as $\vi_\l$ at some step $\l$
+in \eref{approximation}). The above criterion is a sound way to curtail the
 process as it is based on the actual progress.
 
 The adaptivity presented in this subsection is referred to as hybrid as it
@@ -125,4 +125,4 @@ on the level of individual nodes, and it has already been motivated. Global
 adaptivity operates on the level of individual dimensions. The intuition behind
 it is that, in general, the input variables manifest themselves (impact $\f$)
 differently, and the interpolation algorithm is likely to benefit by
-prioritizing those variables that the most influential.
+prioritizing those variables that are the most influential.

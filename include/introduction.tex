@@ -45,8 +45,7 @@ order to accurately estimate the needed statistics of that quantity
 \cite{diaz-emparanza2002}. The main concerns in this context are: How much does
 it cost in terms of time and other resources to obtain one sample? How many
 samples do we need? How many can we afford? When the subject under analysis is
-expensive---as measured by the metric that makes the most sense to the problem
-at hand---sampling methods are rendered slow and often unfeasible.
+expensive to evaluate, sampling methods are rendered slow and often unfeasible.
 
 We propose a design-time system-level framework for the analysis of electronic
 systems that are dependent on uncertain parameters. Similar to sampling methods,
@@ -57,10 +56,10 @@ able to tackle are diverse. Examples include those quantities concerned with
 timing-, power-, and temperature-related characteristics of elaborate
 applications running on heterogeneous multiprocessor platforms.
 
-In contract to sampling methods, our technique explores and exploits the
-structure of the problem---that is, the way the quantity of interest depends on
-the uncertain parameters---by exercising the aforementioned ``black box'' at a
-set of points chosen adaptively. The adaptivity that our framework leverages is
+In contrast to sampling methods, our technique explores and exploits the nature
+of the problem---that is, the way the quantity of interest depends on the
+uncertain parameters---by exercising the aforementioned ``black box'' at a set
+of points chosen adaptively. The adaptivity that our framework leverages is
 hybrid \cite{jakeman2012}: it tries to pick up both global (that is, on the
 level of entire dimensions \cite{klimke2006}) and, more importantly, local (that
 is, on the level on individual points \cite{ma2009}) variations. This means that
