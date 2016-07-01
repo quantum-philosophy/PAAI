@@ -65,36 +65,34 @@ level of entire dimensions \cite{klimke2006}) and, more importantly, local (that
 is, on the level on individual points \cite{ma2009}) variations. This means that
 the framework is able to benefit from many particularities that might be present
 in the stochastic space, that is, the space of the uncertain parameters.
-Adaptivity is the capital feature of our technique, and, therefore, we would
-like to elaborate on it now. To this end, we first need to give one
-classification of the sources of uncertainty present in electronic systems.
+Adaptivity is the capital feature of our technique, and, thus, we would like to
+elaborate on it now. To this end, we first need to make one observation.
 
-The sources of uncertainty can be divided into analog and digital. The major
-representative of the former is process variation \cite{srivastava2005}, which
-has been central for many lines of research \cite{bhardwaj2008, juan2012,
-lee2013, ukhov2014, ukhov2015}. Process variation is a side effect of
-contemporary fabrication processes. In contrast, the sources labeled as
-``digital'' are phenomena of the computer world rather than physical. To
-elaborate, applications running on modern devices often exhibit a
-nondeterministic behavior: their characteristics change from one activation to
-another, depending on such aspects as the runtime environment and input data.
-The digital category has not been deprived of attention either, especially in
+The uncertainties present in electronic systems originate from both the physical
+world and the computer one. An example of a physical source of uncertainty is
+process variation \cite{srivastava2005}, which is a side effect of contemporary
+fabrication processes. Process variation has been central for many lines of
+research \cite{bhardwaj2008, juan2012, lee2013, ukhov2014, ukhov2015}. An
+example of a digital source of uncertainty (the computer world) is workload. To
+elaborate, the characteristics of the codes running modern devices change from
+one activation to another depending on the environment and input data. This
+source of uncertainty has not been deprived of attention either, especially in
 the real-time community \cite{quinton2012, diaz2002, santinelli2011, yang2013,
-tanasa2015}. Both analog and digital sources of uncertainty render the behavior
-of an electronic system as random to the designer, and accounting for them is
-highly beneficial if not essential.
+tanasa2015}. Regardless of their origins, such phenomena as the ones mentioned
+above render the behavior of an electronic system as nondeterministic to the
+designer, and accounting for them is highly beneficial if not essential.
 
 \input{include/assets/figures/motivation.tex}
-Due to the physical nature, the variability induced by analog uncertainties is
-typically smooth, well behaved. In such cases, uncertainty quantification based
-on polynomial chaos (\up{PC}) expansions \cite{xiu2010} and other approximation
+Due to its nature, the variability coming from the physical world is typically
+smooth, well behaved. In such cases, uncertainty quantification based on
+polynomial chaos (\up{PC}) expansions \cite{xiu2010} and other approximation
 techniques making use of global polynomials generally works well, as in
 \cite{bhardwaj2008, lee2013, ukhov2014, ukhov2015}. On the other hand, the
-variability induced by digital uncertainties often has steep gradients and
-favors nondifferentiability and even discontinuity. In such cases, \up{PC}
-expansions and similar techniques fail: they require extremely many evaluations
-of the quantity of interest in order to deliver an acceptable level of accuracy
-and, hence, are not worth it.
+variability coming from the computer world often has steep gradients and favors
+nondifferentiability and even discontinuity. In such cases, \up{PC} expansions
+and similar techniques fail: they require extremely many evaluations of the
+quantity of interest in order to deliver an acceptable level of accuracy and,
+hence, are not worth it.
 
 In order to explore this concern, let us consider a toy example. Suppose that
 our electronic system has only one processing element, and it is running an
