@@ -94,11 +94,11 @@ and similar techniques fail: they require extremely many evaluations of the
 quantity of interest in order to deliver an acceptable level of accuracy and,
 hence, are not worth it.
 
-In order to explore this concern, let us consider a toy example. Suppose that
-our electronic system has only one processing element, and it is running an
-application with only one task. Suppose further that the task has two branches
-and takes either one depending on the input data. Assume that one branch takes
-0.1~s to execute and has probability 0.6, and the other branch takes 1~s and has
+In order to illustrate this concern, let us consider a toy example. Suppose that
+our system has only one processing element, and it is running an application
+with only one task. Suppose further that the task has two branches and takes
+either one depending on the input data. Assume that one branch takes 0.1~s to
+execute and has probability 0.6, and the other branch takes 1~s and has
 probability 0.4. Our goal is to find the distribution of the end-to-end delay of
 the application. In this example, the end-to-end delay coincides with the
 execution time of the task; hence, we already know the answer. Let us pretend we
@@ -110,14 +110,15 @@ application) is 0.1~s if $\u \in [0, 0.6]$, and it is 1~s if $\u \in (0.6, 1]$.
 The response in this case is a step function, which is illustrated by the yellow
 line in \fref{motivation}.
 
-First, we try to quantify the end-to-end delay by constructing a \up{PC}
-expansion founded on the Legendre polynomial basis \cite{xiu2010}. The orange
-line in \fref{motivation} shows a ninth-order \up{PC} expansion, which uses 10
-points. It can be seen that the approximation is poor, let alone negative
-execution times. The observed oscillating behavior is the well-known Gibbs
-phenomenon stemming from the discontinuity of the response. No matter how many
-points are wasted in the construction of a polynomial, the oscillations will
-never go away completely.
+First, we try to quantify the end-to-end delay by constructing and subsequently
+sampling a \up{PC} expansion founded on the Legendre polynomial basis
+\cite{xiu2010}. The orange line in \fref{motivation} shows a ninth-order \up{PC}
+expansion, which uses 10 points. It can be seen that the approximation is
+poor---let alone negative execution times---which means that the follow-up
+sampling will also yield a poor approximation of the true distribution. The
+observed oscillating behavior is the well-known Gibbs phenomenon stemming from
+the discontinuity of the response. No matter how many points are wasted in the
+construction of a polynomial, the oscillations will never go away completely.
 
 Let us now turn to our framework and its adaptive interpolation kernel. For the
 purpose of the experiment, the technique is constrained to make use of as many
@@ -131,17 +132,18 @@ attention. Having constructed such an accurate representation, one can proceed
 to the calculation of the probability distribution of the quantity of interest,
 which, in general, is done via sampling followed by such techniques as kernel
 density estimation. The crucial point to note is that this follow-up sampling
-does not involve the original system at all and, thus, costs practically
-nothing.
+does not involve the original system in any way, which implies that it costs
+practically nothing in terms of the computation time.
 
 The example discussed above illustrates the fact that the proposed framework is
 well suited for nonsmooth response surfaces. As motivated previously, the
 ability to tackle such problems is important for the design of electronic
-systems. More generally, the adaptivity featured by our technique allows for
-reduction of the costs associated with the evaluation of the quantity being
-studied, which can be also seen in \fref{motivation}. The magnitude of reduction
-depends on the problem, and it can be substantial when the problem is well
-disposed to adaptation.
+systems due to their digital nature. More generally, the adaptivity featured by
+our technique allows for a reduction of the costs associated with the
+probabilistic analysis of the quantity at hand, as measured by the number of
+times the quantity needs to be evaluation in order to achieve a certain accuracy
+level. The magnitude of the reduction depends on the problem, and it can be
+substantial when the problem is well disposed to adaptation.
 
 Lastly, we would like to reiterate that the output of our framework is
 generative: we construct a light representation of the quantity of interest that
