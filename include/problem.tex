@@ -2,24 +2,27 @@ Consider an electronic system composed of two major components: a platform and
 an application. The platform is given as a set of $\np$ heterogeneous processing
 elements, and the application is given as a set of $\nt$ interdependent tasks.
 
-The designer is assumed to be interested in studying a quantity $\g$ that
-characterizes the system from a certain perspective. Examples of $\g$ include
-the end-to-end delay, total energy, and maximum temperature. The quantity $\g$,
-referred to as the quantity of interest, depends on a set of parameters that are
-uncertain at the design stage. The parameters are modeled by a random vector
-$\vu = (\u_i)_{i = 1}^\nu: \outcomes \to \real^\nu$ with distribution
-$\distribution_\vu$. Examples of $\vu$ include the execution times of the tasks.
+The designer is interested in studying a quantity $\g$, referred to as the
+quantity of interest, that characterizes the system at hand from a certain
+perspective. The examples of $\g$ include the execution time of the application
+or a task, energy consumption of the platform or a processing element, and
+maximum temperature of the platform or a processing element.
 
-The dependency of $\g$ on $\vu$, written as $\g(\vu)$, implies that $\g$ is
-random to the designer. For a given $\vu$, however, $\g$ is assumed to be purely
-deterministic. Furthermore, the evaluation of $\g$ given $\vu$ is assumed to be
-doable but computationally or otherwise expensive. (If the cost of $\g$ was low,
-one could proceed to sampling methods directly without any auxiliary framework.)
+The quantity of interest $\g$ depends on a set of parameters $\vu$ that are
+uncertain at the design stage. The examples of $\vu$ include the amount of data
+the application needs to process, execution times of the tasks, and properties
+of the environment.
 
-Our objective in this paper is to develop an efficient framework for analyzing
-the quantity of interest $\g$ characterizing the electronic system at hand such
-that the uncertainty originating from the parameters $\vu$ is taken into
-consideration. In this context, the analysis of $\g$ refers to the estimation of
-the probability distribution of $\g$, which naturally implies the availability
-of such quantities as the expected value and variance of $\g$ and probabilities
-of arbitrary events associated with $\g$.
+The parameters $\vu$ are given as a random vector $\vu = (\u_i)_{i = 1}^\nu$
+with distribution $\distribution_\vu$. The dependency of $\g$ on $\vu$, written
+as $\g(\vu)$, implies that $\g$ is random to the designer. For a given outcome
+of $\vu$, however, the evaluation of $\g$ is purely deterministic. This
+operation is assumed to be doable but computationally expensive. (If the cost of
+evaluating $\g$ was negligible, one would proceed to direct sampling without any
+auxiliary framework.)
+
+Our objective is to develop an efficient framework for estimating the
+probability distribution of the quantity of interest $\g$ dependent on the
+uncertainty parameters $\vu$. The framework is required to be able to handle
+nondifferentiable and even discontinuous dependencies between $\g$ and $\vu$ as
+they constitute an important class of problems for electronic-system design.
