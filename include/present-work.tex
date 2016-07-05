@@ -10,18 +10,18 @@ probability distribution of the uncertain parameters, which are common in
 practice (to be elaborated on in \sref{parameters}).
 
 The scope of the framework is wide because the framework has a powerful
-approximation engine. Concretely, we makes use of adaptive hierarchical
-interpolation on sparse grids \cite{jakeman2012, klimke2006, ma2009}, which
-enables us to tackle diverse electronic-system-design problems while keeping the
-concomitant costs low. In particular, the framework is capable of efficiently
-handling nonsmooth responses, which is important in the context of electronic
-systems due to their nature, as motivated in \sref{introduction}.
+approximation engine. We make use of adaptive hierarchical interpolation on
+sparse grids \cite{jakeman2012, klimke2006, ma2009}, which enable us to tackle
+diverse electronic-system-design problems while keeping the associated
+computation costs low. In particular, the framework is suitable for nonsmooth
+problems, which is an important feature in the context of electronic systems due
+to their digital nature, as discussed in \sref{introduction}.
 
 In addition to the aforementioned contribution, we open-source our
-implementation \cite{sources}. The code base also includes the whole
-experimental setup described in \sref{experimentation}. The implementation is
-broken down into multiple standalone libraries, which makes it well disposed to
-cherry-picked reusage.
+implementation \cite{sources}. The implementation is broken down into multiple
+standalone libraries, which makes it well disposed to cherry-picked reusage. The
+code base also includes the whole experimental setup described in
+\sref{experimentation}.
 
 Lastly, let us note that, in this paper, we are mainly oriented toward digital
 sources of uncertainty introduced earlier, and our examples and experiments are
