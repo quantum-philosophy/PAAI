@@ -1,6 +1,6 @@
-As noted earlier, making use of an adequate sampling method is a compelling
-approach to uncertainty quantification. We would readily apply such a method to
-study our quantity of interest $\g$ if only $\g$ had a negligible cost, which it
+As noted earlier, making use of a sampling method is a compelling approach to
+uncertainty quantification. We would readily apply such a method to study our
+quantity of interest $\g$ if only evaluating $\g$ had a small cost, which it
 does not.
 
 Our solution to the above quandary is to construct a light representation of the
@@ -15,12 +15,12 @@ powered by the interpolant, which, in contrast to $\g$, has a negligible cost.
 
 Let us delineate the steps involved in the solution process. Recall that $\g$ is
 parameterized by the uncertain parameters $\vu$, and these variables are the
-only source of randomness. First, we reparameterize $\g$ in terms of an
-auxiliary random vector $\vz$ extracted from $\vu$; the necessity of this stage
-will become clear later on. Second, we construct an interpolant of $\g$ by
+only source of randomness. 1)~The quantity $\g$ is reparameterized in terms of
+an auxiliary random vector $\vz$ extracted from $\vu$; the necessity of this
+stage will become clear later on. 2)~An interpolant of $\g$ is constructed by
 considering $\g$ as a deterministic function of $\vz$ and evaluating $\g$ at a
-small set of carefully chosen points. Finally, we estimate the probability
-distribution of $\g$ by applying an arbitrary sampling method to the constructed
+small set of carefully chosen points. 3)~The probability distribution of $\g$ is
+then estimated by applying an arbitrary sampling method to the constructed
 interpolant of $\g$.
 
 Interpolation of multivariate functions is a challenging task, which should be
