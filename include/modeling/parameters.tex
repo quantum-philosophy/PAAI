@@ -18,9 +18,9 @@ $\vu$ and, consequently, the quantity of interest $\g$ as $(\g \circ
 \transformation)(\vz) = \g(\transformation(\vz)) = \g(\vu)$; recall also
 \sref{problem}.
 
-Let us consider a concrete example in order to get a better intuition about
-$\transformation$. To this end, we begin by assuming that the distribution of
-$\vu = (\u_i)_{i = 1}^\nu$, $\distribution_\vu$, is given as a set of marginal
+Let us consider an example of $\transformation$ in order to understand the
+concept better. To this end, we begin by assuming that the distribution of $\vu
+= (\u_i)_{i = 1}^\nu$, $\distribution_\vu$, is given as a set of marginal
 distribution functions $\{ \distribution_{\u_i} \}_{i = 1}^\nu$ and a copula
 \cite{nelsen2006} (see also \sref{preliminaries}). Furthermore, the copula is
 assumed to be a Gaussian copula whose correlation matrix is $\correlation \in
@@ -79,7 +79,9 @@ the Cartesian product of the inverse marginal distributions of $\vu$, which are
 applied to the corresponding element of the vector yielded by $\Phi$. In the
 absence of correlations, \eref{transformation-concrete} is simply $\vu =
 \distribution_\vu^{-1}(\vz)$, and no model-order reduction is possible ($\nu =
-\nz$).
+\nz$). It might be interesting to note that, using the above transformation, the
+distribution $\vu$ gets ``baked'' in $\g$ because it ``disappears'' when $\g$ is
+viewed as a function of $\vz$, distributed uniformly.
 
 To summarize, we have found such a transformation $\transformation$ and the
 corresponding random vector $\vz \sim \distribution_\vz$ that: 1)
