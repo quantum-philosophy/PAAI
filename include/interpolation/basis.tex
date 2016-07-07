@@ -48,3 +48,13 @@ Instead of piecewise linear functions, one can also utilize locally supported
 polynomials of higher orders \cite{jakeman2012}. However, we did not observe
 much improvement and, therefore, do not discuss this alternative in the paper.
 \end{remark}
+
+Imagine now a function that is nearly flat on the first half of $[0, 1]$ and
+rather irregular on the other. Under these circumstances, it is natural to
+expect that, in order to attain the same accuracy, the first half would require
+much fewer collocation nodes than the other one; recall \fref{motivation}.
+However, if we followed the construction procedure described so far, we would
+not be able to benefit from this peculiar behavior: we would treat both sides
+equally and would add all the nodes of each level. The solution to the above
+problem is to make the interpolation algorithm adaptive, which we shall discuss
+next.

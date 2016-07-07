@@ -1,17 +1,8 @@
-Imagine a function that is nearly flat on the first half of $[0, 1]$ and rather
-irregular on the other. Under these circumstances, it is natural to expect that,
-in order to attain the same accuracy, the first half would require much fewer
-collocation nodes than the other one; recall \fref{motivation}. However, if we
-followed the construction procedure described so far, we would not be able to
-benefit from this peculiar behavior: we would treat both sides equally and would
-add all the nodes of each level.
-
-The solution to the above problem is to make the interpolation algorithm
-adaptive. To this end, we first need to find a way to measure how good our
-approximation is at any point in the domain of $\f$. Then, when refining the
-interpolant, instead of evaluating the function at all possible nodes, we will
-only choose those that are located in the regions with poor accuracy as
-indicated by the yet-to-be-found accuracy metric.
+In order to make the algorithm adaptive, we first need to find a way to measure
+how good our approximation is at any point in the domain of $\f$. Then, when
+refining the interpolant, instead of evaluating the function at all possible
+nodes, we will only choose those that are located in the regions with poor
+accuracy as indicated by the yet-to-be-found accuracy metric.
 
 Thanks to the hierarchical form obtained in the previous subsection, we already
 have a good material for building an accuracy metric. Recall \eref{surplus}.
