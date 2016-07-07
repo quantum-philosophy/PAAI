@@ -13,14 +13,14 @@ differential-algebraic equations \cite{ukhov2014, ukhov2012}:
 \end{subnumcases}
 The coefficients $\mC \in \real^{\nn \times \nn}$ and $\mG \in \real^{\nn \times
 \nn}$ are a diagonal matrix of thermal capacitance and a symmetric,
-positive-definite matrix of thermal conductance, respectively. The vector
-$\vq(\t) \in \real^\np$ represents the temperature of the system at time $\t$
-while $\vs(\t) \in \real^\nn$ is the system's internal state at that moment. The
-vector $\vq_\ambient \in \real^\np$ contains the ambient temperature. The matrix
-$\mM \in \real^{\nn \times \np}$ is a mapping that distributes the power
-consumption of the processing elements across the thermal nodes; without loss of
-generality, $\mM$ is a rectangular diagonal matrix whose diagonal elements are
-equal to one.
+positive-definite matrix of thermal conductance, respectively. The vectors
+$\vp(\t) \in \real^\np$,  $\vq(\t) \in \real^\np$, and $\vs(\t) \in \real^\nn$
+correspond the system's power, temperature, and internal state at time $\t$,
+respectively. The vector $\vq_\ambient \in \real^\np$ contains the ambient
+temperature. The matrix $\mM \in \real^{\nn \times \np}$ is a mapping that
+distributes the power consumption of the processing elements across the thermal
+nodes; without loss of generality, $\mM$ is a rectangular diagonal matrix whose
+diagonal elements are equal to one.
 
 Given a set of $\ns$ points on the timeline $\{ \t_i \}_{i = 1}^\ns$,
 \eref{thermal-system} can be used to compute a temperature profile of the system
@@ -35,9 +35,9 @@ temperature profile as follows:
                              &\approx \max_{i = 1}^\np \max_{j = 1}^\ns \, \q_i(\t_j). \elab{maximum-temperature}
 \end{align}
 
-Assuming that temperature depends on $\vu$---which is the case whenever, for
-instance, the power consumed by the system depends on $\vu$---the maximum
-temperature can be considered as a quantity of interest $\g$. Note that, due to
-the maximization involved, the quantity is nondifferentiable. Dynamic
-steady-state temperature analysis \cite{ukhov2012} can also be considered in
-this regards, which is useful for reliability analysis \cite{ukhov2015}.
+Since the power consumption of the system is affected by $\vu$ (see
+\sref{power}), the system's temperature is affected by $\vu$ as well. Therefore,
+the maximum temperature given in \eref{maximum-temperature} can be considered as
+a quantity of interest $\g$. Note that, due to the maximization involved, the
+quantity is nondifferentiable and, hence, is difficult to tackle using
+polynomial approximations.
