@@ -49,9 +49,10 @@ utilized (see \sref{grid}), and its \token{Compute} method converts the step's
 indices into the coordinates of the corresponding collocation nodes, that is,
 $\{ \vl_k \}_k$ into $\{ \vx_{\vl_k} \}_k$.
 
-\point{Line~4:} \token{Invoke} exercises \token{target} at the collocation
-nodes. This function a prominent candidate for parallelization since each node
-can be evaluated independently from the rest.
+\point{Line~4:} \token{Invoke} evaluates \token{target} at the collocation
+nodes. This is a prominent candidate for parallelization since the algorithm
+does not impose any evaluation order; $\f$ can be calculated simultaneously for
+all the nodes of the iteration.
 
 \point{Line~5:} \token{Evaluate} exercises the interpolant constructed so far at
 the collocation nodes, approximating the values obtained on line~4. This
