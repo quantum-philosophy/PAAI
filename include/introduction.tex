@@ -19,8 +19,8 @@ are random.
 Uncertainty quantification is a broad umbrella. The corresponding techniques can
 deliver radically different pieces of information about the quantity of
 interest. In this paper, we are interested in probability distributions rather
-than, for instance, corner cases. Designing for the worst case is often a poor
-solution as the system at hand might easily end up being too conservative,
+than, for instance, corner cases. Designing for the worst case leads often to a
+poor solution as the system at hand might easily end up being too conservative,
 overdesigned \cite{quinton2012}. The value of probability distributions is well
 understood, and it is especially high in the context of soft real-time systems
 and control systems.
@@ -86,7 +86,7 @@ designer, and accounting for them is highly beneficial if not essential.
 Due to its nature, the variability coming from the physical world is typically
 smooth, well behaved. In such cases, uncertainty quantification based on
 polynomial chaos (\up{PC}) expansions \cite{xiu2010} and other approximation
-techniques making use of global polynomials generally works well, as in
+techniques making use of global polynomials generally work well, as in
 \cite{bhardwaj2008, lee2013, ukhov2014, ukhov2015}. On the other hand, the
 variability coming from the computer world often has steep gradients and favors
 nondifferentiability and even discontinuity. In such cases, \up{PC} expansions
@@ -117,7 +117,7 @@ expansion, which uses 10 points. It can be seen that the approximation is
 poor---let alone negative execution times---which means that the follow-up
 sampling will also yield a poor approximation of the true distribution. The
 observed oscillating behavior is the well-known Gibbs phenomenon stemming from
-the discontinuity of the response. No matter how many points are wasted in the
+the discontinuity of the response. No matter how many points are used in the
 construction of a polynomial, the oscillations will never go away completely.
 
 Let us now turn to our framework and its adaptive interpolation kernel. For the
