@@ -40,7 +40,7 @@ Then, \eref{smolyak-original} is identical to
 where $\smolyak{-1}(\f) = 0$, and we let $\lindex_\l = \{ \vi: |\vi| \leq \l
 \}$ and $\Delta\lindex_\l = \{ \vi: |\vi| = \l \}$. It can be seen that a
 Smolyak interpolant can be efficiently refined: the work done in order to attain
-one accuracy level is entirely recycled to go to the next.
+one Smolyak level $\l$ is entirely recycled to go to the next.
 
 The sparsity and incremental refinement of Smolyak's approach, which are shown
 in \eref{smolyak-grid} and \eref{smolyak-incremental}, respectively, are
@@ -59,11 +59,11 @@ beneficial to the refinement to have $\X_{i - 1}$ be entirely included in $\X_i$
 since, in that case, the cardinality of $\Y_l \setminus \Y_{\l - 1} =
 \bigcup_{\vi \in \Delta\lindex_\l} \Delta\X_\vi$ derived from
 \eref{smolyak-grid-incremental} decreases. In words, the values of $\f$ obtained
-on lower levels can be reused to attain higher levels if the grid grows without
-abandoning its previous structure. With this in mind, the rule used for
-generating successive sets of points $\{ \X_i \}_i$ should be chosen to be
-nested, that is, in such a way that $\X_i$ contains all nodes of $\X_{i - 1}$.
-By doing so, the incremental refinement really starts to shine.
+on lower levels (lower $\l$) can be reused to attain higher levels (higher $\l$)
+if the grid grows without abandoning its previous structure. With this in mind,
+the rule used for generating successive sets of points $\{ \X_i \}_i$ should be
+chosen to be nested, that is, in such a way that $\X_i$ contains all nodes of
+$\X_{i - 1}$. By doing so, the incremental refinement really starts to shine.
 
 The final step in this subsection is to rewrite \eref{smolyak-incremental} in a
 hierarchical form. To this end, we require the interpolants of higher levels to
