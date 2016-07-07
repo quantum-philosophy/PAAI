@@ -8,23 +8,26 @@ amalgamate the ideas developed in the aforementioned two sections.
 Given an electronic system dependent on a number of uncertain parameters $\vu:
 \outcomes \to \real^\nu$, the goal is to analyze a quantity of interest $\g$
 representing a certain aspect of the system. For instance, $\vu$ can correspond
-to the execution times of the tasks that the processing elements are to execute,
-and $\g$ can correspond the total energy consumed by the processing elements.
-The goal is attained as follows. First, the parametrization of $\g$ is changed
-from $\vu$ to \rvs\ $\vz: \outcomes \to [0, 1]^\nz$ via a suitable
-transformation $\transformation$; this stage is described in \sref{parameters}.
-Second, an interpolant of the resulting composition $\g \circ \transformation$
-is constructed by treating the composition as a deterministic function $\f$ of
-$\vz$; this stage is detailed in \sref{interpolation}. Third, an estimation of
-the probability distribution of $\g$ is undertaken in the usual sampling-based
-manner but relying solely on the constructed interpolant; $\g$ is no longer
-involved. This last stage boils down to drawing independent samples from
-$\distribution_\vz$ and evaluating the interpolant $\approximation{\l}(\f)
-\equiv \approximation{\l}(\g \circ \transformation)$ at those points. Needless
-to say that, having collected samples of $\g$, other statistics about $\g$, such
-as probabilities of particular events, can be straightforwardly estimated. We do
-not discuss the estimation stage any further as it is standard. However, there
-are two other aspects concerning the usage of the proposed framework that we
+to the execution times of the tasks, and $\g$ can correspond the total energy
+consumed by the processing elements, as we exemplify in \sref{time} and
+\sref{power}. The goal is attained as follows.
+
+1) The parametrization of $\g$ is changed from $\vu$ to \rvs\ $\vz: \outcomes
+\to [0, 1]^\nz$ via a suitable transformation $\transformation$; this stage is
+described in \sref{parameters}. 2) An interpolant of the resulting composition
+$\g \circ \transformation$ is constructed by treating the composition as a
+deterministic function $\f$ of $\vz$; this stage is detailed in
+\sref{interpolation}. 3) An estimation of the probability distribution of $\g$
+is undertaken in the usual sampling-based manner but relying solely on the
+constructed interpolant; $\g$ is no longer involved. This last stage boils down
+to drawing independent samples from $\distribution_\vz$ and evaluating the
+interpolant $\approximation{\l}(\f) \equiv \approximation{\l}(\g \circ
+\transformation)$ at those points. Having collected samples of $\g$, other
+statistics about $\g$, such as probabilities of particular events, can be
+straightforwardly estimated. We do not discuss this estimation stage any further
+as it is standard.
+
+There are two aspects concerning the usage of the proposed framework that we
 would like to cover in what follows.
 
 \subsection{Expectation and Variance} \slab{moments}
@@ -36,8 +39,7 @@ something special to offer in this regard.
 As shown in \sref{parameters}, $\g$ can be reparameterized in terms of
 independent variables that are uniformly distributed on $[0, 1]^\nz$. This means
 that the probability density function of $\vz$ simply equals to one. Therefore,
-by the law of the unconscious statistician, using \eref{expectation} and
-\eref{approximation}, we have
+using \eref{expectation} and \eref{approximation}, we have
 \begin{align*}
   \expectation{\g} \approx \expectation{\approximation{\l}(\f)} &= \int_{[0, 1]^\nz} \approximation{\l}(\f)(\vz) \, \d\vz \\
   &= \sum_{\vi \in \lindex_\l} \, \sum_{\vj \in \Delta\oindex_\vi} \surplus(\vx_{\vi\vj}) \, \w_{\vi\vj}
@@ -75,7 +77,16 @@ such as rescaling individual outputs and then calculating the uniform norm
 $\norm{\cdot}_\infty$ or $L^2$ norm $\norm{\cdot}_2$. Our code \cite{sources}
 has been written with multiple outputs in mind.
 
-To sum up, once an interpolant of $\g$ has been constructed, the distribution of
-$\g$ is estimated using versatile sampling methods applied to the interpolant.
-The framework extends naturally to quantities of interest with multiple outputs,
-and it provides analytical formulae for expectations and variances.
+To sum up, once an interpolant of $\g$ has been constructed, the probability
+distribution of $\g$ is estimated using versatile sampling methods applied to
+the interpolant, and this application has a negligible cost. The framework
+extends naturally to quantities of interest with multiple outputs, and it
+provides analytical formulae for expectations and variances.
+
+Let us remind that the evaluation of $\g$ is an extensive operation. Our
+technique is designed to keep this expense as low as possible by choosing the
+evaluation points adaptively, which is unlike traditional sampling methods.
+Moreover, in contrast to \up{PC} expansions and similar techniques, the proposed
+framework is well suited for nonsmooth response surfaces, stemming from the
+digital nature of electronic systems.
+
