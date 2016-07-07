@@ -1,10 +1,13 @@
-Let the dynamic power consumed by task $j$ when running on processing element
-$i$ be fixed during the execution of the task and denote this dynamic power by
+Denote the number of processing elements present on the platform by $\np$. Let
+the dynamic power consumed by task $j$ when running on processing element $i$ be
+fixed during the execution of the task and denote this dynamic power by
 $\p^\dynamic_{ij}$.
 
 \begin{remark}
-The boundaries of a task have not been specified. The modeling can be performed
-at the level of granularity that makes the most sense for a particular problem.
+The fact that $\p^\dynamic_{ij}$ is constant might seem restrictive. However,
+one should keep in mind that it is just an example. Our framework does not have
+such a restriction. Even in this simple model, the modeling accuracy can be
+improved by representing large tasks as sequences of smaller tasks.
 \end{remark}
 
 Let the vector $\vp(\t) = (\p_i(\t))_{i = 1}^{\np}$ capture the total power
@@ -13,11 +16,12 @@ power introduced above as follows:
 \begin{equation} \elab{power}
   \p_i(\t) = \sum_{j = 1}^\nt \p^\dynamic_{ij} \: \delta_{ij} (\t) + \p^\static_i(\t), \hspace{1em} \text{for $i = 1, \dots, \np$},
 \end{equation}
-where $\delta_{ij}(\t)$ is the indicator of the event that processing element
-$i$ executes task $j$ at time $\t$, and $\p^\static_i(\t)$ is the static power
-consumed by processing element $j$ at time $\t$. In general, the last component
-varies with time due to the interdependence between the leakage power and
-temperature \cite{liu2007}.
+where $\delta_{ij}(\t)$ is an indicator function (outputs either zero or one) of
+the event that processing element $i$ executes task $j$ at time $\t$, and
+$\p^\static_i(\t)$ is the static power consumed by processing element $j$ at
+time $\t$. The last component depends on time because the leakage power and
+temperature are interdependent \cite{liu2007}, and temperature changes over time
+(see the next subsection).
 
 Given a set of $\ns$ points on the timeline $\{ \t_i \}_{i = 1}^\ns$,
 \eref{power} can be used to construct a power profile of the system as follows:
@@ -40,6 +44,6 @@ depending on how power values are encoded in $\mP$. The assumption that
 \eref{total-energy} is based on is that each $\Delta\t_i$ is sufficiently small
 so that the power consumed within the interval does not change significantly.
 
-Assuming that the power consumption depends on $\vu$---which is the case
-whenever, for instance, $(\vb, \vd)$ depends on $\vu$---the total energy given
-in \eref{total-energy} is a candidate for $\g$.
+Since the tuple $(\vb, \vd)$ depends on $\vu$, the power consumption of the
+system depends on $\vu$ too. Consequently, the total energy given in
+\eref{total-energy} depends on $\vu$ and is a candidate for $\g$.
