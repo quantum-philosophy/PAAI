@@ -1,16 +1,16 @@
 In this section, we evaluate the performance of our framework. A prototype of
 the framework has been implemented in the Go programming language \cite{go}.
 Aspiring to a clear separation of concerns, the implementation is broken down
-into of dozens of libraries, each of which is intended to be useful on its own.
-The corresponding source code is available online \cite{sources}, which also
+into dozens of libraries, each of which is intended to be useful on its own. The
+corresponding source code is available online \cite{sources}, which also
 includes our experimental setup along with all configuration files and input
 data. The experiments discussed below are conducted on a \up{GNU}/Linux machine
 equipped with 16 processors Intel Xeon E5520 2.27~\up{GH}z and 24~\up{GB} of
 \up{RAM}.
 
 We shall get to grips with $3 \times 2 \times 3 = 18$ uncertainty-quantification
-problems. There are considered three platform sizes $\np$: 2, 4, and 8
-processing elements; two application sizes $\nt$: 10 and 20 tasks; and three
+problems. Specifically, we shall considered tree platform sizes $\np$: 2, 4, and
+8 processing elements; two application sizes $\nt$: 10 and 20 tasks; and three
 quantities of interest $\g$: the end-to-end delay, total energy consumption, and
 maximum temperature defined in \eref{end-to-end-delay}, \eref{total-energy}, and
 \eref{maximum-temperature}, respectively.
@@ -35,10 +35,11 @@ delegated to the HotSpot tool \cite{skadron2004}. The floorplan of each platform
 is a regular grid wherein each processing element occupies $2 \times
 2~\text{mm}^2$ on the die. The output of the tool is a pair of a thermal
 capacitance matrix $\mC$ and a thermal conductance $\mG$ matrix used in
-\eref{thermal-system}. For simplicity, the leakage modeling is based on a linear
-approximation \cite{ukhov2012, liu2007}. The time step of power and temperature
-profiles is constant and equal to one microsecond; see \sref{power} and
-\sref{temperature}.
+\eref{thermal-system}. The leakage modeling is based on a linear fit to a data
+set of \up{SPICE} simulations of a series of \up{CMOS} invertors
+\cite{ukhov2012, liu2007}; see also \cite{ukhov2014}. The time step of power and
+temperature profiles is constant and equal to one microsecond; see \sref{power}
+and \sref{temperature}.
 
 \input{include/assets/figures/distribution}
 The uncertain parameters $\vu$ are the execution times of the tasks; all other
@@ -71,18 +72,17 @@ contains all other details too.
 The performance of our framework with respect to each problem is assessed as
 follows. First, we obtain the ``true'' probability distribution of the quantity
 in question $\g$ by sampling $\g$ directly and extensively. Direct sampling
-means that $\g$ is evaluated \emph{as is}; in particular, no model-order
-reduction is perform, which could affect the resulting accuracy (see
-\sref{parameters}). Second, we construct an interpolant for $\g$ and estimate
-$\g$'s distribution by sampling the interpolant. In both cases, we draw $10^5$
-samples; let us remind, however, that the cost of sampling the interpolant is
-practically negligible. Third, we perform another round of direct sampling of
-$\g$, but this time we draw as many samples as many times the quantity of
-interest was evaluated during the interpolation process. In each of the three
-cases, the sampling is undertaken in accordance with a Sobol sequence, which is
-a quasi-random low-discrepancy sequence featuring much better convergence
-properties than those of the vanilla Monte-Carlo (\up{MC}) sampling
-\cite{joe2008}.
+means that samples are drawn from $\g$ itself (not from a surrogate), and that
+there is no any intermediate model-order reduction (see \sref{parameters}).
+Second, we construct an interpolant for $\g$ and estimate $\g$'s distribution by
+sampling the interpolant. In both cases, we draw $10^5$ samples; let us remind,
+however, that the cost of sampling the interpolant is practically negligible.
+Third, we perform another round of direct sampling of $\g$, but this time we
+draw as many samples as many times the quantity of interest was evaluated during
+the interpolation process. In each of the three cases, the sampling is
+undertaken in accordance with a Sobol sequence, which is a quasi-random
+low-discrepancy sequence featuring much better convergence properties than those
+of the vanilla Monte-Carlo (\up{MC}) sampling \cite{joe2008}.
 
 As a result, we obtain three estimates of $\g$'s distribution: reference (the
 one considered true), proposed (the one interpolation powered), and direct (the
