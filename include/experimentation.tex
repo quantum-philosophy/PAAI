@@ -65,9 +65,10 @@ variables for applications with $\nt = 10$ and 20 tasks, respectively.
 
 The configuration of the interpolation algorithm (the collocation nodes, basis
 functions, and adaptation strategy with stopping conditions) is as described in
-\sref{interpolation}. The parameters $\aerror$, $\rerror$, and $\serror$ vary
-depending on the problem and can be found at \cite{sources}, which, again,
-contains all other details too.
+\sref{interpolation}. The parameters $\aerror$, $\rerror$, and $\serror$ are
+around $10^3$, $10^2$, and $10^4$, respectively, depending on the problem; the
+exact values can be found at \cite{sources}, which, again, contains all other
+details too.
 
 The performance of our framework with respect to each problem is assessed as
 follows. First, we obtain the ``true'' probability distribution of the quantity
@@ -106,14 +107,15 @@ sizes: 10 (odd) and 20 (even) tasks.
 The horizontal axis of each plot shows the number of points, that is,
 evaluations of the quantity of interest $\g$, and the vertical one shows the
 \up{KS} statistic on a logarithmic scale. Each plot has two lines. The solid
-line corresponds to the technique proposed in this paper. It shows how the
+line represents our technique. The circles on this line correspond to the steps
+of the interpolation process given in \eref{approximation}. They show how the
 \up{KS} statistic computed with respect to the reference solution changes as the
-interpolation process consumes more and more points, that is, as more and more
-interpolation steps in \eref{approximation} are taken. Note that we display only
-a subset of the actual interpolation steps in order to make the figure more
-legible. Synchronously with the solid line (that is, for the same numbers of
-$\g$'s evaluations), the dashed line shows the error of direct sampling, which,
-as before, is computed with respect to the reference solution.
+interpolation process takes steps (and, hence, increases the number of
+collocation nodes) until the stopping condition (\sref{adaptivity}) is
+satisfied. Note that only a subset of the actual steps is displayed in order to
+make the figure legible. Synchronously with the solid line (that is, for the
+same numbers of $\g$'s evaluations), the dashed line shows the error of direct
+sampling, which, as before, is computed with respect to the reference solution.
 
 Studying \fref{results}, one can make a number of observations. First and
 foremost, the interpolation-powered approach (solid lines) to probabilistic
@@ -146,24 +148,12 @@ depends on the amount of reduction applied. However, model-order reduction is a
 good, recommended practice as it circumvents unnecessary complexity and,
 thereby, makes problems more tractable.
 
-At this point, it is important to realize that, for the same price, the proposed
-framework yields an object that is much more rich and powerful than a bunch of
-samples delivered by direct sampling. A surrogate produced by the framework for
-a quantity of interest can also be used to obtain a bunch of samples, but we are
-not constrained by their number. Moreover, if needed, we can always go back and
-generate more samples without even touching the expansive quantity in question.
-Furthermore, the placement of the collocation nodes and the magnitudes of the
-corresponding surpluses are an invaluable source of information, which can be
-utilized for such tasks as sensitivity analysis and edge detection. Hierarchical
-surpluses are also valuable on their own; an example was given in
-\sref{moments}.
-
 Before we conclude, let us state explicitly that the wall-clock time taken by
-the experiments is not reported here. This time is irrelevant: the evaluation of
-$\g$ is time consuming (see \sref{problem}), which renders the number of $\g$'s
-evaluations as the most apposite expense indicator. However, for the curious
-reader, we would like to note briefly that, for instance, in the bottom-right
-problem shown in \fref{results} ($\np = 8$, $\nt = 20$, and $\q$ is
-temperature), it took around two hours to perform $10^5$ simulations of $\g$ in
-parallel on 16 processors. Evaluating the corresponding interpolant the same
-number of times took less than a second.
+the experiments is not reported here. The reason is that this time is
+irrelevant: since the evaluation of $\g$ is time consuming (see \sref{problem}),
+the number of $\g$'s evaluations is rendered as the most apposite expense
+indicator. However, for the curious reader, we would like to note briefly that,
+for instance, in the case of the bottom-right problem shown in \fref{results}
+($\np = 8$, $\nt = 20$, and $\q$ is temperature), it took around two hours to
+perform $10^5$ simulations of $\g$ in parallel on 16 processors. Evaluating the
+corresponding interpolant the same number of times took less than a second.

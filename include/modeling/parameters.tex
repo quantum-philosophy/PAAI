@@ -56,8 +56,8 @@ variances of the corresponding components revealed by the decomposition. The
 model-order reduction boils down to selecting those major components whose
 cumulative contributions to the total variance is above a certain threshold.
 Formally, assuming that $(\lambda_i)_{i = 1}^\nu$ are sorted in the descending
-order and given a threshold parameter $\eta \in (0, 1]$, we identify the
-smallest $\nz$ such that
+order and given a threshold $\eta \in (0, 1]$ specifying the fraction of the
+total variance to preserve, we identify the smallest $\nz$ such that
 \begin{equation} \elab{reduction}
   \frac{\sum_{i = 1}^\nz \lambda_i}{\sum_{i = 1}^\nu \lambda_i} \geq \eta.
 \end{equation}
