@@ -40,10 +40,9 @@ As shown in \sref{parameters}, $\g$ can be reparameterized in terms of
 independent variables that are uniformly distributed on $[0, 1]^\nz$. This means
 that the probability density function of $\vz$ simply equals to one. Therefore,
 using \eref{expectation} and \eref{approximation}, we have
-\begin{align*}
-  \expectation{\g} \approx \expectation{\approximation{\l}(\f)} &= \int_{[0, 1]^\nz} \approximation{\l}(\f)(\vz) \, \d\vz \\
-  &= \sum_{\vi \in \lindex_\l} \, \sum_{\vj \in \Delta\oindex_\vi} \surplus(\vx_{\vi\vj}) \, \w_{\vi\vj}
-\end{align*}
+\[
+  \expectation{\g} \approx \expectation{\approximation{\l}(\f)} = \int_{[0, 1]^\nz} \hspace{-1.5em} \approximation{\l}(\f)(\vz) \, \d\vz = \sum_{\vi \in \lindex_\l} \, \sum_{\vj \in \Delta\oindex_\vi} \surplus(\vx_{\vi\vj}) \, \w_{\vi\vj}
+\]
 where
 \[
   \w_{\vi\vj} = \int_{[0, 1]^\nz} \e_{\vi\vj}(\vz) \, \d\vz = \prod_{k = 1}^{\nz} \int_0^1 \e_{i_k j_k}(\z_k) \, \d\z_k = \prod_{k = 1}^{\nz} \w_{i_k j_k}.

@@ -15,8 +15,26 @@
 \usepackage[factor=1700]{microtype}
 \newcommand{\subscript}[1]{\text{\kern0.1em#1}}
 
-\setlength\textfloatsep{10pt}
+\setlength{\textfloatsep}{10pt}
 \setlength{\parskip}{0pt}
+
+\setlength{\abovedisplayskip}{5pt}
+\setlength{\belowdisplayskip}{5pt}
+
+\makeatletter
+\let\origsection\section
+\renewcommand\section{\@ifstar{\starsection}{\nostarsection}}
+\newcommand\nostarsection[1]
+{\sectionprelude\origsection{#1}\sectionpostlude}
+\newcommand\starsection[1]
+{\sectionprelude\origsection*{#1}\sectionpostlude}
+\newcommand\sectionprelude{%
+  \vspace{-0.5em}
+}
+\newcommand\sectionpostlude{%
+  \vspace{-0.25em}
+}
+\makeatother
 
 \usepackage{hyperref}
 

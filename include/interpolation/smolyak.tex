@@ -47,10 +47,9 @@ The sparsity and incremental refinement of Smolyak's approach, which are shown
 in \eref{smolyak-grid} and \eref{smolyak-incremental}, respectively, are
 remarkable properties \perse, but they can be taken even further. To this end,
 let $\Delta\X_{-1} = \emptyset$,
-\begin{align*}
-  & \Delta\X_i = \X_i \setminus \X_{i - 1}, \text{ and} \\
-  & \Delta\X_\vi = \Delta\X_{i_1} \times \cdots \times \Delta\X_{i_\nin}.
-\end{align*}
+\[
+  \Delta\X_i = \X_i \setminus \X_{i - 1}, \text{ and } \Delta\X_\vi = \Delta\X_{i_1} \times \cdots \times \Delta\X_{i_\nin}.
+\]
 Then, \eref{smolyak-grid} can be rewritten as
 \begin{equation} \elab{smolyak-grid-incremental}
   \Y_\l = \bigcup_{\vi \in \lindex_\l} \Delta\X_\vi = \Y_{\l - 1} \cup \bigcup_{\vi \in \Delta\lindex_\l} \Delta\X_\vi,

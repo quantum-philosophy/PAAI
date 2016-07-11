@@ -44,20 +44,18 @@ complexity of the problem at hand. Therefore, an important component of our
 framework is model-order reduction, which we shall base on the discrete
 Karhunen--Lo\`{e}ve decomposition, also known as the principal component
 analysis. We proceed as follows. Since any correlation matrix is real and
-symmetric, $\correlation$ admits the eigendecomposition:
-\[
-  \correlation = \m{V} \m{\Lambda} \m{V}^T
-\]
-where $\m{V} \in \real^{\nu \times \nu}$ is an orthogonal matrix whose columns
-are the eigenvectors of $\correlation$, and $\m{\Lambda} = \diag(\lambda_i)_{i =
-1}^\nu$ is a diagonal matrix whose diagonal elements are the eigenvalues of
-$\correlation$. The eigenvalues $(\lambda_i)_{i = 1}^\nu$ correspond to the
-variances of the corresponding components revealed by the decomposition. The
-model-order reduction boils down to selecting those major components whose
-cumulative contributions to the total variance is above a certain threshold.
-Formally, assuming that $(\lambda_i)_{i = 1}^\nu$ are sorted in the descending
-order and given a threshold $\eta \in (0, 1]$ specifying the fraction of the
-total variance to preserve, we identify the smallest $\nz$ such that
+symmetric, $\correlation$ admits the eigendecomposition: $\correlation = \m{V}
+\m{\Lambda} \m{V}^T$ where $\m{V} \in \real^{\nu \times \nu}$ is an orthogonal
+matrix whose columns are the eigenvectors of $\correlation$, and $\m{\Lambda} =
+\diag(\lambda_i)_{i = 1}^\nu$ is a diagonal matrix whose diagonal elements are
+the eigenvalues of $\correlation$. The eigenvalues $(\lambda_i)_{i = 1}^\nu$
+correspond to the variances of the corresponding components revealed by the
+decomposition. The model-order reduction boils down to selecting those major
+components whose cumulative contributions to the total variance is above a
+certain threshold. Formally, assuming that $(\lambda_i)_{i = 1}^\nu$ are sorted
+in the descending order and given a threshold $\eta \in (0, 1]$ specifying the
+fraction of the total variance to preserve, we identify the smallest $\nz$ such
+that
 \begin{equation} \elab{reduction}
   \frac{\sum_{i = 1}^\nz \lambda_i}{\sum_{i = 1}^\nu \lambda_i} \geq \eta.
 \end{equation}
