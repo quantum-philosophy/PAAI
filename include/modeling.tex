@@ -13,6 +13,7 @@ designer's discretion.
 \subsection{Uncertainty Parameters} \slab{parameters}
 \input{include/modeling/parameters}
 
+\input{include/assets/figures/example.tex}
 \subsection{Application Timing} \slab{time}
 \input{include/modeling/time}
 
@@ -22,9 +23,50 @@ designer's discretion.
 \subsection{Heat Dissipation} \slab{temperature}
 \input{include/modeling/temperature}
 
-To conclude, we have covered three facets of an electronic system, namely,
-timing, power, and temperature, and introduced a number of quantities associated
-with them; we will come back to them in the section on experimental results,
-\sref{experimentation}. We have also discussed the transformation that needs to
-be applied to $\vu$ prior to the interpolation of $\g$, and we are now ready to
-move on to the interpolation procedure itself.
+To conclude, we have discussed the transformation that needs to be applied to
+$\vu$ prior to the interpolation of $\g$. We have also covered three facets of
+an electronic system, namely, timing, power, and temperature, and introduced a
+number of quantities of interest associated with them; we will come back to
+these quantities in the section on experimental results, \sref{experimentation}.
+
+Before we move on to the interpolation procedure, let us apply the proposed
+framework to a small synthetic problem in order to get a better feel for how all
+the pieces of the framework fit together. A detailed description of our
+experimental setup is given in \sref{configuration}; here we give only the bare
+minimum.
+
+\newcommand{\cores}{\token{PE1} and \token{PE2}}
+\newcommand{\tasks}{\token{T1}--\token{T4}}
+The problem is depicted in \fref{example}. We consider a platform with two
+homogeneous processing elements, \cores, and an application with four tasks,
+\tasks. The data dependencies between \tasks\ and their mapping onto \cores\ can
+be seen in \fref{example}. The application is scheduled such that the end-to-end
+delay given in \eref{end-to-end-delay} is minimized. This delay is also our
+quantity of interest $\g$. The uncertain parameters are the execution times of
+\token{T2} and \token{T4} denoted by $\u_1$ and $\u_2$, respectively; the
+parameters are correlated, and their marginal distributions are beta
+distributions. In order to make the problem nontrivial, the (deterministic)
+execution time of \token{T3} is chosen to lie in the range of the possible
+values of the execution time of \token{T2}; in this case, the impact of $\u_1$
+on $\g$ gets cut off.
+
+The leftmost box in \fref{example} represents a simulator of the system. The
+second box corresponds to the transformation $\transformation$ discussed in
+\sref{parameters}, and the third one to our interpolation engine discussed in
+the next section. Using 156 strategic invocations of the simulator, the
+interpolation engine yields a light surrogate for the simulator (the slim box
+with rounded corners). Having obtained such a surrogate, one proceeds to
+extensively sampling the surrogate via a sampling method of choice (the
+rightmost box). Note that the computational cost of this extensive sampling is
+negligible. The collected samples are then used to compute an estimate of the
+distribution of $\g$.
+
+In the graph on the right-hand side of \fref{example}, the blue line shows the
+probability density function of $\g$ computed by applying kernel density
+estimation to the samples obtained from our surrogate. The yellow line shows the
+true density of $\g$; its calculation is explained in \sref{experimentation}. It
+can be seen that our solution closely matches the exact one. In addition, the
+orange line shows the estimation that one would get if one sampled $\g$ directly
+156 times and used only those samples in order to estimate the density of $\g$.
+For the same budget of simulations, the solution delivered by our framework is
+substantially closer to the true one than the one delivered by naive sampling.

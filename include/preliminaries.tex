@@ -3,21 +3,19 @@ outcomes, $\sigmaAlgebra \subseteq 2^\outcomes$ is a $\sigma$-algebra, and
 $\probabilityMeasure: \sigmaAlgebra \to [0, 1]$ is a probability measure
 \cite{durrett2010}. A \rv\ $\h$ defined on $\probabilitySpace$ is an
 $\sigmaAlgebra$-measurable function $\h: \outcomes \to \real$. A \rv\ is
-uniquely characterized by its (cumulative) distribution function defined by
-\begin{equation*}
-  \distribution_\h(z) = \probabilityMeasure(\{ \o \in \outcomes: \h(\o) \leq z \}),
-\end{equation*}
-which is denoted by $\h \sim \distribution_\h$. The expected value and variance
-of $\h$ are given by, respectively,
+uniquely characterized by its distribution function defined by
+$\distribution_\h(z) = \probabilityMeasure(\{ \o \in \outcomes: \h(\o) \leq z
+\})$, written as $\h \sim \distribution_\h$. The expected value and variance of
+$\h$ are given by
 \begin{align}
   & \expectation{\h} = \int_\outcomes \h(\o) \, \d\probabilityMeasure(\o) = \int_\real z \, \d\distribution_\h(z) \hspace{1em} \text{and} \elab{expectation} \\
-  & \variance{\h} = \expectation{\h^2} - (\expectation{\h})^2. \elab{variance}
+  & \variance{\h} = \expectation{\h^2} - (\expectation{\h})^2,\text{ respectively.} \elab{variance}
 \end{align}
 
 A random vector $\vh = (\h_i)_{i = 1}^n$ is a vector whose elements are \rvs. A
 random vector is fully characterized by its distribution function
-$\distribution_{\vh}$, denoted $\vh \sim \distribution_{\vh}$. This function is
-referred to as a joint or multivariate distribution function, emphasizing the
+$\distribution_{\vh}$, written as $\vh \sim \distribution_{\vh}$. This function
+is referred to as a joint or multivariate distribution function, emphasizing the
 fact that the variables work together.
 
 An $n$-variate distribution can be expressed as a set of $n$ marginal
