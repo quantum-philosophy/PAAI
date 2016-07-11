@@ -11,10 +11,10 @@ efficient and reliable product.
 In order to account for uncertainty, one has to quantify it first. In this
 setting, one is usually interested in a quantity---referred to as the quantity
 of interest---whose complete knowledge would be highly profitable for the design
-at hand but cannot be attained as the quantity depends on a number of parameters
-that are inherently uncertain at design time. Consider, for instance, the
-maximum temperature of a system running a number of tasks whose execution times
-are random.
+at hand but cannot be attained since the quantity depends on a number of
+parameters that are inherently uncertain at design time. Consider, for instance,
+the maximum temperature of a system running a number of tasks whose execution
+times are random.
 
 Uncertainty quantification is a broad umbrella. The corresponding techniques can
 deliver radically different pieces of information about the quantity of
@@ -41,7 +41,7 @@ breakthroughs \cite{asmussen2007}.
 
 The major problem with sampling techniques, however, is in sampling: one should
 be able to obtain sufficient many realizations of the quantity of interest in
-order to accurately estimate the needed statistics of that quantity
+order to accurately estimate the needed statistics about that quantity
 \cite{diaz-emparanza2002}. The main concerns in this context are: How much does
 it cost in terms of time and other resources to obtain one sample? How many
 samples do we need? How many can we afford? When the subject under analysis is
@@ -64,22 +64,22 @@ hybrid \cite{jakeman2012}: it tries to pick up both global (that is, on the
 level of entire dimensions \cite{klimke2006}) and, more importantly, local (that
 is, on the level on individual points \cite{ma2009}) variations. This means that
 the framework is able to benefit from many particularities that might be present
-in the stochastic space, that is, the space of the uncertain parameters.
-Adaptivity is the capital feature of our technique, and, thus, we would like to
-elaborate on it now. To this end, we first need to make one observation.
+in the stochastic space, that is, the space of the uncertain parameters. The
+adaptivity is the capital feature of our technique, and we would like to
+elaborate on it now. To this end, let us first make one general observation.
 
 The uncertainties present in electronic systems originate from both the physical
-world and the computer one. An example of a physical source of uncertainty is
+world and the computer world. An example of a physical source of uncertainty is
 process variation \cite{srivastava2005}, which is a side effect of contemporary
 fabrication processes. Process variation has been central for many lines of
 research \cite{bhardwaj2008, juan2012, lee2013, ukhov2014, ukhov2015}. An
 example of a digital source of uncertainty (the computer world) is workload. To
-elaborate, the characteristics of the codes running modern devices change from
-one activation to another depending on the environment and input data. This
+elaborate, the characteristics of the codes running on modern devices change
+from one activation to another depending on the environment and input data. This
 source of uncertainty has not been deprived of attention either, especially in
 the real-time community \cite{quinton2012, diaz2002, santinelli2011,
-tanasa2015}. Regardless of their origins, such phenomena as the ones mentioned
-above render the behavior of an electronic system as nondeterministic to the
+tanasa2015}. Regardless of the origin, such phenomena as the ones mentioned
+above render the behavior of an electronic system nondeterministic to the
 designer, and accounting for them is highly beneficial if not essential.
 
 \input{include/assets/figures/motivation.tex}
@@ -88,7 +88,7 @@ smooth, well behaved. In such cases, uncertainty quantification based on
 polynomial chaos (\up{PC}) expansions \cite{xiu2010} and other approximation
 techniques making use of global polynomials generally work well, as in
 \cite{bhardwaj2008, lee2013, ukhov2014, ukhov2015}. On the other hand, the
-variability coming from the computer world often has steep gradients and favors
+variability coming from the computer world has often steep gradients and favors
 nondifferentiability and even discontinuity. In such cases, \up{PC} expansions
 and similar techniques fail: they require extremely many evaluations of the
 quantity of interest in order to deliver an acceptable level of accuracy and,
@@ -153,7 +153,7 @@ sampling methods can be applied and have a negligible cost.
 
 The remainder of the paper is organized as follows. Section~\ref{sec:prior-work}
 provides an overview of the prior work. In \sref{present-work}, we summarize the
-contribution of the present paper. Preliminaries are given in
+contribution of the present paper. The preliminaries are given in
 \sref{preliminaries}. The problem that we address is formulated in
 \sref{problem}, and our solution to the problem is outlined in \sref{solution}.
 The proposed framework is presented in \sref{modeling}, \sref{interpolation},
