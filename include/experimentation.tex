@@ -9,11 +9,12 @@ equipped with 16 processors Intel Xeon E5520 2.27~\up{GH}z and 24~\up{GB} of
 \up{RAM}.
 
 We shall get to grips with $3 \times 2 \times 3 = 18$ uncertainty-quantification
-problems. Specifically, we shall considered three platform sizes $\np$: 2, 4,
-and 8 processing elements; two application sizes $\nt$: 10 and 20 tasks; and
-three quantities of interest $\g$: the end-to-end delay, total energy
-consumption, and maximum temperature defined in \eref{end-to-end-delay},
-\eref{total-energy}, and \eref{maximum-temperature}, respectively.
+problems. We shall considered three platform sizes $\np$: 2, 4, and 8
+processing elements; two application sizes $\nt$: 10 and 20 tasks; and three
+quantities of interest $\g$: the end-to-end delay, total energy consumption, and
+maximum temperature defined in \eref{end-to-end-delay}, \eref{total-energy}, and
+\eref{maximum-temperature}, respectively. At this point, it might be helpful to
+recall the example in \fref{example}.
 
 \subsection{Configuration} \slab{configuration}
 
@@ -121,8 +122,8 @@ that, given a fixed budget of $\g$'s evaluations, the probability distributions
 delivered by our framework are closer to the true ones than those delivered by
 sampling $\g$ directly, despite the fact that the latter relies on Sobol
 sequences, which are a sophisticated sampling strategy. Since direct sampling
-methods cover the probability space impartially, \fref{results} is a salient
-illustration of the difference between being adaptive and nonadaptive.
+methods try to cover the probability space impartially, \fref{results} is a
+salient illustration of the difference between being adaptive and nonadaptive.
 
 It can also be seen in \fref{results} that, as the number of evaluations
 increases, the solutions computed by our technique approach the exact ones. The

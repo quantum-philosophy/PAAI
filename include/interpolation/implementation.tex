@@ -21,7 +21,6 @@ logical left shift, respectively, and $\n_\text{bits}$ is the number of bits
 reserved for storing Smolyak levels, which can be adjusted according to the
 maximum permitted deepness of interpolation.
 
-\input{include/assets/algorithms/evaluate}
 The pseudocode of the construction stage is given in \aref{construct} called
 \token{Construct}. The \token{target} input is a function $\f$ to be
 approximated. The \token{surrogate} output is a structure containing the
@@ -29,6 +28,7 @@ artifacts of interpolation, which are a set of tuples $\{ (\vl_k,
 \surplus(\vx_{\vl_k}) \}_k$, giving a comprehensive description of an
 interpolant. The routine works as follows.
 
+\input{include/assets/algorithms/evaluate}
 \begin{compactlist}
 
 \point{Line~2:} Each iteration is an interpolation step in \eref{approximation}.
