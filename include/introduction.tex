@@ -20,10 +20,8 @@ Uncertainty quantification is a broad umbrella. The corresponding techniques can
 deliver radically different pieces of information about the quantity of
 interest. In this paper, we are interested in probability distributions rather
 than, for instance, corner cases. Designing for the worst case leads often to a
-poor solution as the system at hand might easily end up being too conservative,
-overdesigned \cite{quinton2012}. The value of probability distributions is well
-understood, and it is especially high in the context of soft real-time systems
-and control systems.
+poor solution as the system under consideration might easily end up being too
+conservative, overdesigned \cite{quinton2012}.
 
 When it comes to the estimation of probability distributions and to uncertainty
 quantification in general, sampling methods are of great use. The classical
@@ -120,36 +118,35 @@ observed oscillating behavior is the well-known Gibbs phenomenon stemming from
 the discontinuity of the response. No matter how many points are used in the
 construction of a polynomial, the oscillations will never go away completely.
 
-Let us now see how the framework proposed in the paper solves the same problem.
+Let us now see how the framework proposed in this paper solves the same problem.
 For the purpose of the experiment, our technique is constrained to make use of
 as many points as the \up{PC} expansion did. The result is the blue curve in
 \fref{motivation}, and the adaptively chosen points are plotted on the
 horizontal axis. It can be seen that the approximation is good, and, in fact, it
 would be indistinguishable from the true response with a few additional points.
-One can note that the adaptive procedure started to concentrate points at the
-jump and left the insipid regions on both sides of the jump with no particular
-attention. Having constructed such an accurate representation, one can proceed
-to the calculation of the probability distribution of the quantity of interest,
-which, in general, is done via sampling followed by such techniques as kernel
-density estimation. The crucial point to note is that this follow-up sampling
-does not involve the original system in any way, which implies that it costs
-practically nothing in terms of the computation time.
+One can note that the adaptive procedure started to concentrate interpolation
+points at the jump and left the insipid regions on both sides of the jump with
+no particular attention. Having constructed such a representation, one can
+proceed to the calculation of the probability distribution of the quantity of
+interest, which, in general, is done via sampling followed by such techniques as
+kernel density estimation. The crucial point to note is that this follow-up
+sampling does not involve the original system in any way, which implies that it
+costs practically nothing in terms of the computation time.
 
 The example discussed above illustrates the fact that the proposed framework is
-well suited for nonsmooth response surfaces. As motivated previously, the
-ability to tackle such problems is important for the design of electronic
-systems due to their digital nature. More generally, the adaptivity featured by
-our technique allows for a reduction of the costs associated with probabilistic
-analysis of the quantity at hand, as measured by the number of times the
-quantity needs to be evaluation in order to achieve a certain accuracy level.
-The magnitude of the reduction depends on the problem, and it can be substantial
-when the problem is well disposed to adaptation.
+well suited for nonsmooth response surfaces. More generally, the adaptivity
+featured by our technique allows for a reduction of the costs associated with
+probabilistic analysis of the quantity at hand, as measured by the number of
+times the quantity needs to be evaluated in order to achieve a certain accuracy
+level. The magnitude of the reduction depends on the problem, and it can be
+substantial when the problem is well disposed to adaptation.
 
 Lastly, we would like to reiterate that the output of our framework is
 generative: we construct a light representation of the quantity of interest that
 can be used to generate realizations of this quantity without touching the
-expensive ``black box.'' Consequently, having constructed such a representation,
-sampling methods can be applied and have a negligible cost.
+expensive (in terms of evaluation by, for instance, simulation) ``black box.''
+Consequently, having constructed such a representation, sampling methods can be
+applied and have a negligible cost.
 
 The remainder of the paper is organized as follows. Section~\ref{sec:prior-work}
 provides an overview of the prior work. In \sref{present-work}, we summarize the
