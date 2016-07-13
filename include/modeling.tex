@@ -37,18 +37,16 @@ minimum.
 
 \newcommand{\cores}{\token{PE1} and \token{PE2}}
 \newcommand{\tasks}{\token{T1}--\token{T4}}
-The problem is depicted in \fref{example}. We consider a platform with two
-homogeneous processing elements, \cores, and an application with four tasks,
+The addressed problem is depicted in \fref{example}. We consider a platform with
+two homogeneous processing elements, \cores, and an application with four tasks,
 \tasks. The data dependencies between \tasks\ and their mapping onto \cores\ can
-be seen in \fref{example}. The application is scheduled such that the end-to-end
-delay given in \eref{end-to-end-delay} is minimized. This delay is also our
-quantity of interest $\g$. The uncertain parameters are the execution times of
-\token{T2} and \token{T4} denoted by $\u_1$ and $\u_2$, respectively; the
-parameters are correlated, and their marginal distributions are beta
-distributions. In order to make the problem more challenging, the
-(deterministic) execution time of \token{T3} is chosen to lie in the range of
-the possible values of the execution time of \token{T2}, which curtails the
-impact of $\u_1$ on $\g$.
+be seen in \fref{example}. This delay is also our quantity of interest $\g$. The
+uncertain parameters are the execution times of \token{T2} and \token{T4}
+denoted by $\u_1$ and $\u_2$, respectively; the parameters are correlated, and
+their marginal distributions are beta distributions. In order to make the
+problem more challenging, the (deterministic) execution time of \token{T3} is
+chosen to lie in the range of the possible values of the execution time of
+\token{T2}, which curtails the impact of $\u_1$ on $\g$.
 
 The leftmost box in \fref{example} represents a simulator of the system. The
 second box corresponds to the transformation $\transformation$ discussed in
