@@ -7,11 +7,11 @@ accuracy as indicated by the yet-to-be-found accuracy metric.
 Thanks to the hierarchical form obtained in the previous subsection, we already
 have a good material for building an accuracy metric. Recall \eref{surplus}.
 Hierarchical surpluses are natural indicators of the interpolation error: they
-are the difference between the true function and its approximation at the nodes
-of the underlying sparse grid. Hence, they can be recycled in order to
-effectively identify ``problematic'' regions. Specifically, we first assign a
-score to each node $\vx_{\vi\vj}$ or, equivalently, to each pair of level and
-order indices $(\vi, \vj)$:
+are the difference between the values of the true function and those of an
+approximation at the nodes of the underlying sparse grid. Hence, they can be
+recycled in order to effectively identify ``problematic'' regions. Specifically,
+we first assign a score to each node $\vx_{\vi\vj}$ or, equivalently, to each
+pair of level and order indices $(\vi, \vj)$:
 \begin{equation} \elab{score}
   \score_{\vi\vj} = \left| \surplus(\vx_{\vi\vj}) \, \w_{\vi\vj} \right|
 \end{equation}

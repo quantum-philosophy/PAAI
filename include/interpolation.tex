@@ -8,12 +8,13 @@ problems, the ability to perform gradual refinement of the approximation with a
 natural error control, and the ability to make the refinement fine-grained and,
 therefore, gain further efficiency.
 
-Let $\f$ be a function that we would like to approximate. The function is
-assumed to be in $\continuous([0, 1]^\nin)$, the space of continuous functions
-in the unit hypercube $[0, 1]^\nin$. The assumption is a formality and does not
-impose any restrictions in practice. In what follows, we shall gradually
-construct an efficient interpolant for $\f$. Efficiency refers to the number of
-function evaluations required to achieve a certain accuracy level.
+Let $\f$ be a function that we would like to approximate; the connection between
+$\f$ and $\g$ will be explained in \sref{analysis}. The function is assumed to
+be in $\continuous([0, 1]^\nin)$, the space of continuous functions in the unit
+hypercube $[0, 1]^\nin$. The assumption is a formality and does not impose any
+restrictions in practice. In what follows, we shall gradually construct an
+efficient interpolant for $\f$. Efficiency refers to the number of function
+evaluations required to achieve a certain accuracy level.
 
 \subsection{Tensor Product} \slab{tensor}
 \input{include/interpolation/tensor}
