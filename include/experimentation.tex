@@ -1,18 +1,15 @@
-In this section, we evaluate the performance of our framework. A prototype of
-the framework has been implemented in the Go programming language \cite{go}.
-Aspiring to a clear separation of concerns, the implementation is broken down
-into dozens of libraries, each of which is intended to be useful on its own. The
-corresponding source code is available online \cite{sources}, which also
-includes our experimental setup along with all configuration files and input
-data. The experiments discussed below are conducted on a \up{GNU}/Linux machine
+In this section, we evaluate the performance of our framework. Our
+implementation is open source and can be found at \cite{sources}, which also
+includes the experimental setup along with configuration files and input data.
+The experiments discussed below are conducted on a \up{GNU}/Linux machine
 equipped with 16 processors Intel Xeon E5520 2.27~\up{GH}z and 24~\up{GB} of
 \up{RAM}.
 
 We shall get to grips with $3 \times 2 \times 3 = 18$ uncertainty-quantification
-problems. We shall considered three platform sizes $\np$: 2, 4, and 8
-processing elements; two application sizes $\nt$: 10 and 20 tasks; and three
-quantities of interest $\g$: the end-to-end delay, total energy consumption, and
-maximum temperature defined in \eref{end-to-end-delay}, \eref{total-energy}, and
+problems. We shall consider three platform sizes $\np$: 2, 4, and 8 processing
+elements; two application sizes $\nt$: 10 and 20 tasks; and three quantities of
+interest $\g$: the end-to-end delay, total energy consumption, and maximum
+temperature defined in \eref{end-to-end-delay}, \eref{total-energy}, and
 \eref{maximum-temperature}, respectively. At this point, it might be helpful to
 recall the example in \fref{example}.
 
