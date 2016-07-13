@@ -1,11 +1,15 @@
 Suppose the application is given as a directed acyclic graph. The vertices
-correspond to tasks, and the edges to data dependency between these tasks. Each
-task has a start and a finish time. For task $i$, denote these two time moments
-by $\b_i$ and $\d_i$, respectively, and let $\vb = (\b_i)_{i=1}^\nt$ and $\vd =
-(\d_i)_{i=1}^\nt$. Other timing characteristics of the application can be
-derived from $(\vb, \vd)$. An example is the end-to-end delay, which, in this
-scenario, is the difference between the finish time of the latest task and the
-start time of the earliest task:
+represent tasks, and the edges data dependency between these tasks. Suppose
+further that a static cyclic scheduling policy is utilized. Note, however, these
+assumptions are orthogonal to our framework; the framework can be applied to any
+application model and any scheduling policy.
+
+Each task has a start and a finish time. For task $i$, denote these two time
+moments by $\b_i$ and $\d_i$, respectively, and let $\vb = (\b_i)_{i=1}^\nt$ and
+$\vd = (\d_i)_{i=1}^\nt$. Other timing characteristics of the application can be
+derived from $(\vb, \vd)$. An example is the end-to-end delay, which is the
+difference between the finish time of the latest task and the start time of the
+earliest task:
 \begin{equation} \elab{end-to-end-delay}
   \text{End-to-end delay} = \max_{i = 1}^\nt \, \d_i - \min_{i = 1}^\nt \, \b_i.
 \end{equation}
