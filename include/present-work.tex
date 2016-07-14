@@ -10,17 +10,16 @@ framework can be utilized in scenarios with limited knowledge about the joint
 probability distribution of the uncertain parameters, which are common in
 practice (to be elaborated on in \sref{parameters}).
 
-The scope of our framework is wide because the framework has a powerful
+The scope of our framework is wide because the framework features a powerful
 approximation engine. We make use of hierarchical interpolation with hybrid
-adaptivity \cite{jakeman2012, klimke2006, ma2009}, which enables us to tackle
-diverse electronic-system-design problems while keeping the associated
-computation costs low. In particular, the framework is suitable for nonsmooth
-problems, which is an important feature in the context of electronic systems due
-to their digital nature, as discussed in \sref{introduction}.
+adaptivity on sparse grids \cite{jakeman2012, klimke2006, ma2009}, which enables
+us to tackle diverse design problems while keeping the associated computation
+costs low.
 
-To the best of our knowledge, our work is the first one to use the
-above-mentioned adaptive interpolation technique in the context of probabilistic
-analysis of electronic systems.
+To the best of our knowledge, our framework is the first one to address
+systematically and efficiently nonsmooth problems in the context of
+probabilistic analysis of electronic systems, which is an important feature to
+have, as discussed in \sref{introduction}.
 
 In addition to the aforementioned contribution, we open-source our
 implementation \cite{sources}. The code base also includes the whole
