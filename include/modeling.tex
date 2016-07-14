@@ -29,43 +29,4 @@ electronic systems, namely, timing, power, and temperature, and introduced a
 number of quantities of interest associated with them; we will come back to
 these quantities in the section on experimental results, \sref{experimentation}.
 
-Before we move on to the interpolation procedure, let us apply the proposed
-framework to a small synthetic problem in order to get a better feel for how all
-the pieces of the framework fit together. A detailed description of our
-experimental setup is given in \sref{configuration}; here we give only the bare
-minimum.
-
-\newcommand{\cores}{\token{PE1} and \token{PE2}}
-\newcommand{\tasks}{\token{T1}--\token{T4}}
-The addressed problem is depicted in \fref{example}. We consider a platform with
-two homogeneous processing elements, \cores, and an application with four tasks,
-\tasks. The data dependencies between \tasks\ and their mapping onto \cores\ can
-be seen in \fref{example}. This delay is also our quantity of interest $\g$. The
-uncertain parameters are the execution times of \token{T2} and \token{T4}
-denoted by $\u_1$ and $\u_2$, respectively; the parameters are correlated, and
-their marginal distributions are beta distributions. In order to make the
-problem more challenging, the (deterministic) execution time of \token{T3} is
-chosen to lie in the range of the possible values of the execution time of
-\token{T2}, which curtails the impact of $\u_1$ on $\g$.
-
-The leftmost box in \fref{example} represents a simulator of the system. The
-second box corresponds to the transformation $\transformation$ discussed in
-\sref{parameters}, and the third one to our interpolation engine discussed in
-the next section. Using 156 strategic invocations of the simulator, the
-interpolation engine yields a light surrogate for the simulator (the slim box
-with rounded corners). Having obtained such a surrogate, one proceeds to
-sampling extensively the surrogate via a sampling method of choice (the
-rightmost box). Recall that the computation cost of this extensive sampling is
-negligible. The collected samples are then used to compute an estimate of the
-distribution of $\g$.
-
-In the graph on the right-hand side of \fref{example}, the blue line shows the
-probability density function of $\g$ computed by applying kernel density
-estimation to the samples obtained from our surrogate. The yellow line (barely
-visible behind the blue line) shows the true density of $\g$; its calculation is
-explained in \sref{experimentation}. It can be seen that our solution closely
-matches the exact one. In addition, the orange line shows the estimation that
-one would get if one sampled $\g$ directly 156 times and used only those samples
-in order to calculate the density of $\g$. We see that, for the same budget of
-simulations, the solution delivered by our framework is substantially closer to
-the true one than the one delivered by naive sampling.
+\input{include/modeling/example}
