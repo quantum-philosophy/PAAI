@@ -11,20 +11,26 @@ two homogeneous processing elements, \cores, and an application with four tasks,
 be seen in \fref{example}. This delay is also our quantity of interest $\g$. The
 uncertain parameters are the execution times of \token{T2} and \token{T4}
 denoted by $\u_1$ and $\u_2$, respectively; the parameters are correlated, and
-their marginal distributions are beta distributions. In order to make the
-problem more challenging, the (deterministic) execution time of \token{T3} is
-chosen to lie in the range of the possible values of the execution time of
-\token{T2}, which curtails the impact of $\u_1$ on $\g$.
+their marginal distributions are beta distributions. The (deterministic)
+execution time of \token{T3} lies in the range of the possible values of the
+execution time of \token{T2}, which curtails the impact of $\u_1$ on $\g$ and,
+thereby, makes $\g$ nondifferentiable at a cetain location; see
+\rref{smoothness}.
 
-The leftmost box in \fref{example} represents a simulator of the system. The
-second box corresponds to the transformation $\transformation$ discussed in
-\sref{parameters}, and the third one to our interpolation engine discussed in
-the next section. Using 156 strategic invocations of the simulator, the
-interpolation engine yields a light surrogate for the simulator (the slim box
-with rounded corners). Having obtained such a surrogate, one proceeds to
-sampling extensively the surrogate via a sampling method of choice (the
-rightmost box). Recall that the computation cost of this extensive sampling is
-negligible. The collected samples are then used to compute an estimate of the
+The leftmost box in \fref{example} represents a simulator of the system. It
+takes an assignment of the execution times of \token{T2} and \token{T3}, $\u_1$
+and $\u_2$, and outputs the calculated end-to-end delay. The second box
+corresponds to the transformation $\transformation$ described in
+\sref{parameters}. It converts the auxiliary variables $\z_1$ and $\z_2$ into
+$\u_1$ and $\u_2$ in accordance with $\u_1$ and $\u_2$'s joint distribution. The
+third box is our interpolation engine (to be discussed in \sref{interpolation}).
+Using 156 strategic invocations of the simulator, the interpolation engine
+yields a light surrogate for the simulator (the slim box with rounded corners).
+Having obtained such a surrogate, one proceeds to sampling extensively the
+surrogate via a sampling method of choice (the rightmost box). The surrogate
+takes $\z_1$ and $\z_2$ and returns an approximation of $\g$ at that location.
+Recall that the computation cost of this extensive sampling is negligible as
+$\g$ is not involved. The samples are then used to compute an estimate of the
 distribution of $\g$.
 
 In the graph on the right-hand side of \fref{example}, the blue line shows the
