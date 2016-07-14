@@ -20,6 +20,15 @@ legible. Synchronously with the solid line (that is, for the same numbers of
 $\g$'s evaluations), the dashed line shows the error of direct sampling, which,
 as before, is computed with respect to the reference solution.
 
+Let us first walk through a particular problem in \fref{results}. Consider, for
+instance, the one labeled with $\bigstar$. It can be seen that, at the very
+beginning, our solution and the solution of direct sampling are poor. The
+\up{KS} statistic tells us that there are substantial mismatches between the
+estimates and the reference solution. However, as the interpolant is being
+adaptively refined, our error decreases rapidly, and, by the end of the
+interpolation process, our solution becomes approximately one order of magnitude
+more accurate than the one of na\"{i}ve sampling.
+
 Studying \fref{results}, one can make a number of observations. First and
 foremost, our interpolation-powered approach (solid lines) to probabilistic
 analysis outperforms direct sampling (dashed lines) in all the cases. This means
@@ -48,15 +57,6 @@ reduction is a good, recommended practice since it circumvents unnecessary
 complexity and, thereby, makes uncertainty-quantification problems more
 tractable.
 
-Let us walk through a particular problem in \fref{results}. Consider, for
-instance, the one labeled with $\bigstar$. It can be seen that our solution and
-the solution of direct sampling are poor at the very beginning. The \up{KS}
-statistic tells us that there are substantial mismatches between the estimates
-and the reference solution. However, as the interpolant is being adaptively
-refined, our error starts to rapidly decrease, and, by the end of the
-interpolation process, our solution becomes approximately one order of magnitude
-more accurate than the one of na\"{i}ve sampling.
-
 The message of the above observations is that the designer of an electronic
 system can benefit substantially in terms of accuracy per computation time by
 switching from direct sampling to the proposed technique. If the designer's
@@ -72,7 +72,7 @@ because this time is irrelevant: since the evaluation of $\g$ is time consuming
 (see \sref{problem}), the number of $\g$'s evaluations is the most apposite
 expense indicator. For the curious reader, however, let us give an example by
 considering the problem labeled with $\clubsuit$ in \fref{results}. Obtaining a
-reference solution with $10^5$ simulations in parallel on 16 processors took
+reference solution with $10^5$ simulations in parallel on 16 processors took us
 around two hours. Constructing an interpolant with 383 collocation nodes took
 around 30 seconds (this is also the time of direct sampling with 383 simulations
 of $\g$). Evaluating the interpolant $10^5$ times took less than a second. The

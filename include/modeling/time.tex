@@ -1,7 +1,7 @@
 Suppose the application is given as a directed acyclic graph. The vertices
 represent tasks, and the edges data dependency between these tasks. Suppose
 further that a static cyclic scheduling policy is utilized. Note, however, these
-assumptions are orthogonal to our framework; the framework can be applied to any
+assumptions are orthogonal to our framework: the framework can be applied to any
 application model and any scheduling policy.
 
 Each task has a start and a finish time. For task $i$, denote these two time
@@ -17,16 +17,16 @@ earliest task:
 Suppose the execution times of the tasks depend on $\vu$ (see \sref{problem}).
 Then the tuple $(\vb, \vd)$ depends on $\vu$. Then the end-to-end delay given in
 \eref{end-to-end-delay} depends on $\vu$ and constitutes a potential quantity of
-interest $\g$. Note that this $\g$ is nondifferentiable in general as the $\max$
-and $\min$ functions are such. Hence, $\g$ is nonsmooth, which renders \up{PC}
-expansions and similar techniques inadequate for this problem, as illustrated in
+interest $\g$. Note that this $\g$ is nondifferentiable as the $\max$ and $\min$
+functions are such. Hence, $\g$ is nonsmooth, which renders \up{PC} expansions
+and similar techniques inadequate for this problem, as illustrated in
 \sref{introduction}.
 
 \begin{remark} \rlab{smoothness}
 In general, the behavior of $\g$ with respect to continuity, differentiability,
 and smoothness cannot be inferred from the behavior of $\vu$. Even when the
 parameters are perfectly behaved, $\g$ can still and likely will exhibit
-nondifferentiability or even discontinuity. It all depends on how $\g$ works
+nondifferentiability or even discontinuity, which depends on how $\g$ works
 internally. For example, the scheduling policy under consideration might render
 irrelevant for the smoothness of the end-to-end delay the fact that the
 execution times of the tasks are continuous.
