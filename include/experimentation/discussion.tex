@@ -1,0 +1,64 @@
+\input{include/assets/figures/results}
+The results of all 18 uncertainty-quantification problems are given in
+\fref{results} as a 6-by-3 grid of plots, one plot per problem. The three
+columns correspond to the three quantities of interest: the end-to-end delay
+(left), total energy (middle), and maximum temperature (right). The three pairs
+of rows correspond to the three platform sizes: 2 (top), 4 (middle), and 8
+(bottom) processing elements. The rows alternate between the two application
+sizes: 10 (odd) and 20 (even) tasks.
+
+The horizontal axis of each plot shows the number of points, that is,
+evaluations of the quantity of interest $\g$, and the vertical one shows the
+\up{KS} statistic on a logarithmic scale. Each plot has two lines. The solid
+line represents our technique. The circles on this line correspond to the steps
+of the interpolation process given in \eref{approximation}. They show how the
+\up{KS} statistic computed with respect to the reference solution changes as the
+interpolation process takes steps (and increases the number of collocation
+nodes) until the stopping condition is satisfied (\sref{adaptivity}). Note that
+only a subset of the actual steps is displayed in order to make the figure
+legible. Synchronously with the solid line (that is, for the same numbers of
+$\g$'s evaluations), the dashed line shows the error of direct sampling, which,
+as before, is computed with respect to the reference solution.
+
+Studying \fref{results}, one can make a number of observations. First and
+foremost, our interpolation-powered approach (solid lines) to probabilistic
+analysis outperforms direct sampling (dashed lines) in all the cases. This means
+that, given a fixed budget of $\g$'s evaluations, the probability distributions
+delivered by our framework are much closer to the true ones than those delivered
+by sampling $\g$ directly, despite the fact that the latter relies on Sobol
+sequences, which are a sophisticated sampling strategy. Since direct sampling
+methods try to cover the probability space impartially, \fref{results} is a
+salient illustration of the difference between being adaptive and nonadaptive.
+
+It can also be seen in \fref{results} that, as the number of evaluations
+increases, the solutions computed by our technique approach the exact ones. The
+error of our framework decreases generally steeper than the one of direct
+sampling. The decrease, however, tends to plateau toward the end of the
+interpolation process (when the stopping condition is satisfied). This behavior
+can be explained by the following two reasons. First, the algorithm has been
+instructed to satiate certain accuracy requirements ($\aerror$, $\rerror$, and
+$\serror$), and it reasonably does not do more than what has been requested.
+Second, since the model-order reduction mechanism is enabled in the case of
+interpolation, the quantity being interpolated is not $\g$, strictly speaking;
+it is a lower-dimensional representation of $\g$, which already implies an
+information loss. Therefore, there is a limit on the accuracy that can be
+achieved, which depends on the amount of reduction applied. However, model-order
+reduction is a good, recommended practice since it circumvents unnecessary
+complexity and, thereby, makes uncertainty-quantification problems more
+tractable.
+
+\begin{remark}
+The wall-clock time taken by the experiments is not reported here because this
+time is irrelevant: since the evaluation of $\g$ is time consuming (see
+\sref{problem}), the number of $\g$'s evaluations is the most apposite expense
+indicator. For the curious reader, however, let us give an example by
+considering the bottom-right problem in \fref{results} ($\np = 8$, $\nt = 20$,
+and $\q$ is temperature). Obtaining a reference solution with $10^5$ simulations
+in parallel on 16 processors took around two hours. Constructing an interpolant
+with 383 collocation nodes took around 30 seconds (this is also the time of
+direct sampling with 383 simulations of $\g$). Evaluating the interpolant $10^5$
+times took less than a second. The relative computation cost of sampling an
+interpolant readily diminishes as the complexity of $\g$ increases, which should
+be contrasted with direct sampling, whose cost grows proportional to $\g$'s
+evaluation time.
+\end{remark}
