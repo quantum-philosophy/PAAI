@@ -28,7 +28,6 @@ artifacts of interpolation, which are a set of tuples $\{ (\vl_k,
 \surplus(\vx_{\vl_k}) \}_k$, giving a comprehensive description of an
 interpolant. The routine works as follows.
 
-\input{include/assets/algorithms/evaluate}
 \begin{compactlist}
 
 \point{Line~2:} Each iteration is an interpolation step in \eref{approximation}.
@@ -42,6 +41,7 @@ adequately produce the initial state of the next iteration. The process
 terminates when a stopping condition is satisfied, in which case \token{Next}
 returns a null state.
 
+\input{include/assets/algorithms/evaluate}
 \point{Line~3:} The \token{grid} object represents the interpolation grid
 utilized (see \sref{grid}), and its \token{Compute} method converts the step's
 indices into the coordinates of the corresponding collocation nodes, that is,

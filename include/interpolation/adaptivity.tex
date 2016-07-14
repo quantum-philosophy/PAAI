@@ -73,11 +73,8 @@ one in \eref{forward-level-neighbors}. Concretely, these indices are identified
 by inspecting the backward neighborhood of $\vi$ (analogous to
 \eref{forward-level-neighbors}). For each backward neighbor $\hat{\vi} = \vi -
 \v{1}_{\hat{k}}$ and each $\vj \in \Delta\oindex_{\hat{\vi}}$, we begin by
-checking the following condition:
-\[
-  \score_{\hat{\vi}\vj} \geq \serror
-\]
-where $\serror$ is a user-defined constant, which we shall refer to as the score
+checking the following condition: $\score_{\hat{\vi}\vj} \geq \serror$ where
+$\serror$ is a user-defined constant, which we shall refer to as the score
 error. If the condition holds, the forward neighbors of $\vj$ in dimension $k$
 are added to $\Delta\oindex_\vi$. This procedure is illustrated in \fref{grid}
 for the open Newton--Cotes rule. The arrows emerging from a node connect the
