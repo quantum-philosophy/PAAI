@@ -26,17 +26,18 @@ distribution functions $\{ \distribution_{\u_i} \}_{i = 1}^\nu$ and a copula
 assumed to be a Gaussian copula whose correlation matrix is $\correlation \in
 \real^{\nu \times \nu}$.
 
-It is important to note the following. A set of marginals and a copula entirely
-characterize the joint distribution of $\vu$, that is, $\distribution_\vu$.
-However, we consider this distribution as an approximation rather than as the
-true one. The knowledge of the true joint would be an impractical assumption to
-make. A more realistic assumption is the availability of the marginals and
-correlation matrix of $\vu$. In general, these two pieces are not sufficient to
-recover the joint of $\vu$; however, the joint can be approximated well by
-accompanying the available marginals by a Gaussian copula constructed based on
-the available correlation matrix; see \cite{liu1986} and also \cite{ukhov2014}.
-Hence, a set of marginals and a Gaussian copula are practical inputs to
-probabilistic analysis.
+\begin{remark}
+A set of marginals and a copula entirely characterize the joint distribution of
+$\vu$, that is, $\distribution_\vu$. However, we consider this distribution as
+an approximation rather than as the true one. The knowledge of the true joint
+would be an impractical assumption to make. A more realistic assumption is the
+availability of the marginals and correlation matrix of $\vu$. In general, these
+two pieces are not sufficient to recover the joint of $\vu$; however, the joint
+can be approximated well by accompanying the available marginals by a Gaussian
+copula constructed based on the available correlation matrix; see \cite{liu1986}
+and also \cite{ukhov2014}. Hence, a set of marginals and a Gaussian copula are
+practical inputs to probabilistic analysis.
+\end{remark}
 
 The number of variables, which is so far $\nu$, has a significant impact on the
 complexity of the problem at hand. Therefore, an important component of our

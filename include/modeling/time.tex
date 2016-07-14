@@ -17,6 +17,17 @@ earliest task:
 Suppose the execution times of the tasks depend on $\vu$ (see \sref{problem}).
 Then the tuple $(\vb, \vd)$ depends on $\vu$. Then the end-to-end delay given in
 \eref{end-to-end-delay} depends on $\vu$ and constitutes a potential quantity of
-interest $\g$. Note that this quantity is nondifferentiable in general. The
-nonsmoothness makes the problem difficult for such techniques as \up{PC}
-expansions, as illustrated in \sref{introduction}.
+interest $\g$. Note that this $\g$ is nondifferentiable in general as the $\max$
+and $\min$ functions are such. Hence, $\g$ is nonsmooth, which renders \up{PC}
+expansions and similar techniques inadequate for this problem, as illustrated in
+\sref{introduction}.
+
+\begin{remark} \rlab{nonsmoothness}
+In general, the behavior of $\g$ with respect to continuity, differentiability,
+and smoothness cannot be inferred from the behavior of $\vu$. Even when the
+parameters are perfectly behaved, $\g$ can still and likely will exhibit
+nondifferentiability or even discontinuity. It all depends on how $\g$ works
+internally. For example, the scheduling policy under consideration might render
+irrelevant for the smoothness of the end-to-end delay the fact that the
+execution times of the tasks are continuous.
+\end{remark}
