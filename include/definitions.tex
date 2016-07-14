@@ -18,8 +18,8 @@
 \setlength{\textfloatsep}{10pt}
 \setlength{\parskip}{0pt}
 
-\setlength{\abovedisplayskip}{5pt}
-\setlength{\belowdisplayskip}{5pt}
+\setlength{\abovedisplayskip}{4pt}
+\setlength{\belowdisplayskip}{4pt}
 
 \makeatletter
 \let\origsection\section
@@ -29,12 +29,15 @@
 \newcommand\starsection[1]
 {\sectionprelude\origsection*{#1}\sectionpostlude}
 \newcommand\sectionprelude{%
-  \vspace{-0.5em}
+  \vspace{-0.6em}
 }
 \newcommand\sectionpostlude{%
   \vspace{-0.25em}
 }
 \makeatother
+
+\widowpenalties 0
+\raggedbottom
 
 \usepackage{hyperref}
 

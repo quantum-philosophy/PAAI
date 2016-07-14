@@ -23,12 +23,13 @@ as before, is computed with respect to the reference solution.
 Studying \fref{results}, one can make a number of observations. First and
 foremost, our interpolation-powered approach (solid lines) to probabilistic
 analysis outperforms direct sampling (dashed lines) in all the cases. This means
-that, given a fixed budget of $\g$'s evaluations, the probability distributions
-delivered by our framework are much closer to the true ones than those delivered
-by sampling $\g$ directly, despite the fact that the latter relies on Sobol
-sequences, which are a sophisticated sampling strategy. Since direct sampling
-methods try to cover the probability space impartially, \fref{results} is a
-salient illustration of the difference between being adaptive and nonadaptive.
+that, given a fixed budget of the computation time---the probability
+distributions delivered by our framework are much closer to the true ones than
+those delivered by sampling $\g$ directly, despite the fact that the latter
+relies on Sobol sequences, which are a sophisticated sampling strategy. Since
+direct sampling methods try to cover the probability space impartially,
+\fref{results} is a salient illustration of the difference between being
+adaptive and nonadaptive.
 
 It can also be seen in \fref{results} that, as the number of evaluations
 increases, the solutions computed by our technique approach the exact ones. The
@@ -47,18 +48,35 @@ reduction is a good, recommended practice since it circumvents unnecessary
 complexity and, thereby, makes uncertainty-quantification problems more
 tractable.
 
+Let us walk through a particular problem in \fref{results}. Consider, for
+instance, the one labeled with $\bigstar$. It can be seen that our solution and
+the solution of direct sampling are poor at the very beginning. The \up{KS}
+statistic tells us that there are substantial mismatches between the estimates
+and the reference solution. However, as the interpolant is being adaptively
+refined, our error starts to rapidly decrease, and, by the end of the
+interpolation process, our solution becomes approximately one order of magnitude
+more accurate than the one of na\"{i}ve sampling.
+
+The message of the above observations is that the designer of an electronic
+system can benefit substantially in terms of accuracy per computation time by
+switching from direct sampling to the proposed technique. If the designer's
+current workhorse is the classical \up{MC} sampling, the switch might lead to
+even more dramatic savings than those shown in \fref{results}. Needless to
+mention that the gain is especially prominent in situations where the analysis
+needs to be performed many times such as when it resides in a design-space
+exploration loop.
+
 \begin{remark}
-The wall-clock time taken by the experiments is not reported here because this
-time is irrelevant: since the evaluation of $\g$ is time consuming (see
-\sref{problem}), the number of $\g$'s evaluations is the most apposite expense
-indicator. For the curious reader, however, let us give an example by
-considering the bottom-right problem in \fref{results} ($\np = 8$, $\nt = 20$,
-and $\q$ is temperature). Obtaining a reference solution with $10^5$ simulations
-in parallel on 16 processors took around two hours. Constructing an interpolant
-with 383 collocation nodes took around 30 seconds (this is also the time of
-direct sampling with 383 simulations of $\g$). Evaluating the interpolant $10^5$
-times took less than a second. The relative computation cost of sampling an
-interpolant readily diminishes as the complexity of $\g$ increases, which should
-be contrasted with direct sampling, whose cost grows proportional to $\g$'s
-evaluation time.
+The wall-clock time taken by the experiments is not reported in this paper
+because this time is irrelevant: since the evaluation of $\g$ is time consuming
+(see \sref{problem}), the number of $\g$'s evaluations is the most apposite
+expense indicator. For the curious reader, however, let us give an example by
+considering the problem labeled with $\clubsuit$ in \fref{results}. Obtaining a
+reference solution with $10^5$ simulations in parallel on 16 processors took
+around two hours. Constructing an interpolant with 383 collocation nodes took
+around 30 seconds (this is also the time of direct sampling with 383 simulations
+of $\g$). Evaluating the interpolant $10^5$ times took less than a second. The
+relative computation cost of sampling an interpolant readily diminishes as the
+complexity of $\g$ increases; contrast it with direct sampling, whose cost grows
+proportional to $\g$'s evaluation time.
 \end{remark}
