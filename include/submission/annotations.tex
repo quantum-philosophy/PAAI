@@ -1,0 +1,23 @@
+%
+% Formatting
+%
+\usepackage{color}
+\usepackage[normalem]{ulem}
+
+\definecolor{figureBackground}{rgb}{1,0.95,0.95}
+\definecolor{figureBorder}{rgb}{1,0,0}
+\definecolor{updatedText}{rgb}{1,0,0}
+
+\newcommand{\updated}[1]{{\color{updatedText}\uline{#1}}}
+
+\newcommand{\figureBox}[1]{%
+  \fcolorbox{figureBorder}{figureBackground}{#1}%
+}
+
+\newcommand{\updatedFigure}[1]{%
+  \setlength{\fboxsep}{0pt}%
+  \setlength{\fboxrule}{1pt}%
+  \vspace*{-2pt}%
+  \hspace*{-5pt}%
+  \figureBox{#1}%
+}

@@ -4,46 +4,29 @@
 \usepackage[a4paper,top=30mm,bottom=30mm,left=30mm,right=30mm]{geometry}
 \usepackage{pdfpages}
 
-%
-% Colors
-%
-\usepackage{color}
-
-\definecolor{doneText}{rgb}{0,0,1}
-\definecolor{updatedText}{rgb}{1,0,0}
-
-\definecolor{figureBackground}{rgb}{1,0.95,0.95}
-\definecolor{figureBorder}{rgb}{1,0,0}
-\definecolor{reviewerBackground}{rgb}{0.95,0.95,1}
-\definecolor{reviewerBorder}{rgb}{0.1,0.1,0.1}
-
-%
-% Formatting
-%
-\usepackage{amssymb}
-\usepackage{mdframed}
-\usepackage[normalem]{ulem}
-
 \newcommand{\header}[1]{%
   \begin{center}%
   \section*{{\Huge #1}}%
   \end{center}%
 }
 
+%
+% References
+%
+\newcommand{\clabel}[2]{[\textbf{Comment~#1.#2}]}
+\newcommand{\cref}[2]{Comment~#1.#2}
+
+%
+% Formatting
+%
+\usepackage{amssymb}
+\usepackage{mdframed}
+
+\definecolor{doneText}{rgb}{0,0,1}
+\definecolor{reviewerBackground}{rgb}{0.95,0.95,1}
+\definecolor{reviewerBorder}{rgb}{0.1,0.1,0.1}
+
 \newcommand{\done}[1]{{\color{doneText}\uline{#1}}}
-\newcommand{\updated}[1]{{\color{updatedText}\uline{#1}}}
-
-\newcommand{\figureBox}[1]{%
-  \fcolorbox{figureBorder}{figureBackground}{#1}%
-}
-
-\newcommand{\updatedFigure}[1]{%
-  \setlength{\fboxsep}{0pt}%
-  \setlength{\fboxrule}{1pt}%
-  \vspace*{-2pt}%
-  \hspace*{-5pt}%
-  \figureBox{#1}%
-}
 
 \newcommand{\reviewerBox}[1]{%
   \fcolorbox{reviewerBorder}{reviewerBackground}{#1}%
@@ -81,9 +64,3 @@
 \newcommand{\action}[1]{%
   \item[\color{doneText}$\checkmark$]{\done{#1}}%
 }
-
-%
-% References
-%
-\newcommand{\clabel}[2]{[\textbf{Comment~#1.#2}]}
-\newcommand{\cref}[2]{Comment~#1.#2}
