@@ -1,6 +1,88 @@
 \begin{reviewer}
+The article proposes a system-level framework for early estimation and analysis
+of an electronic system given a task graph and a heterogeneous platform. The
+framework proposes a general approach which is based on hybrid adaptivity on a
+sparse grid  for early estimation for the different quality of interest (e.e
+power, delay).
+
+Here are my comments to the author:
+
 \clabel{1}{1}
-She sells seashells.
+The most problem of this article is the style of presentation. it seems that the
+article tries to make the problem and approach more complicated than what it is.
+The style of writing in particular approach and implementation is very confusing
+and completed. It makes the paper very difficult to follow. I do like the
+motivation example in the introduction, however, the rest of paper significantly
+lack the real examples and illustrative figures. My suggestion is to build a
+story with a real example of a task graph and a platform when describing the
+approach and implementation.
+\end{reviewer}
+
+\begin{authors}
+We agree.
+
+\begin{actions}
+  \action{Well done.}
+\end{actions}
+\end{authors}
+
+\begin{reviewer}
+\clabel{1}{2}
+The second major problem of the article is the experimental results. It claimed
+in the article, the approach can be applied to different platforms with
+different heterogeneous processors, the experimental results stay as a random
+statistical model of platform and task graphs with no insight correlated to the
+challenges of a real platform. I expect authors can apply their approach their
+to measure a metric when an abstract but real application mapped to an abstract
+model of a real platform.
+\end{reviewer}
+
+\begin{authors}
+We agree.
+
+\begin{actions}
+  \action{Well done.}
+\end{actions}
+\end{authors}
+
+\begin{reviewer}
+\clabel{1}{3}
+Wording suggestion, please replace the "quality of interest" with "metric". It
+is more understandable and less confusing.
+\end{reviewer}
+
+\begin{authors}
+We agree.
+
+\begin{actions}
+  \action{Well done.}
+\end{actions}
+\end{authors}
+
+\begin{reviewer}
+\clabel{1}{4}
+It is mentioned in the article that the implementation is  based on [4],
+[5],[6]. I like to see the difference between the proposed implementation and
+the ones presented in [4][5][6]. There is no comparison in the related work.
+They all are based on hybrid adaptivity on a sparse grid.
+\end{reviewer}
+
+\begin{authors}
+We agree.
+
+\begin{actions}
+  \action{Well done.}
+\end{actions}
+\end{authors}
+
+\begin{reviewer}
+\clabel{1}{5}
+Authors see the heterogeneous platform as a heterogeneous processor elements
+with behavior modeled as Gaussian distribution. Real platforms are the
+combination of processors as well as communication fabric and shared memory with
+run-time and data-dependent arbitration. It is not clear how the approach can
+capture the effect of communication and shared memory when estimating a certain
+metric.
 \end{reviewer}
 
 \begin{authors}
