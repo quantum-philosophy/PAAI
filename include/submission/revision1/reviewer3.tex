@@ -10,14 +10,7 @@ of adaptively chosen sample points.
 
 \clabel{3}{1}
 Overall, the paper is well organized. The English is colloquial at times and
-should be improved in the revised version. I am not an expert in probability
-distribution estimation so I cannot comment on the novelty of the estimation
-approach. However, the motivation and results of the proposed approach are
-convincing. Compared to existing methods, the approach proposed addresses
-problems such as nondifferentiability and discontinuity in the dependence on the
-uncertain parameters, and also requires lesser number of samples to reach a
-certain degree of accuracy for estimating the probability distribution of the
-quantity of interest.
+should be improved in the revised version.
 \end{reviewer}
 
 \begin{authors}
@@ -29,16 +22,38 @@ We agree.
 \end{authors}
 
 \begin{reviewer}
-\clabel{3}{2}
+I am not an expert in probability distribution estimation so I cannot comment on
+the novelty of the estimation approach. However, the motivation and results of
+the proposed approach are convincing. Compared to existing methods, the approach
+proposed addresses problems such as nondifferentiability and discontinuity in
+the dependence on the uncertain parameters, and also requires lesser number of
+samples to reach a certain degree of accuracy for estimating the probability
+distribution of the quantity of interest.
+
 There are several clarification I would like the authors to make in the
-revision. First, I think the claim of treating the system as a blackbox is
-somewhat misleading. In particular, the approach needs to use the dependency
-among the uncertain parameters to construct the surrogate g(z). This is also
-evident in the example after Remark 1 where the correlation matrix is assumed to
-be given. This can be unrealistic and I would like to understand how this
-restriction impacts the proposed approach. Another problem I have is with Figure
-5. Why is the initial error (at 0 sample) lower for blue than red? In fact, why
-is it non-zero for the proposed approach?
+revision.
+
+\clabel{3}{2}
+First, I think the claim of treating the system as a blackbox is somewhat
+misleading. In particular, the approach needs to use the dependency among the
+uncertain parameters to construct the surrogate g(z). This is also evident in
+the example after Remark 1 where the correlation matrix is assumed to be given.
+This can be unrealistic and I would like to understand how this restriction
+impacts the proposed approach.
+\end{reviewer}
+
+\begin{authors}
+We agree.
+
+\begin{actions}
+  \action{Well done.}
+\end{actions}
+\end{authors}
+
+\begin{reviewer}
+\clabel{3}{3}
+Another problem I have is with Figure 5. Why is the initial error (at 0 sample)
+lower for blue than red? In fact, why is it non-zero for the proposed approach?
 \end{reviewer}
 
 \begin{authors}
