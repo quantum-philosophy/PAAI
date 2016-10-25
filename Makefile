@@ -1,6 +1,6 @@
 documents := paper submission revision1
 
-$(documents): %: %-pdf
+${documents}: %: %-pdf
 
 %-pdf: %.tex
 	latexmk -pdf -pvc $<
@@ -8,4 +8,4 @@ $(documents): %: %-pdf
 clean:
 	rm -f *.aux *.bbl *.bib *.log *.pdf *.blg *.xml *.fdb_latexmk *.fls *.bcf
 
-.PHONY: $(documents) clean
+.PHONY: ${documents} clean
