@@ -8,20 +8,20 @@ adequate treatment. Consequently, the designer of an electronic system is
 obliged to account for the presence of uncertainty in order to produce an
 efficient and reliable product.
 
-In order to account for uncertainty, one has to quantify it first. In this
-setting, one is usually interested in a quantity---referred to as the quantity
-of interest---whose complete knowledge would be highly profitable for the design
-at hand but cannot be attained since the quantity depends on a number of
-parameters that are inherently uncertain at design time. Consider, for instance,
-the maximum temperature of a system running a number of tasks whose execution
-times are random.
+In order to account for uncertainty, one has to quantify it first. \updated{In
+this setting, one is usually interested in evaluating a certain metric whose
+complete knowledge would be highly profitable for the design at hand but cannot
+be attained since the metric involves a number of parameters that are inherently
+uncertain at design time. To give a concrete example, such a metric could be the
+maximum temperature of an electronic system whose thermal behavior depends on
+the runtime workload.}
 
-Uncertainty quantification is a broad umbrella. The corresponding techniques can
-deliver radically different pieces of information about the quantity of
-interest. In this paper, we are interested in probability distributions rather
-than, for instance, corner cases. Designing for the worst case leads often to a
-poor solution as the system under consideration might easily end up being too
-conservative, overdesigned \cite{quinton2012}.
+\updated{Uncertainty quantification is a broad area. The techniques for
+uncertainty quantification can deliver radically different pieces of information
+about the metric under consideration.} In this paper, we are interested in
+probability distributions rather than, for instance, corner cases. Designing for
+the worst case leads often to a poor solution as the system under consideration
+might easily end up being too conservative, overdesigned \cite{quinton2012}.
 
 When it comes to the estimation of probability distributions and to uncertainty
 quantification in general, sampling methods are of great use. The classical
@@ -37,32 +37,32 @@ twentieth century and, since then, has expanded into a rich family of methods
 that have had a tremendous impact both in academia and in terms of industrial
 breakthroughs \cite{asmussen2007}.
 
-The major problem with sampling techniques, however, is in sampling: one should
-be able to obtain sufficient many realizations of the quantity of interest in
-order to accurately estimate the needed statistics about that quantity
-\cite{diaz-emparanza2002}. The main concerns in this context are: How much does
+\updated{The major problem with sampling techniques, however, is in sampling:
+one should be able to obtain sufficient many realizations of the metric of
+interest in order to accurately estimate the needed statistics about that metric
+\cite{diaz-emparanza2002}.} The main concerns in this context are: How much does
 it cost in terms of time and other resources to obtain one sample? How many
 samples do we need? How many can we afford? When the subject under analysis is
 expensive to evaluate, sampling methods are rendered slow and often unfeasible.
 
 We propose a design-time system-level framework for the analysis of electronic
 systems that are dependent on uncertain parameters. Similar to sampling methods,
-our technique treats the system at hand as a ``\updated{black box}'' and,
-therefore, is straightforward to apply since no handcrafting is required, and
-existing codes need no change. Consequently, the quantities of interest that the
-framework is able to tackle are diverse. Examples include those quantities
-concerned with timing-, power-, and temperature-related characteristics of
-elaborate applications running on heterogeneous multiprocessor platforms.
+our technique treats the system at hand as a ``black box'' and, therefore, is
+straightforward to apply since no handcrafting is required, and existing codes
+need no change. \updated{Consequently, the metrics that the framework is able to
+tackle are diverse. Examples include those metrics concerned with timing-,
+power-, and temperature-related characteristics of elaborate applications
+running on heterogeneous multiprocessor platforms.}
 
-In contrast to sampling methods, our technique explores and exploits the nature
-of the problem---that is, the way the quantity of interest depends on the
-uncertain parameters---by exercising the aforementioned ``black box'' at a set
-of points chosen adaptively. The adaptivity that our framework leverages is
-hybrid \cite{jakeman2012}: it tries to pick up both global (that is, on the
-level of entire dimensions \cite{klimke2006}) and, more importantly, local (that
-is, on the level on individual points \cite{ma2009}) variations. This means that
-the framework is able to benefit from many particularities that might be present
-in the stochastic space, that is, the space of the uncertain parameters. The
+\updated{In contrast to sampling methods, our technique explores and exploits
+the nature of the problem---that is, the way the metric depends on the uncertain
+parameters---by exercising the aforementioned ``black box'' at a set of points
+chosen adaptively.} The adaptivity that our framework leverages is hybrid
+\cite{jakeman2012}: it tries to pick up both global (that is, on the level of
+entire dimensions \cite{klimke2006}) and, more importantly, local (that is, on
+the level on individual points \cite{ma2009}) variations. This means that the
+framework is able to benefit from many particularities that might be present in
+the stochastic space, that is, the space of the uncertain parameters. The
 adaptivity is the capital feature of our technique, and we would like to
 elaborate on it now. To this end, let us first make one general observation.
 
@@ -87,20 +87,20 @@ polynomial chaos (\up{PC}) expansions \cite{xiu2010} and other approximation
 techniques making use of global polynomials generally work well, as in
 \cite{bhardwaj2008, lee2013, ukhov2014, ukhov2015}. On the other hand, the
 variability coming from the computer world has often steep gradients and favors
-nondifferentiability and even discontinuity. In such cases, \up{PC} expansions
-and similar techniques fail: they require extremely many evaluations of the
-quantity of interest in order to deliver an acceptable level of accuracy and,
-hence, are not worth it.
+nondifferentiability and even discontinuity. \updated{In such cases, \up{PC}
+expansions and similar techniques fail: they require extremely many evaluations
+of the desired metric in order to deliver an acceptable level of accuracy and,
+hence, are not worth it.}
 
-In order to illustrate this concern, let us consider a toy example. Suppose that
-our system has only one processing element, and it is running an application
-with only one task. Suppose further that the task has two branches and takes
-either one depending on the input data. Assume that one branch takes 0.1~s to
-execute and has probability 0.6, and the other branch takes 1~s and has
+\updated{In order to illustrate this concern, let us consider an example.}
+Suppose that our system has only one processing element, and it is running an
+application with only one task. Suppose further that the task has two branches
+and takes either one depending on the input data. Assume that one branch takes
+0.1~s to execute and has probability 0.6, and the other branch takes 1~s and has
 probability 0.4. Our goal is to find the distribution of the end-to-end delay of
-the application. In this example, the end-to-end delay coincides with the
-execution time of the task; hence, we already know the answer. Let us pretend we
-do not and try to figure it out by other means.
+the application. \updated{In this example, the metric is the end-to-end delay,
+and it coincides with the execution time of the task; hence, we already know the
+answer.} Let us pretend we do not and try to figure it out by other means.
 
 Suppose the above scenario is modeled by a \rv\ $\u$ uniformly distributed on
 $[0, 1]$: the execution time of the task (the end-to-end delay of the
@@ -126,25 +126,26 @@ horizontal axis. It can be seen that the approximation is good, and, in fact, it
 would be indistinguishable from the true response with a few additional points.
 One can note that the adaptive procedure started to concentrate interpolation
 points at the jump and left the insipid regions on both sides of the jump with
-no particular attention. Having constructed such a representation, one can
-proceed to the calculation of the probability distribution of the quantity of
-interest, which, in general, is done via sampling followed by such techniques as
-kernel density estimation. The crucial point to note is that this follow-up
-sampling does not involve the original system in any way, which implies that it
-costs practically nothing in terms of the computation time.
+no particular attention. \updated{Having constructed such a representation, one
+can proceed to the calculation of the probability distribution of the metric,
+which, in general, is done via sampling followed by such techniques as kernel
+density estimation.} The crucial point to note is that this follow-up sampling
+does not involve the original system in any way, which implies that it costs
+practically nothing in terms of the computation time.
 
 The example discussed above illustrates the fact that the proposed framework is
-well suited for nonsmooth response surfaces. More generally, the adaptivity
-featured by our technique allows for a reduction of the costs associated with
-probabilistic analysis of the quantity at hand, as measured by the number of
-times the quantity needs to be evaluated in order to achieve a certain accuracy
-level. The magnitude of the reduction depends on the problem, and it can be
-substantial when the problem is well disposed to adaptation.
+well suited for nonsmooth response surfaces. \updated{More generally, the
+adaptivity featured by our technique allows for a reduction of the costs
+associated with probabilistic analysis of the metric under consideration, as
+measured by the number of times the metric needs to be evaluated in order to
+achieve a certain accuracy level.} The magnitude of the reduction depends on the
+problem, and it can be substantial when the problem is well disposed to
+adaptation.
 
-Lastly, we would like to reiterate that the output of our framework is
-generative: we construct a light representation of the quantity of interest that
-can be used to generate realizations of this quantity without touching the
-expensive (in terms of evaluation by, for instance, simulation) ``black box.''
+\updated{Lastly, we would like to reiterate that the output of our framework is
+generative: we construct a light representation of the metric of interest that
+can be used to generate realizations of this metric without touching the
+expensive (in terms of evaluation by, for instance, simulation) ``black box.''}
 Consequently, having constructed such a representation, sampling methods can be
 applied and have a negligible cost.
 

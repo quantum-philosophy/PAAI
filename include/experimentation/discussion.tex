@@ -1,24 +1,24 @@
 \input{include/assets/figures/results}
 The results of all 18 uncertainty-quantification problems are given in
-\fref{results} as a 6-by-3 grid of plots, one plot per problem. The three
-columns correspond to the three quantities of interest: the end-to-end delay
-(left), total energy (middle), and maximum temperature (right). The three pairs
+\fref{results} as a 6-by-3 grid of plots, one plot per problem. \updated{The
+three columns correspond to the three metrics at hand: the end-to-end delay
+(left), total energy (middle), and maximum temperature (right).} The three pairs
 of rows correspond to the three platform sizes: 2 (top), 4 (middle), and 8
 (bottom) processing elements. The rows alternate between the two application
 sizes: 10 (odd) and 20 (even) tasks.
 
-The horizontal axis of each plot shows the number of points, that is,
-evaluations of the quantity of interest $\g$, and the vertical one shows the
-\up{KS} statistic on a logarithmic scale. Each plot has two lines. The solid
-line represents our technique. The circles on this line correspond to the steps
-of the interpolation process given in \eref{approximation}. They show how the
-\up{KS} statistic computed with respect to the reference solution changes as the
-interpolation process takes steps (and increases the number of collocation
-nodes) until the stopping condition is satisfied (\sref{adaptivity}). Note that
-only a subset of the actual steps is displayed in order to make the figure
-legible. Synchronously with the solid line (that is, for the same numbers of
-$\g$'s evaluations), the dashed line shows the error of direct sampling, which,
-as before, is computed with respect to the reference solution.
+\updated{The horizontal axis of each plot shows the number of points, that is,
+evaluations of the metric $\g$, and the vertical one shows the \up{KS} statistic
+on a logarithmic scale.} Each plot has two lines. The solid line represents our
+technique. The circles on this line correspond to the steps of the interpolation
+process given in \eref{approximation}. They show how the \up{KS} statistic
+computed with respect to the reference solution changes as the interpolation
+process takes steps (and increases the number of collocation nodes) until the
+stopping condition is satisfied (\sref{adaptivity}). Note that only a subset of
+the actual steps is displayed in order to make the figure legible. Synchronously
+with the solid line (that is, for the same numbers of $\g$'s evaluations), the
+dashed line shows the error of direct sampling, which, as before, is computed
+with respect to the reference solution.
 
 Let us first walk through a particular problem in \fref{results}. Consider, for
 instance, the one labeled with $\bigstar$. It can be seen that, at the very
@@ -48,14 +48,14 @@ interpolation process (when the stopping condition is satisfied). This behavior
 can be explained by the following two reasons. First, the algorithm has been
 instructed to satiate certain accuracy requirements ($\aerror$, $\rerror$, and
 $\serror$), and it reasonably does not do more than what has been requested.
-Second, since the model-order reduction mechanism is enabled in the case of
-interpolation, the quantity being interpolated is not $\g$, strictly speaking;
-it is a lower-dimensional representation of $\g$, which already implies an
-information loss. Therefore, there is a limit on the accuracy that can be
-achieved, which depends on the amount of reduction applied. However, model-order
-reduction is a good, recommended practice since it circumvents unnecessary
-complexity and, thereby, makes uncertainty-quantification problems more
-tractable.
+\updated{Second, since the model-order reduction mechanism is enabled in the
+case of interpolation, the metric being interpolated is not $\g$, strictly
+speaking; it is a lower-dimensional representation of $\g$, which already
+implies an information loss.} Therefore, there is a limit on the accuracy that
+can be achieved, which depends on the amount of reduction applied. However,
+model-order reduction is a good, recommended practice since it circumvents
+unnecessary complexity and, thereby, makes uncertainty-quantification problems
+more tractable.
 
 The message of the above observations is that the designer of an electronic
 system can benefit substantially in terms of accuracy per computation time by

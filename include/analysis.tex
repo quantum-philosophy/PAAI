@@ -1,13 +1,13 @@
-In \sref{modeling}, we formalized the uncertainty affecting electronic systems
-and discussed several aspects of such systems along with quantities $\g$ that
-the designer is typically interested in analyzing. In the previous section,
-\sref{interpolation}, we obtained an efficient interpolation algorithm for
-approximating hypothetical multidimensional functions $\f$. We shall now
-amalgamate the ideas developed in the aforementioned two sections.
+\updated{In \sref{modeling}, we formalized the uncertainty affecting electronic
+systems and discussed several aspects of such systems along with metrics $\g$,
+which the designer is interested in evaluating. In \sref{interpolation}, we
+obtained an efficient interpolation algorithm for approximating hypothetical
+multidimensional functions $\f$.} We shall now amalgamate the ideas developed in
+the aforementioned two sections.
 
-Given an electronic system dependent on a number of uncertain parameters $\vu:
-\outcomes \to \real^\nu$, the goal is to analyze a quantity of interest $\g$
-representing a certain aspect of the system. For instance, $\vu$ can correspond
+\updated{Given an electronic system dependent on a number of uncertain
+parameters $\vu: \outcomes \to \real^\nu$, the goal is to analyze a metric $\g$
+representing a certain aspect of the system.} For instance, $\vu$ can correspond
 to the execution times of the tasks, and $\g$ can correspond the total energy
 consumed by the processing elements, as we exemplify in \sref{time} and
 \sref{power}. The goal is attained as follows; recall \fref{example}.
@@ -53,18 +53,18 @@ not require any additional sampling.
 
 Regarding the variance of $\g$, it can be seen in \eref{variance} that the
 variance can be assembled from two components: the expected value of $\g$, which
-we already have, and the expected value of $\g^2$, which we are missing. The
-solution is to let $h = (\g, \g^2)$ be the quantity of interest instead of $\g$.
+we already have, and the expected value of $\g^2$, which we are missing.
+\updated{The solution is to let $h = (\g, \g^2)$ be the metric instead of $\g$.}
 Then the expected values of both $\g$ and $\g^2$ will be available in analytical
 forms, and the variance of $\g$ can be computed using \eref{variance}. This
 approach can be generalized to probabilistic moments of higher orders.
 
 \subsection{Multiple Outputs}
 The careful reader has noted a problem with the calculation of variance in the
-previous subsection: $h$ is vector valued. More generally, the quantity $\g$ in
-\sref{modeling} and the function $\f$ in \sref{interpolation} have been depicted
-as having one-dimensional codomains. This, however, has been done only for the
-sake of clarity. All the mathematics and pseudocodes stay the same for
+previous subsection: $h$ is vector valued. \updated{More generally, the metric
+$\g$ in \sref{modeling} and the function $\f$ in \sref{interpolation} have been
+depicted as having one-dimensional codomains.} This, however, has been done only
+for the sake of clarity. All the mathematics and pseudocodes stay the same for
 vector-valued functions. The only except is that, since a surplus
 $\surplus(\vx_{\vi\vj})$ naturally inherits the output dimensionality of $\f$,
 the operations that involve $\surplus(\vx_{\vi\vj})$ should be adequately
@@ -78,9 +78,8 @@ has been written with multiple outputs in mind.
 
 To summarize, once an interpolant of $\g$ has been constructed, the distribution
 of $\g$ is estimated using versatile sampling methods applied to the
-interpolant. The framework extends naturally to quantities of interest with
-multiple outputs, and it provides analytical formulae for expectations and
-variances.
+interpolant. \updated{The framework extends naturally to metrics with multiple
+outputs, and it provides analytical formulae for expectations and variances.}
 
 Let us remind that the evaluation of $\g$ is an extensive operation. Our
 technique is designed to keep this expense as low as possible by choosing the

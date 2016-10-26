@@ -1,29 +1,30 @@
 As noted earlier, making use of a sampling method is a compelling approach to
-uncertainty quantification. We would readily apply such a method to study our
-quantity of interest $\g$ if only evaluating $\g$ had a small cost, which it
-does not.
+uncertainty quantification. \updated{We would readily apply such a method to
+study our metric $\g$ if only evaluating $\g$ had a small cost, which it does
+not.}
 
 Our solution to the above quandary is to construct a light representation of the
 heavy $\g$ and study this representation instead of $\g$. The surrogate that we
 build is based on adaptive interpolation: $\g$ is evaluated at a number of
 strategically chosen collocation nodes, and any other values of $\g$ are
 reconstructed on demand (without involving $\g$) using a set of basis functions
-mediating between the collected values of $\g$. The benefit of this approach is
-in the number of invocations of the quantity of interest $\g$: only a few
+mediating between the collected values of $\g$. \updated{The benefit of this
+approach is in the number of invocations of the metric $\g$: only a few
 evaluations of $\g$ are needed, and the rest of our probabilistic analysis is
-powered by the interpolant, which, in contrast to $\g$, has a negligible cost.
+powered by the interpolant, which, in contrast to $\g$, has a negligible cost.}
 
 Let us delineate the steps involved in the solution process. Recall that $\g$ is
 parameterized by the uncertain parameters $\vu$, and these variables are the
-only source of randomness. 1)~The quantity $\g$ is reparameterized in terms of
-an auxiliary random vector $\vz$ extracted from $\vu$; the necessity of this
-stage will become clear later on. 2)~An interpolant of $\g$ is constructed by
-considering $\g$ as a deterministic function of $\vz$ and evaluating $\g$ at a
-small set of carefully chosen points. 3)~The probability distribution of $\g$ is
-then estimated by applying an arbitrary sampling method to the constructed
+only source of randomness. \updated{1)~The metric $\g$ is reparameterized in
+terms of an auxiliary random vector $\vz$ extracted from $\vu$; the necessity of
+this stage will become clear later on.} 2)~An interpolant of $\g$ is constructed
+by considering $\g$ as a deterministic function of $\vz$ and evaluating $\g$ at
+a small set of carefully chosen points. 3)~The probability distribution of $\g$
+is then estimated by applying an arbitrary sampling method to the constructed
 interpolant of $\g$.
 
 Interpolation of multivariate functions is a challenging task, which should be
 approached with great care. This aspect will be discussed in detail in
-\sref{interpolation}. However, before we proceed to interpolation, we first need
-to elaborate on the modeling of uncertain parameters and quantities of interest.
+\sref{interpolation}. \updated{However, before we proceed to interpolation, we
+first need to elaborate on the modeling of uncertain parameters and metrics of
+interest.}

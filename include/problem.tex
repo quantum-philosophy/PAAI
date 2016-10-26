@@ -2,14 +2,14 @@ Consider an electronic system composed of two major components: a platform and
 an application. The platform is a collection of heterogeneous processing
 elements, and the application is a collection of interdependent tasks.
 
-The designer is interested in studying a quantity $\g$, which is referred to as
-the quantity of interest, that characterizes the system at hand from a certain
-perspective. Examples of $\g$ include the execution delay of the application or
+\updated{The designer is interested in evaluating a metric $\g$ that
+characterizes the electronic system under consideration from a certain
+perspective.} Examples of $\g$ include the execution delay of the application or
 a task, energy consumption of the platform or a processing element, and maximum
 temperature of the platform or a processing element.
 
-The quantity of interest $\g$ depends on a set of parameters $\vu$ that are
-uncertain at the design stage. Examples of $\vu$ include the amount of data the
+\updated{The metric $\g$ depends on a set of parameters $\vu$ that are uncertain
+at the design stage.} Examples of $\vu$ include the amount of data the
 application needs to process, execution times of the tasks, and properties of
 the environment.
 
@@ -21,8 +21,8 @@ operation is assumed to be doable but computationally expensive. (If the cost of
 evaluating $\g$ was negligible, one would proceed to direct sampling without any
 auxiliary framework.)
 
-Our objective is to develop an efficient framework for estimating the
-probability distribution of the quantity of interest $\g$ dependent on the
-uncertain parameters $\vu$. The framework is required to be able to handle
+\updated{Our objective is to develop an efficient framework for estimating the
+probability distribution of the metric of interest $\g$ dependent on the
+uncertain parameters $\vu$.} The framework is required to be able to handle
 nondifferentiable and even discontinuous dependencies between $\g$ and $\vu$ as
 they constitute an important class of problems for electronic-system design.
