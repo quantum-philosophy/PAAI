@@ -11,7 +11,8 @@ reconstructed on demand (without involving $\g$) using a set of basis functions
 mediating between the collected values of $\g$. \updated{The benefit of this
 approach is in the number of invocations of the metric $\g$: only a few
 evaluations of $\g$ are needed, and the rest of our probabilistic analysis is
-powered by the interpolant, which, in contrast to $\g$, has a negligible cost.}
+powered by the constructed interpolant, which, in contrast to $\g$, has a
+negligible cost.}
 
 Let us delineate the steps involved in the solution process. Recall that $\g$ is
 parameterized by the uncertain parameters $\vu$, and these variables are the
@@ -23,8 +24,8 @@ a small set of carefully chosen points. 3)~The probability distribution of $\g$
 is then estimated by applying an arbitrary sampling method to the constructed
 interpolant of $\g$.
 
-Interpolation of multivariate functions is a challenging task, which should be
-approached with great care. This aspect will be discussed in detail in
-\sref{interpolation}. \updated{However, before we proceed to interpolation, we
-first need to elaborate on the modeling of uncertain parameters and metrics of
-interest.}
+\updated{The first two steps should be undertaken with a great care as
+interpolation of multivariate functions is a challenging task. This aspect will
+be discussed in detail in \sref{modeling} and \sref{interpolation}. However,
+before we proceed to those sections, let us take a moment and walk through an
+illustrative example.}
