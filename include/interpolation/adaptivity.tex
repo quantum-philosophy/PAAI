@@ -2,16 +2,17 @@ In order to make the algorithm adaptive, we first need to find a way to measure
 how good our approximation is at any point in the domain of $\f$. \updated{Then,
 when refining the interpolant, instead of evaluating the function at all
 possible nodes, we shall only choose those that are located in the regions with
-poor accuracy as indicated by the yet-to-be-found accuracy metric.}
+poor accuracy as indicated by the yet-to-be-found criterion.}
 
-Thanks to the hierarchical form obtained in the previous subsection, we already
-have a good material for building an accuracy metric. Recall \eref{surplus}.
-Hierarchical surpluses are natural indicators of the interpolation error: they
-are the difference between the values of the true function and those of an
-approximation at the nodes of the underlying sparse grid. Hence, they can be
-recycled in order to effectively identify ``problematic'' regions. Specifically,
-we first assign a score to each node $\vx_{\vi\vj}$ or, equivalently, to each
-pair of level and order indices $(\vi, \vj)$:
+\updated{Thanks to the hierarchical form obtained in the previous subsection, we
+already have a good foundation for building such a criterion.} Recall
+\eref{surplus}. Hierarchical surpluses are natural indicators of the
+interpolation error: they are the difference between the values of the true
+function and those of an approximation at the nodes of the underlying sparse
+grid. Hence, they can be recycled in order to effectively identify
+``problematic'' regions. Specifically, we first assign a score to each node
+$\vx_{\vi\vj}$ or, equivalently, to each pair of level and order indices $(\vi,
+\vj)$:
 \begin{equation} \elab{score}
   \score_{\vi\vj} = \left| \surplus(\vx_{\vi\vj}) \, \w_{\vi\vj} \right|
 \end{equation}
