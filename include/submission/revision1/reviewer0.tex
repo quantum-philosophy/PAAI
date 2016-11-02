@@ -1,0 +1,122 @@
+We have identified two common concerns among the reviewers, and we would like to
+address them in this section. In order to ease future referencing to this common
+section, we have titled and structured it in such a way that it appears to
+belonged to one additional reviewer, whom we refer to as Reviewer~0. We shall
+then proceed to individual answers to the reviewers' comments.
+
+\vspace{2em}
+
+\begin{reviewer}
+\clabel{0}{1} The paper is difficult to read.
+\end{reviewer}
+
+\begin{authors}
+In order to make the paper more readable, a number of changes have been made.
+First, the language has been improved throughout the paper in order to make it
+more straightforward; see also \cref{1}{3}. Second, the illustrative example
+that was originally given at the end of Sec.~VII, ``Modeling,'' has been moved
+higher up in the flow of the paper and resides now in a separate section titled
+``Example.'' We expect this change to have a palpable positive impact on the
+manuscript since it builds up the reader's intuition much earlier, prior to any
+in-depth discussions. The corresponding figure, Fig.~2, has been also referenced
+more extensively from the main text so that the reader has always in mind a
+concrete example to relate to.
+
+\begin{actions}
+  \action{The language has been adjusted throughout the paper.}
+  \action{The illustrative example has been moved higher up, and the
+  corresponding figure has been better referenced from the subsequent sections.}
+\end{actions}
+\end{authors}
+
+\begin{reviewer}
+\clabel{0}{2} The paper lacks a real-life example.
+\end{reviewer}
+
+\begin{authors}
+We agree that a real-life example is needed. As it is emphasized in the paper,
+our work is concerned with developing a design-time system-level framework. We
+target the scenarios wherein the designer resorts to various simulators in order
+to investigate the potential runtime behavior of the system under development.
+Our goal is to reduce the cost associated with running those simulators, which
+are extremely time consuming. Therefore, in the scope of this work, a real-life
+example means that we couple our framework with an industrial-standard simulator
+and let the simulator evaluate a real application running on a real platform, as
+orchestrated by the framework. This is exactly what we have added to the revised
+manuscript.
+
+The simulator that we consider is Sniper [Carlson, 2011], which is widely used
+in both academia and industry. The simulator is based on the Pin tool by
+Intel.\footnote{\texttt{https://software.intel.com/en-us/articles/pintool}} It
+aims at systems based on the IA-32 and x86-64 instruction sets and has been
+validated against Intel Core and Nehalem.
+
+The exact architecture used in our experiments is Intel's Nehalem-based
+Gainestown series; Sniper is shipped with a configuration file (see
+\texttt{config/gainestown.cfg}) for this architecture, and we use it without any
+changes. The simulated platform is set up to have three CPUs sharing one L3
+cache; other details can be found in the above configuration file. Three CPUs
+are the minimum requirement imposed by the application that we would like to
+simulate (to be discussed shortly).
+
+We have decided to perform uncertainty quantification of the total energy
+consumed by the system. In other words, this energy is our metric of interest.
+Consequently, we also need a power simulation in order to calculate the power
+consumed by the system over time. This job is delegated to McPAT by
+HP,\footnote{\texttt{http://www.hpl.hp.com/research/mcpat}} which is another
+battle-proven and well-known tool.
+
+Regarding a real application, we have decided to choose one from the popular
+PARSEC benchmark suite by Princeton University [Bienia, 2011]. PARSEC contains
+around a dozen of benchmarks, and the one that we consider is
+VIPS,\footnote{\texttt{http://www.vips.ecs.soton.ac.uk}} which is an
+image-processing library and command-line tool. VIPS is asked to perform a fix
+set of complex operations on a given image. The scenario that one might want to
+keep in mind is that the application is provided as a service, and this service
+performs a set of standard enhancements on the images submitted by the users.
+
+The width and height of the image to process are considered as uncertain
+parameters. We do not assume any prior knowledge about these parameters except
+that they lie within certain ranges, and, therefore, the parameters are assumed
+to be uniformly distributed. Given this information, our objective is to find
+the distribution of the total energy, which we approach using our framework.
+
+Sniper is an accurate simulator, and it also has good performance compared to
+other simulators. However, running the simulator is still time consuming, which
+is exacerbated even further by the computations undertaken by McPAT.
+Consequently, sampling techniques as a means of uncertainty quantification are
+prohibitively expensive. As a result, we no longer have the ability to obtain
+the true solution, which we could potentially use for assessing the accuracy of
+the proposed framework. In the case of the synthetic examples discussed in
+Sec.~XI, the true solutions are obtained by extensively sampling our light
+in-house simulator; each solution is estimated based on a Sobol sequence with
+$10^5$ points. In the case of the real-life example, obtaining such a reliable
+reference solution would take weeks if not months as a single simulation takes
+around one hour.
+
+This state of affairs is exactly the motivation behind our work. As we emphasize
+in the paper, if it was computationally cheap to run such simulators as Sniper
+an arbitrary number of times, one would not needed any auxiliary framework such
+as ours; direct Monte Carlo sampling and alike would suffice. However,
+simulations are expensive. Our framework allows one to construct a surrogate for
+the system under consideration by invoking the simulator at a few points chosen
+adaptively. One can then proceed to studying the surrogate instead of the
+original system, which will be very efficient. It should also be mentioned that
+the chosen real-life example is relatively small. It is likely that the
+framework will be applied to larger systems, in which case the inadequacy of
+direct sampling and the benefit of using the proposed framework will be much
+more apparent.
+
+The result of the real-life example is as follows. The construction of a
+surrogate finished after 82 invocations of the simulator (the accuracy criteria
+were similar to those given in Sec.~XI).
+
+The additional infrastructure written to facilitate the real-life example
+described above is open source and available online, as is the rest of our code.
+We have also included a virtual machine for better reproducibility of the
+results reported in the paper.
+
+\begin{actions}
+  \action{A real-life example has been added to the paper.}
+\end{actions}
+\end{authors}

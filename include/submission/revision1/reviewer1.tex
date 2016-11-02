@@ -19,31 +19,18 @@ approach and implementation.
 \end{reviewer}
 
 \begin{authors}
-In order to make the paper more readable, a number of changes have been made.
-First, the language has been adjusted throughout the paper in order to make it
-more straightforward; see also \cref{1}{3}. Second, the illustrative example
-that was originally given at the end of Sec.~VII, ``Modeling,'' has been moved
-higher up and resides now in a separate section titled ``Example.'' We expect
-this change to have a significant positive impact since it builds up the
-reader's intuition much earlier, prior to any in-depth discussions. The
-corresponding figure has been also referenced more extensively so that the
-reader has always in mind a concrete example to relate to.
+Please refer to \cref{0}{1} for our response.
 
-The aforementioned example is synthetic; however, its synthetic nature allows us
-to make the example easy to follow and yet complex enough to ensure that the
-example diligently serves its intended purpose. Specifically, the example gives
-the reader the big picture of the proposed framework. It is a road map that the
-reader can always refer to whenever the reader needs a clarification about how
-certain pieces of the framework fit together. We believe that it is the primary
-concern of the reviewer in this comment, and giving the example more attention
-in the revised version of the paper addresses the concern sufficiently well; see
-also \cref{1}{2}.
-
-\begin{actions}
-  \action{The language has been adjusted throughout the paper.}
-  \action{The illustrative example has been moved higher up, and the
-  corresponding figure has been better referenced from the subsequent sections.}
-\end{actions}
+Let us comment on the last sentence of this comment. The example mentioned in
+\cref{0}{1} is synthetic; however, its synthetic nature allows us to make the
+corresponding story with a platform and a task graph simple to follow and yet
+sufficiently complex to ensure that the example diligently serves its intended
+purpose, which is to give the reader the big picture of the proposed framework.
+It is a road map that the reader can always refer to whenever the reader needs a
+clarification or confirmation about how certain parts of the framework. We
+suppose that it is the primary concern of the reviewer here, and giving the
+example more attention in the revised version of the paper addresses the concern
+sufficiently well.
 \end{authors}
 
 \begin{reviewer}
@@ -58,52 +45,7 @@ model of a real platform.
 \end{reviewer}
 
 \begin{authors}
-We agree that a real-life example is needed. As it is emphasized in the paper,
-our work is concerned with developing a design-time system-level framework. We
-target the scenarios wherein the designer resorts to various simulators in order
-to investigate the potential runtime behavior of the system under development.
-Our goal is to reduce the cost associated with running those simulators, which
-are extremely time consuming. Therefore, in the scope of this work, a real-life
-example means that we couple our framework with an industrial-standard simulator
-and let the simulator evaluate a real application running on a real platform, as
-orchestrated by the framework. This is exactly what we have added to the revised
-manuscript.
-
-The simulator that we consider is Sniper [Carlson, 2011], which is widely used
-in both academia and industry. The simulator is based on the Pin tool by
-Intel.\footnote{\texttt{https://software.intel.com/en-us/articles/pintool}} It
-aims at systems based on the IA-32 and x86-64 instruction sets and has been
-validated against Intel Core and Nehalem. The exact architecture used in our
-experiments is Intel's Nehalem-based Gainestown series; Sniper is shipped with a
-configuration file for this architecture, and we use it without any changes.
-
-We have decided to perform uncertainty quantification of the total energy
-consumed by the system at hand; in other words, this energy is our metric of
-interest. To this end, we also need a power simulation in order to calculate the
-power consumed by the system over time. This job is delegated to McPAT by
-HP,\footnote{\texttt{http://www.hpl.hp.com/research/mcpat}} which is another
-battle-proven and well-known tool.
-
-Regarding a real application, we have decided to pick one from the popular
-PARSEC benchmark suite by Princeton University [Bienia, 2011]; Sniper provides a
-smooth integration with this suite. PARSEC contains around a dozen of
-benchmarks, and the one that we consider is
-VIPS,\footnote{\texttt{http://www.vips.ecs.soton.ac.uk}} which is an
-image-processing library and command-line tool. In the scope of the benchmark,
-VIPS is asked to perform a fix set of complex operations on a given image.
-
-The scenario that one might consider is that the application, VIPS, is provided
-as a service, and this service performs a set of standard enhancements on the
-images submitted by the users. The width and height of the image to process are
-considered as uncertain parameters. We do not assume any prior knowledge about
-these parameters except that they lie within certain ranges. Thus, the
-parameters are assumed to be uniformly distributed. Given this information, at
-it has already been mentioned, our objective is to find the distribution of the
-total energy.
-
-\begin{actions}
-  \action{A real-life example has been added to the paper.}
-\end{actions}
+Please refer to \cref{0}{2} for our response.
 \end{authors}
 
 \begin{reviewer}

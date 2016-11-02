@@ -45,6 +45,10 @@
 \setlength{\abovedisplayskip}{4pt}
 \setlength{\belowdisplayskip}{4pt}
 
+\raggedbottom
+\clubpenalty 0
+\widowpenalty 0
+
 \makeatletter
 \let\origsection\section
 \renewcommand\section{\@ifstar{\starsection}{\nostarsection}}
