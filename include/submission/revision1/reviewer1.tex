@@ -28,9 +28,9 @@ sufficiently complex to ensure that the example diligently serves its intended
 purpose, which is to give the reader the big picture of the proposed framework.
 It is a road map that the reader can always refer to whenever the reader needs a
 clarification or confirmation about how certain parts of the framework. We
-suppose that it is the primary concern of the reviewer here, and giving the
-example more attention in the revised version of the paper addresses the concern
-sufficiently well.
+suppose that it is the primary concern of the reviewer here, and we hope that
+giving the illustrative example more attention in the revised version of the
+paper addresses the concern sufficiently well.
 
 \begin{actions}
   \action{Please refer to \cref{0}{1} for our actions.}
@@ -74,8 +74,8 @@ to the term and make it stand out when it is needed.
 
 \begin{actions}
   \action{The term \emph{quantity of interest} and its occasional shortcut
-  \emph{quantity} have been replaced by the term \emph{metric of interest} or
-  simply by \emph{metric}.}
+  \emph{quantity} have been replaced throughout the paper by the term
+  \emph{metric of interest} or simply by \emph{metric}.}
 \end{actions}
 \end{authors}
 
@@ -88,13 +88,62 @@ They all are based on hybrid adaptivity on a sparse grid.
 \end{reviewer}
 
 \begin{authors}
-The framework relies on the mathematics developed in [Klimke,~2006], [Ma,~2009],
-and [Jakeman,~2012]. We do not alter this mathematics; we use it for our
-purposes. These three bodies of research are rather theoretical, and they cover
-different aspects of what we present in the paper.
+The reviewer uses the word \emph{implementation}. However, we suspect that the
+comment might be concerned with the mathematics behind the interpolation
+algorithm rather than with the implementation of this algorithm. In order to be
+the safe side, we shall cover both perspectives.
+
+The proposed framework relies on the mathematics developed in [Klimke,~2006],
+[Ma,~2009], and [Jakeman,~2012]. However, it should be well understood that we
+do not develop this mathematics in the paper under submission; we put it into
+practice. The aforementioned bodies of research are theoretical. They do provide
+numerical results; however, their focal point is on the interpolation machinery
+itself. They cover different aspects of what we present in Sec.~IX,
+``Interpolation,'' except for Sec.~IX-F, ``Implementation.'' For instance,
+interpolation with global adaptivity (dimension-wise) is presented in
+[Klimke,~2006]; the work in [Ma,~2009] is concerned with local adaptivity; and,
+in [Jakeman,~2012], the authors show how to combine global and local adaptivity
+strategies, which is what we refer to as hybrid adaptivity in the paper. In
+addition, each work puts emphasis on different choices of collocation nodes,
+basis functions, and refinement criteria. We have explored various
+configurations and presented in Sec.~IX the one that we consider to be the most
+adequate in our context. All in all, the mathematics in Sec.IX-A--IX-E is our
+distilled version of what is given in [Klimke,~2006], [Ma,~2009], and
+[Jakeman,~2012]; there are no conceptual differences.
+
+Let us now turn to the implementation. In [Klimke,~2006], the authors discuss
+their algorithms in a great level of detail and even provide a MATLAB
+package.\footnote{\texttt{http://www.ians.uni-stuttgart.de/spinterp/}} However,
+their code is concerned with a drastically different (and the simplest)
+adaptivity strategy than the one we use. The same applies to the work in
+[Ma,~2009]. In this case, although the authors had not published their
+implementation, they were kind enough to share it with us when we contacted them
+directly. Their code was valuable for us as an intermediate step toward our
+final algorithm; we acknowledge their help in the paper. The basic idea behind
+the adaptivity strategy described in Sec.~IX-E is given in [Jakeman,~2012]. The
+authors did not publish any code and did not rely to us when we tried to contact
+them. Therefore, it is not possible for us to tell how their implementation
+compares with ours. Moreover, we are not aware of any other implementation of
+the interpolation algorithm described in Sec.~IX. Furthermore, to the best of
+our knowledge, we are the first ones to apply the algorithm in the context of
+uncertainty quantification of electronic systems.
+
+Finally, let us emphasize that the interpolation algorithm in Sec.~IX is a tool
+which we use to solve the problem at hand. This tool and the proposed framework
+itself, which the tool is a part of, conceptually belong to different levels;
+they serve different purposes. Based on this reasoning, we do not discuss
+[Klimke,~2006], [Ma,~2009], and [Jakeman,~2012] in the section on prior work,
+Sec.~II. Instead, we elaborate on the prior studies that are related to
+uncertainty quantification of electronic systems, which is the topic of the
+present paper.
 
 \begin{actions}
-  \action{Well done.}
+  \action{It has been emphasized in Sec.~III and Sec.~XI that the mathematics in
+  Sec.~IX-A--IX-E is a distilled version of the one developed in [Klimke,~2006],
+  [Ma,~2009], and [Jakeman,~2012].}
+
+  \action{The adaptivity strategies that [Klimke,~2006], [Ma,~2009], and
+  [Jakeman,~2012] are concerned with have been clarified in Sec.IX-E.}
 \end{actions}
 \end{authors}
 
@@ -109,9 +158,49 @@ metric.
 \end{reviewer}
 
 \begin{authors}
-We agree.
+Let us clarify the situation with the Gaussian distributions mentioned in
+Sec.~VIII-A, ``Uncertain Parameters.'' First of all, it is important to note
+that the proposed framework does not make any assumptions about the joint
+probability distribution of the uncertain parameters. The description given in
+the second half of Sec.~VIII-A is an example of how the parameters can be
+modeled. The reason we put much emphasis on this example is that we consider it
+to be the most common scenario in practice as, in practice, the knowledge of the
+distribution of the parameters is typically limited; see Remark~1. It is also
+important to note that, even in this practical scenario, the parameters are not
+modeled as Gaussian. The parameters have arbitrary marginal distributions. For
+instance, we use beta distributions in the motivational example in Sec.~I
+(uniform is a special case of beta), in the illustrative example in Sec.~VII,
+and in the experimental results in Sec.~XI. What is assumed to be Gaussian in
+the scenario in Sec.~VIII-A is the copula of the parameters, which together with
+the marginals define the joint distribution of the parameters. The reason for
+highlighting this special case is, again, practical. As it is explained in
+Remark~1, given a correlation matrix, the correlation structure of the
+parameters is often expressed as a Gaussian copula using such techniques as the
+Nataf transformation described in [Liu,~1986].
+
+Let us now move on to the last two sentences of the comment. In our problem
+formulation stated in Sec.~V, the distribution of the uncertain parameters is
+assumed to be given. For instance, it can be specified as a set of marginal
+distributions and a correlation matrix as we discuss in Sec.~VIII-A. The way
+this information is obtained is outside of the scope of this paper. It is also
+assumed that there is a simulation of the system at hand that takes in a
+concrete assignment of the uncertain parameters and outputs the corresponding
+value of the metric of interest. The crucial point here is that the proposed
+framework is completely indifferent to what the simulator does under the hood,
+which is why the simulator is referred to as a ``black box'' in the paper.
+Consequently, provided that the simulator is capable of modeling the effect of
+communications and shared resources when calculating the metric, the framework
+will take this effect into account automatically. In fact, this is exactly what
+happens in the real-life example that has been added to the paper. In this case,
+the simulator, Sniper, simulates a multi-threaded application running a platform
+which has an L3 cache shared across three CPUs; see \cref{0}{2}.
 
 \begin{actions}
-  \action{Well done.}
+  \action{It has been emphasized in Sec.~VIII-A that that framework does not
+  assume any particular probability distribution of the uncertain parameters.}
+
+  \action{It has been mentioned in Sec.~V that the modeling capabilities of the
+  framework are naturally inherited from the capabilities of the chosen
+  simulator.}
 \end{actions}
 \end{authors}

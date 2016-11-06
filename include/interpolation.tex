@@ -1,13 +1,14 @@
 In this section, we present the algorithm that constitutes the core of the
-proposed framework for probabilistic analysis of electronic systems.
-\updated{This part corresponds to the third box from the left in
-\fref{example}.} The algorithm is based on the work in \cite{jakeman2012,
-klimke2006, ma2009}, and it features a sparse-grid structure, hierarchical
-construction, and hybrid adaptivity. The benefits of these features are
-interconnected and can be summarized as follows: the ability to efficiently
-tackle multidimensional problems, the ability to perform gradual refinement of
-the approximation with a natural error control, and the ability to make the
-refinement fine-grained and, therefore, gain further efficiency.
+proposed framework for probabilistic analysis of electronic systems. \updated{It
+corresponds to the third box from the left in \fref{example}. The algorithm
+features a sparse-grid structure, hierarchical construction, and hybrid
+adaptivity.} The benefits of these features are interconnected and can be
+summarized as follows: the ability to efficiently tackle multidimensional
+problems, the ability to perform gradual refinement of the approximation with a
+natural error control, and the ability to make the refinement fine-grained and,
+therefore, gain further efficiency. \updated{The mathematics presented in
+\sref{tensor}--\ref{sec:adaptivity} is a distilled version of the one developed
+in \cite{jakeman2012, klimke2006, ma2009}.}
 
 Let $\f$ be a function that we would like to approximate; the connection between
 $\f$ and $\g$ will be explained in \sref{analysis}. The function is assumed to

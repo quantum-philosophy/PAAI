@@ -102,10 +102,12 @@ level index has not been refined yet (considered as $\vi_\l$ at some step $\l$
 in \eref{approximation}). The above criterion is a sound way to curtail the
 process as it is based on the actual progress.
 
-The adaptivity presented in this subsection is referred to as hybrid as it
-exhibits features of both global and local adaptivity. Local adaptivity operates
-on the level of individual nodes, and it has already been motivated. Global
-adaptivity operates on the level of individual dimensions. The intuition behind
-it is that, in general, the input variables manifest themselves (impact $\f$)
+\updated{The adaptivity presented in this subsection is referred to as hybrid as
+it combines features of global and local adaptivity; the combination was
+proposed in \cite{jakeman2012}. Local adaptivity, which has already been
+sufficiently motivated, is due to \cite{ma2009}, and it operates on the level of
+individual nodes. Global adaptivity is due to \cite{klimke2006}, and it operates
+on the level of individual dimensions. The intuition behind global adaptivity is
+that, in general, the input variables manifest themselves (impact $\f$)
 differently, and the interpolation algorithm is likely to benefit by
-prioritizing those variables that are the most influential.
+prioritizing those variables that are the most influential.}

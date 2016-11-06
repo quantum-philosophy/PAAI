@@ -24,18 +24,20 @@ this paper; see \cref{1}{3}. In addition, several colloquial expressions have
 been eliminated; see \cref{3}{1}.
 
 Second, the illustrative example that was originally given at the end of
-Sec.~VII, ``Modeling,'' has been moved higher up in the flow of the paper and
-resides now in a separate section titled ``Example.'' We expect this change to
-have a considerable positive impact on the paper since it builds up the reader's
-intuition much earlier, prior to any in-depth discussions. The corresponding
-figure, Fig.~2, has been also referenced better from the main text so that the
-reader is encouraged to recall this concrete example when it is likely to be of
-great help for understanding.
+the section titled ``Modeling,'' has been moved higher up in the flow of the
+paper and resides now in a separate section titled ``Example.'' We expect this
+change to have a considerable positive impact on the paper since it builds up
+the reader's intuition much earlier, prior to any in-depth discussions. The
+corresponding figure, Fig.~2, has been also referenced better from the main text
+so that the reader is encouraged to recall this concrete example when it is
+likely to be of great help for understanding.
 
 \begin{actions}
-  \action{The language has been made more straightforward throughout the paper.}
-  \action{The illustrative example has been moved higher up, and the
-  corresponding figure has been referenced better from the subsequent sections.}
+  \action{The language has been adjusted throughout the paper.}
+
+  \action{The illustrative example has been moved higher up (Sec.~VII), and the
+  corresponding figure (Fig.~2) has been referenced better from the subsequent
+  sections.}
 \end{actions}
 \end{authors}
 
@@ -86,10 +88,10 @@ keep in mind is that the application is provided as a service, and this service
 performs a set of standard enhancements on the images submitted by the users.
 
 The width and height of the image to process are considered as uncertain
-parameters. We do not assume any prior knowledge about these parameters except
-that they lie within certain ranges, and, therefore, the parameters are assumed
-to be uniformly distributed. Given this information, our objective is to find
-the distribution of the total energy, which we approach using our framework.
+parameters. We do not assume any prior knowledge of these parameters except that
+they lie within certain ranges, and, therefore, the parameters are assumed to be
+uniformly distributed. Given this information, our objective is to find the
+distribution of the total energy, which we approach using our framework.
 
 Sniper is an accurate simulator, and it also has good performance compared to
 other simulators. However, running the simulator is still time consuming, which
@@ -102,7 +104,7 @@ Sec.~XI, the true solutions are obtained by extensively sampling our light
 in-house simulator; each solution is estimated based on a Sobol sequence with
 $10^5$ points. In the case of the real-life example, obtaining such a reliable
 reference solution would take weeks if not months as a single simulation takes
-around one hour.
+40 minutes on average.
 
 This state of affairs is exactly the motivation behind our work. As we emphasize
 in the paper, if it was computationally cheap to run such simulators as Sniper
@@ -127,7 +129,7 @@ We have also included a virtual machine for better reproducibility of the
 results reported in the paper.
 
 \begin{actions}
-  \action{A real-life example has been added to the paper.}
+  \action{A real-life example has been added to Sec.~XI.}
   \action{The infrastructure for coupling the proposed framework with an
   arbitrary simulator has been included in the publicly accessible supplementary
   materials.}
