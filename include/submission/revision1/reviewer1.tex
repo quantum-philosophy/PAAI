@@ -89,7 +89,7 @@ They all are based on hybrid adaptivity on a sparse grid.
 
 \begin{authors}
 The reviewer uses the word \emph{implementation}. However, we suspect that the
-comment might be concerned with the mathematics behind the interpolation
+comment might be more concerned with the mathematics behind the interpolation
 algorithm rather than with the implementation of this algorithm. In order to be
 the safe side, we shall cover both perspectives.
 
@@ -107,35 +107,37 @@ strategies, which is what we refer to as hybrid adaptivity in the paper. In
 addition, each work puts emphasis on different choices of collocation nodes,
 basis functions, and refinement criteria. We have explored various
 configurations and presented in Sec.~IX the one that we consider to be the most
-adequate in our context. All in all, the mathematics in Sec.IX-A--IX-E is our
+adequate for our problem. All in all, the mathematics in Sec.IX-A--IX-E is our
 distilled version of what is given in [Klimke,~2006], [Ma,~2009], and
 [Jakeman,~2012]; there are no conceptual differences.
 
 Let us now turn to the implementation. In [Klimke,~2006], the authors discuss
-their algorithms in a great level of detail and even provide a MATLAB
-package.\footnote{\texttt{http://www.ians.uni-stuttgart.de/spinterp/}} However,
+their algorithms in a great level of detail and even provide a MATLAB package
+for interpolation on sparse
+grids.\footnote{\texttt{http://www.ians.uni-stuttgart.de/spinterp/}} However,
 their code is concerned with a drastically different (and the simplest)
-adaptivity strategy than the one we use. The same applies to the work in
-[Ma,~2009]. In this case, although the authors had not published their
-implementation, they were kind enough to share it with us when we contacted them
-directly. Their code was valuable for us as an intermediate step toward our
-final algorithm; we acknowledge their help in the paper. The basic idea behind
-the adaptivity strategy described in Sec.~IX-E is given in [Jakeman,~2012]. The
-authors did not publish any code and did not rely to us when we tried to contact
-them. Therefore, it is not possible for us to tell how their implementation
-compares with ours. Moreover, we are not aware of any other implementation of
-the interpolation algorithm described in Sec.~IX. Furthermore, to the best of
-our knowledge, we are the first ones to apply the algorithm in the context of
-uncertainty quantification of electronic systems.
+adaptivity strategy than the one we use. Therefore, their implementation is not
+directly comparable with ours. The same applies to the work in [Ma,~2009]. In
+this case, although the authors had not published their implementation, they
+were kind enough to share it with us when we contacted them directly. Their code
+was valuable for us as an intermediate step toward our final algorithm; we
+acknowledge their help in the paper. The basic idea behind the adaptivity
+strategy described in Sec.~IX-E is given in [Jakeman,~2012]. The authors did not
+publish any code and did not rely to us when we wrote to them. Therefore, it is
+not possible for us to tell how their implementation compares with ours.
+In addition, we are not aware of any other implementation of the interpolation
+algorithm described in Sec.~IX. Furthermore, to the best of our knowledge, we
+are the first ones to apply the algorithm in the context of uncertainty
+quantification of electronic systems.
 
-Finally, let us emphasize that the interpolation algorithm in Sec.~IX is a tool
+We would like to emphasize that the interpolation algorithm in Sec.~IX is a tool
 which we use to solve the problem at hand. This tool and the proposed framework
 itself, which the tool is a part of, conceptually belong to different levels;
 they serve different purposes. Based on this reasoning, we do not discuss
 [Klimke,~2006], [Ma,~2009], and [Jakeman,~2012] in the section on prior work,
-Sec.~II. Instead, we elaborate on the prior studies that are related to
-uncertainty quantification of electronic systems, which is the topic of the
-present paper.
+Sec.~II. Instead, in that section, we elaborate on the prior studies that are
+related to uncertainty quantification of electronic systems, which is the topic
+of the present paper.
 
 \begin{actions}
   \action{It has been emphasized in Sec.~III and Sec.~XI that the mathematics in
