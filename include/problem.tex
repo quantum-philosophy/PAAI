@@ -13,13 +13,14 @@ at the design stage.} Examples of $\vu$ include the amount of data the
 application needs to process, execution times of the tasks, and properties of
 the environment.
 
-The parameters $\vu$ are given as a random vector $\vu = (\u_i)_{i = 1}^\nu$
-with distribution $\distribution_\vu$. The dependency of $\g$ on $\vu$, written
-as $\g(\vu)$, implies that $\g$ is random to the designer. For a given outcome
-of $\vu$, however, the evaluation of $\g$ is purely deterministic. This
-operation is assumed to be doable but computationally expensive. (If the cost of
-evaluating $\g$ was negligible, one would proceed to direct sampling without any
-auxiliary framework.)
+\updated{The parameters $\vu$ are given as a random vector $\vu = (\u_i)_{i =
+1}^\nu$ with an arbitrary but known distribution $\distribution_\vu$.} The
+dependency of $\g$ on $\vu$, written as $\g(\vu)$, implies that $\g$ is random
+to the designer. For a given outcome of $\vu$, however, the evaluation of $\g$
+is purely deterministic. \updated{This operation is typically undertaken by an
+adequate simulator of the system at hand, and it is assumed to be doable but
+computationally expensive.} (If the cost of evaluating $\g$ was negligible, one
+would proceed to direct sampling without any auxiliary framework.)
 
 \updated{Our objective is to develop an efficient framework for estimating the
 probability distribution of the metric of interest $\g$ dependent on the

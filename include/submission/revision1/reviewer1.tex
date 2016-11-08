@@ -140,7 +140,7 @@ related to uncertainty quantification of electronic systems, which is the topic
 of the present paper.
 
 \begin{actions}
-  \action{It has been emphasized in Sec.~III and Sec.~XI that the mathematics in
+  \action{It has been emphasized in Sec.~III and Sec.~IX that the mathematics in
   Sec.~IX-A--IX-E is a distilled version of the one developed in [Klimke,~2006],
   [Ma,~2009], and [Jakeman,~2012].}
 
@@ -185,24 +185,25 @@ formulation stated in Sec.~V, the distribution of the uncertain parameters is
 assumed to be given. For instance, it can be specified as a set of marginal
 distributions and a correlation matrix as we discuss in Sec.~VIII-A. The way
 this information is obtained is outside of the scope of this paper. It is also
-assumed that there is a simulation of the system at hand that takes in a
-concrete assignment of the uncertain parameters and outputs the corresponding
-value of the metric of interest. The crucial point here is that the proposed
-framework is completely indifferent to what the simulator does under the hood,
-which is why the simulator is referred to as a ``black box'' in the paper.
-Consequently, provided that the simulator is capable of modeling the effect of
-communications and shared resources when calculating the metric, the framework
-will take this effect into account automatically. In fact, this is exactly what
-happens in the real-life example that has been added to the paper. In this case,
-the simulator, Sniper, simulates a multi-threaded application running a platform
-which has an L3 cache shared across three CPUs; see \cref{0}{2}.
+assumed that there is a simulator of the system at hand that takes in a concrete
+assignment of the uncertain parameters and outputs the corresponding value of
+the metric of interest. The crucial point here is that the proposed framework is
+completely indifferent to what the simulator does under the hood, which is why
+the simulator is referred to as a ``black box'' in the paper. Consequently,
+provided that the simulator is capable of modeling the effect of communications
+and shared resources when calculating the metric, the framework will take this
+effect into account automatically. In fact, this is exactly what happens in the
+real-life example that has been added to the paper. In this case, the simulator,
+Sniper, simulates a multi-threaded application running a platform which has
+three CPUs sharing an L3 cache; see \cref{0}{2}.
 
 \begin{actions}
-  \action{It has been emphasized in Sec.~VIII-A that that framework does not
-  assume any particular probability distribution of the uncertain parameters.}
+  \action{It has been emphasized in Sec.~V and Sec.~VIII-A that that framework
+  does not assume any particular probability distribution of the uncertain
+  parameters.}
 
-  \action{It has been mentioned in Sec.~V that the modeling capabilities of the
-  framework are naturally inherited from the capabilities of the chosen
+  \action{It has been mentioned in Sec.~VIII that the modeling capabilities of
+  the framework are naturally inherited from the capabilities of the chosen
   simulator.}
 \end{actions}
 \end{authors}

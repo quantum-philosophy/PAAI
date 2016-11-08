@@ -1,14 +1,15 @@
 The agenda for this section is as follows. In \sref{parameters}, the uncertain
 parameters $\vu$ are transformed into a form suitable for the subsequent
 calculations. \updated{This stage is an essential part of our framework, and it
-is denoted by $\transformation$ in \fref{example}. The rest of the subsections,
-\sref{time}--\ref{sec:temperature}, serve a strictly illustrative purpose. They
-introduce a number of models and a number of metrics $\g$ in order to give the
-reader a better intuition about the utility of the framework. These models and
-metrics also give us concrete problems to work with in the section on
-experimental results, \sref{experimentation}.} It should be well understood that
-the essence of $\g$ is problem specific. \updated{Consequently, the exact
-formulation of $\g$ is left to the designer's discretion.}
+is denoted by $\transformation$ in \fref{example}.} The rest of the subsections,
+\sref{time}--\ref{sec:temperature}, serve a strictly illustrative purpose.
+\updated{They exemplify the leftmost box in \fref{example} in order to give the
+reader a better intuition about the utility of the framework. Concretely, they
+introduce a number of models and a number of metrics of interest $\g$. It should
+be well understood, however, that the essence of $\g$ is problem specific. In
+practice, $\g$ is replaced by an adequate simulator of the system under
+consideration, and the modeling capabilities of this simulator will be naturally
+inherited by the framework itself.}
 
 \subsection{Uncertainty Parameters} \slab{parameters}
 \input{include/modeling/parameters}
