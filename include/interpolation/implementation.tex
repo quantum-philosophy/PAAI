@@ -15,11 +15,11 @@ index $\vj = (j_k)_{k = 1}^\nin$ for each interpolation element. It is also
 advantageous to encode each pair $(i_k, j_k)$ as a single unsigned integer,
 which, in particular, eliminates excessive memory usage. In multiple dimensions,
 this results in a single vector $\vl = (\iota_k)_{k = 1}^\nin$, which we simply
-call an index. The encoding that we utilize is as follows: $\iota_k = i_k \lor
-(j_k \ll \n_\text{bits})$ where $\lor$ and $\ll$ are the bitwise \up{OR} and
-logical left shift, respectively, and $\n_\text{bits}$ is the number of bits
-reserved for storing Smolyak levels, which can be adjusted according to the
-maximum permitted deepness of interpolation.
+call an index. \updated{The encoding that we utilize is as follows: $\iota_k =
+i_k \lor (j_k \ll \n_\text{bits})$ where $\lor$ and $\ll$ are the bitwise
+\up{OR} and logical left shift, respectively, and $\n_\text{bits}$ is the number
+of bits reserved for storing Smolyak levels (see \eref{smolyak-original}), which
+can be adjusted according to the maximum permitted deepness of interpolation.}
 
 The pseudocode of the construction stage is given in \aref{construct} called
 \token{Construct}. The \token{target} input is a function $\f$ to be

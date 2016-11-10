@@ -48,8 +48,39 @@ your work.
 \begin{authors}
 Please refer to \cref{0}{1} for our response.
 
+Let us now turn to the term \emph{Smolyak level}. The meaning of the term is
+rather mechanical. The interpolation presented in Sec.~IX-B is a step-by-step
+process. The more steps are taken, the more refined the corresponding
+approximation is. The Smolyak level is the index of the interpolation step
+starting from zero. Therefore, the Smolyak level can be used to tell how
+sophisticated the corresponding surrogate is in terms of the underlying
+interpolation grid. We have realized that we did not put enough stress on the
+term when we introduced it in Sec.~IX-B in relation to (17), and that we did not
+remind sufficiently well to the reader of the term's definition in the
+subsequent discussions. We have addressed these concerns in the revised version
+of the paper.
+
+Regarding the Newton--Cotes rule, it is one of the components of the
+interpolation algorithm. It is described in Sec.~IX-C titled ``Collocation
+Nodes.'' The rule is set of coordinates, which can be seen in (26). These
+coordinates define a grid upon which the interpolation process is carried out.
+Each node of the grid is a potential collocation node, that is, a point at which
+the value of the target function might be calculated and added to the surrogate
+under construction. The utility of the rule is in the induction of a grid that
+satisfies the requirements identified in Sec.~IX-B and summarized at the
+beginning of Sec.~IX-C. Again, based on the received feedback, we have realized
+that we did not refer sufficiently well to the description of the rule after its
+introduction in Sec.~IX-C, which has been improved in the revised manuscript.
+
 \begin{actions}
   \action{Please refer to \cref{0}{1} for our actions.}
+
+  \action{The definition and usage of the term \emph{Smolyak level}, which is
+  introduced in Sec.~IX-B in relation to (17), have been revised in Sec.~IX.}
+
+  \action{The description of the Newton--Cotes rule, which is given in
+  Sec.~IX-C, has been referred to more extensively from the subsequent
+  sections.}
 \end{actions}
 \end{authors}
 

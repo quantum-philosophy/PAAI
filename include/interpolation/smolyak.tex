@@ -12,12 +12,12 @@ The Smolyak interpolant for $\f$ is as follows:
 \begin{equation} \elab{smolyak-original}
   \smolyak{\l}(\f) = \sum_{\l - \nin + 1 \leq |\vi| \leq \l} (-1)^{\l - |\vi|} \, {\nin - 1 \choose \l - |\vi|} \, \tensor{\vi}(\f)
 \end{equation}
-where $\l \geq 0$ is the level of Smolyak's interpolation, and $|\vi| = i_1 +
-\dots + i_\nin$. It can be seen that the algorithm is indeed just a peculiar
-composition of cherry-picked tensor products. However, the formula has an
-implication of paramount importance. \updated{The function $\f$ needs to be
-evaluated only at the nodes of the sparse grid underpinning
-\eref{smolyak-original}:}
+\updated{where $\l \geq 0$ is the index of the interpolation step, which we
+shall refer to as the Smolyak level, and $|\vi| = i_1 + \dots + i_\nin$.} It can
+be seen that the algorithm is indeed just a peculiar composition of
+cherry-picked tensor products. However, the formula has an implication of
+paramount importance. \updated{The function $\f$ needs to be evaluated only at
+the nodes of the sparse grid underpinning \eref{smolyak-original}:}
 \begin{equation} \elab{smolyak-grid}
   \Y_l = \bigcup_{\l - \nin + 1 \leq |\vi| \leq \l} \X_\vi.
 \end{equation}

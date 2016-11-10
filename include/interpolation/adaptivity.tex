@@ -25,12 +25,13 @@ The Smolyak construction in \eref{smolyak-hierarchical} is rewritten as follows:
   \approximation{\l}(\f) = \approximation{\l-1}(\f) + \sum_{\vi \in \Delta\lindex_\l} \sum_{\vj \in \Delta\oindex_\vi} \surplus(\vx_{\vi\vj}) \,
 \e_{\vi\vj}.
 \end{equation}
-The main different with respect to \eref{smolyak-hierarchical} is that $\l \geq
-0$ no longer signifies a Smolyak level but a more abstract interpolation step,
-and $\approximation{\l}$ is the interpolant at that step. As always,
-$\approximation{-1} = 0$, and the definition of $\surplus$ given in
-\eref{surplus} is adjusted accordingly. From now on, all index sets will be
-generally subsets of their full-fledged counterparts defined in \sref{smolyak}.
+\updated{The different with respect to \eref{smolyak-hierarchical} is that $\l
+\geq 0$ is no longer the Smolyak level (see \eref{smolyak-original}) but a more
+abstract interpolation step, and $\approximation{\l}$ is the interpolant at that
+step.} As always, $\approximation{-1} = 0$, and the definition of $\surplus$
+given in \eref{surplus} is adjusted accordingly. From now on, all index sets
+will be generally subsets of their full-fledged counterparts defined in
+\sref{smolyak}.
 
 Each $\approximation{\l}$ is characterized by a set of level indices
 $\lindex_\l$, and each $\vi \in \lindex_\l$ by a set of order indices
@@ -77,10 +78,11 @@ by inspecting the backward neighborhood of $\vi$ (analogous to
 checking the following condition: $\score_{\hat{\vi}\vj} \geq \serror$ where
 $\serror$ is a user-defined constant, which we shall refer to as the score
 error. If the condition holds, the forward neighbors of $\vj$ in dimension $k$
-are added to $\Delta\oindex_\vi$. This procedure is illustrated in \fref{grid}
-for the open Newton--Cotes rule. The arrows emerging from a node connect the
-node with its forward neighbors. It can be seen that each node has two forward
-neighbors (for each dimension); their order indices are
+are added to $\Delta\oindex_\vi$. \updated{This procedure is illustrated in
+\fref{grid} for the open Newton--Cotes rule (see \sref{grid}).} The arrows
+emerging from a node connect the node with its forward neighbors. It can be seen
+that each node has two forward neighbors (for each dimension); their order
+indices are
 \[
   (j_1, \dots, 2 j_k, \dots, j_\nin) \hspace{1em} \text{and} \hspace{1em} (j_1, \dots, 2 j_k + 2, \dots, j_\nin).
 \]
@@ -88,11 +90,12 @@ The above refinement procedure is repeated for each index $\vi \in
 \Delta\lindex_\l$ with respect to each dimension $k = 1, \dots, \nin$.
 
 The final question is the stopping condition of the approximation process in
-\eref{approximation}. Apart from the obvious constraints on the maximum number
-of function evaluations and deepness of interpolation (the Smolyak level), we
-rely on the following criterion. Assume that we are given two additional
-constants: $\aerror$ and $\rerror$ referred to as the absolute and relative
-error, respective. Then, the process is terminated as soon as
+\eref{approximation}. \updated{Apart from the natural constraints on the maximum
+number of function evaluations and the maximum allowed Smolyak level $\l$ in
+\eref{smolyak-original}, we rely on the following criterion.} Assume that we are
+given two additional constants: $\aerror$ and $\rerror$ referred to as the
+absolute and relative error, respective. Then, the process is terminated as soon
+as
 \begin{equation} \elab{stopping-condition}
   \max_{(\vi, \vj)} \, |\surplus(\vx_{\vi\vj})| \leq \max \left\{ \aerror, \, \rerror (\f_\text{max} - \f_\text{min}) \right\}
 \end{equation}
