@@ -155,6 +155,26 @@ trend when examining various scenarios?).
 \begin{authors}
 Please refer to \cref{0}{2} for our response.
 
+Let us reiterate on the absence of an accuracy assessment of the real-life
+example described in the response to \cref{0}{2}. Unlike the synthetic examples
+given in Sec.~XI-A, we are not able to compute the true solution to compare with
+in this case due to the prohibitive expense of the simulator (Sniper in
+combination with McPAT). For each synthetic problem, the true solution is
+obtained by brute force: the corresponding synthetic system is evaluated $10^5$
+times---which is doable due the synthetic nature of the problem---and the
+corresponding samples are then used to estimate the probability distribution of
+the metric in question. However, in the case of the real-life example, each run
+of the simulator takes 40 minutes on average. Under these circumstances,
+estimating the true solution to the real-life problem is prohibitively
+expensive.
+
+The above is exactly the motivation behind our work. If it was computationally
+cheap to run such simulators as Sniper and McPAT an arbitrary number of times,
+one would not needed any auxiliary framework; direct Monte Carlo sampling would
+be sufficient. However, industrial-standard simulations are expensive. Our
+framework allows for uncertainty quantification to be performed efficiently by
+invoking the simulator at a few strategically chosen points.
+
 \begin{actions}
   \action{Please refer to \cref{0}{2} for our actions.}
 \end{actions}

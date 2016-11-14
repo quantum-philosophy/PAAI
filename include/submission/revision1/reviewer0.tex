@@ -118,9 +118,14 @@ framework will be applied to larger systems, in which case the inadequacy of
 direct sampling and the benefit of using the proposed framework will be much
 more apparent.
 
-The result of the real-life example is as follows. The construction of a
-surrogate finished after 78 invocations of the simulator (the accuracy criteria
-were similar to those given in Sec.~XI).
+The real-life deployment has fulfilled our expectations. The interpolation
+process successfully finished and delivered a surrogate after 78 invocations of
+the simulator (the accuracy criteria were similar to those given in Sec.~XI).
+Each invocation took 40 minutes on average. The probability distribution of the
+total energy was then estimated by sampling the constructed surrogate $10^5$
+times. This many samples would take months to obtain if one sampled the
+simulator directly. Using the proposed technique, the whole procedure took
+several hours.
 
 The additional infrastructure written to facilitate the real-life example
 described above is open source and available online, as is the rest of our code.
