@@ -96,10 +96,45 @@ scenarios.
 \end{reviewer}
 
 \begin{authors}
-We agree.
+As we write in the paper, the framework is general and can be applied in
+different settings. The uncertainty due to aging or process variation, mentioned
+by the reviewer, is an example of what our approach can help the designer to
+quantify. The main feature of the framework that enables this flexibility is its
+non-intrusive nature. To elaborate, the prerequisite of the framework is the
+designer's ability to evaluate the metric of interest given an assignment of the
+uncertain parameters (a particular outcome of the uncertain parameters), and
+there are no assumptions regarding how this evaluation is undertaken; see the
+problem formulation in Sec.~V. Our primary scenario that the evaluation is done
+by an adequate simulator of the metric under consideration.
+
+Since the simulator is an opaque object from our standpoint, it can encompass
+anything that the designer considers appropriate. For instance, in the case of
+process variation, it can take in an assignment of process parameters such as
+the effective channel length and gate-oxide thickness, compute the leakage power
+via an adequate SPICE-based model, and finish by calculating the maximal
+temperature (or any other metric that the designer is interested in studying);
+see [Ukhov,~2014]. The same applies to aging; see [Ukhov,~2015]. To summarize,
+the question of what the proposed framework is capable of analyzing from the
+perspective of uncertainty quantification boils down to what the simulator at
+the designer's disposal is capable of modeling.
+
+We do not elaborate much on process variation and similar sources of uncertainty
+due to the reasons given in Sec.~I. Specifically, in this work, we focus
+primarily on the uncertainties originating from the computer rather than
+physical world. The variability coming from the physical world is typically well
+behaved, and the existing techniques generally work well in such cases. However,
+they are inadequate for nonsmooth problems, which we tackle in this work.
+
+The comment is similar in spirit to \cref{1}{5} and \cref{2}{1}, and, therefore,
+the corresponding responses might be worth considering in addition to the
+response given above.
 
 \begin{actions}
-  \action{Well done.}
+  \action{The problem formulation in Sec.~V has been refined.}
+
+  \action{It has been noted in Sec.~VIII that the modeling capabilities of the
+  proposed framework are naturally inherited from the capabilities of the
+  simulator at hand.}
 \end{actions}
 \end{authors}
 
