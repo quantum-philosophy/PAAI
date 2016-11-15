@@ -48,6 +48,8 @@
 \raggedbottom
 \clubpenalty 0
 \widowpenalty 0
+\predisplaypenalty 0
+\postdisplaypenalty 0
 
 \makeatletter
 \let\origsection\section
@@ -57,7 +59,7 @@
 \newcommand\starsection[1]
 {\sectionprelude\origsection*{#1}\sectionpostlude}
 \newcommand\sectionprelude{%
-  \vspace{-0.1em}
+  \vspace{-0.3em}
 }
 \newcommand\sectionpostlude{%
   \vspace{-0.1em}

@@ -35,11 +35,8 @@ conclusions about the system's behavior.}
 \updated{The major problem with sampling techniques, however, is in sampling:
 one should be able to obtain sufficient many realizations of the metric of
 interest in order to accurately estimate the needed statistics about that metric
-\cite{diaz-emparanza2002}.} The main concerns in this context are: \updated{How
-expensive is it to obtain one sample in terms of the computation time? How many
-samples are needed? How many samples are affordable?} When the subject under
-analysis is expensive to evaluate, sampling methods are rendered slow and often
-unfeasible.
+\cite{diaz-emparanza2002}.} When the subject under analysis is expensive to
+evaluate, sampling methods are rendered slow and often unfeasible.
 
 We propose a design-time system-level framework for the analysis of electronic
 systems that are dependent on uncertain parameters. Similar to sampling methods,
@@ -60,7 +57,7 @@ on the level on individual points \cite{ma2009}) variations.} This means that
 the framework is able to benefit from many particularities that might be present
 in the stochastic space, that is, the space of the uncertain parameters. The
 adaptivity is the capital feature of our technique, and we would like to
-elaborate on it now. To this end, let us first make one general observation.
+elaborate on it now.
 
 The uncertainties present in electronic systems originate from both the physical
 world and the computer world. An example of a physical source of uncertainty is
@@ -72,9 +69,9 @@ elaborate, the characteristics of the codes running on modern devices change
 from one activation to another depending on the environment and input data. This
 source of uncertainty has not been deprived of attention either, especially in
 the real-time community \cite{quinton2012, diaz2002, santinelli2011,
-tanasa2015}. Regardless of the origin, such phenomena as the ones mentioned
-above render the behavior of an electronic system nondeterministic to the
-designer, and accounting for them is highly beneficial if not essential.
+tanasa2015}. \updated{Regardless of the origin, such phenomena as the ones
+mentioned above render the behavior of an electronic system nondeterministic to
+the designer.}
 
 \input{include/assets/figures/motivation}
 Due to its nature, the variability coming from the physical world is typically
@@ -138,13 +135,6 @@ measured by the number of times the metric needs to be evaluated in order to
 achieve a certain accuracy level.} The magnitude of the reduction depends on the
 problem, and it can be substantial when the problem is well disposed to
 adaptation.
-
-\updated{Lastly, we would like to reiterate that the output of our framework is
-generative: we construct a light representation of the metric of interest that
-can be used to generate realizations of this metric without touching the
-expensive (in terms of evaluation by, for instance, simulation) ``black box.''}
-Consequently, having constructed such a representation, sampling methods can be
-applied and have a negligible cost.
 
 The remainder of the paper is organized as follows. Section~\ref{sec:prior-work}
 provides an overview of the prior work. \updated{In \sref{present-work}, the
