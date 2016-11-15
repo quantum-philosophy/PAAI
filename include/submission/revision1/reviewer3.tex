@@ -99,9 +99,38 @@ lower for blue than red? In fact, why is it non-zero for the proposed approach?
 \end{reviewer}
 
 \begin{authors}
-We agree.
+The leftmost points in the graphs given in Fig.~5 correspond to one sample, not
+to zero samples. Due to the scaling, it was indeed a source of confusion. In the
+revised version of the figure, the zeros on the horizontal axes have been
+replaced with ones.
+
+Let us now turn to the observation that the blue curve (our approach) is lower
+than the red one (direct sampling) at the starting point where the number of
+samples equals one. In the case of direct sample, the distribution is estimated
+based on one sample. In the case of our technique, the distribution is estimated
+based on $10^5$ drawn from the corresponding surrogate. However, since a
+surrogate with one collocation node is a constant (see $e_{00}$ in Fig.~4), all
+these samples are the same. The difference between the two approaches is then in
+the positions of their samples.
+
+It can be seen in (26) that the first collocation node of our technique is 0.5,
+which is the center of the unit interval. Due to the transformation $\mathbb{T}$
+described in Sec.~VIII-A, the interpolation takes place in a uniform probability
+space. Consequently, point 0.5 is the median (the probability masses to the left
+and right from the point are equal) of the distribution before and after the
+transformation. We suppose that, in our setting, this point is a better
+representative of the distribution than the first point of the Sobol sequence
+underpinning direct sampling. The Sobol sequence starts from a noncentral
+location due to the nonzero seed (scramble) set in the experiments, and this
+point is unlikely to have a special meaning for the distribution of the
+uncertain parameters.
+
+The main purpose of Fig.~5 is to show the accuracy trends of the proposed
+technique and those of direct sampling. In our opinion, the figure serves this
+purpose sufficiently well.
 
 \begin{actions}
-  \action{Well done.}
+  \action{The starting points of the graphs given in Figure~5 have been
+  clarified by adjusting the leftmost labels on the horizontal axes.}
 \end{actions}
 \end{authors}
