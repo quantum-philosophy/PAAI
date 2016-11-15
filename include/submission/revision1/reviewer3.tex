@@ -22,9 +22,9 @@ following words and phrases have been revisited:
 \begin{itemize}
   \item \emph{broad umbrella} (Sec.~I)
   \item \emph{How much does it cost \dots?} (Sec.~I)
-  \item \emph{How many do we need?} (Sec.~I)
+  \item \emph{How many \dots do we need?} (Sec.~I)
   \item \emph{How many can we afford?} (Sec.~I)
-  \item \emph{figure out} (Sec.~I)
+  \item \emph{figure it out} (Sec.~I)
   \item \emph{let alone} (Sec.~I)
   \item \emph{switching gears} (Sec.~II)
   \item \emph{quandary} (Sec.~VI)
@@ -67,11 +67,28 @@ impacts the proposed approach.
 \end{reviewer}
 
 \begin{authors}
-The reviewer is absolutely right that the distribution of the uncertain
-parameters is needed for the construction of a surrogate.
+The proposed framework has two main inputs: a specification of the probability
+distribution of the uncertain parameters and a means of evaluating the desired
+metric for a given assignment of the parameters. What is referred to as a
+``black box'' is the second input only, that is, the simulator of the metric.
+The reviewer is absolutely right that the probability distribution of the
+uncertain parameters needs to be given explicitly in order to construct a
+surrogate. We have addressed this concern by clarifying the problem formulation
+given in Sec.~V. We have also adjusted the figure of the illustrative example
+given in Sec.~VII, Fig.~2, so that the ``black-box'' component is apparent.
+
+Lastly, we would like to note that the way the information about the probability
+distribution of the uncertain parameters is obtained is outside of the scope of
+this work. However, since we are well aware that the knowledge of the join
+distribution of the parameters is a rather impractical assumption to make, the
+framework has been tailored to work with an incomplete knowledge of the
+distribution, which we elaborate on in Remark~1 made in Sec.~VIII-A.
 
 \begin{actions}
-  \action{Well done.}
+  \action{The problem formulation in Sec.~V has been revisited.}
+
+  \action{The part that is treated as a ``black box'' inside the proposed
+  framework has been emphasized in Fig.~2 both graphically and textually.}
 \end{actions}
 \end{authors}
 
