@@ -3,13 +3,13 @@ as we shall see, can be constructed using the (one-dimensional) Newton--Cotes
 rule \cite{ma2009}. For each level, the rule is merely a set of equidistant
 nodes on $[0, 1]$.
 
-The rule comes in two flavors: closed and open. The only difference between the
-two is that the former includes the endpoints, that is, 0 and 1, while the
-latter does not. Now, in \sref{smolyak}, we postulated that the assumption in
-\eref{tensor-exactness} was needed in order to proceed. The closed rule
-satisfies this assumption, and it is the one used in the original version of
-local adaptivity presented in \cite{ma2009}. The open Newton--Cotes rule, on the
-other hand, violates the assumption close to the boundaries of the interval.
+\updated{There are two types of the rule: closed and open. The only difference
+between the two is that the former includes the endpoints, that is, 0 and 1,
+while the latter does not.} Now, in \sref{smolyak}, we postulated that the
+assumption in \eref{tensor-exactness} was needed in order to proceed. The closed
+rule satisfies this assumption, and it is the one used in the original version
+of local adaptivity presented in \cite{ma2009}. The open Newton--Cotes rule, on
+the other hand, violates the assumption close to the boundaries of the interval.
 However, we found that the open rule is a viable option since it performs well
 in practice, which was also noted in \cite{klimke2006}. In fact, we were able to
 obtain better results with the open rule and decided to present it here.

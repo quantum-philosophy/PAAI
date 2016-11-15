@@ -20,10 +20,10 @@ with the solid line (that is, for the same numbers of $\g$'s evaluations), the
 dashed line shows the error of direct sampling, which, as before, is computed
 with respect to the reference solution.
 
-Let us first walk through a particular problem in \fref{results}. Consider, for
-instance, the one labeled with $\bigstar$. It can be seen that, at the very
-beginning, our solution and the solution of direct sampling are poor. The
-\up{KS} statistic tells us that there are substantial mismatches between the
+\updated{Let us first describe one particular problem shown in \fref{results}.}
+Consider, for instance, the one labeled with $\bigstar$. It can be seen that, at
+the very beginning, our solution and the solution of direct sampling are poor.
+The \up{KS} statistic tells us that there are substantial mismatches between the
 estimates and the reference solution. However, as the interpolant is being
 adaptively refined, our solution approaches rapidly the reference one and, by
 the end of the interpolation process, leaves the solution of na\"{i}ve sampling
@@ -52,10 +52,7 @@ $\serror$), and it reasonably does not do more than what has been requested.
 case of interpolation, the metric being interpolated is not $\g$, strictly
 speaking; it is a lower-dimensional representation of $\g$, which already
 implies an information loss.} Therefore, there is a limit on the accuracy that
-can be achieved, which depends on the amount of reduction applied. However,
-model-order reduction is a good, recommended practice since it circumvents
-unnecessary complexity and, thereby, makes uncertainty-quantification problems
-more tractable.
+can be achieved, which depends on the amount of reduction applied.
 
 The message of the above observations is that the designer of an electronic
 system can benefit substantially in terms of accuracy per computation time by

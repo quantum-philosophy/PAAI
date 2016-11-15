@@ -28,22 +28,18 @@ quantification in general, sampling methods are of great use. The classical
 Monte Carlo (\up{MC}) sampling, quasi-\up{MC} sampling, and Latin hypercube
 sampling are examples of such methods \cite{asmussen2007}. Compared to other
 techniques for probabilistic analysis, these methods are straightforward to
-apply. The system at hand is treated as a completely opaque object, and one only
+apply. \updated{The system at hand is treated as an opaque object, and one only
 has to evaluate this object a number of times in order to start to draw
-conclusions about the system's behavior. Consider, for instance, \up{MC}
-sampling, which is arguably the most famous and versatile approach to
-uncertainty quantification. The technique was introduced in the middle of the
-twentieth century and, since then, has expanded into a rich family of methods
-that have had a tremendous impact both in academia and in terms of industrial
-breakthroughs \cite{asmussen2007}.
+conclusions about the system's behavior.}
 
 \updated{The major problem with sampling techniques, however, is in sampling:
 one should be able to obtain sufficient many realizations of the metric of
 interest in order to accurately estimate the needed statistics about that metric
-\cite{diaz-emparanza2002}.} The main concerns in this context are: How much does
-it cost in terms of time and other resources to obtain one sample? How many
-samples do we need? How many can we afford? When the subject under analysis is
-expensive to evaluate, sampling methods are rendered slow and often unfeasible.
+\cite{diaz-emparanza2002}.} The main concerns in this context are: \updated{How
+expensive is it to obtain one sample in terms of the computation time? How many
+samples are needed? How many samples are affordable?} When the subject under
+analysis is expensive to evaluate, sampling methods are rendered slow and often
+unfeasible.
 
 We propose a design-time system-level framework for the analysis of electronic
 systems that are dependent on uncertain parameters. Similar to sampling methods,
@@ -57,12 +53,12 @@ running on heterogeneous multiprocessor platforms.}
 \updated{In contrast to sampling methods, our technique explores and exploits
 the nature of the problem---that is, the way the metric depends on the uncertain
 parameters---by exercising the aforementioned ``black box'' at a set of points
-chosen adaptively.} The adaptivity that our framework leverages is hybrid
+chosen adaptively. The adaptivity that our framework leverages is hybrid
 \cite{jakeman2012}: it tries to pick up both global (that is, on the level of
-entire dimensions \cite{klimke2006}) and, more importantly, local (that is, on
-the level on individual points \cite{ma2009}) variations. This means that the
-framework is able to benefit from many particularities that might be present in
-the stochastic space, that is, the space of the uncertain parameters. The
+individual dimensions \cite{klimke2006}) and, more importantly, local (that is,
+on the level on individual points \cite{ma2009}) variations.} This means that
+the framework is able to benefit from many particularities that might be present
+in the stochastic space, that is, the space of the uncertain parameters. The
 adaptivity is the capital feature of our technique, and we would like to
 elaborate on it now. To this end, let us first make one general observation.
 
@@ -100,7 +96,7 @@ and takes either one depending on the input data. Assume that one branch takes
 probability 0.4. Our goal is to find the distribution of the end-to-end delay of
 the application. \updated{In this example, the metric is the end-to-end delay,
 and it coincides with the execution time of the task; hence, we already know the
-answer.} Let us pretend we do not and try to figure it out by other means.
+answer. Let us pretend we do not and try to obtain it by other means.}
 
 Suppose the above scenario is modeled by a \rv\ $\u$ uniformly distributed on
 $[0, 1]$: the execution time of the task (the end-to-end delay of the
@@ -111,12 +107,13 @@ line in \fref{motivation}.
 First, we try to quantify the end-to-end delay by constructing and subsequently
 sampling a \up{PC} expansion founded on the Legendre polynomial basis
 \cite{xiu2010}. The orange line in \fref{motivation} shows a ninth-order \up{PC}
-expansion, which uses 10 points. It can be seen that the approximation is
-poor---let alone negative execution times---which means that the follow-up
-sampling will also yield a poor approximation of the true distribution. The
-observed oscillating behavior is the well-known Gibbs phenomenon stemming from
-the discontinuity of the response. No matter how many points are used in the
-construction of a polynomial, the oscillations will never go away completely.
+expansion, which uses 10 points. \updated{It can be seen that the approximation
+is poor---not to mention negative execution times---which means that the
+follow-up sampling will also yield a poor approximation of the true
+distribution.} The observed oscillating behavior is the well-known Gibbs
+phenomenon stemming from the discontinuity of the response. No matter how many
+points are used in the construction of a polynomial, the oscillations will never
+go away completely.
 
 Let us now see how the framework proposed in this paper solves the same problem.
 For the purpose of the experiment, our technique is constrained to make use of

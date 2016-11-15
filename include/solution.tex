@@ -3,16 +3,16 @@ uncertainty quantification. \updated{We would readily apply such a method to
 study our metric $\g$ if only evaluating $\g$ had a small cost, which it does
 not.}
 
-Our solution to the above quandary is to construct a light representation of the
-heavy $\g$ and study this representation instead of $\g$. The surrogate that we
-build is based on adaptive interpolation: $\g$ is evaluated at a number of
-strategically chosen collocation nodes, and any other values of $\g$ are
-reconstructed on demand (without involving $\g$) using a set of basis functions
-mediating between the collected values of $\g$. \updated{The benefit of this
-approach is in the number of invocations of the metric $\g$: only a few
-evaluations of $\g$ are needed, and the rest of our probabilistic analysis is
-powered by the constructed interpolant, which, in contrast to $\g$, has a
-negligible cost.}
+\updated{Our solution to the above predicament is to construct a light
+representation of the heavy $\g$ and study this representation instead of $\g$.}
+The surrogate that we build is based on adaptive interpolation: $\g$ is
+evaluated at a number of strategically chosen collocation nodes, and any other
+values of $\g$ are reconstructed on demand (without involving $\g$) using a set
+of basis functions mediating between the collected values of $\g$. \updated{The
+benefit of this approach is in the number of invocations of the metric $\g$:
+only a few evaluations of $\g$ are needed, and the rest of our probabilistic
+analysis is powered by the constructed interpolant, which, in contrast to $\g$,
+has a negligible cost.}
 
 Let us delineate the steps involved in the solution process. Recall that $\g$ is
 parameterized by the uncertain parameters $\vu$, and these variables are the
@@ -24,8 +24,8 @@ a small set of carefully chosen points. 3)~The probability distribution of $\g$
 is then estimated by applying an arbitrary sampling method to the constructed
 interpolant of $\g$.
 
-\updated{The first two steps should be undertaken with a great care as
-interpolation of multivariate functions is a challenging task. This aspect will
-be discussed in detail in \sref{modeling} and \sref{interpolation}. However,
-before we proceed to those sections, let us take a moment and walk through an
+\updated{The first two of the above steps should be undertaken with a great care
+as interpolation of multivariate functions is a challenging task. This aspect
+will be discussed in detail in \sref{modeling} and \sref{interpolation}.
+However, before we proceed to those sections, we would like to give an
 illustrative example.}
