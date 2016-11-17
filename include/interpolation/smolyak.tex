@@ -25,9 +25,9 @@ tensor product given in \eref{tensor-cardinality}, which depends on the
 dimensionality of the problem at hand and the one-dimensional rules utilized
 (\sref{tensor}).
 
-A better intuition about the properties of Smolyak's construction can be
-obtained by rewriting \eref{smolyak-original} in an incremental form. To this
-end, let $\Delta\tensor{-1}(\f) = 0$,
+\updated{A better intuition about the properties of the Smolyak construction can
+be obtained by rewriting \eref{smolyak-original} in an incremental form.} To
+this end, let $\Delta\tensor{-1}(\f) = 0$,
 \begin{align}
   & \Delta\tensor{i}(\f) = (\tensor{i} - \tensor{i - 1})(\f), \text{ and} \elab{tensor-delta-1d} \\
   & \Delta\tensor{\vi}(\f) = \left( \bigotimes_{k = 1}^\nin \Delta\tensor{i_k} \right)(\f). \nonumber
@@ -41,10 +41,10 @@ where $\smolyak{-1}(\f) = 0$, and we let $\lindex_\l = \{ \vi: |\vi| \leq \l
 Smolyak interpolant can be efficiently refined: the work done in order to attain
 one Smolyak level $\l$ is entirely recycled to go to the next.
 
-The sparsity and incremental refinement of Smolyak's approach, which are shown
-in \eref{smolyak-grid} and \eref{smolyak-incremental}, respectively, are
-remarkable properties \perse, but they can be taken even further. To this end,
-let $\Delta\X_{-1} = \emptyset$,
+\updated{The sparsity and incremental refinement of the Smolyak approach, which
+are shown in \eref{smolyak-grid} and \eref{smolyak-incremental}, respectively,
+are remarkable properties \perse, but they can be taken even further.} To this
+end, let $\Delta\X_{-1} = \emptyset$,
 \[
   \Delta\X_i = \X_i \setminus \X_{i - 1}, \text{ and } \Delta\X_\vi = \Delta\X_{i_1} \times \cdots \times \Delta\X_{i_\nin}.
 \]
