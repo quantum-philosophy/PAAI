@@ -89,8 +89,8 @@ They all are based on hybrid adaptivity on a sparse grid.
 \begin{authors}
 The reviewer uses the word \emph{implementation}. However, we suspect that the
 comment might be more concerned with the mathematics behind the interpolation
-algorithm rather than with the implementation of this algorithm. In order to be
-the safe side, we shall cover both perspectives.
+algorithm rather than with the actual implementation. In order to be on the safe
+side, we shall cover both perspectives.
 
 The proposed framework relies on the mathematics developed in [Klimke,~2006],
 [Ma,~2009], and [Jakeman,~2012]. However, it should be well understood that we
@@ -122,9 +122,9 @@ were kind enough to share it with us when we contacted them directly. Their code
 was valuable for us as an intermediate step toward our final algorithm; we
 acknowledge their help in the paper. The basic idea behind the adaptivity
 strategy described in Sec.~IX-E is given in [Jakeman,~2012]. The authors did not
-publish any code and did not rely to us when we wrote to them. Therefore, it is
-not possible for us to tell how their implementation compares with ours.
-In addition, we are not aware of any other implementation of the interpolation
+publish any code and did not reply to us when we wrote to them. Therefore, it is
+not possible for us to tell how their implementation compares with ours. In
+addition, we are not aware of any other implementation of the interpolation
 algorithm described in Sec.~IX. Furthermore, to the best of our knowledge, we
 are the first ones to apply the algorithm in the context of uncertainty
 quantification of electronic systems.
@@ -160,24 +160,25 @@ metric.
 
 \begin{authors}
 Let us clarify the situation with the Gaussian distributions mentioned in
-Sec.~VIII-A, ``Uncertain Parameters.'' First of all, it is important to note
-that the proposed framework does not make any assumptions about the joint
-probability distribution of the uncertain parameters. The description given in
-the second half of Sec.~VIII-A is an example of how the parameters can be
-modeled. The reason we put much emphasis on this example is that we consider it
-to be the most common scenario in practice as, in practice, the knowledge of the
-distribution of the parameters is typically limited; see Remark~1. It is also
-important to note that, even in this practical scenario, the parameters are not
-modeled as Gaussian. The parameters have arbitrary marginal distributions. For
-instance, we use beta distributions in the motivational example in Sec.~I
-(uniform is a special case of beta), in the illustrative example in Sec.~VII,
-and in the experimental results in Sec.~XI. What is assumed to be Gaussian in
-the scenario in Sec.~VIII-A is the copula of the parameters, which together with
-the marginals define the joint distribution of the parameters. The reason for
-highlighting this special case is, again, practical. As it is explained in
-Remark~1, given a correlation matrix, the correlation structure of the
-parameters is often expressed as a Gaussian copula using such techniques as the
-Nataf transformation described in [Liu,~1986].
+Sec.~VIII-A, ``Uncertain Parameters.'' \emph{First of all, it is important to
+note that the proposed framework does not make any assumptions about the joint
+probability distribution of the uncertain parameters.} The parameters do not
+need to be Gaussian or to follow any other particular probability distribution.
+The description given in the second half of Sec.~VIII-A is an example of how the
+parameters can be modeled. The reason we put much emphasis on this example is
+that we consider it to be the most common scenario in practice as, in practice,
+the knowledge of the distribution of the parameters is typically limited; see
+Remark~1. It is also important to note that, even in this practical scenario,
+the parameters are not modeled as Gaussian. The parameters have arbitrary
+marginal distributions. For instance, we use beta distributions in the
+motivational example in Sec.~I (uniform is a special case of beta), in the
+illustrative example in Sec.~VII, and in the experimental results in Sec.~XI.
+What is assumed to be Gaussian in the scenario in Sec.~VIII-A is the copula of
+the parameters, which together with the marginals define the joint distribution
+of the parameters. The reason for highlighting this special case is, again,
+practical. As it is explained in Remark~1, given a correlation matrix, the
+correlation structure of the parameters is often expressed as a Gaussian copula
+using such techniques as the Nataf transformation described in [Liu,~1986].
 
 Let us now move on to the last two sentences of the comment. In our problem
 formulation stated in Sec.~V, the distribution of the uncertain parameters is
@@ -197,7 +198,7 @@ Sniper, simulates a multi-threaded application running a platform which has
 three CPUs sharing an L3 cache; see \cref{0}{2}.
 
 \begin{actions}
-  \action{It has been emphasized in Sec.~V and Sec.~VIII-A that that framework
+  \action{It has been emphasized in Sec.~V and Sec.~VIII-A that the framework
   does not assume any particular probability distribution of the uncertain
   parameters.}
 
