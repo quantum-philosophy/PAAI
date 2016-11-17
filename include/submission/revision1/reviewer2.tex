@@ -55,14 +55,14 @@ approximation is. The Smolyak level is the index of the interpolation step
 starting from zero. Therefore, the Smolyak level can be used to tell how
 sophisticated the corresponding surrogate is in terms of the underlying
 interpolation grid. We have realized that we did not put enough stress on the
-term when we introduced it in Sec.~IX-B in relation to (17), and that we did not
-remind sufficiently well to the reader of the term's definition in the
+term when we introduced it in Sec.~IX-B in relation to Eq.~17, and that we did
+not remind sufficiently well the reader of the term's definition in the
 subsequent discussions. We have addressed these concerns in the revised version
 of the paper.
 
 Regarding the Newton--Cotes rule, it is one of the components of the
 interpolation algorithm. It is described in Sec.~IX-C titled ``Collocation
-Nodes.'' The rule is set of coordinates, which can be seen in (26). These
+Nodes.'' The rule is a set of coordinates, which can be seen in Eq.~26. These
 coordinates define a grid upon which the interpolation process is carried out.
 Each node of the grid is a potential collocation node, that is, a point at which
 the value of the target function might be calculated and added to the surrogate
@@ -76,7 +76,7 @@ introduction in Sec.~IX-C, which has been improved in the revised manuscript.
   \action{Please refer to \cref{0}{1} for our actions.}
 
   \action{The definition and usage of the term \emph{Smolyak level}, which is
-  introduced in Sec.~IX-B in relation to (17), have been revised in Sec.~IX.}
+  introduced in Sec.~IX-B in relation to Eq.~17, have been revised in Sec.~IX.}
 
   \action{The description of the Newton--Cotes rule, which is given in
   Sec.~IX-C, has been referred to more extensively from the subsequent
@@ -104,8 +104,8 @@ non-intrusive nature. To elaborate, the prerequisite of the framework is the
 designer's ability to evaluate the metric of interest given an assignment of the
 uncertain parameters (a particular outcome of the uncertain parameters), and
 there are no assumptions regarding how this evaluation is undertaken; see the
-problem formulation in Sec.~V. Our primary scenario that the evaluation is done
-by an adequate simulator of the metric under consideration.
+problem formulation in Sec.~V. Our primary scenario is that the evaluation is
+done by an adequate simulator of the metric under consideration.
 
 Since the simulator is an opaque object from our standpoint, it can encompass
 anything that the designer considers appropriate. For instance, in the case of
