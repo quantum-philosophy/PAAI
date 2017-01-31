@@ -1,0 +1,15 @@
+The careful reader has noted a problem with the calculation of variance in the
+previous subsection: $h$ is vector valued. More generally, the metric $\g$ in
+\sref{modeling} and the function $\f$ in \sref{interpolation} have been depicted
+as having one-dimensional codomains. This, however, has been done only for the
+sake of clarity. All the mathematics and pseudocodes stay the same for
+vector-valued functions. The only except is that, since a surplus
+$\surplus(\vx_{\vi\vj})$ naturally inherits the output dimensionality of $\f$,
+the operations that involve $\surplus(\vx_{\vi\vj})$ should be adequately
+adjusted. If the outputs are on different scales and/or have different accuracy
+requirements, one might want to have different $\aerror$ and $\rerror$ in
+\eref{stopping-condition} for different outputs. In that case, one also needs to
+device a more sensible strategy for scoring collocation nodes in \eref{score}
+such as rescaling individual outputs and then calculating the uniform norm
+$\norm{\cdot}_\infty$ or $L^2$ norm $\norm{\cdot}_2$. Our code \cite{sources}
+has been written with multiple outputs in mind.
