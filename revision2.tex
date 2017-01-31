@@ -1,0 +1,32 @@
+\documentclass{article}
+\input{include/submission/annotations.tex}
+\input{include/submission/definitions.tex}
+
+\begin{document}
+  \Large
+
+  \header{Cover Letter}
+  \linespread{1.3}\selectfont
+  \input{include/submission/introduction.tex}
+  \linespread{1.0}\selectfont
+
+  \clearpage
+  \header{Revision Notes}
+  \input{include/submission/revision2/introduction.tex}
+
+  \normalsize
+
+  \clearpage
+  \header{Response to Reviewer 1}
+  \input{include/submission/revision2/reviewer1.tex}
+
+  \clearpage
+  \header{Response to Reviewer 2}
+  \input{include/submission/revision2/reviewer2.tex}
+
+  \clearpage
+  \header{Response to Reviewer 3}
+  \input{include/submission/revision2/reviewer3.tex}
+
+  \includepdf[pages={-}]{paper.pdf}
+\end{document}

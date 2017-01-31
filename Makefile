@@ -1,4 +1,4 @@
-documents := paper submission revision1
+documents := paper submission revision1 revision2
 
 ${documents}: %: %-pdf
 
