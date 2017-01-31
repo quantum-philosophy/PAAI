@@ -8,54 +8,54 @@ adequate treatment. Consequently, the designer of an electronic system is
 obliged to account for the presence of uncertainty in order to produce an
 efficient and reliable product.
 
-In order to account for uncertainty, one has to quantify it first. \updated{In
-this setting, one is usually interested in evaluating a certain metric whose
-complete knowledge would be highly profitable for the design at hand but cannot
-be attained since the metric involves a number of parameters that are inherently
+In order to account for uncertainty, one has to quantify it first. In this
+setting, one is usually interested in evaluating a certain metric whose complete
+knowledge would be highly profitable for the design at hand but cannot be
+attained since the metric involves a number of parameters that are inherently
 uncertain at design time. To give a concrete example, such a metric could be the
 maximum temperature of an electronic system whose thermal behavior depends on
-the runtime workload.}
+the runtime workload.
 
-\updated{Uncertainty quantification is a broad area. The techniques for
-uncertainty quantification can deliver radically different pieces of information
-about the metric under consideration.} In this paper, we are interested in
-probability distributions rather than, for instance, corner cases. Designing for
-the worst case leads often to a poor solution as the system under consideration
-might easily end up being too conservative, overdesigned \cite{quinton2012}.
+Uncertainty quantification is a broad area. The techniques for uncertainty
+quantification can deliver radically different pieces of information about the
+metric under consideration. In this paper, we are interested in probability
+distributions rather than, for instance, corner cases. Designing for the worst
+case leads often to a poor solution as the system under consideration might
+easily end up being too conservative, overdesigned \cite{quinton2012}.
 
 When it comes to the estimation of probability distributions and to uncertainty
 quantification in general, sampling methods are of great use. The classical
 Monte Carlo (\up{MC}) sampling, quasi-\up{MC} sampling, and Latin hypercube
 sampling are examples of such methods \cite{asmussen2007}. Compared to other
 techniques for probabilistic analysis, these methods are straightforward to
-apply. \updated{The system at hand is treated as an opaque object, and one only
-has to evaluate this object a number of times in order to start to draw
-conclusions about the system's behavior.}
+apply. The system at hand is treated as an opaque object, and one only has to
+evaluate this object a number of times in order to start to draw conclusions
+about the system's behavior.
 
-\updated{The major problem with sampling techniques, however, is in sampling:
-one should be able to obtain sufficient many realizations of the metric of
-interest in order to accurately estimate the needed statistics about that metric
-\cite{diaz-emparanza2002}.} When the subject under analysis is expensive to
+The major problem with sampling techniques, however, is in sampling: one should
+be able to obtain sufficient many realizations of the metric of interest in
+order to accurately estimate the needed statistics about that metric
+\cite{diaz-emparanza2002}. When the subject under analysis is expensive to
 evaluate, sampling methods are rendered slow and often unfeasible.
 
 We propose a design-time system-level framework for the analysis of electronic
 systems that are dependent on uncertain parameters. Similar to sampling methods,
 our technique treats the system at hand as a ``black box'' and, therefore, is
 straightforward to apply since no handcrafting is required, and existing codes
-need no change. \updated{Consequently, the metrics that the framework is able to
-tackle are diverse. Examples include those metrics concerned with timing-,
-power-, and temperature-related characteristics of elaborate applications
-running on heterogeneous multiprocessor platforms.}
+need no change. Consequently, the metrics that the framework is able to tackle
+are diverse. Examples include those metrics concerned with timing-, power-, and
+temperature-related characteristics of elaborate applications running on
+heterogeneous multiprocessor platforms.
 
-\updated{In contrast to sampling methods, our technique explores and exploits
-the nature of the problem---that is, the way the metric depends on the uncertain
+In contrast to sampling methods, our technique explores and exploits the nature
+of the problem---that is, the way the metric depends on the uncertain
 parameters---by exercising the aforementioned ``black box'' at a set of points
 chosen adaptively. The adaptivity that our framework leverages is hybrid
 \cite{jakeman2012}: it tries to pick up both global (that is, on the level of
 individual dimensions \cite{klimke2006}) and, more importantly, local (that is,
-on the level on individual points \cite{ma2009}) variations.} This means that
-the framework is able to benefit from many particularities that might be present
-in the stochastic space, that is, the space of the uncertain parameters. The
+on the level on individual points \cite{ma2009}) variations. This means that the
+framework is able to benefit from many particularities that might be present in
+the stochastic space, that is, the space of the uncertain parameters. The
 adaptivity is the capital feature of our technique, and we would like to
 elaborate on it now.
 
@@ -69,9 +69,9 @@ elaborate, the characteristics of the codes running on modern devices change
 from one activation to another depending on the environment and input data. This
 source of uncertainty has not been deprived of attention either, especially in
 the real-time community \cite{quinton2012, diaz2002, santinelli2011,
-tanasa2015}. \updated{Regardless of the origin, such phenomena as the ones
-mentioned above render the behavior of an electronic system nondeterministic to
-the designer.}
+tanasa2015}. Regardless of the origin, such phenomena as the ones mentioned
+above render the behavior of an electronic system nondeterministic to the
+designer.
 
 \input{include/assets/figures/motivation}
 Due to its nature, the variability coming from the physical world is typically
@@ -80,20 +80,20 @@ polynomial chaos (\up{PC}) expansions \cite{xiu2010} and other approximation
 techniques making use of global polynomials generally work well, as in
 \cite{bhardwaj2008, lee2013, ukhov2014, ukhov2015}. On the other hand, the
 variability coming from the computer world has often steep gradients and favors
-nondifferentiability and even discontinuity. \updated{In such cases, \up{PC}
-expansions and similar techniques fail: they require extremely many evaluations
-of the desired metric in order to deliver an acceptable level of accuracy and,
-hence, are not worth it.}
+nondifferentiability and even discontinuity. In such cases, \up{PC} expansions
+and similar techniques fail: they require extremely many evaluations of the
+desired metric in order to deliver an acceptable level of accuracy and, hence,
+are not worth it.
 
-\updated{In order to illustrate this concern, let us consider an example.}
-Suppose that our system has only one processing element, and it is running an
-application with only one task. Suppose further that the task has two branches
-and takes either one depending on the input data. Assume that one branch takes
-0.1~s to execute and has probability 0.6, and the other branch takes 1~s and has
+In order to illustrate this concern, let us consider an example. Suppose that
+our system has only one processing element, and it is running an application
+with only one task. Suppose further that the task has two branches and takes
+either one depending on the input data. Assume that one branch takes 0.1~s to
+execute and has probability 0.6, and the other branch takes 1~s and has
 probability 0.4. Our goal is to find the distribution of the end-to-end delay of
-the application. \updated{In this example, the metric is the end-to-end delay,
-and it coincides with the execution time of the task; hence, we already know the
-answer. Let us pretend we do not and try to obtain it by other means.}
+the application. In this example, the metric is the end-to-end delay, and it
+coincides with the execution time of the task; hence, we already know the
+answer. Let us pretend we do not and try to obtain it by other means.
 
 Suppose the above scenario is modeled by a \rv\ $\u$ uniformly distributed on
 $[0, 1]$: the execution time of the task (the end-to-end delay of the
@@ -104,13 +104,12 @@ line in \fref{motivation}.
 First, we try to quantify the end-to-end delay by constructing and subsequently
 sampling a \up{PC} expansion founded on the Legendre polynomial basis
 \cite{xiu2010}. The orange line in \fref{motivation} shows a ninth-order \up{PC}
-expansion, which uses 10 points. \updated{It can be seen that the approximation
-is poor---not to mention negative execution times---which means that the
-follow-up sampling will also yield a poor approximation of the true
-distribution.} The observed oscillating behavior is the well-known Gibbs
-phenomenon stemming from the discontinuity of the response. No matter how many
-points are used in the construction of a polynomial, the oscillations will never
-go away completely.
+expansion, which uses 10 points. It can be seen that the approximation is
+poor---not to mention negative execution times---which means that the follow-up
+sampling will also yield a poor approximation of the true distribution. The
+observed oscillating behavior is the well-known Gibbs phenomenon stemming from
+the discontinuity of the response. No matter how many points are used in the
+construction of a polynomial, the oscillations will never go away completely.
 
 Let us now see how the framework proposed in this paper solves the same problem.
 For the purpose of the experiment, our technique is constrained to make use of
@@ -120,28 +119,27 @@ horizontal axis. It can be seen that the approximation is good, and, in fact, it
 would be indistinguishable from the true response with a few additional points.
 One can note that the adaptive procedure started to concentrate interpolation
 points at the jump and left the insipid regions on both sides of the jump with
-no particular attention. \updated{Having constructed such a representation, one
-can proceed to the calculation of the probability distribution of the metric,
-which, in general, is done via sampling followed by such techniques as kernel
-density estimation.} The crucial point to note is that this follow-up sampling
-does not involve the original system in any way, which implies that it costs
-practically nothing in terms of the computation time.
+no particular attention. Having constructed such a representation, one can
+proceed to the calculation of the probability distribution of the metric, which,
+in general, is done via sampling followed by such techniques as kernel density
+estimation. The crucial point to note is that this follow-up sampling does not
+involve the original system in any way, which implies that it costs practically
+nothing in terms of the computation time.
 
 The example discussed above illustrates the fact that the proposed framework is
-well suited for nonsmooth response surfaces. \updated{More generally, the
-adaptivity featured by our technique allows for a reduction of the costs
-associated with probabilistic analysis of the metric under consideration, as
-measured by the number of times the metric needs to be evaluated in order to
-achieve a certain accuracy level.} The magnitude of the reduction depends on the
-problem, and it can be substantial when the problem is well disposed to
-adaptation.
+well suited for nonsmooth response surfaces. More generally, the adaptivity
+featured by our technique allows for a reduction of the costs associated with
+probabilistic analysis of the metric under consideration, as measured by the
+number of times the metric needs to be evaluated in order to achieve a certain
+accuracy level. The magnitude of the reduction depends on the problem, and it
+can be substantial when the problem is well disposed to adaptation.
 
 The remainder of the paper is organized as follows. Section~\ref{sec:prior-work}
-provides an overview of the prior work. \updated{In \sref{present-work}, the
-contribution of the paper is summarized. The preliminaries are given in
-\sref{preliminaries}. The addressed problem is formulated in \sref{problem}, and
-our solution is outlined in \sref{solution}. An illustrative example is
-considered in \sref{example}. The framework is presented in \sref{modeling},
+provides an overview of the prior work. In \sref{present-work}, the contribution
+of the paper is summarized. The preliminaries are given in \sref{preliminaries}.
+The addressed problem is formulated in \sref{problem}, and our solution is
+outlined in \sref{solution}. An illustrative example is considered in
+\sref{example}. The framework is presented in \sref{modeling},
 \ref{sec:interpolation}, and \ref{sec:analysis}. The experimental results are
-given in \sref{experimentation}.} Section \ref{sec:conclusion} concludes the
+given in \sref{experimentation}. Section \ref{sec:conclusion} concludes the
 paper.

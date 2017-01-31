@@ -1,35 +1,33 @@
-\updated{In this section, we apply our framework to a small problem in order to
-get a better understanding of the workflow of the framework.} A detailed
-description of our experimental setup is given in \sref{configuration}; here we
-give only the bare minimum.
+In this section, we apply our framework to a small problem in order to get a
+better understanding of the workflow of the framework. A detailed description of
+our experimental setup is given in \sref{configuration}; here we give only the
+bare minimum.
 
 \newcommand{\cores}{\token{PE1} and \token{PE2}}
 \newcommand{\tasks}{\token{T1}--\token{T4}}
-The addressed problem is depicted in \fref{example}. \updated{We consider a
-platform with two processing elements, \cores, and an application with four
-tasks, \tasks.} The data dependencies between \tasks\ and their mapping onto
-\cores\ can be seen in \fref{example}. \updated{The metric $\g$ is the
-end-to-end delay of the application. The uncertain parameters $\vu$ are the
-execution times of \token{T2} and \token{T4} denoted by $\u_1$ and $\u_2$,
-respectively.}
+The addressed problem is depicted in \fref{example}. We consider a platform with
+two processing elements, \cores, and an application with four tasks, \tasks. The
+data dependencies between \tasks\ and their mapping onto \cores\ can be seen in
+\fref{example}. The metric $\g$ is the end-to-end delay of the application. The
+uncertain parameters $\vu$ are the execution times of \token{T2} and \token{T4}
+denoted by $\u_1$ and $\u_2$, respectively.
 
-\updated{The leftmost box in \fref{example} represents a simulator of the system
-at hand, and it could involve such tools as Sniper \cite{carlson2011}. It takes
-an assignment of the execution times of \token{T2} and \token{T3}, $\u_1$ and
+The leftmost box in \fref{example} represents a simulator of the system at hand,
+and it could involve such tools as Sniper \cite{carlson2011}. It takes an
+assignment of the execution times of \token{T2} and \token{T3}, $\u_1$ and
 $\u_2$, and outputs the calculated end-to-end delay $\g$. The second box
 corresponds to the reparameterization mentioned in \sref{solution} (to be
-discussed in \sref{parameters}).} It converts the auxiliary variables $\z_1$ and
+discussed in \sref{parameters}). It converts the auxiliary variables $\z_1$ and
 $\z_2$ into $\u_1$ and $\u_2$ in accordance with $\u_1$ and $\u_2$'s joint
 distribution. The third box is our interpolation engine (to be discussed in
-\sref{interpolation}). \updated{Using a number of strategic invocations of the
-simulator, the interpolation engine yields a light surrogate for the simulator;
-the surrogate corresponds to the slim box with rounded corners.} Having obtained
-such a surrogate, one proceeds to sampling extensively the surrogate via a
-sampling method of choice (the rightmost box). The surrogate takes $\z_1$ and
-$\z_2$ and returns an approximation of $\g$ at that point. Recall that the
-computation cost of this extensive sampling is negligible as $\g$ is not
-involved. The samples are then used to compute an estimate of the distribution
-of $\g$.
+\sref{interpolation}). Using a number of strategic invocations of the simulator,
+the interpolation engine yields a light surrogate for the simulator; the
+surrogate corresponds to the slim box with rounded corners. Having obtained such
+a surrogate, one proceeds to sampling extensively the surrogate via a sampling
+method of choice (the rightmost box). The surrogate takes $\z_1$ and $\z_2$ and
+returns an approximation of $\g$ at that point. Recall that the computation cost
+of this extensive sampling is negligible as $\g$ is not involved. The samples
+are then used to compute an estimate of the distribution of $\g$.
 
 In the graph on the right-hand side of \fref{example}, the blue line shows the
 probability density function of $\g$ computed by applying kernel density
@@ -42,7 +40,6 @@ in order to calculate the density of $\g$. We see that, for the same budget of
 simulations, the solution delivered by our framework is substantially closer to
 the true one than the one delivered by na\"{i}ve sampling.
 
-\updated{At this point, we are ready to present to the proposed framework. We
-begin by elaborating on the modeling of uncertain parameters and metrics of
-interest. We shall then proceed to the interpolation engine
-(\sref{interpolation}).}
+At this point, we are ready to present to the proposed framework. We begin by
+elaborating on the modeling of uncertain parameters and metrics of interest. We
+shall then proceed to the interpolation engine (\sref{interpolation}).

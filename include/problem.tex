@@ -2,27 +2,26 @@ Consider an electronic system composed of two major components: a platform and
 an application. The platform is a collection of heterogeneous processing
 elements, and the application is a collection of interdependent tasks.
 
-\updated{The designer is interested in evaluating a metric $\g$ that
-characterizes the electronic system under consideration from a certain
-perspective.} Examples of $\g$ include the execution delay of the application or
-a task, energy consumption of the platform or a processing element, and maximum
-temperature of the platform or a processing element.
+The designer is interested in evaluating a metric $\g$ that characterizes the
+electronic system under consideration from a certain perspective. Examples of
+$\g$ include the execution delay of the application or a task, energy
+consumption of the platform or a processing element, and maximum temperature of
+the platform or a processing element.
 
-\updated{The metric $\g$ depends on a set of parameters $\vu$ that are uncertain
-at the design stage.} Examples of $\vu$ include the amount of data the
-application needs to process, execution times of the tasks, and properties of
-the environment.
+The metric $\g$ depends on a set of parameters $\vu$ that are uncertain at the
+design stage. Examples of $\vu$ include the amount of data the application needs
+to process, execution times of the tasks, and properties of the environment.
 
-\updated{The parameters $\vu$ are given as a random vector $\vu = (\u_i)_{i =
-1}^\nu$ with an arbitrary but known distribution $\distribution_\vu$.} The
-dependency of $\g$ on $\vu$, written as $\g(\vu)$, implies that $\g$ is random
-to the designer. For a given outcome of $\vu$, however, the evaluation of $\g$
-is purely deterministic. \updated{This operation is typically undertaken by an
-adequate simulator of the system at hand, and it is assumed to be doable but
-computationally expensive.}
+The parameters $\vu$ are given as a random vector $\vu = (\u_i)_{i = 1}^\nu$
+with an arbitrary but known distribution $\distribution_\vu$. The dependency of
+$\g$ on $\vu$, written as $\g(\vu)$, implies that $\g$ is random to the
+designer. For a given outcome of $\vu$, however, the evaluation of $\g$ is
+purely deterministic. This operation is typically undertaken by an adequate
+simulator of the system at hand, and it is assumed to be doable but
+computationally expensive.
 
-\updated{Our objective is to develop an efficient framework for estimating the
+Our objective is to develop an efficient framework for estimating the
 probability distribution of the metric of interest $\g$ dependent on the
-uncertain parameters $\vu$.} The framework is required to be able to handle
+uncertain parameters $\vu$. The framework is required to be able to handle
 nondifferentiable and even discontinuous dependencies between $\g$ and $\vu$ as
 they constitute an important class of problems for electronic-system design.

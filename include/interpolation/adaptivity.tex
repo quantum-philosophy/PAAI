@@ -1,11 +1,11 @@
 In order to make the algorithm adaptive, we first need to find a way to measure
-how good our approximation is at any point in the domain of $\f$. \updated{Then,
-when refining the interpolant, instead of evaluating the function at all
-possible nodes, we shall only choose those that are located in the regions with
-poor accuracy as indicated by the yet-to-be-found criterion.}
+how good our approximation is at any point in the domain of $\f$. Then, when
+refining the interpolant, instead of evaluating the function at all possible
+nodes, we shall only choose those that are located in the regions with poor
+accuracy as indicated by the yet-to-be-found criterion.
 
-\updated{We already have a good foundation for building such a criterion.}
-Recall \eref{surplus}. Hierarchical surpluses are natural indicators of the
+We already have a good foundation for building such a criterion. Recall
+\eref{surplus}. Hierarchical surpluses are natural indicators of the
 interpolation error: they are the difference between the values of the true
 function and those of an approximation at the nodes of the underlying sparse
 grid. Hence, they can be recycled in order to effectively identify
@@ -24,13 +24,12 @@ The Smolyak construction in \eref{smolyak-hierarchical} is rewritten as follows:
   \approximation{\l}(\f) = \approximation{\l-1}(\f) + \sum_{\vi \in \Delta\lindex_\l} \sum_{\vj \in \Delta\oindex_\vi} \surplus(\vx_{\vi\vj}) \,
 \e_{\vi\vj}.
 \end{equation}
-\updated{The different with respect to \eref{smolyak-hierarchical} is that $\l
-\geq 0$ is no longer the Smolyak level (see \eref{smolyak-original}) but a more
-abstract interpolation step, and $\approximation{\l}$ is the interpolant at that
-step.} As always, $\approximation{-1} = 0$, and the definition of $\surplus$
-given in \eref{surplus} is adjusted accordingly. From now on, all index sets
-will be generally subsets of their full-fledged counterparts defined in
-\sref{smolyak}.
+The different with respect to \eref{smolyak-hierarchical} is that $\l \geq 0$ is
+no longer the Smolyak level (see \eref{smolyak-original}) but a more abstract
+interpolation step, and $\approximation{\l}$ is the interpolant at that step. As
+always, $\approximation{-1} = 0$, and the definition of $\surplus$ given in
+\eref{surplus} is adjusted accordingly. From now on, all index sets will be
+generally subsets of their full-fledged counterparts defined in \sref{smolyak}.
 
 Each $\approximation{\l}$ is characterized by a set of level indices
 $\lindex_\l$, and each $\vi \in \lindex_\l$ by a set of order indices
@@ -77,11 +76,10 @@ by inspecting the backward neighborhood of $\vi$ (analogous to
 checking the following condition: $\score_{\hat{\vi}\vj} \geq \serror$ where
 $\serror$ is a user-defined constant, which we shall refer to as the score
 error. If the condition holds, the forward neighbors of $\vj$ in dimension $k$
-are added to $\Delta\oindex_\vi$. \updated{This procedure is illustrated in
-\fref{grid} for the open Newton--Cotes rule (see \sref{grid}).} The arrows
-emerging from a node connect the node with its forward neighbors. It can be seen
-that each node has two forward neighbors (for each dimension); their order
-indices are
+are added to $\Delta\oindex_\vi$. This procedure is illustrated in \fref{grid}
+for the open Newton--Cotes rule (see \sref{grid}). The arrows emerging from a
+node connect the node with its forward neighbors. It can be seen that each node
+has two forward neighbors (for each dimension); their order indices are
 \[
   (j_1, \dots, 2 j_k, \dots, j_\nin) \hspace{1em} \text{and} \hspace{1em} (j_1, \dots, 2 j_k + 2, \dots, j_\nin).
 \]
@@ -89,9 +87,9 @@ The above refinement procedure is repeated for each index $\vi \in
 \Delta\lindex_\l$ with respect to each dimension $k = 1, \dots, \nin$.
 
 The final question is the stopping condition of the approximation process in
-\eref{approximation}. \updated{Apart from the natural constraints on the maximum
-number of function evaluations and the maximum allowed Smolyak level $\l$ in
-\eref{smolyak-original}, we rely on the following criterion.} Assume that we are
+\eref{approximation}. Apart from the natural constraints on the maximum number
+of function evaluations and the maximum allowed Smolyak level $\l$ in
+\eref{smolyak-original}, we rely on the following criterion. Assume that we are
 given two additional constants: $\aerror$ and $\rerror$ referred to as the
 absolute and relative error, respective. Then, the process is terminated as soon
 as
@@ -104,12 +102,12 @@ level index has not been refined yet (considered as $\vi_\l$ at some step $\l$
 in \eref{approximation}). The above criterion is a sound way to curtail the
 process as it is based on the actual progress.
 
-\updated{The adaptivity presented in this subsection is referred to as hybrid as
-it combines features of global and local adaptivity; the combination was
-proposed in \cite{jakeman2012}. Local adaptivity, which has already been
-sufficiently motivated, is due to \cite{ma2009}, and it operates on the level of
-individual nodes. Global adaptivity is due to \cite{klimke2006}, and it operates
-on the level of individual dimensions. The intuition behind global adaptivity is
-that, in general, the input variables manifest themselves (impact $\f$)
-differently, and the interpolation algorithm is likely to benefit by
-prioritizing those variables that are the most influential.}
+The adaptivity presented in this subsection is referred to as hybrid as it
+combines features of global and local adaptivity; the combination was proposed
+in \cite{jakeman2012}. Local adaptivity, which has already been sufficiently
+motivated, is due to \cite{ma2009}, and it operates on the level of individual
+nodes. Global adaptivity is due to \cite{klimke2006}, and it operates on the
+level of individual dimensions. The intuition behind global adaptivity is that,
+in general, the input variables manifest themselves (impact $\f$) differently,
+and the interpolation algorithm is likely to benefit by prioritizing those
+variables that are the most influential.

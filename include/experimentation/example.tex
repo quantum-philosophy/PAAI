@@ -1,14 +1,14 @@
-\updated{Last but not least, we investigate the viability of deploying the
-framework in a real environment. It means that we need to couple the framework
-with a battle-proven simulator used in academia and industry and let it simulate
-a real application running on a real platform. The scenario we consider is the
-same as the one depicted in \fref{example} except for the fact that an
+Last but not least, we investigate the viability of deploying the framework in a
+real environment. It means that we need to couple the framework with a
+battle-proven simulator used in academia and industry and let it simulate a real
+application running on a real platform. The scenario we consider is the same as
+the one depicted in \fref{example} except for the fact that an
 industrial-standard simulator is put in place of the leftmost box, and the
 metric of interest $\g$ is now the total energy. Unlike the previous examples,
 there is no true solution to compare with due to the prohibitive expense of the
-simulator, which is exactly why our framework is needed in such cases.}
+simulator, which is exactly why our framework is needed in such cases.
 
-\updated{The simulator of choice is the widely used combination of Sniper
+The simulator of choice is the widely used combination of Sniper
 \cite{carlson2011} and McPAT \cite{li2009}. The simulated architecture is
 Intel's Nehalem-based Gainestown series. The platform is configured to have
 three \up{CPU}s sharing one \up{L3} cache. The simulated application is
@@ -17,12 +17,12 @@ three \up{CPU}s sharing one \up{L3} cache. The simulated application is
 to a given image, and the width and height of the image to process are the
 uncertain parameters $\vu$, which are assumed to be distributed uniformly within
 certain ranges. All other details including the infrastructure developed for
-this example can be found at \cite{sources}.}
+this example can be found at \cite{sources}.
 
-\updated{The real-life deployment has fulfilled our expectations. The
-interpolation process successfully finished and delivered a surrogate after 78
-invocations of the simulator. Each invocation took 40 minutes on average. The
-probability distribution of the total energy was then estimated by sampling the
-constructed surrogate $10^5$ times. This many samples would take months to
-obtain if one sampled the simulator directly. Using the proposed technique, the
-whole procedure took several hours.}
+The real-life deployment has fulfilled our expectations. The interpolation
+process successfully finished and delivered a surrogate after 78 invocations of
+the simulator. Each invocation took 40 minutes on average. The probability
+distribution of the total energy was then estimated by sampling the constructed
+surrogate $10^5$ times. This many samples would take months to obtain if one
+sampled the simulator directly. Using the proposed technique, the whole
+procedure took several hours.

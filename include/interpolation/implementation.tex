@@ -3,7 +3,7 @@ The construction stage invokes $\f$ at a set of collocation nodes and produces
 certain artifacts. The usage stage estimates the values of $\f$ at a set of
 arbitrary points by manipulating the artifacts. In this subsection, we shall
 look at the pseudocodes of the two stages. The purpose is to give the big
-picture. \updated{All the details can be found online \cite{sources}.}
+picture. All the details can be found online \cite{sources}.
 
 Let us first make a general note. We found it beneficial to the clarity and ease
 of implementation to collapse the two sums in \eref{approximation} into one.
@@ -12,11 +12,11 @@ index $\vj = (j_k)_{k = 1}^\nin$ for each interpolation element. It is also
 advantageous to encode each pair $(i_k, j_k)$ as a single unsigned integer,
 which, in particular, eliminates excessive memory usage. In multiple dimensions,
 this results in a single vector $\vl = (\iota_k)_{k = 1}^\nin$, which we simply
-call an index. \updated{The encoding that we utilize is as follows: $\iota_k =
-i_k \lor (j_k \ll \n_\text{bits})$ where $\lor$ and $\ll$ are the bitwise
-\up{OR} and logical left shift, respectively, and $\n_\text{bits}$ is the number
-of bits reserved for storing Smolyak levels (see \eref{smolyak-original}), which
-can be adjusted according to the maximum permitted deepness of interpolation.}
+call an index. The encoding that we utilize is as follows: $\iota_k = i_k \lor
+(j_k \ll \n_\text{bits})$ where $\lor$ and $\ll$ are the bitwise \up{OR} and
+logical left shift, respectively, and $\n_\text{bits}$ is the number of bits
+reserved for storing Smolyak levels (see \eref{smolyak-original}), which can be
+adjusted according to the maximum permitted deepness of interpolation.
 
 \input{include/assets/algorithms/construct}
 The pseudocode of the construction stage is given in \aref{construct} called
@@ -46,9 +46,9 @@ $\{ \vl_k \}_k$ into $\{ \vx_{\vl_k} \}_k$.
 
 \point{Line~4:} \token{Invoke} evaluates \token{target} at the collocation
 nodes. This is by far the most time consuming function of the algorithm as
-\token{target} is generally expensive to evaluate. \updated{This function is
-also a prominent candidate for parallelization since the algorithm does not
-impose any evaluation order.}
+\token{target} is generally expensive to evaluate. This function is also a
+prominent candidate for parallelization since the algorithm does not impose any
+evaluation order.
 
 \point{Line~5:} \token{Evaluate} exercises the interpolant constructed so far at
 the collocation nodes, approximating the values obtained on line~4. This

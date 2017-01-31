@@ -1,15 +1,15 @@
 \input{include/assets/figures/results}
 The results of all 18 uncertainty-quantification problems are given in
-\fref{results} as a 6-by-3 grid of plots, one plot per problem. \updated{The
-three columns correspond to the three metrics at hand: the end-to-end delay
-(left), total energy (middle), and maximum temperature (right).} The three pairs
-of rows correspond to the three platform sizes: 2 (top), 4 (middle), and 8
-(bottom) processing elements. The rows alternate between the two application
-sizes: 10 (odd) and 20 (even) tasks.
+\fref{results} as a 6-by-3 grid of plots, one plot per problem. The three
+columns correspond to the three metrics at hand: the end-to-end delay (left),
+total energy (middle), and maximum temperature (right). The three pairs of rows
+correspond to the three platform sizes: 2 (top), 4 (middle), and 8 (bottom)
+processing elements. The rows alternate between the two application sizes: 10
+(odd) and 20 (even) tasks.
 
-\updated{The horizontal axis of each plot shows the number of points, that is,
+The horizontal axis of each plot shows the number of points, that is,
 evaluations of the metric $\g$, and the vertical one shows the \up{KS} statistic
-on a logarithmic scale.} Each plot has two lines. The solid line represents our
+on a logarithmic scale. Each plot has two lines. The solid line represents our
 technique. The circles on this line correspond to the steps of the interpolation
 process given in \eref{approximation}. They show how the \up{KS} statistic
 computed with respect to the reference solution changes as the interpolation
@@ -20,10 +20,10 @@ with the solid line (that is, for the same numbers of $\g$'s evaluations), the
 dashed line shows the error of direct sampling, which, as before, is computed
 with respect to the reference solution.
 
-\updated{Let us first describe one particular problem shown in \fref{results}.}
-Consider, for instance, the one labeled with $\bigstar$. It can be seen that, at
-the very beginning, our solution and the solution of direct sampling are poor.
-The \up{KS} statistic tells us that there are substantial mismatches between the
+Let us first describe one particular problem shown in \fref{results}. Consider,
+for instance, the one labeled with $\bigstar$. It can be seen that, at the very
+beginning, our solution and the solution of direct sampling are poor. The
+\up{KS} statistic tells us that there are substantial mismatches between the
 estimates and the reference solution. However, as the interpolant is being
 adaptively refined, our solution approaches rapidly the reference one and, by
 the end of the interpolation process, leaves the solution of na\"{i}ve sampling
@@ -48,11 +48,11 @@ interpolation process (when the stopping condition is satisfied). This behavior
 can be explained by the following two reasons. First, the algorithm has been
 instructed to satiate certain accuracy requirements ($\aerror$, $\rerror$, and
 $\serror$), and it reasonably does not do more than what has been requested.
-\updated{Second, since the model-order reduction mechanism is enabled in the
-case of interpolation, the metric being interpolated is not $\g$, strictly
-speaking; it is a lower-dimensional representation of $\g$, which already
-implies an information loss.} Therefore, there is a limit on the accuracy that
-can be achieved, which depends on the amount of reduction applied.
+Second, since the model-order reduction mechanism is enabled in the case of
+interpolation, the metric being interpolated is not $\g$, strictly speaking; it
+is a lower-dimensional representation of $\g$, which already implies an
+information loss. Therefore, there is a limit on the accuracy that can be
+achieved, which depends on the amount of reduction applied.
 
 The message of the above observations is that the designer of an electronic
 system can benefit substantially in terms of accuracy per computation time by

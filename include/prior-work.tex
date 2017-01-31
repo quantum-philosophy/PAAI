@@ -30,20 +30,20 @@ applicable to electronic systems.
 
 Studying the literature on probabilistic analysis of electronic systems, one can
 note a pronounced trend: the generality and straightforwardness of sampling
-methods tend to be lost. \updated{To elaborate, a technique typically:
-1)~requires restrictive assumptions to be fulfilled such as the absence of
-correlations, 2)~is tailored to one concrete metric such as the response time,
-and 3)~requires substantial effort to be deployed.}
+methods tend to be lost. To elaborate, a technique typically: 1)~requires
+restrictive assumptions to be fulfilled such as the absence of correlations,
+2)~is tailored to one concrete metric such as the response time, and 3)~requires
+substantial effort to be deployed.
 
 However, one should keep in mind what is practical. First of all, although
 additional assumptions might make the mathematics analytically solvable, they
 often do not hold in reality and oversimplify the model. An exact analytical
 solution might also be extremely complex, requiring a lot of computational
-resources upon evaluation. \updated{Furthermore, it is often the case that there
-has been developed a robust simulator evaluating the metric at hand for the
-deterministic scenario. Switching to probabilistic analysis based on analytical
-approaches means discarding this battle-tested code and implementing something
-else from scratch, which is wasteful and not desirable.}
+resources upon evaluation. Furthermore, it is often the case that there has been
+developed a robust simulator evaluating the metric at hand for the deterministic
+scenario. Switching to probabilistic analysis based on analytical approaches
+means discarding this battle-tested code and implementing something else from
+scratch, which is wasteful and not desirable.
 
 Some of the techniques listed earlier in this section, in fact, preserve the
 generality and straightforwardness of sampling methods. An example is the
