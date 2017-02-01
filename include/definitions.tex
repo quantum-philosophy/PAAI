@@ -51,20 +51,10 @@
 \predisplaypenalty 0
 \postdisplaypenalty 0
 
-\makeatletter
-\let\origsection\section
-\renewcommand\section{\@ifstar{\starsection}{\nostarsection}}
-\newcommand\nostarsection[1]
-{\sectionprelude\origsection{#1}\sectionpostlude}
-\newcommand\starsection[1]
-{\sectionprelude\origsection*{#1}\sectionpostlude}
-\newcommand\sectionprelude{%
-  \vspace{-0.3em}
-}
-\newcommand\sectionpostlude{%
-  \vspace{-0.1em}
-}
-\makeatother
+\newcommand{\subparagraph}{}
+\usepackage{titlesec}
+\titlespacing\section{0em}{0.5em}{0.25em}
+\titlespacing\subsection{0em}{0.5em}{0.25em}
 
 \usepackage{hyperref}
 
