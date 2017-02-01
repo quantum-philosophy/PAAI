@@ -41,10 +41,10 @@ where $\smolyak{-1}(\f) = 0$, and we let $\lindex_\l = \{ \vi: |\vi| \leq \l
 Smolyak interpolant can be efficiently refined: the work done in order to attain
 one Smolyak level $\l$ is entirely recycled to go to the next.
 
-The sparsity and incremental refinement of the Smolyak approach, which are shown
-in \eref{smolyak-grid} and \eref{smolyak-incremental}, respectively, are
-remarkable properties \perse, but they can be taken even further. To this end,
-let $\Delta\X_{-1} = \emptyset$,
+\updated{The sparsity and incremental refinement of the Smolyak approach, which
+are shown in \eref{smolyak-grid} and \eref{smolyak-incremental}, respectively,
+are remarkable properties \perse, but they can be taken even further.} To this
+end, let $\Delta\X_{-1} = \emptyset$,
 \[
   \Delta\X_i = \X_i \setminus \X_{i - 1}, \text{ and } \Delta\X_\vi = \Delta\X_{i_1} \times \cdots \times \Delta\X_{i_\nin}.
 \]
