@@ -14,8 +14,8 @@ where $\l \geq 0$ is the index of the interpolation step, which we shall refer
 to as the Smolyak level, and $|\vi| = i_1 + \dots + i_\nin$. It can be seen that
 the algorithm is indeed just a peculiar composition of cherry-picked tensor
 products. However, the formula has an implication of paramount importance.
-The function $\f$ needs to be evaluated only at the nodes of the sparse grid
-underpinning \eref{smolyak-original}:
+\updated{The function $\f$ needs to be evaluated only at the nodes of the grid
+underpinning \eref{smolyak-original}:}
 \begin{equation} \elab{smolyak-grid}
   \Y_l = \bigcup_{\l - \nin + 1 \leq |\vi| \leq \l} \X_\vi.
 \end{equation}
