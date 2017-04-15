@@ -6,6 +6,6 @@ ${documents}: %: %-pdf
 	latexmk -pdf -pvc $<
 
 clean:
-	rm -f *.aux *.bbl *.bib *.log *.pdf *.blg *.xml *.fdb_latexmk *.fls *.bcf
+	rm -f *.aux *.bbl *.bcf *.bib *.blg *.fdb_latexmk *.fls *.log *.out *.pdf *.xml
 
 .PHONY: ${documents} clean
