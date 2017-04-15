@@ -13,9 +13,9 @@ The Smolyak interpolant for $\f$ is as follows:
 where $\l \geq 0$ is the index of the interpolation step, which we shall refer
 to as the Smolyak level, and $|\vi| = i_1 + \dots + i_\nin$. It can be seen that
 the algorithm is indeed just a peculiar composition of cherry-picked tensor
-products. However, the formula has an implication of paramount importance.
-\updated{The function $\f$ needs to be evaluated only at the nodes of the grid
-underpinning \eref{smolyak-original}:}
+products. However, the formula has an implication of paramount importance. The
+function $\f$ needs to be evaluated only at the nodes of the grid underpinning
+\eref{smolyak-original}:
 \begin{equation} \elab{smolyak-grid}
   \Y_l = \bigcup_{\l - \nin + 1 \leq |\vi| \leq \l} \X_\vi.
 \end{equation}
@@ -41,10 +41,10 @@ where $\smolyak{-1}(\f) = 0$, and we let $\lindex_\l = \{ \vi: |\vi| \leq \l
 Smolyak interpolant can be efficiently refined: the work done in order to attain
 one Smolyak level $\l$ is entirely recycled to go to the next.
 
-\updated{The sparsity and incremental refinement of the Smolyak approach, which
-are shown in \eref{smolyak-grid} and \eref{smolyak-incremental}, respectively,
-are remarkable properties \perse, but they can be taken even further.} To this
-end, let $\Delta\X_{-1} = \emptyset$,
+The sparsity and incremental refinement of the Smolyak approach, which are shown
+in \eref{smolyak-grid} and \eref{smolyak-incremental}, respectively, are
+remarkable properties \perse, but they can be taken even further. To this end,
+let $\Delta\X_{-1} = \emptyset$,
 \[
   \Delta\X_i = \X_i \setminus \X_{i - 1}, \text{ and } \Delta\X_\vi = \Delta\X_{i_1} \times \cdots \times \Delta\X_{i_\nin}.
 \]

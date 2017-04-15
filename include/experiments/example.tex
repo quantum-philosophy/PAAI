@@ -1,35 +1,35 @@
-\updated{Last but not least, we investigate the viability of deploying the
-proposed framework in a real environment. It means that we need to couple the
-framework with a battle-proven simulator, which is used in both academia and
-industry, and let it simulate a real application running on a real platform.
-Before we proceed, we would like to remind that all the implementation and
-configuration details including the infrastructure developed for this example
-can be found at \cite{sources}.}
+Last but not least, we investigate the viability of deploying the proposed
+framework in a real environment. It means that we need to couple the framework
+with a battle-proven simulator, which is used in both academia and industry, and
+let it simulate a real application running on a real platform. Before we
+proceed, we would like to remind that all the implementation and configuration
+details including the infrastructure developed for this example can be found at
+\cite{sources}.
 
-\updated{The scenario that we consider is the same as the one depicted in
-\fref{example} except for the fact that an industrial-standard simulator is put
-in place of the ``black box'' on the left side, and that the metric of interest
-$\g$ is now the total energy.} Unlike the previous examples, there is no true
-solution to compare with due to the prohibitive expense of the simulator, which
-is exactly why our framework is needed in such cases.
+The scenario that we consider is the same as the one depicted in \fref{example}
+except for the fact that an industrial-standard simulator is put in place of the
+``black box'' on the left side, and that the metric of interest $\g$ is now the
+total energy. Unlike the previous examples, there is no true solution to compare
+with due to the prohibitive expense of the simulator, which is exactly why our
+framework is needed in such cases.
 
-\updated{The simulator of choice is the well-known and widely used combination
-of Sniper \cite{carlson2011} and McPAT \cite{li2009}. The architecture that we
-simulate is Intel's Nehalem-based Gainestown series. Sniper is distributed with
-a configuration file for this architecture, and we use it without any changes.}
-The platform is configured to have three \up{CPU}s sharing one \up{L3} cache.
+The simulator of choice is the well-known and widely used combination of Sniper
+\cite{carlson2011} and McPAT \cite{li2009}. The architecture that we simulate is
+Intel's Nehalem-based Gainestown series. Sniper is distributed with a
+configuration file for this architecture, and we use it without any changes. The
+platform is configured to have three \up{CPU}s sharing one \up{L3} cache.
 
-\updated{The application that has been chosen for simulation is \up{VIPS}, which
-is an image-processing piece of software taken from the \up{PARSEC} benchmark
-suite \cite{bienia2011}. In this scenario, \up{VIPS} applies a fixed set of
-operations to a given image. The width and height of the image to process are
-considered as the uncertain parameters $\vu$ (see \sref{problem}), which are
-assumed to be distributed uniformly within certain ranges.}
+The application that has been chosen for simulation is \up{VIPS}, which is an
+image-processing piece of software taken from the \up{PARSEC} benchmark suite
+\cite{bienia2011}. In this scenario, \up{VIPS} applies a fixed set of operations
+to a given image. The width and height of the image to process are considered as
+the uncertain parameters $\vu$ (see \sref{problem}), which are assumed to be
+distributed uniformly within certain ranges.
 
 The real-life deployment has fulfilled our expectations. The interpolation
 process successfully finished and delivered a surrogate after 78 invocations of
 the simulator. Each invocation took 40 minutes on average. The probability
 distribution of the total energy was then estimated by sampling the constructed
-surrogate $10^5$ times. \updated{These many samples would take months to obtain
-if one sampled the simulator directly.} Using the proposed technique, the whole
+surrogate $10^5$ times. These many samples would take months to obtain if one
+sampled the simulator directly. Using the proposed technique, the whole
 procedure took several hours.
