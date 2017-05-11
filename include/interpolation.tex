@@ -38,13 +38,12 @@ interpolation in multiple dimensions. The main equation is \eref{approximation}
 where $\surplus$, $\vx_{\vi\vj}$, and $\e_{\vi\vj}$ are the ones given in
 \sref{smolyak}, \sref{grid}, and \sref{basis}, respectively, and the
 interpolation procedure is undertaken according to the rules given in
-\sref{adaptivity}. In the next subsection, we shall discuss the algorithmic
-structure of our interpolation.
+\sref{adaptivity}. Now we discuss the implementation.
 
 \subsection{Implementation} \slab{implementation}
 \input{include/interpolation/implementation}
 
-To recapitulate, in this section, we have presented the key component of the
-proposed framework for probabilistic analysis of electronic systems: an
-efficient approach to multidimensional interpolation. The overall technique has
-been consolidated in \aref{construct} and \aref{evaluate}.
+To recapitulate, we have presented the key component of our framework for
+probabilistic analysis of electronic systems: an efficient approach to
+multidimensional interpolation. The overall technique has been consolidated in
+\aref{construct} and \ref{alg:evaluate}.

@@ -1,16 +1,11 @@
 \begin{algorithm}
+  \small
   \caption{\emph{Construct} an interpolant of a function.}
   \alab{construct}
   \begin{algorithmic}[1]
-    \vspace{0.4em}
-
     \Require{target} \Comment{Function to interpolate}
     \Ensure{surrogate} \Comment{Interpolant}
-
-    \vspace{0.4em}
-
     \Let{surrogate}{New()}
-
     \For{s = strategy.First(); s != nil; s = strategy.Next(s)}
       \Let{s.nodes}{grid.Compute(s.indices)}
       \Let{s.values}{Invoke(target, s.nodes)}
@@ -19,9 +14,6 @@
       \Let{s.scores}{strategy.Score(s.surpluses)}
       \State Append(surrogate, s.indices, s.surpluses)
     \EndFor
-
     \State \textbf{return} surrogate
-
-    \vspace{0.4em}
   \end{algorithmic}
 \end{algorithm}

@@ -1,16 +1,11 @@
 \begin{algorithm}
+  \small
   \caption{\emph{Evaluate} an interpolant at a set of points.}
   \alab{evaluate}
   \begin{algorithmic}[1]
-    \vspace{0.4em}
-
     \Require{surrogate, points} \Comment{Interpolant and points}
     \Ensure{estimates} \Comment{Approximated values}
-
-    \vspace{0.4em}
-
     \Let{estimates}{New()}
-
     \For{point \textbf{in} points}
       \Let{estimate}{0}
       \For{(index, surplus) \textbf{in} surrogate}
@@ -19,9 +14,6 @@
       \EndFor
       \State Append(estimates, estimate)
     \EndFor
-
     \State \textbf{return} estimates
-
-    \vspace{0.6em}
   \end{algorithmic}
 \end{algorithm}

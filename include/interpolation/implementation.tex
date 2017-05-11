@@ -18,7 +18,6 @@ logical left shift, respectively, and $\n_\text{bits}$ is the number of bits
 reserved for storing Smolyak levels (see \eref{smolyak-original}), which can be
 adjusted according to the maximum permitted deepness of interpolation.
 
-\input{include/assets/algorithms/construct}
 The pseudocode of the construction stage is given in \aref{construct} called
 \token{Construct}. The \token{target} input is a function $\f$ to be
 approximated. The \token{surrogate} output is a structure containing the
@@ -26,6 +25,8 @@ artifacts of interpolation, which are a set of tuples $\{ (\vl_k,
 \surplus(\vx_{\vl_k}) \}_k$, giving a comprehensive description of an
 interpolant. The routine works as follows.
 
+\input{include/assets/algorithms/construct}
+\input{include/assets/algorithms/evaluate}
 \begin{compactlist}
 
 \point{Line~2:} Each iteration is an interpolation step in \eref{approximation}.
@@ -76,7 +77,6 @@ We now turn to the usage stage of an interpolant. The pseudocode is given in
 \point{Line~4:} The inner loop is an unfolded version of \eref{approximation}
 (there is no separation between individual interpolation steps taken).
 
-\input{include/assets/algorithms/evaluate}
 \point{Line~5:} The \token{basis} object represents the interpolation basis
 utilized (see \sref{basis}), and its \token{Compute} method evaluates a single
 (multidimensional) basis function at a single point.
